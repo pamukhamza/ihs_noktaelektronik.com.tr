@@ -1,0 +1,15 @@
+Promosyon oluşturmada daha detaylı seçenekler olabilir.
+
+Error Loglara bak hataları düzelt.
+Dahua entegrasyon ve başka sitelerden ürün bilgilerini otomatik çek.
+
+Tüm veritabanı bağlatılarını tek fonkisyondan çek ve bağlantı ve sorguları olabildiğince azlat.
+Kategori mantığını düzelt.
+Ürünler sayfası ve arama, filtrelemeyi yeniden yap.
+Üye entegrasyonu kolaylaştır.
+Sitenin hızlanması için lazy-loading gibi method lar kullan.
+Adresler bazen hepsi aktif oluyor.
+Mail temaları hazırla otomatik kampanya vs. gönder. Tüm mail temalarını da yenisi ile değiştir.
+
+
+Teknik destek e satıcı notu ekle

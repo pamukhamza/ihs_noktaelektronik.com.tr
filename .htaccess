@@ -1,0 +1,24 @@
+## Options +FollowSymLinks
+## RewriteEngine on
+
+## #HTTPS ye yönlendirme
+## RewriteCond %{HTTPS} off
+## RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+## # WWW'yi zorunlu hale getirme
+## RewriteCond %{HTTP_HOST} ^noktaelektronik.com.tr [NC]
+## RewriteRule ^(.*)$ https://www.noktaelektronik.com.tr/$1 [R=301,L]
+
+## # /urunler/... için yönlendirme
+## RewriteRule ^tr/urunler/(.*)$ urun-detay.php?lang=tr&product_id=$1 [L,QSA]
+## RewriteRule ^en/urunler/(.*)$ urun-detay.php?lang=en&product_id=$1 [L,QSA]
+
+## RewriteCond %{REQUEST_URI} ^/ [NC]
+## RewriteRule ^(.*)$ index.php?lang=tr [L,QSA]
+
+## # .php uzantılarını gizleme
+## RewriteCond %{REQUEST_FILENAME} !-f
+## RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+## ErrorDocument 404 /404.php
+

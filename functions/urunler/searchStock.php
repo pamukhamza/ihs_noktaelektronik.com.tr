@@ -1,0 +1,36 @@
+<?php
+//searchlive.php
+// Önce veritabanı bağlantısını sağlayın
+require_once '../db.php';
+$db = new Database();
+
+if (isset($_POST['query'])) {
+    $search = $_POST['query'];
+    
+    // Search products
+    $result = $db->fetchAll("SELECT DISTINCT n.BLKODU, n.UrunAdiTR, n.stok, m.title as marka_adi 
+                            FROM nokta_urunler n 
+                            LEFT JOIN nokta_urun_markalar m ON n.MarkaID = m.id 
+                            WHERE (n.UrunAdiTR LIKE :search OR n.BLKODU LIKE :search OR m.title LIKE :search) 
+                            AND n.aktif = '1' 
+                            ORDER BY n.UrunAdiTR ASC 
+                            LIMIT 10", [
+        'search' => '%' . $search . '%'
+    ]);
+
+    if (!empty($result)) {
+        foreach ($result as $row) {
+            ?>
+            <tr>
+                <td><?= $row['BLKODU'] ?></td>
+                <td><?= $row['UrunAdiTR'] ?></td>
+                <td><?= $row['marka_adi'] ?></td>
+                <td><?= $row['stok'] ?></td>
+            </tr>
+            <?php
+        }
+    } else {
+        echo '<tr><td colspan="4" class="text-center">Ürün bulunamadı...</td></tr>';
+    }
+}
+?>

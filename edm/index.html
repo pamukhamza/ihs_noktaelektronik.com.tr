@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EDM E-Fatura / E-Arşiv Web Servis Uygulaması PHP API</title>
+    <style type="text/css">
+        body{
+            margin: 0px;
+            padding: 0px;
+            font-family: 'Tahoma', "Times New Roman", Times, serif;
+            font-size: 12px;
+            background: #DDDDDD;
+        }
+        h1{
+            text-align: center;
+            border-bottom: 1px solid #D41219;
+            color: #D41219;
+            background: #ffffff;
+            margin: 0px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        ul{
+            background: #ffffff;
+            list-style: none;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            width: 40%;
+            margin: 0px auto;
+            padding: 10px;
+            border: 1px solid #D41219;
+        }
+        ul > li > a{
+            text-decoration: none;
+            color: #000;
+            display: block;
+            border-bottom: 1px solid #2F74A9;
+            padding: 10px 5px;
+        }
+        ul > li > a:hover{
+            background: #336699;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>EDM E-Fatura / E-Arşiv Web Servis Uygulaması PHP SDK</h1>
+    <ul>
+        <li><a target="_blank" href="efatura.php?islem=login">EDM SERVİS LOGİN - Login</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=logout">EDM SERVİS LOGOUT - Logout</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=kullanici_kontrol">EDM VKN KONTROL - CheckUser</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=kullanici_liste">EDM VKN LİSTESİ - GetUserList</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=fatura_durum_sorgulama">EDM Fatura Durum Sorgulama - GetInvoiceStatus</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=tek_fatura_oku">EDM Tek Fatura Okuma - GetInvoice</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=gelen_kutusu">EDM Gelen Kutusu - GetInvoice</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=okundu_isaretle">EDM Okundu Olarak İşaretle - MarkInvoice</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=kabul_ver">EDM Gelen Fatura İşaretleme (KABUL) - SendInvoiceResponseWithServerSign</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=red_ver">EDM Gelen Fatura İşaretleme (RED) - SendInvoiceResponseWithServerSign</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=efatura_gonder">EDM Fatura Gönderme - SendInvoice - EFatura</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=earsiv_gonder_senaryo_1">EDM Fatura Gönderme - SendInvoice / EArşiv / Senaryo 1 / Standart</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=earsiv_gonder_senaryo_2">EDM Fatura Gönderme - SendInvoice / EArşiv / Senaryo 2 / İrsaliyeli</a> </li>
+        <li><a target="_blank" href="efatura.php?islem=earsiv_gonder_senaryo_3">EDM Fatura Gönderme - SendInvoice / EArşiv / Senaryo 3 / Ödeme Bilgisi</a> </li>
+    </ul>
+</body>
+</html>

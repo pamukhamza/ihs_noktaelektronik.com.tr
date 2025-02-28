@@ -1,0 +1,357 @@
+[14-Aug-2024 11:55:32 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:55:34 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:55:35 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:55:35 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:55:36 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:55:36 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:55:37 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:55:37 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:56:15 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:56:30 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:56:46 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:57:40 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:57:41 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 11:57:45 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:57:46 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:57:57 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:57:57 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/admin.php on line 69
+[14-Aug-2024 11:58:02 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:02 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:02 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:07 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:07 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:07 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:27 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:27 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/stokekle.php on line 62
+[14-Aug-2024 11:58:28 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:28 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:29 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:29 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:29 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:29 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:30 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:48 UTC] PHP Warning:  Undefined array key "k_adi" in /home/noktaelektronik/public_html/depo/functions.php on line 56
+[14-Aug-2024 11:58:48 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 11:58:48 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 12:05:03 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'hamza'@'localhost' (using password: YES) in /home/noktaelektronik/public_html/depo/login.php:10
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/login.php(10): mysqli->__construct('127.0.0.1', 'hamza', Object(SensitiveParameterValue), 'NKTzaimex')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/login.php on line 10
+[14-Aug-2024 12:09:39 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1364 Field 'uyeid' doesn't have a default value in /home/noktaelektronik/public_html/depo/logout.php:9
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 9
+[14-Aug-2024 12:09:50 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1364 Field 'uyeid' doesn't have a default value in /home/noktaelektronik/public_html/depo/logout.php:9
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 9
+[14-Aug-2024 12:10:32 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ':a,
+            ip=:i,
+            tarih=:t,
+            aciklama =:ack' at line 2 in /home/noktaelektronik/public_html/depo/logout.php:3
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(3): mysqli->prepare('INSERT INTO log...')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 3
+[14-Aug-2024 12:10:33 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ':a,
+            ip=:i,
+            tarih=:t,
+            aciklama =:ack' at line 2 in /home/noktaelektronik/public_html/depo/logout.php:3
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(3): mysqli->prepare('INSERT INTO log...')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 3
+[14-Aug-2024 12:10:33 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ':a,
+            ip=:i,
+            tarih=:t,
+            aciklama =:ack' at line 2 in /home/noktaelektronik/public_html/depo/logout.php:3
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(3): mysqli->prepare('INSERT INTO log...')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 3
+[14-Aug-2024 12:51:56 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ':a,
+            ip=:i,
+            tarih=:t,
+            aciklama =:ack' at line 2 in /home/noktaelektronik/public_html/depo/logout.php:3
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(3): mysqli->prepare('INSERT INTO log...')
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 3
+[14-Aug-2024 13:10:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1364 Field 'uyeid' doesn't have a default value in /home/noktaelektronik/public_html/depo/logout.php:9
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 9
+[14-Aug-2024 13:37:01 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:37:01 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:37:41 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:37:41 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:37:52 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:37:52 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:38:08 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:38:08 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:38:10 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:38:10 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:40:08 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:40:08 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:44:17 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:44:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:44:20 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[14-Aug-2024 13:44:20 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 09:44:03 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 09:44:03 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 09:44:07 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 09:44:07 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 12:07:53 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1364 Field 'uyeid' doesn't have a default value in /home/noktaelektronik/public_html/depo/logout.php:9
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/logout.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/logout.php on line 9
+[15-Aug-2024 12:12:13 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 12:12:13 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 12:13:36 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[15-Aug-2024 12:13:36 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:23:59 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:23:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:24:04 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:24:04 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:24:33 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:24:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:27:16 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:27:16 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:27:36 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:27:36 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:27:37 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:27:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:27:44 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:27:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 24
+[19-Aug-2024 06:29:09 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function adminheaders() in /home/noktaelektronik/public_html/depo/liste.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:29:10 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function adminheaders() in /home/noktaelektronik/public_html/depo/liste.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:29:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function adminheaders() in /home/noktaelektronik/public_html/depo/liste.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:30:14 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 27
+[19-Aug-2024 06:30:14 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 27
+[19-Aug-2024 06:40:18 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function session() in /home/noktaelektronik/public_html/depo/liste.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/liste.php on line 2
+[19-Aug-2024 06:47:36 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:47:36 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:47:37 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:47:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:52:44 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:52:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:52:44 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:52:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:52:44 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 06:52:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:04:49 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:04:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:14:24 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:14:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:14:25 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:14:25 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:14:27 UTC] PHP Warning:  Undefined variable $depo in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[19-Aug-2024 07:14:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/depo/liste.php on line 18
+[24-Aug-2024 08:28:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb3_general_ci,COERCIBLE) for operation 'like' in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:9
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(9): PDOStatement->execute()
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 9
+[28-Aug-2024 14:16:12 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb3_general_ci,COERCIBLE) for operation 'like' in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:9
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(9): PDOStatement->execute()
+#1 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 9
+[02-Sep-2024 07:51:29 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[02-Sep-2024 07:51:29 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[02-Sep-2024 07:51:29 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[02-Sep-2024 07:51:29 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[02-Sep-2024 07:51:29 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[02-Sep-2024 07:51:29 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[02-Sep-2024 07:51:29 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[02-Sep-2024 07:51:32 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[02-Sep-2024 07:51:33 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[02-Sep-2024 07:51:33 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[02-Sep-2024 07:51:37 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[02-Sep-2024 07:51:38 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[02-Sep-2024 14:20:47 UTC] PHP Warning:  Undefined array key "id" in /home/noktaelektronik/public_html/depo/admin.php on line 5
+[02-Sep-2024 14:20:47 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 29
+[02-Sep-2024 14:20:47 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 37
+[02-Sep-2024 14:20:47 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 59
+[04-Sep-2024 10:12:14 UTC] PHP Warning:  Undefined array key "id" in /home/noktaelektronik/public_html/depo/admin.php on line 5
+[04-Sep-2024 10:12:14 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 29
+[04-Sep-2024 10:12:14 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 37
+[04-Sep-2024 10:12:14 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 59
+[04-Sep-2024 10:12:28 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 29
+[04-Sep-2024 10:12:28 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 37
+[04-Sep-2024 10:12:28 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 59
+[04-Sep-2024 10:12:39 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 29
+[04-Sep-2024 10:12:39 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 37
+[04-Sep-2024 10:12:39 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 59
+[16-Sep-2024 11:25:19 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[16-Sep-2024 11:25:19 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[16-Sep-2024 12:45:11 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[16-Sep-2024 12:45:12 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[16-Sep-2024 12:45:12 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[16-Sep-2024 12:45:12 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[16-Sep-2024 12:45:12 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[16-Sep-2024 12:45:20 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[17-Sep-2024 07:05:00 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[17-Sep-2024 07:05:00 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[17-Sep-2024 07:05:40 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: Too many connections in /home/noktaelektronik/public_html/depo/functions.php:7
+Stack trace:
+#0 /home/noktaelektronik/public_html/depo/functions.php(7): mysqli->__construct('localhost', 'noktaelektronik', Object(SensitiveParameterValue), 'noktaelektronik...')
+#1 /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php(2): include('/home/noktaelek...')
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/depo/functions.php on line 7
+[17-Sep-2024 07:05:40 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[17-Sep-2024 07:05:40 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[17-Sep-2024 07:05:40 UTC] PHP Warning:  Undefined variable $db in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[17-Sep-2024 07:05:40 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/noktaelektronik/public_html/depo/ajax_stok_suggest.php on line 7
+[10-Oct-2024 13:29:54 UTC] PHP Warning:  Undefined array key "id" in /home/noktaelektronik/public_html/depo/admin.php on line 5
+[10-Oct-2024 13:29:54 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 29
+[10-Oct-2024 13:29:54 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 37
+[10-Oct-2024 13:29:54 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 59
+[10-Oct-2024 13:30:45 UTC] PHP Warning:  Undefined array key "id" in /home/noktaelektronik/public_html/depo/admin.php on line 5
+[10-Oct-2024 13:30:45 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 29
+[10-Oct-2024 13:30:45 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 37
+[10-Oct-2024 13:30:45 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/noktaelektronik/public_html/depo/admin.php on line 59

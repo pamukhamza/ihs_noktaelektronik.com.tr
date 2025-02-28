@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+            <CC5Request>
+            <Name>noktaadmin</Name>
+            <Password>NEBsis28736.!</Password>
+            <ClientId>280624575</ClientId>
+            <OrderId>ORDER-24349IBRJAkujjt1282</OrderId>
+            <Type>Auth</Type>
+            <Number>549997:56DE4CCFA34565E769252BC2D0AD2B9F5E87B5CB3304D0B58E2B2F74383CC1EAD036EE3DA71E025072E5095A02E1F1A2:5977:</Number>
+            <Total>2450.00</Total>
+            <Mode>P</Mode>
+            <Taksit>3</Taksit>
+            <Currency>949</Currency>
+            <PayerTxnId>HaDCFdpqoGzlpSAIND4E0Scr3lM=</PayerTxnId>
+            <PayerSecurityLevel>02</PayerSecurityLevel>
+            <PayerAuthenticationCode>kBNPMcudFzVW5VbDQeCx7pSRPeSj</PayerAuthenticationCode>
+            </CC5Request>
