@@ -107,9 +107,20 @@ $template->head();
 
     gtag('config', 'G-NE2FRWRNBJ');
 </script>
-    <!-- HEADER ALANI -->
-    <?php $template->header(); ?>
-    <!-- HEADER ALANI SONU -->
+<!-- HEADER ALANI -->
+<?php 
+try {
+    if (method_exists($template, 'header')) {
+        $template->header();
+    } else {
+        throw new Exception('header() fonksiyonu bulunamadı.');
+    }
+} catch (Exception $e) {
+    echo 'Hata: ' . $e->getMessage();
+}
+?>
+<!-- HEADER ALANI SONU -->
+
     <!-- SLIDER ALANI -->
     <div class="container mt-4 mb-5">
         <form onsubmit="performSearchMobil(); return false;">
