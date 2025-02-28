@@ -11,7 +11,6 @@ $currentPage = 'index';
 $template = new Template('Nokta Elektronik ve Bilişim Sistemleri', $currentPage);
 
 $template->head();
-$database = new Database();
 
 ?>
 <style>
