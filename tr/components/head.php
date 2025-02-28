@@ -17,7 +17,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="https://www.denemeb2b.noktaelektronik.net/">
     <title><?= $title; ?></title>
-    <link rel="stylesheet" href="https://www.denemeb2b.noktaelektronik.net/bootstrap/bootstrap.min.css"> 
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"> 
     <link rel="stylesheet" href="assets/css/ozel.css">
     <link rel="stylesheet" href="bootstrap/sidebars.css">
     <link rel="stylesheet" href="assets/splide/splide.min.css">
