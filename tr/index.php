@@ -4,8 +4,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo $key . ': ' . $value . '<br>';
     }
 }
-require 'functions/admin_template.php';
-require 'functions/functions.php';
+require '../functions/admin_template.php';
+require '../functions/functions.php';
 
 $currentPage = 'index';
 $template = new Template('Nokta Elektronik ve Bilişim Sistemleri', $currentPage);
