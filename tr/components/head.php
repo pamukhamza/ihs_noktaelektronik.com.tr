@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="assets/images/site/haydar.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="http://192.168.16.63/b2b/">
+    <base href="https://www.denemeb2b.noktaelektronik.net/tr/">
     <title><?= $title; ?></title>
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css"> 
     <link rel="stylesheet" href="assets/css/ozel.css">
@@ -30,10 +30,8 @@ if (session_status() == PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <!-- Scripts -->
     <script src="assets1/vendor/js/helpers.js"></script>
     <script src="assets1/vendor/js/template-customizer.js"></script>
     <script src="assets1/js/config.js"></script>
-    
 </head>

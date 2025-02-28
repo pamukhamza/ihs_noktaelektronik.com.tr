@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = 'localhost';
-    private $db_name = 'nokta';
-    private $username = 'root';
-    private $password = '';
+    private $host = 'noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com';
+    private $db_name = 'noktanetdb';
+    private $username = 'nokta';
+    private $password = 'Dell28736.!';
     private $conn;
 
     // Constructor ile veritabanı bağlantısını başlat
