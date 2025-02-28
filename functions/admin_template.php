@@ -15,7 +15,7 @@
         }
 
         public function header() {
-            $currentPage = $this->currentPage; // Pass current page to header
+            $currentPage = $this->currentPage;
             include  __DIR__ . '/../tr/components/header.php';
         }
 
