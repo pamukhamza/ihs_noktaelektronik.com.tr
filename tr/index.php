@@ -109,15 +109,7 @@ $template->head();
 </script>
 <!-- HEADER ALANI -->
 <?php 
-try {
-    if (method_exists($template, 'header')) {
-        $template->header();
-    } else {
-        throw new Exception('header() fonksiyonu bulunamadı.');
-    }
-} catch (Exception $e) {
-    echo 'Hata: ' . $e->getMessage();
-}
+    $template->header();
 ?>
 <!-- HEADER ALANI SONU -->
 

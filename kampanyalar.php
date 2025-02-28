@@ -1,22 +1,25 @@
 <?php
-include ("php/check_session.php");
-include "f.php";
-include "langdetect.php";
-global $db;
+require '../functions/admin_template.php';
+require '../functions/functions.php';
+$currentPage = 'kampanyalar';
+$template = new Template('Nokta - Kampanyalar', $currentPage);
+
+$template->head();
+
 if (isset($_GET['camp'])) {
     $camp = $_GET['camp'];
+    
+    // Kampanya bilgilerini al
     $kampanya_sql = "SELECT ad, urun_id FROM kampanyalar WHERE link = :link";
-    $kampanya_stmt = $db->prepare($kampanya_sql);
-    $kampanya_stmt->execute([':link' => $camp]);
+    $kampanya_row = $db->fetch($kampanya_sql, ['link' => $camp]);
 
-    $kampanya_row = $kampanya_stmt->fetch(PDO::FETCH_ASSOC);
-    $urun_id_list = $kampanya_row['urun_id'];
-    $urun_adi_kamp = $kampanya_row['ad'];
+    $urun_id_list = $kampanya_row['urun_id'] ?? '';
+    $urun_adi_kamp = $kampanya_row['ad'] ?? '';
 
-    // 'nokta_urunler' tablosundan 'id' değeri 'urun_id' listesinde olan ürünleri al
+    // Ürünleri al
     $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.foto
                           FROM nokta_urunler u
-                          LEFT JOIN nokta_urun_markalar_1 m ON u.MarkaID = m.id 
+                          LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                           LEFT JOIN (
                               SELECT urun_id, MIN(foto) AS foto
                               FROM nokta_urunler_resimler
@@ -24,122 +27,50 @@ if (isset($_GET['camp'])) {
                               GROUP BY urun_id
                           ) r ON u.BLKODU = r.urun_id
                           WHERE u.aktif = 1
-                          AND u.id IN ($urun_id_list)";
-    $nokta_urunler_stmt = $db->query($nokta_urunler_sql);
+                          AND FIND_IN_SET(u.id, :urun_id_list)";
+    
+    $nokta_urunler = $db->fetchAll($nokta_urunler_sql, ['urun_id_list' => $urun_id_list]);
 } else {
-    // 'kampanyalar' tablosundaki tüm ürünlerin ID'lerini al
+    // Tüm kampanya ürün ID'lerini al
     $kampanyalar_sql = "SELECT urun_id FROM kampanyalar";
-    $kampanyalar_stmt = $db->query($kampanyalar_sql);
+    $kampanyalar = $db->fetchAll($kampanyalar_sql);
 
-// Tüm kampanyaların ürün ID'lerini bir diziye al
-    $urun_idler = [];
-    while ($row = $kampanyalar_stmt->fetch(PDO::FETCH_ASSOC)) {
-        $urun_idler[] = $row['urun_id'];
-    }
-
-// 'nokta_urunler' tablosundan tüm kampanyaların ürünlerini al
+    $urun_idler = array_column($kampanyalar, 'urun_id');
     $urun_id_list = implode(',', $urun_idler);
+    // Kampanya ürünlerini al
     $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.foto
                       FROM nokta_urunler u
-                      LEFT JOIN nokta_urun_markalar_1 m ON u.MarkaID = m.id 
+                      LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                       LEFT JOIN (
-                          SELECT urun_id, MIN(foto) AS foto
-                          FROM nokta_urunler_resimler
-                          WHERE sira = 1
-                          GROUP BY urun_id
-                      ) r ON u.BLKODU = r.urun_id
-                      WHERE u.aktif = 1
-                      AND u.id IN ($urun_id_list)";
-
-// 'OZEL_KODU1' alanı 'Kampanyalı Ürünler' olan ürünleri al
+                            SELECT urun_id, MIN(foto) AS foto
+                            FROM nokta_urunler_resimler
+                            WHERE sira = 1
+                            GROUP BY urun_id
+                        ) r ON u.BLKODU = r.urun_id
+                      WHERE u.web_comtr = 1
+                      AND FIND_IN_SET(u.id, :urun_id_list)";
+    // 'Kampanyalı Ürünler' olanları al
     $ozel_kodu1_sql = "SELECT DISTINCT u.*, m.title AS marka_adi, r.foto
                    FROM nokta_urunler u
-                   LEFT JOIN nokta_urun_markalar_1 m ON u.MarkaID = m.id 
+                   LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                    LEFT JOIN (
                        SELECT urun_id, MIN(foto) AS foto
                        FROM nokta_urunler_resimler
                        WHERE sira = 1
                        GROUP BY urun_id
                    ) r ON u.BLKODU = r.urun_id
-                   WHERE u.aktif = 1
+                   WHERE u.web_comtr = 1
                    AND u.OZEL_KODU1 = 'Kampanyalı Ürünler'";
 
-// İki sorguyu birleştir
-    $final_sql = "$nokta_urunler_sql UNION $ozel_kodu1_sql";
-
-// Sonuçları al
-    $nokta_urunler_stmt = $db->query($final_sql);
-
-
-    /*ESKİsi
-      // 'kampanyalar' tablosundaki tüm urun_id alanındki ürünler listelenecek
-    $kampanyalar_sql = "SELECT ad, urun_id FROM kampanyalar";
-    $kampanyalar_stmt = $db->query($kampanyalar_sql);
-
-    // Tüm kampanyaların ürün ID'lerini bir diziye al
-    $urun_idler = [];
-    while ($row = $kampanyalar_stmt->fetch(PDO::FETCH_ASSOC)) {
-        $urun_idler[] = $row['urun_id'];
-    }
-
-    // 'nokta_urunler' tablosundan tüm kampanyaların ürünlerini al
-    $urun_id_list = implode(',', $urun_idler);
-    $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.foto
-                          FROM nokta_urunler u
-                          LEFT JOIN nokta_urun_markalar_1 m ON u.MarkaID = m.id
-                          LEFT JOIN (
-                              SELECT urun_id, MIN(foto) AS foto
-                              FROM nokta_urunler_resimler
-                              WHERE sira = 1
-                              GROUP BY urun_id
-                          ) r ON u.BLKODU = r.urun_id
-                          WHERE u.aktif = 1
-                          AND u.id IN ($urun_id_list)";
-    $nokta_urunler_stmt = $db->query($nokta_urunler_sql);
-    */
+    $nokta_urunler_sql = "$nokta_urunler_sql UNION $ozel_kodu1_sql";
+    $nokta_urunler = $db->fetchAll($nokta_urunler_sql, ['urun_id_list' => $urun_id_list]);
 }
-
 ?>
-<!DOCTYPE html>
-<html lang="<?php echo $user_language ?>">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="assets/images/site/<?php echo $favicon; ?>">
-    <base href="https://www.noktaelektronik.com.tr/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php if(isset($urun_adi_kamp)){ echo $urun_adi_kamp ;}else{ echo 'Kampanyalar';} ?></title>
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap/sidebars.css">
-    <link rel="stylesheet" href="assets/css/ozel.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-</head>
 <style>
-    .hızlı-teslimat{
-        font-size:13px;
-        color:white;
-        background: rgba(51, 170, 51, .6);
-        padding:2px;
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
-    .favori-style{
-        position: absolute;
-        top: 28px;
-        right: 10px;
-    }
-    .sepet-style{
-        cursor:pointer;
-        position: absolute;
-        bottom: 30px;
-        right: 20px;
-    }
-    .urun-a{
-        text-decoration: none;
-        color:black;
-        font-size:14px;
-    }
+    .hızlı-teslimat{font-size:13px;color:white;background: rgba(51, 170, 51, .6);padding:2px;position: absolute;top: 10px;left: 10px;}
+    .favori-style{position: absolute;top: 28px;right: 10px;}
+    .sepet-style{cursor:pointer;position: absolute;bottom: 30px;right: 20px;}
+    .urun-a{text-decoration: none;color:black;font-size:14px;}
     .favori-icon:hover{cursor: pointer;}
     .kategori-effect li{transition: transform 0.3s ease;}
     .kategori-effect li:hover{transform: translateX(8px);color:purple;}
@@ -162,22 +93,15 @@ if (isset($_GET['camp'])) {
         .deskop-menu{display: none; }
         .urunler-desktop{width: 100%;}
         .urun-card{width: 47%;}
-
     }
-    @media (min-width: 992px) and (max-width:1200px) {
-        .urun-card{width: 32%;}
-    }
-    @media (min-width:1200px) {
-        .urun-card{width: 24%;}
-    }
-
+    @media (min-width: 992px) and (max-width:1200px) {.urun-card{width: 32%;}}
+    @media (min-width:1200px) {.urun-card{width: 24%;}}
 </style>
 <body>
-<?php headers($user_language, $lang);?>
-<!-- Site Haritası -->
+<?php $template->header(); ?>
 <nav aria-label="breadcrumb" class="container mt-3 mb-2">
     <svg xmlns="http://www.w3.org/2800/svg" style="display: none;"><symbol id="house-door-fill" viewBox="0 0 16 16">
-            <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/></symbol>
+        <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/></symbol>
     </svg>
     <ol class="breadcrumb ">
         <li class="breadcrumb-item">
@@ -196,66 +120,34 @@ if (isset($_GET['camp'])) {
     </ol>
 </nav>
 <section class="container">
-    <!-- Sol Menü -->
     <div class="row">
         <div class="mb-5 deskop-menu" style="height:100%">
             <!-- Kategoriler -->
             <div class="border shadow-sm p-3" style="background-color: #ffffff;">
-                <h5 class="border-bottom p-2"><?php echo translate("urunler", $lang, $user_language); ?></h5>
+                <h5 class="border-bottom p-2">Ürünler</h5>
                 <ul class="list-unstyled ps-0 kategori-effect">
                     <?php
-                        $kategori_sql = "SELECT * FROM nokta_kategoriler WHERE aktif = 1 AND parent_id = 0 ORDER BY sira";
-                        $stmt = $db->query($kategori_sql);
-                        while ($kategori_row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        $kategori_id = $kategori_row['id'];
-                        $kategori_adi = $kategori_row['kategori_adi'];
-                        $kategori_seo_link = $kategori_row['seo_link']; ?>
+                        $kategori_sql = $database->fetchAll("SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 0 ORDER BY sira");
+                        foreach ($kategori_sql as $kategori_row) {
+                            $kategori_id = $kategori_row['id'];
+                            $kategori_adi = $kategori_row['kategori_adi'];
+                            $kategori_seo_link = $kategori_row['seo_link']; ?>
                         <li class="">
-                            <a href="urunler?lang=<?php echo $user_language ?>&cat=<?php echo $kategori_seo_link ?>&brand=&filter=&search=" style="text-align: left !important;" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
-                                <?php echo $kategori_adi; ?>
+                            <a href="tr/urunler?cat=<?= $kategori_seo_link; ?>&brand=&filter=&search=" style="text-align: left !important;" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
+                                <?= $kategori_adi; ?>
                             </a>
                         </li>
-                     <?php } ?>
+                    <?php } ?>
                 </ul>
             </div>
-
-            <!--Markalar filterleme
-            <div class=" border mt-3 shadow-sm p-3" style="background-color: #ffffff;">
-                <h5 class="border-bottom p-2"><?php echo translate("marka", $lang, $user_language); ?></h5>
-                <ul class="list-unstyled ps-1" style="overflow-y: scroll; max-height:280px">
-                    <?php
-                        $marka1_sql = "SELECT * FROM nokta_urun_markalar_1 WHERE aktif = 1";
-                        $markalar_result1 = mysqli_query($connection, $marka1_sql);
-                        while ($marka_row = mysqli_fetch_assoc($markalar_result1)) {
-                            $marka_adi = $marka_row['title'];
-                            $marka_seo = $marka_row['seo_link'];
-                            $checked = '';
-                            $selected_brands = !empty($_GET['brand']) ? explode(',', $_GET['brand']) : array();
-                            if (in_array($marka_seo, $selected_brands)) {
-                                $checked = 'checked';
-                            }
-                            ?>
-                            <div class="form-check">
-                                <input class="form-check-input brand-checkbox" type="checkbox" id="marka-<?php echo $marka_adi; ?>" name="marka[]" value="<?php echo $marka_seo; ?>" <?php echo $checked; ?>>
-                                <label class="form-check-label" for="marka-<?php echo $marka_adi; ?>">
-                                    <a href="urunler?lang=<?php echo $user_language ?>&cat=&brand=<?= $marka_seo ?>&filter=&search=" style="text-decoration: none; color: inherit;"><?php echo $marka_adi; ?></a>
-                                </label>
-                            </div>
-                        <?php }
-
-                    ?>
-                </ul>
-            </div> -->
         </div>
-        <!-- Ürün listeleme Bölümü -->
         <div class="urunler-desktop">
-
             <div class="row">
-                <?php if ($nokta_urunler_stmt->rowCount() > 0) {
-                    while ($row = $nokta_urunler_stmt->fetch(PDO::FETCH_ASSOC)) {
-                        ?>
+                <?php 
+                    if($nokta_urunler){
+                        foreach ($nokta_urunler as $row) { ?>
                         <div class="card urun-card rounded-0 shadow-sm p-0 mx-1 mt-1 mb-1">
-                            <a href="<?php echo $user_language ?>/urunler/<?php echo $row['seo_link'] ; ?>">
+                            <a href="tr/urunler/<?= $row['seo_link']; ?>">
                                 <div class="w-100 d-flex align-items-center" style="height: 245px;overflow: hidden">
                                     <img src="<?php echo !empty($row['foto']) ? 'assets/images/urunler/'.$row['foto'] : 'assets/images/urunler/gorsel_hazirlaniyor.jpg'; ?>" class="card-img-top img-fluid">
                                 </div>
@@ -263,9 +155,9 @@ if (isset($_GET['camp'])) {
                             <div class="card-body d-flex flex-column"><!--
                             <div class="mb-2 mt-auto" style="font-size: 12px;"><a href="" class="rounded-1 text-decoration-none" style="color:black; background:rgba(255, 40, 18, 0.4); padding:2px"><i class="fa-solid fa-tags"></i>Birlikte Al Kazan</a>
                             <a href="" class="rounded-1 text-decoration-none" style="color:black; background: rgba(0, 98, 255, 0.4); padding:2px"><i class="fa-solid fa-circle-play"></i>Videolu Ürün</a></div>-->
-                                <a href="<?php echo $user_language ?>/urunler/<?php echo $row['seo_link'] ; ?>" style="font-weight:600; color:#555555;" class="mt-2 urun-a"><strong><?php $text = ($user_language == 'tr') ? $row['UrunAdiTR'] : $row['UrunAdiEN'];echo (strlen($text) > 65) ? substr($text, 0, 64) . '...' : $text;?></strong></a>
-                                <a style="font-size:12px; color:#0a90eb;" class="mt-2 border-bottom urun-a"><?php echo $row['marka_adi'] ; ?></a>
-                                <a style="font-size:12px;" class=" urun-a">Stok Kodu:<span style="font-weight: bold"> <?php echo $row['UrunKodu'] ; ?></span></a>
+                                <a href="tr/urunler/<?= $row['seo_link']; ?>" style="font-weight:600; color:#555555;" class="mt-2 urun-a"><strong><?php echo (strlen($row['UrunAdiTR']) > 65) ? substr($row['UrunAdiTR'], 0, 64) . '...' : $row['UrunAdiTR'];?></strong></a>
+                                <a style="font-size:12px; color:#0a90eb;" class="mt-2 border-bottom urun-a"><?= $row['marka_adi'] ; ?></a>
+                                <a style="font-size:12px;" class=" urun-a">Stok Kodu:<span style="font-weight: bold"> <?= $row['UrunKodu'] ; ?></span></a>
                                 <?php if($row['proje'] == 0){ ?>
                                     <?php if (isset($_SESSION['id'])) {
                                     $q = $db->prepare("SELECT * FROM uyeler WHERE id =:id");
@@ -294,7 +186,7 @@ if (isset($_GET['camp'])) {
                                        if (isset($_SESSION['id'])) {
                                            echo "sepeteUrunEkle($urunId, " . (isset($_SESSION['id']) ? $_SESSION['id'] : 'default_value') . ");";
                                        } else {
-                                           echo "window.location.href = '$user_language/giris';";
+                                           echo "window.location.href = 'tr/giris';";
                                        }
                                        ?>">
                                     </i>
@@ -385,7 +277,7 @@ if (isset($_GET['camp'])) {
                                 <p class="border-bottom pb-3">Teklifiniz ile ilgili detayları aşağıda açıklayarak bize iletebilirsiniz.</br> Teklifiniz en kısa sürede yanıtlanacaktır.</p>
                             </div>
                             <div class="col-sm-12">
-                                <label for="email" class="form-label"><?php echo translate("eposta", $lang, $user_language); ?></label>
+                                <label for="email" class="form-label">E-Posta</label>
                                 <input type="email" class="form-control" id="email" placeholder="mail@example.com" required>
                                 <div class="invalid-feedback">Geçerli e-posta giriniz!</div>
                             </div>
@@ -404,7 +296,7 @@ if (isset($_GET['camp'])) {
         </div>
     </div>
 </div>
-<?php footers($user_language, $lang); ?>
+<?php $template->header(); ?>
 </body>
 </html>
 <script src="bootstrap/bootstrap.bundle.min.js"></script>
