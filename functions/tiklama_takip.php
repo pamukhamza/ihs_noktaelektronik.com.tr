@@ -14,11 +14,11 @@ if (isset($data['elementTag'])) {
         $query = "INSERT INTO tiklama_takip (user_id, element_tag, element_text, element_id, element_classes)
                     VALUES (:user_id, :element_tag, :element_text, :element_id, :element_classes) ";
         $param =[
-            ':user_id' => $userId,
-            ':element_tag' => $data['elementTag'],
-            ':element_text' => $data['elementText'],
-            ':element_id' => $data['elementId'],
-            ':element_classes' => $data['elementClasses']
+            'user_id' => $userId,
+            'element_tag' => $data['elementTag'],
+            'element_text' => $data['elementText'],
+            'element_id' => $data['elementId'],
+            'element_classes' => $data['elementClasses']
         ];
         $database ->insert($query, $param);
         echo json_encode(['status' => 'success']);
