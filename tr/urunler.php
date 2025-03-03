@@ -223,11 +223,11 @@ function getBreadcrumbs($kategori, $database) {
                 <?php
 if (empty($_GET['cat'])) {
     if (empty($_GET['brand'])) {
-        $kategori_sql = "SELECT * FROM nokta_kategoriler WHERE aktif = 1 AND parent_id = 0 ORDER BY sira";
+        $kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 0 ORDER BY sira";
         $kategori_result = $database->fetchAll($kategori_sql);
         foreach ($kategori_result as $kategori_row) {
             $kategori_id = $kategori_row['id'];
-            $kategori_adi = $kategori_row['kategori_adi'];
+            $kategori_adi = $kategori_row['KategoriAdiTr'];
             $kategori_seo_link = $kategori_row['seo_link']; ?>
             <li class="">
                 <a href="tr/urunler?cat=<?= $kategori_seo_link ;?>&brand=<?= $_GET['brand']; ?>&filter=&search=<?= $stkParam; ?>" style="text-align: left !important;" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
@@ -242,11 +242,11 @@ if (empty($_GET['cat'])) {
             $en_ust_kategori_id = $kategoriID;
             $en_ust_kategori_adi = "";
             while ($en_ust_kategori_id != 0) {
-                $ust_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE aktif = 1 AND id = :id ORDER BY sira";
+                $ust_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id ORDER BY sira";
                 $ust_kategori_row = $database->fetch($ust_kategori_sql, ['id' => $en_ust_kategori_id]);
                 if ($ust_kategori_row) {
                     $en_ust_kategori_id = $ust_kategori_row['parent_id'];
-                    $en_ust_kategori_adi = $ust_kategori_row['kategori_adi'];
+                    $en_ust_kategori_adi = $ust_kategori_row['KategoriAdiTr'];
                     $kategori_seo_link = $ust_kategori_row['seo_link'];
                 } else {
                     $en_ust_kategori_id = 0;
@@ -263,10 +263,10 @@ if (empty($_GET['cat'])) {
     }
 } else {
     if (empty($_GET['brand'])) {
-        $parent_cat_sql = "SELECT * FROM nokta_kategoriler WHERE aktif = 1 AND parent_id = :parent_id ORDER BY sira";
+        $parent_cat_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = :parent_id ORDER BY sira";
         $parent_cat_result = $database->fetchAll($parent_cat_sql, ['parent_id' => $kategori_id]);
         foreach ($parent_cat_result as $parent_cat_row) {
-            $parent_cat_adi = $parent_cat_row['kategori_adi'];
+            $parent_cat_adi = $parent_cat_row['KategoriAdiTr'];
             $parent_cat_seo_link = $parent_cat_row['seo_link']; ?>
             <li class="mb-1">
                 <a href="tr/urunler?cat=<?= $parent_cat_seo_link ?>&brand=<?= $_GET['brand']; ?>&filter=&search=<?= $stkParam ?>" style="text-align: left !important;" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
@@ -275,14 +275,14 @@ if (empty($_GET['cat'])) {
             </li>
         <?php }
         if (empty($parent_cat_result)) {
-            $parent_cat_sql1 = "SELECT parent_id, kategori_adi FROM nokta_kategoriler WHERE aktif = 1 AND id = :id ORDER BY sira";
+            $parent_cat_sql1 = "SELECT parent_id, KategoriAdiTr FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id ORDER BY sira";
             $parent_cat_row1 = $database->fetch($parent_cat_sql1, ['id' => $kategori_id]);
             $parent_id1 = $parent_cat_row1['parent_id'];
-            $cat_adi1 = $parent_cat_row1['kategori_adi'];
+            $cat_adi1 = $parent_cat_row1['KategoriAdiTr'];
             $parent_cat_sql2 = "SELECT * FROM nokta_kategoriler WHERE aktif = 1 AND parent_id = :parent_id";
             $parent_cat_result3 = $database->fetchAll($parent_cat_sql2, ['parent_id' => $parent_id1]);
             foreach ($parent_cat_result3 as $parent_cat_row4) {
-                $parent_cat_adi1 = $parent_cat_row4['kategori_adi'];
+                $parent_cat_adi1 = $parent_cat_row4['KategoriAdiTr'];
                 $parent_cat_seo_link1 = $parent_cat_row4['seo_link'];
                 $style = ($parent_cat_adi1 == $cat_adi1) ? 'transform: translateX(8px);color:purple;font-weight:bold;' : ''; ?>
                 <li class="mb-1">
