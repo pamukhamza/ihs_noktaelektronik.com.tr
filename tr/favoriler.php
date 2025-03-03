@@ -107,9 +107,6 @@ $database = new Database();
                                     <ul class="list-unstyled">
                                     <?php
                                         $session_id = $_SESSION['id'];
-
-
-
                                         $urun = $database->fetchAll("
                                             SELECT s.id AS sepet_id, s.uye_id, s.adet, s.urun_id, s.tarih, u.*, um.title
                                             FROM uye_sepet AS s

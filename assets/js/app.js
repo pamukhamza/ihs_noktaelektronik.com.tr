@@ -688,7 +688,7 @@ function favoriKaldır(gid) {
 
                     // Favori kaldırıldıktan sonra sayfayı yenileme yerine, favori öğesini arayüzden kaldırma
                     $('#favori_' + gid).remove(); // Bu satırı ekleyin, favori öğesini kaldırır
-                }
+                },error: function(xhr, status, error) { console.log(status, error); }
             });
         }
     });
