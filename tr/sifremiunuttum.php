@@ -18,8 +18,6 @@ $database = new Database();
         background-position: center;
         height: 100vh;
     }
-
-    
     .form-signin {
         height: 100vh;
         display: flex;
