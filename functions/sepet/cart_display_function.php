@@ -43,7 +43,7 @@ if (empty($urun)) {
         // Product photo
         $output .= '<div class="col-3">';
         $output .= '<a href="' . $user_language . '/urunler/' . $row['seo_link'] . '" class="text-body text-decoration-none">';
-        $output .= '<img src="' . (empty($sepet['foto']) ? 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg' : 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/' . $sepet['foto']) . '" style="width: 70px; border:1px solid lightgrey; border-radius: 6px">';
+        $output .= '<img src="' . (empty($sepet['KResim']) ? 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg' : 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/' . $sepet['KResim']) . '" style="width: 70px; border:1px solid lightgrey; border-radius: 6px">';
         $output .= '</a>';
         $output .= '</div>';
 
