@@ -125,26 +125,12 @@ $template->head();
         <div class="float-start rounded-3 kategoriler" style="width:280px; height:100%;">
             <div class="border-0 rounded-3 shadow" style="background-color: #ffffff;">
                 <ul class="list-unstyled ps-0 kategori-effect ">
-                <?php
-try {
-    $kategori_rows = $database->fetchAll("SELECT * FROM nokta_kategoriler WHERE parent_id = 0 AND web_comtr = 1 ORDER BY sira ASC LIMIT 11");
-    
-    if ($kategori_rows === false) {
-        throw new Exception("Kategoriler çekilirken bir hata oluştu.");
-    }
-    
-    foreach ($kategori_rows as $kategori_row) {
-        $sub_kategori_count = $database->fetchColumn("SELECT COUNT(*) FROM nokta_kategoriler WHERE parent_id = :parent_id AND web_comtr = 1", ['parent_id' => $kategori_row['id']]);
-        
-        if ($sub_kategori_count === false) {
-            throw new Exception("Alt kategoriler çekilirken bir hata oluştu: " . $kategori_row['id']);
-        }
-    }
-} catch (Exception $e) {
-    echo "Hata: " . $e->getMessage();
-}
-?>
-
+                    <?php
+                        $kategori_rows = $database->fetchAll("SELECT * FROM nokta_kategoriler WHERE parent_id = 0 AND web_comtr = 1 ORDER BY sira ASC LIMIT 11");
+                        foreach ($kategori_rows as $kategori_row) {
+                            // Alt kategorileri kontrol et
+                            $sub_kategori_count = $database->fetchColumn("SELECT COUNT(*) FROM nokta_kategoriler WHERE parent_id = :parent_id AND web_comtr = 1", ['parent_id' => $kategori_row['id']]);
+                    ?>
                         <li class="border-bottom position-relative">
                             <a href="tr/urunler?cat=<?= $kategori_row['seo_link'] ?>&brand=&filter=&search=" style="text-align: left !important; font-weight: 500" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
                                 <?= $kategori_row['KategoriAdiTr']; ?>
