@@ -52,7 +52,7 @@ if (!empty($marka)) {
         if ($marka_id) { $marka_ids[] = $marka_id; }
     }
     if (!empty($marka_ids)) {
-        $sql .= " AND MarkaID IN (" . implode(',', array_map('intval', $marka_ids)) . ")";
+        $sql .= " AND u.MarkaID IN (" . implode(',', array_map('intval', $marka_ids)) . ")";
     }
 }
 
