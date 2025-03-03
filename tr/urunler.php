@@ -181,6 +181,7 @@ function getBreadcrumbs($kategori, $database) {
     }
 </style>
 <body>
+    <input type="hidden" value="<?= $kategori;?>" id="get_kategori_seo">
 <?php $template->header(); ?>
 <!-- Site Haritası -->
 <nav aria-label="breadcrumb" class="container mt-3 mb-2">
@@ -195,7 +196,6 @@ function getBreadcrumbs($kategori, $database) {
         </li>
         <li class="breadcrumb-item">
             <a class="link-body-emphasis text-decoration-none" href="tr/urunler?cat=&brand=&filter=&search=">Ürünler</a>
-        <?= $kategori;?>
         </li>
         <?php
         foreach ($breadcrumbs as $index => $breadcrumb) {
@@ -895,6 +895,7 @@ function getBreadcrumbs($kategori, $database) {
         }
 
         function updateFiltersInUrl() {
+            kategorisiymis = document.getElementById('get_kategori_seo').value
             var selectedBrands = [];
             $('.brand-checkbox:checked').each(function() {
                 selectedBrands.push($(this).val());
@@ -910,7 +911,7 @@ function getBreadcrumbs($kategori, $database) {
 
             var currentUrl = window.location.href.split('?')[0];
             var stkParam = stokCheckbox.checked ? '1' : '0';
-            var newUrl = currentUrl + '?cat=<?= $kategori; ?>&brand=' + brandParam + '&filter=' + filterParam + '&search=<?= $arama; ?>&stk=' + stkParam;
+            var newUrl = currentUrl + '?cat='+ kategorisiymis + '&brand=' + brandParam + '&filter=' + filterParam + '&search=<?= $arama; ?>&stk=' + stkParam;
             window.location.href = newUrl;
         }
         if ($(window).width() <= 992) {
@@ -925,6 +926,7 @@ function getBreadcrumbs($kategori, $database) {
             });
 
             function updateFiltersInUrl1() {
+
                 var selectedBrands = [];
                 $('.brand-checkbox1:checked').each(function() {
                     selectedBrands.push($(this).val());
