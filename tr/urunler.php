@@ -195,7 +195,7 @@ function getBreadcrumbs($kategori, $database) {
         </li>
         <li class="breadcrumb-item">
             <a class="link-body-emphasis text-decoration-none" href="tr/urunler?cat=&brand=&filter=&search=">Ürünler</a>
-        <?php $kategori;?>
+        <?= $kategori;?>
         </li>
         <?php
         foreach ($breadcrumbs as $index => $breadcrumb) {
