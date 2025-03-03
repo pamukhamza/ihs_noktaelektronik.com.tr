@@ -72,7 +72,7 @@ if (!empty($arama)) {
 }
 
 if (isset($_GET['stk']) && $_GET['stk'] === '1') {
-    $sql .= " AND MIKTAR_KULBILIR REGEXP '^-?[0-9]+$' AND CAST(MIKTAR_KULBILIR AS SIGNED) > 0";
+    $sql .= " AND stok REGEXP '^-?[0-9]+$' AND CAST(stok AS SIGNED) > 0";
 }
 
 $sortOptions = [
