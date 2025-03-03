@@ -245,7 +245,6 @@ function getBreadcrumbs($kategori, $database) {
                                 foreach ($result as $row) {
                                     $kategoriID = $row['KategoriID'];
                                     $en_ust_kategori_id = $kategoriID;
-                    
                                     while ($en_ust_kategori_id != 0) {
                                         $ust_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id";
                                         $ust_kategori_row = $database->fetch($ust_kategori_sql, ['id' => $en_ust_kategori_id]);
@@ -257,7 +256,6 @@ function getBreadcrumbs($kategori, $database) {
                                             break;
                                         }
                                     }
-                    
                                     if (!in_array($kategori_adi, $eklenen_kategoriler)) {
                                         ?>
                                         <li>
@@ -314,7 +312,6 @@ function getBreadcrumbs($kategori, $database) {
                                 <?php }
                             }
                         }
-                        
                     ?>
                 </ul>
             </div>

@@ -671,7 +671,8 @@ function favoriKaldır(gid) {
                     'gid': gid,
                     type: 'favoriKaldır'
                 },
-                success: function () {
+                success: function (response) {
+                    console.log(response);
                     Swal.fire({
                         title: "Ürün favorilerden kaldırıldı!",
                         toast: true,
