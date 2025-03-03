@@ -45,11 +45,13 @@ if (!empty($kategori)) {
 
 
 if (!empty($marka)) {
-    $marka = is_array($marka) ? $marka : explode(',', $marka);
+    $marka = !empty($marka) ? explode(',', $marka) : [];
     $marka_ids = [];
     foreach ($marka as $marka_seo) {
-        $marka_id = $database->fetchColumn("SELECT id FROM nokta_urun_markalar WHERE web_comtr = 1 AND seo_link = :seoLink", ['seoLink' => $marka_seo]);
-        if ($marka_id) { $marka_ids[] = $marka_id; }
+        $marka_id = $database->fetchColumn("SELECT id FROM nokta_urun_markalar WHERE web_comtr = 1 AND seo_link = :seoLink",['seoLink' => trim($marka_seo)]);
+        if ($marka_id) {
+            $marka_ids[] = $marka_id;
+        }
     }
     if (!empty($marka_ids)) {
         $sql .= " AND u.MarkaID IN (" . implode(',', array_map('intval', $marka_ids)) . ")";
