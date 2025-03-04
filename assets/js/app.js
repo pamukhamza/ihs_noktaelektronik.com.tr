@@ -108,7 +108,6 @@ function updateSepetCount() {
         }
     });
 }
-
 function markaSil(gid) {
     Swal.fire({
         title: 'Marka silinecek, emin misiniz?',
@@ -141,7 +140,6 @@ function markaSil(gid) {
         }
     });
 }
-
 function filtreSil(gid) {
     Swal.fire({
         title: 'Filtre silinecek, emin misiniz?',
@@ -206,7 +204,6 @@ function filtreKategoriSil(gid) {
         }
     });
 }
-
 function kullaniciSil(gid) {
     Swal.fire({
         title: 'Kullanıcı silinecek, emin misiniz?',
@@ -239,7 +236,6 @@ function kullaniciSil(gid) {
         }
     });
 }
-
 function kargoSil(gid) {
     Swal.fire({
         title: 'Kargo firması silinecek, emin misiniz?',
@@ -272,7 +268,6 @@ function kargoSil(gid) {
         }
     });
 }
-
 function urunSil(gid) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -306,7 +301,6 @@ function urunSil(gid) {
         }
     });
 }
-
 function urunFotoSil(gid, gel, urun) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -341,7 +335,6 @@ function urunFotoSil(gid, gel, urun) {
         }
     });
 }
-
 function urunAnaFotoSil(gid, gel) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -376,7 +369,6 @@ function urunAnaFotoSil(gid, gel) {
         }
     });
 }
-
 function adresSil(gid) {
     Swal.fire({
         title: 'Adres silinecek, emin misiniz?',
@@ -410,7 +402,6 @@ function adresSil(gid) {
         }
     });
 }
-
 function dosyaTipiSil(gid, gel) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -445,7 +436,6 @@ function dosyaTipiSil(gid, gel) {
         }
     });
 }
-
 function yuklemeSil(gid) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -479,7 +469,6 @@ function yuklemeSil(gid) {
         }
     });
 }
-
 function sliderSil(gid, gel) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -548,7 +537,6 @@ function popupSil(gid, gel) {
         }
     });
 }
-
 function varyasyonSil(gid, gel) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -617,7 +605,6 @@ function kampanyaSil(gid, gel) {
         }
     });
 }
-
 function indirmeSil(gid, gel, id) {
     urunid = id;
     Swal.fire({
@@ -653,7 +640,6 @@ function indirmeSil(gid, gel, id) {
         }
     });
 }
-
 function favoriKaldır(gid) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -681,11 +667,6 @@ function favoriKaldır(gid) {
                         showConfirmButton: false,
                         timer: 1000
                     });
-
-                    // Favori kaldırıldıktan sonra sayfayı yenileme
-                    // Ancak bu satırı kaldırın, çünkü sayfa yenilenmeyecek
-                    // setTimeout(function () { window.location.href = 'favoriler?lang=' + lang }, 1000);
-
                     // Favori kaldırıldıktan sonra sayfayı yenileme yerine, favori öğesini arayüzden kaldırma
                     $('#favori_' + gid).remove(); // Bu satırı ekleyin, favori öğesini kaldırır
                 },error: function(xhr, status, error) { console.log(status, error +'hamza'); }
