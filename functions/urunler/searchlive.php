@@ -2,7 +2,7 @@
 require_once '../db.php';
 $db = new Database();
 
-if (isset($_POST['query'])) {
+if (isset($_POST['query']) && isset($_POST['uye_id'])) {
     $search = $_POST['query'];
     $uye_id = $_POST['uye_id'];
 
@@ -19,33 +19,36 @@ if (isset($_POST['query'])) {
                             ORDER BY n.UrunAdiTR ASC 
                             LIMIT 10", ['search' => '%' . $search . '%']);
 
+    // Prepare the response array
+    $response = [];
+
     if (!empty($result)) {
         foreach ($result as $row) {
             $fiyat = !empty($row["DSF" . $uyeFiyat]) ? $row["DSF" . $uyeFiyat] : $row["KSF" . $uyeFiyat];
             $doviz = !empty($row["DSF" . $uyeFiyat]) ? $row["DOVIZ_BIRIMI"] : "₺";
-            
+
             // Get product image
             $urunResim = $db->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = :urun_id LIMIT 1", ['UrunID' => $row['id']]);
             $resim = !empty($urunResim['KResim']) ? $urunResim['KResim'] : 'gorsel_hazirlaniyor.jpg';
-            ?>
-            <a href="tr/urunler/<?= $row['seo_link'] ?>" class="list-group-item list-group-item-action">
-                <div class="row">
-                    <div class="col-2">
-                        <img src="assets/images/urunler/<?= $resim ?>" style="width: 50px">
-                    </div>
-                    <div class="col-7">
-                        <p class="mb-1"><?= $row['UrunAdiTR'] ?></p>
-                        <small class="text-muted"><?= $row['marka_adi'] ?></small>
-                    </div>
-                    <div class="col-3 text-end">
-                        <p class="mb-1"><?= number_format($fiyat, 2, ',', '.') ?> <?= $doviz ?></p>
-                    </div>
-                </div>
-            </a>
-            <?php
+
+            // Push data to the response array
+            $response[] = [
+                'seo_link' => $row['seo_link'],
+                'UrunKodu' => $row['UrunKodu'],  // Add this if needed for search result
+                'UrunAdiTR' => $row['UrunAdiTR'],
+                'MarkaAdi' => $row['marka_adi'],
+                'fiyat' => number_format($fiyat, 2, ',', '.'),
+                'doviz' => $doviz,
+                'KResim' => $resim
+            ];
         }
-    } else {
-        echo '<p class="list-group-item">Ürün bulunamadı...</p>';
     }
+
+    // Output the response as JSON
+    header('Content-Type: application/json');
+    echo json_encode($response);
+} else {
+    // If query or user ID are not set, return an empty array
+    echo json_encode([]);
 }
 ?>
