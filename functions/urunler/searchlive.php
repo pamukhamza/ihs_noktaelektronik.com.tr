@@ -1,10 +1,9 @@
 <?php
 require_once '../db.php';
 
-if (isset($_POST['searchQuery']) && isset($_POST['uye_id'])) {
+if (isset($_POST['searchQuery'])) {
     $db = new Database();
     $search = $_POST['searchQuery'];
-    $uye_id = $_POST['uye_id'];
 
     $result = $db->fetchAll("SELECT DISTINCT n.seo_link, n.id, n.UrunAdiTR, n.UrunKodu, m.title as marka_adi 
                             FROM nokta_urunler n 
