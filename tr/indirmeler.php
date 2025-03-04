@@ -116,34 +116,43 @@ $database = new Database();
 <script src="assets/js/jquery-1.7.2.min.js"></script>
 <script src="assets/js/alert.js"></script>
 <script>
-    function livestock(searchQuery) {
-        if (searchQuery.length >= 3) {
-            $.ajax({
-                url: 'functions/urunler/searchStock.php',
-                method: 'POST',
-                data: { searchQuery: searchQuery },
-                success: function(response) {
+function livestock(searchQuery) {
+    if (searchQuery.length >= 3) {
+        $.ajax({
+            url: 'functions/urunler/searchStock.php',
+            method: 'POST',
+            data: { searchQuery: searchQuery },
+            success: function(response) {
+                try {
                     var results = JSON.parse(response);
                     var dropdownMenu1 = $('#liveStockResults');
-                    dropdownMenu1.empty(); // Önceki sonuçları temizle
+                    dropdownMenu1.empty();
                     if (results.length > 0) {
                         results.forEach(function(result) {
                             dropdownMenu1.append(`
-                                    <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
-                                        <img src="assets/images/urunler/${result.resim}" alt="" style="max-width: 50px; margin-right: 10px;"> ${result.UrunAdiTR} - ${result.UrunKodu}
-                                    </a>
-                                `);
+                                <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
+                                    <img src="assets/images/urunler/${result.resim}" alt="" style="max-width: 50px; margin-right: 10px;"> 
+                                    ${result.UrunAdiTR} - ${result.BLKODU}
+                                </a>
+                            `);
                         });
-                        dropdownMenu1.show(); // Sonuçları göster
+                        dropdownMenu1.show();
                     } else {
-                        dropdownMenu1.hide(); // Sonuç yoksa gizle
+                        dropdownMenu1.hide();
                     }
+                } catch (e) {
+                    console.error("JSON parse error:", e);
                 }
-            });
-        } else {
-            $('#liveStockResults').empty().hide(); // 3 harften az ise sonuçları temizle ve gizle
-        }
+            },
+            error: function() {
+                console.error("Ajax request failed.");
+            }
+        });
+    } else {
+        $('#liveStockResults').empty().hide();
     }
+}
+
 </script>
 <script>
     function downloadFile(url, newFilename) {
