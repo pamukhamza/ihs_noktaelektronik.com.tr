@@ -549,7 +549,7 @@ if(isset($_SESSION['id'])) {
                         <div class="w-100">
                             <?php
                             // Yukleme basliklarini cekmek icin bir sorgu yapabilirsiniz.
-                            $yuklemeBasliklari = $database->fetch("SELECT * FROM nokta_yuklemeler WHERE is_active = 1");
+                            $yuklemeBasliklari = $database->fetchAll("SELECT * FROM nokta_yuklemeler WHERE is_active = 1");
                             foreach ($yuklemeBasliklari as $baslik) {
                                 $yuklemeID = $baslik['id'];
                                 $baslikAdi = $baslik['baslik'];
