@@ -310,13 +310,13 @@ function liveSearch(searchQuery) {
                 dropdownMenu.empty(); // Clear previous results
                 if (results.length > 0) {
                     results.forEach(function(result) {
-                        dropdownMenu.append(`
+                        dropdownMenu1.append(`
                             <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
                                 <img src="assets/images/urunler/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;"> ${result.UrunAdiTR} - ${result.UrunKodu}
                             </a>
                         `);
                     });
-                    dropdownMenu.show(); // Show results
+                    dropdownMenu1.show(); // Show results
                 } else {
                     dropdownMenu.hide(); // Hide if no results
                 }
