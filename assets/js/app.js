@@ -101,8 +101,8 @@ function ebultenKaydet() {
     var email = $("#ebulten_mail").val();
     $.ajax({
         type: "POST",
-        url: "functions/edit_info.php",
-        data: {ebulten_mail: email, type: 'ebulten_kaydet'},
+        url: "functions/edit_info.php",  // Dosya yolu doğru mu?
+        data: { ebulten_mail: email, type: 'ebulten_kaydet' },
         dataType: 'json',
         success: function(response) {
             if (response.cvp !== "success") {
@@ -126,6 +126,7 @@ function ebultenKaydet() {
             }
         }
     });
+    
 }
 function sepetKaldir(gid) {
     Swal.fire({
