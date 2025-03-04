@@ -38,18 +38,12 @@ function getBreadcrumbs($categoryId, $db) {
 
     global $user_language;
     while ($currentCategory > 0) {
-        $q = $db->prepare("SELECT * FROM nokta_kategoriler WHERE id = :categoryId");
-        $q->execute(array('categoryId' => $currentCategory));
-        $categoryData = $q->fetch(PDO::FETCH_ASSOC);
-
+        $categoryData = $database->fetch("SELECT * FROM nokta_kategoriler WHERE id = $currentCategory");
         if ($categoryData) {
-            // Dil kontrolünü ekleyin
-            $categoryName = ($user_language == 'tr') ? $categoryData['kategori_adi'] : $categoryData['kategori_adi_en'];
             $breadcrumbs[] = array(
                 'id' => $categoryData['seo_link'],
-                'name' => $categoryName
+                'name' => $categoryData['kategori_adi']
             );
-
             $currentCategory = $categoryData['parent_id'];
         } else {
             break;
@@ -58,11 +52,11 @@ function getBreadcrumbs($categoryId, $db) {
     $breadcrumbs = array_reverse($breadcrumbs); // Breadcrumbs'ları sırala
     return $breadcrumbs;
 }
-
 if(isset($_SESSION['id'])) {
     $uye_id = $_SESSION['id'];
-    $row = $database->fetch("SELECT fiyat FROM uyeler WHERE id = $uye_id");
-    $uye_fiyat = $row['fiyat'];
+    $uye = $database->fetch("SELECT fiyat, satis_temsilcisi FROM uyeler WHERE id = $uye_id");
+    $uye_fiyat = $uye['fiyat'];
+    $uye_satis_temsilci = $uye['satis_temsilcisi'];
 }
 ?>
 <style>
@@ -112,14 +106,14 @@ if(isset($_SESSION['id'])) {
             $shortName = strlen($breadcrumb['name']) > 28 ? substr($breadcrumb['name'], 0, 27) . '...' : $breadcrumb['name'];
 
             if ($index < count($breadcrumbs) - 1) {
-                echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="urunler?lang=' . $user_language . '&cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
+                echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="tr/urunler?cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
             } else {
-                echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="urunler?lang=' . $user_language . '&cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
+                echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="tr/urunler?cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
             }
             echo '</li>';
         }
         ?>
-        <li class="breadcrumb-item text-info-emphasis active" style="font-size:14px" aria-current="page"><?php echo $urun['UrunKodu'] ?> </li>
+        <li class="breadcrumb-item text-info-emphasis active" style="font-size:14px" aria-current="page"><?= $urun['UrunKodu'] ?> </li>
     </ol>
 </nav>
 <section class="container">
@@ -134,10 +128,7 @@ if(isset($_SESSION['id'])) {
                                 <ul class="splide__list">
                                     <!-- Your product images here -->
                                     <?php
-                                    $q = $db->prepare("SELECT * FROM nokta_urunler_resimler WHERE urun_id = $BLKODU ORDER BY sira ASC");
-                                    $q->execute();
-                                    $d = $q->fetchAll();
-                                    // Check if any rows are found
+                                    $d = $database->fetchAll("SELECT * FROM nokta_urunler_resimler WHERE UrunID = $urunId ORDER BY sira ASC");
                                     if (empty($d)) {// No rows found, display the placeholder image
                                         ?>
                                         <li class="splide__slide d-flex align-items-center justify-content-center">
@@ -153,11 +144,11 @@ if(isset($_SESSION['id'])) {
                                         foreach($d as $k => $row) {
                                             ?>
                                             <li class="splide__slide d-flex align-items-center justify-content-center">
-                                                <a href="assets/images/urunler/<?php echo $row["foto"]; ?>" data-lightbox="product-images">
-                                                    <?php if(empty($row['foto'])){ ?>
+                                                <a href="assets/images/urunler/<?= $row["KResim"]; ?>" data-lightbox="product-images">
+                                                    <?php if(empty($row['KResim'])){ ?>
                                                         <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" height="auto" width="100%">
                                                     <?php }else{ ?>
-                                                        <img src="assets/images/urunler/<?php echo $row["foto"]; ?>" height="auto" width="100%">
+                                                        <img src="assets/images/urunler/<?= $row["KResim"]; ?>" height="auto" width="100%">
                                                     <?php } ?>
                                                 </a>
                                             </li>
@@ -172,10 +163,10 @@ if(isset($_SESSION['id'])) {
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 ">
                     <div class="bg_fff h-100 shadow-sm ps-4 pt-4 pe-4 pb-2 border">
-                        <h2 class="fs-4 mb-3"><span class="me-2" style="color:#0a90eb"><a class="text-decoration-none" href="urunler?lang=<?php echo $user_language ?>&cat=&brand=<?php echo $urunMar['seo_link'] ?>&filter=&search="><?php echo $urun['MARKASI'] ?></a></span><?php if($user_language == 'tr'){echo $urun['UrunAdiTR'];}else{echo $urun['UrunAdiEN'];} ?></h2>
-                        <!--<h5 class="text-body-tertiary fs-6" ><div style="width: 130px; float:left">Ürün Barkodu</div>: <?php echo $urun['barkod'] ?></h5>-->
+                        <h2 class="fs-4 mb-3"><span class="me-2" style="color:#0a90eb"><a class="text-decoration-none" href="tr/urunler?cat=&brand=<?= $urunMar['seo_link'] ?>&filter=&search="><?= $urun['MARKASI'] ?></a></span><?= $urun['UrunAdiTR']; ?></h2>
+                        <!--<h5 class="text-body-tertiary fs-6" ><div style="width: 130px; float:left">Ürün Barkodu</div>: <?= $urun['barkod'] ?></h5>-->
                         <!--<h5 class="text-body-tertiary fs-6 " ><div style="width: 130px; float:left">Ürün Markası</div>: <span class="fw-bold fw-italic"></span></h5>-->
-                        <h5 class="text-body-tertiary fs-6" ><div style="width: 90px; float:left;">Stok Kodu</div>:<span class="text-black"> <?php echo $urun['UrunKodu'] ?></span></h5>
+                        <h5 class="text-body-tertiary fs-6" ><div style="width: 90px; float:left;">Stok Kodu</div>:<span class="text-black"> <?= $urun['UrunKodu'] ?></span></h5>
                         <h5 class="text-body-tertiary fs-6" ><div style="width: 90px; float:left">Stok Adedi</div>:<span class="text-black"> <?php
                                 $stokDurumu = ($urun['stok'] == 0) ? 'Stok Yok' : (($urun['stok'] > 9) ? '9+' : $urun['stok']);
                                 echo $stokDurumu;
@@ -234,13 +225,9 @@ if(isset($_SESSION['id'])) {
                                             $formatted_number = number_format((float) $number, 2, ',', '.');
                                             return $formatted_number;
                                         }
-                                        $q = $db->prepare("SELECT * FROM kurlar WHERE id = :id ");
-                                        $q->execute(array('id' => '2'));
-                                        $dolar = $q->fetch(PDO::FETCH_ASSOC);
+                                        $dolar = $database->fetch("SELECT * FROM kurlar WHERE id = 2");
                                         $satis_dolar_kuru1 = $dolar['satis'];
-                                        $q = $db->prepare("SELECT * FROM kurlar WHERE id = :id ");
-                                        $q->execute(array('id' => '3'));
-                                        $euro = $q->fetch(PDO::FETCH_ASSOC);
+                                        $euro = $database->fetch("SELECT * FROM kurlar WHERE id = 3");
                                         $satis_euro_kuru1 = $euro['satis'];
 
                                         if (!empty($urun["DSF".$uye_fiyat])) {
@@ -335,15 +322,9 @@ if(isset($_SESSION['id'])) {
                                 </div>
                             <?php } ?>
                         <?php }
-                        // Eğer kodun devamı varsa, bunun üstünde olabilir.
-                        $checkSql = "SELECT * FROM nokta_urun_varyasyon WHERE FIND_IN_SET(:urunId, urun_id) > 0";
-                        $checkStmt = $db->prepare($checkSql);
-                        $checkStmt->bindParam(':urunId', $urunId);
-                        $checkStmt->execute();
-                        $checkResult = $checkStmt->fetchAll();
-
+                        $checkResult = $database->fetchAll("SELECT * FROM nokta_urun_varyasyon WHERE FIND_IN_SET(:urunId, urun_id) > 0", ['urunId' => $urunId]  );
+                        
                         if (count($checkResult) > 0) {
-
                             foreach ($checkResult as $row) {
                                 $uniqueUrunIds = array();
                                 $ad = $row['ad'];
@@ -365,7 +346,7 @@ if(isset($_SESSION['id'])) {
                                         $blkodu_grosel = $urunAdiRow['BLKODU'];
                                         if ($ad == 'Renk') {
                                             ?>
-                                            <a href="<?= $user_language ?>/urunler/<?= $urunAdiRow['seo_link'] ?>" data-bs-toggle="tooltip" title="<?= $urunAdiRow['renk'] ?>">
+                                            <a href="tr/urunler/<?= $urunAdiRow['seo_link'] ?>" data-bs-toggle="tooltip" title="<?= $urunAdiRow['renk'] ?>">
                                                 <?php
                                                 $foto = $db->prepare("SELECT * FROM nokta_urunler_resimler WHERE urun_id = :blkodu_grosel LIMIT 1");
                                                 $foto->bindParam(':blkodu_grosel', $blkodu_grosel);
@@ -395,7 +376,7 @@ if(isset($_SESSION['id'])) {
 
                                                         ?>
 
-                                                        <img src="assets/images/urunler/<?php echo $resim['foto'] ?>" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
+                                                        <img src="assets/images/urunler/<?= $resim['foto'] ?>" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
                                                         <?php
                                                     }
                                                 }
@@ -405,7 +386,7 @@ if(isset($_SESSION['id'])) {
                                         } elseif ($ad == 'Metre') {
                                             if (!empty($urunAdiRow['beden'])) {
                                                 ?>
-                                                <a class="rounded-0 mt-1 me-1 border-0 p-2 text-decoration-none btn btn-sm btn-secondary" style="width: 55px;" href="<?= $user_language ?>/urunler/<?= $urunAdiRow['seo_link'] ?>"><?= $urunAdiRow['beden'] ?></a>
+                                                <a class="rounded-0 mt-1 me-1 border-0 p-2 text-decoration-none btn btn-sm btn-secondary" style="width: 55px;" href="tr/urunler/<?= $urunAdiRow['seo_link'] ?>"><?= $urunAdiRow['beden'] ?></a>
                                                 <?php
                                             }
                                         }
@@ -420,7 +401,7 @@ if(isset($_SESSION['id'])) {
                                     <div class="input-group me-3" style="width: 130px;">
                                         <button class="btn btn-lg btn-outline-secondary" type="button" id="decrementBtn">-</button>
                                         <input style="width: 45px" type="text" class="form-control text-center" id="quantityInput" value="1">
-                                        <input type="hidden" id="maxStock" value="<?php echo $urun["stok"]; ?>">
+                                        <input type="hidden" id="maxStock" value="<?= $urun["stok"]; ?>">
                                         <button class="btn btn-lg btn-outline-secondary" type="button" id="incrementBtn">+</button>
                                     </div>
                                     <input type="text" id="output" hidden>
@@ -434,7 +415,7 @@ if(isset($_SESSION['id'])) {
                                         <select class="form-select" id="output" aria-label="Miktar Seçiniz">
                                             <?php foreach ($miktarDizisi as $miktar): ?>
                                                 <?php if ($miktar <= $urun["stok"]): ?>
-                                                    <option value="<?php echo $miktar; ?>"><?php echo $miktar; ?></option>
+                                                    <option value="<?= $miktar; ?>"><?= $miktar; ?></option>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </select>
@@ -455,9 +436,9 @@ if(isset($_SESSION['id'])) {
                                         Swal.fire({
                                             title: 'Satış Temsilciniz',
                                             html: '<div style="text-align: left;">' +
-                                                '<p>Ad Soyad: <?php echo $temsilci['kullanici_ad']; ?>  <?php echo $temsilci['kullanici_soyad']; ?></p>' +
-                                                '<p>Mail:  <a href="mailto: <?php echo $temsilci['kullanici_mail']; ?>"><?php echo $temsilci['kullanici_mail']; ?></a></p>' +
-                                                '<p>Telefon Numarası: <?php echo $temsilci['kullanici_tel']; ?></p>' +
+                                                '<p>Ad Soyad: <?= $temsilci['kullanici_ad']; ?>  <?= $temsilci['kullanici_soyad']; ?></p>' +
+                                                '<p>Mail:  <a href="mailto: <?= $temsilci['kullanici_mail']; ?>"><?= $temsilci['kullanici_mail']; ?></a></p>' +
+                                                '<p>Telefon Numarası: <?= $temsilci['kullanici_tel']; ?></p>' +
                                                 '</div>',
                                             confirmButtonText: 'Tamam',
                                             customClass: {
@@ -481,9 +462,9 @@ if(isset($_SESSION['id'])) {
                             <?php } elseif(!empty($fiyat)) { ?>
                                 <button type="submit" class="btn btn-lg sepetEkleBtn rounded-0"
                                         onclick="<?php if (isset($_SESSION['id'])): ?>
-                                                sepeteUrunEkle(<?php echo $urunId; ?>, <?php echo isset($_SESSION['id']) ? $_SESSION['id'] : 'default_value'; ?>, document.getElementById('output').value);
+                                                sepeteUrunEkle(<?= $urunId; ?>, <?= isset($_SESSION['id']) ? $_SESSION['id'] : 'default_value'; ?>, document.getElementById('output').value);
                                         <?php else: ?>
-                                                window.location.href = 'giris?lang=<?php echo $user_language; ?>';
+                                                window.location.href = 'tr/giris';
                                         <?php endif; ?>">
                                     <i class="fa-solid fa-cart-shopping fa-lg me-2"></i><span class="fs-5">Sepete Ekle</span>
                                 </button>
@@ -537,18 +518,18 @@ if(isset($_SESSION['id'])) {
                                         <li class="list-group-item rounded-0 col-5 mt-1 me-1 border">
                                             <div class="row">
                                                 <?php if(empty($sepeturun['foto'])){ ?>
-                                                    <a href="<?php echo $user_language ?>/urunler/<?php echo $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
+                                                    <a href="tr/urunler/<?= $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
                                                         <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" style="width: 70px; border:1px solid lightgrey; border-radius: 6px">
                                                     </a>
                                                 <?php }else{ ?>
                                                     <div class="col-3">
-                                                        <a href="<?php echo $user_language ?>/urunler/<?php echo $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
+                                                        <a href="tr/urunler/<?= $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
                                                             <img src="assets/images/urunler/<?= $sepeturun["foto"]; ?>" style="width: 50px; border:1px solid lightgrey; border-radius: 6px">
                                                         </a>
                                                     </div>
                                                 <?php } ?>
                                                 <div class="col-9">
-                                                    <a href="<?php echo $user_language ?>/urunler/<?php echo $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
+                                                    <a href="tr/urunler/<?= $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
                                                         <ul class="list-unstyled">
                                                             <li style="font-size:11pt"><?= $sepeturun["title"] ?> <?php $text = $sepeturun['UrunAdiTR']; echo (strlen($text) > 15) ? substr($text, 0, 15) . '...' : $text;?></li>
                                                             <li style="color:#FC9803; font-weight: bold"><?php $fiyat1 = !empty($sepeturun["DSF".$uyeFiyat]) ? $sepeturun["DSF".$uyeFiyat] : $sepeturun["KSF".$uyeFiyat];
@@ -571,9 +552,9 @@ if(isset($_SESSION['id'])) {
             </div>
             <nav class="mt-5">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link clr active rounded-0" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-genel" type="button" role="tab" aria-controls="nav-genel" aria-selected="true"><?php echo translate("genel_ozellikler", $lang, $user_language); ?></button>
-                    <button class="nav-link clr rounded-0" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-teknik" type="button" role="tab" aria-controls="nav-teknik" aria-selected="false"><?php echo translate("teknik_ozellikler", $lang, $user_language); ?></button>
-                    <button class="nav-link clr rounded-0" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-indirmeler" type="button" role="tab" aria-controls="nav-indirmeler" aria-selected="false"><?php echo translate("indirmeler", $lang, $user_language); ?></button>
+                    <button class="nav-link clr active rounded-0" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-genel" type="button" role="tab" aria-controls="nav-genel" aria-selected="true">Genel Özellikler</button>
+                    <button class="nav-link clr rounded-0" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-teknik" type="button" role="tab" aria-controls="nav-teknik" aria-selected="false">Teknik Özellikler</button>
+                    <button class="nav-link clr rounded-0" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-indirmeler" type="button" role="tab" aria-controls="nav-indirmeler" aria-selected="false">İndirmeler</button>
                     <?php if(!empty($fiyat)) { ?>
                     <button class="nav-link clr rounded-0" id="nav-taksit-tab" data-bs-toggle="tab" data-bs-target="#nav-taksit" type="button" role="tab" aria-controls="nav-taksit" aria-selected="false">Taksit Seçenekleri</button>
                     <?php } ?>
@@ -582,15 +563,13 @@ if(isset($_SESSION['id'])) {
             <div class="tab-content bg-light" id="nav-tabContent">
                 <div class="p-4 border tab-pane fade show active bg_fff" id="nav-genel" role="tabpanel" aria-labelledby="nav-genel-tab" tabindex="0" style="text-align: justify;">
                     <div class="col-12 d-flex justify-content-center">
-                        <div class="col-md-12 col-lg-9 text-center">
-                            <?php if($user_language == 'tr'){echo $urun['genel_ozellikler_TR'];}else{echo $urun['genel_ozellikler_EN'];} ?>
-                        </div>
+                        <div class="col-md-12 col-lg-9 text-center"><?= $urun['genel_ozellikler_TR']; ?></div>
                     </div>
                 </div>
                 <div class="p-4 border tab-pane fade bg_fff" id="nav-teknik" role="tabpanel" aria-labelledby="nav-teknik-tab" tabindex="0">
                     <div class="col-12">
                         <div class="" style="overflow-x:auto;">
-                            <?php if($user_language == 'tr'){echo $urun['teknik_ozellikler_TR'];}else{echo $urun['teknik_ozellikler_EN'];} ?>
+                            <?= $urun['teknik_ozellikler_TR']; ?>
                         </div>
                     </div>
                 </div>
@@ -620,7 +599,7 @@ if(isset($_SESSION['id'])) {
                                         <thead class="bg-light">
                                         <h5></h5>
                                         <tr>
-                                            <td colspan="5" class="p-2 text-light fw-bold" style="background-color: #430666;"><?php echo $baslikAdi; ?></td>
+                                            <td colspan="5" class="p-2 text-light fw-bold" style="background-color: #430666;"><?= $baslikAdi; ?></td>
                                         </tr>
                                         <tr class="">
                                             <th style="width: 10%; background-color: #f8f9fa;">ID</th>
@@ -635,10 +614,10 @@ if(isset($_SESSION['id'])) {
                                         foreach ($yuklemeler as $row) {
                                             ?>
                                             <tr>
-                                                <td><?php echo $row['id']; ?></td>
-                                                <td><?php echo date("Y-m-d", strtotime($row['datetime'])); ?></td>
-                                                <td><?php echo $row['version']; ?></td>
-                                                <td><?php echo $row['aciklama']; ?></td>
+                                                <td><?= $row['id']; ?></td>
+                                                <td><?= date("Y-m-d", strtotime($row['datetime'])); ?></td>
+                                                <td><?= $row['version']; ?></td>
+                                                <td><?= $row['aciklama']; ?></td>
                                                 <?php
                                                 $dYol = $row["url_path"];
                                                 $dUzanti = pathinfo($dYol, PATHINFO_EXTENSION);
@@ -646,7 +625,7 @@ if(isset($_SESSION['id'])) {
                                                 $dBaslik =duzenleString1($baslikAdi);
                                                 ?>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0);" onclick="downloadFile('https://www.noktaelektronik.com.tr/assets<?php echo $row["url_path"]; ?>', '<?= $dUrunAdi ?>-<?=$dBaslik?>-<?= $row['id'] ?>.<?= $dUzanti?>')">
+                                                    <a href="javascript:void(0);" onclick="downloadFile('https://www.noktaelektronik.com.tr/assets<?= $row["url_path"]; ?>', '<?= $dUrunAdi ?>-<?=$dBaslik?>-<?= $row['id'] ?>.<?= $dUzanti?>')">
                                                         <?php
                                                         $dUzanti = pathinfo($dYol, PATHINFO_EXTENSION);
                                                         switch ($dUzanti) {
@@ -953,20 +932,19 @@ if(isset($_SESSION['id'])) {
                                     if ($resim) { $resim_yolu = "assets/images/urunler/" . $resim["foto"];
                                     }else{// Eşleşen resim bulunamazsa varsayılan bir resim belirtin
                                         $resim_yolu = "assets/images/gorsel_hazirlaniyor.jpg";}
-                                    $text_to_display = $user_language == 'en' ? $row['UrunAdiEN'] : $row['UrunAdiTR'];
                                     ?>
 
                                     <li class="splide__slide d-flex justify-content-center mb-4 mt-2">
                                         <div class="card border-0 p-0 col-lg-3 col-md-3 col-sm-6 col-xs-12 urun-effect" style="width: 15rem;">
-                                            <a href="<?php echo $user_language ?>/urunler/<?php echo $row['seo_link'] ; ?>">
+                                            <a href="tr/urunler/<?= $row['seo_link'] ; ?>">
                                                 <?php if(empty($resim["foto"])){ ?>
-                                                    <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;"><img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" class="card-img-top img-fluid" alt="<?= $text_to_display ?>"></div>
+                                                    <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;"><img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" class="card-img-top img-fluid" alt="<?= $row['UrunAdiTR'] ?>"></div>
                                                 <?php } else{ ?>
-                                                    <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;"><img src="<?= $resim_yolu; ?>" class="card-img-top img-fluid" alt="<?= $text_to_display ?>"></div>
+                                                    <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;"><img src="<?= $resim_yolu; ?>" class="card-img-top img-fluid" alt="<?= $row['UrunAdiTR'] ?>"></div>
                                                 <?php } ?>
                                             </a>
                                             <div class="card-body d-flex flex-column">
-                                                <a href="<?php echo $user_language ?>/urunler/<?php echo $row['seo_link'] ; ?>" style="font-weight:600;" class="mt-2 urun-a"><?php $text = ($user_language == 'tr') ? $row['UrunAdiTR'] : $row['UrunAdiEN'];echo (strlen($text) > 52) ? substr($text, 0, 51) . '...' : $text;?></a>
+                                                <a href="tr/urunler/<?= $row['seo_link'] ; ?>" style="font-weight:600;" class="mt-2 urun-a"><?= (strlen($row['UrunAdiTR']) > 52) ? substr($row['UrunAdiTR'], 0, 51) . '...' : $row['UrunAdiTR'];?></a>
                                                 <a style="font-size:12px; color:#0a90eb;" class="mt-2 urun-a border-bottom"><?= $marka['title'] ?></a>
                                                 <a style="font-size:12px;" class=" mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= $row['UrunKodu']; ?></a>
                                                 <?php if (isset($_SESSION['id'])) {
@@ -979,13 +957,13 @@ if(isset($_SESSION['id'])) {
                                                     ?>
 
                                                     <a style="font-size:14px;" class="urun-a custom-underline">
-                                                        <?php echo isset($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
+                                                        <?= isset($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
                                                         $fiyat1 = isset($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
                                                         echo formatNumber($fiyat1);?>
 
                                                         + KDV</a>
                                                     <a style="font-size:14px; color:#0a90eb;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a>
-                                                    <a style="font-size:14px; color:#f29720;" class=" urun-a fw-bold"><?php echo isset($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
+                                                    <a style="font-size:14px; color:#f29720;" class=" urun-a fw-bold"><?= isset($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
                                                         $fiyat = isset($row["DSF".$uye_fiyat]) ? $row["DSF".$uye_fiyat] : $row["KSF".$uye_fiyat];
                                                         echo formatNumber($fiyat); ?> + KDV</a>
                                                     <i class="fa-solid fa-cart-shopping fa-xl sepet-style sepet-hover"
@@ -994,7 +972,7 @@ if(isset($_SESSION['id'])) {
                                                        if (isset($_SESSION['id'])) {
                                                            echo "sepeteUrunEkle($urunId, " . $_SESSION['id'] . ");";
                                                        } else {
-                                                           echo "window.location.href = 'giris?lang=$user_language';";
+                                                           echo "window.location.href = 'tr/giris';";
                                                        }
                                                        ?>">
                                                     </i>
@@ -1030,7 +1008,7 @@ if(isset($_SESSION['id'])) {
                                 <p class="border-bottom pb-3">Teklifiniz ile ilgili detayları aşağıda açıklayarak bize iletebilirsiniz.</br> Teklifiniz en kısa sürede yanıtlanacaktır.</p>
                             </div>
                             <div class="col-sm-12">
-                                <label for="email" class="form-label"><?php echo translate("eposta", $lang, $user_language); ?></label>
+                                <label for="email" class="form-label">E-Posta</label>
                                 <input type="email" class="form-control" id="email" placeholder="mail@example.com" required>
                                 <div class="invalid-feedback">Geçerli e-posta giriniz!</div>
                             </div>
