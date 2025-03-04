@@ -725,7 +725,7 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 7 ORDER BY taksit ASC");
+                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 7 ORDER BY taksit ASC");
                                             
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
@@ -763,7 +763,7 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 1 ORDER BY taksit ASC");
+                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 1 ORDER BY taksit ASC");
                                             
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
@@ -801,7 +801,7 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 8 ORDER BY taksit ASC");
+                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 8 ORDER BY taksit ASC");
                                           
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
@@ -839,7 +839,7 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                           $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 19 ORDER BY taksit ASC");
+                                           $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 19 ORDER BY taksit ASC");
                                             
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
