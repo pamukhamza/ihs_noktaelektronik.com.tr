@@ -2,7 +2,6 @@
 require_once '../db.php';
 
 if (isset($_POST['searchQuery'])) {
-    
     $db = new Database();
     $search = $_POST['searchQuery'];
     $uye_id = $_POST['uye_id'];
@@ -15,7 +14,7 @@ if (isset($_POST['searchQuery'])) {
                             AND n.web_comtr = '1' 
                             ORDER BY n.UrunAdiTR ASC 
                             LIMIT 10", ['search' => '%' . $search . '%']);
-
+    echo $result;
     // Prepare the response array
     $response = [];
 
@@ -35,12 +34,9 @@ if (isset($_POST['searchQuery'])) {
             ];
         }
     }
-
-    // Output the response as JSON
     header('Content-Type: application/json');
     echo json_encode($response);
 } else {
-    // If query or user ID are not set, return an empty array
     echo json_encode([]);
 }
 ?>
