@@ -159,7 +159,7 @@ if(isset($_SESSION['id'])) {
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 ">
                     <div class="bg_fff h-100 shadow-sm ps-4 pt-4 pe-4 pb-2 border">
-                        <h2 class="fs-4 mb-3"><span class="me-2" style="color:#0a90eb"><a class="text-decoration-none" href="tr/urunler?cat=&brand=<?= $urunMar['seo_link'] ?>&filter=&search="><?= $urun['marka_adi'] ?></a></span><?= $urun['UrunAdiTR']; ?></h2>
+                        <h2 class="fs-4 mb-3"><span class="me-2" style="color:#0a90eb"><a class="text-decoration-none" href="tr/urunler?cat=&brand=<?= $urun['marka_seo'] ?>&filter=&search="><?= $urun['marka_adi'] ?></a></span><?= $urun['UrunAdiTR']; ?></h2>
                         <!--<h5 class="text-body-tertiary fs-6" ><div style="width: 130px; float:left">Ürün Barkodu</div>: <?= $urun['barkod'] ?></h5>-->
                         <!--<h5 class="text-body-tertiary fs-6 " ><div style="width: 130px; float:left">Ürün Markası</div>: <span class="fw-bold fw-italic"></span></h5>-->
                         <h5 class="text-body-tertiary fs-6" ><div style="width: 90px; float:left;">Stok Kodu</div>:<span class="text-black"> <?= $urun['UrunKodu'] ?></span></h5>
@@ -637,7 +637,7 @@ if(isset($_SESSION['id'])) {
                             <div class="row">
                                 <?php
                                     function renderCard($database, $kart_id, $tuof, $img_src, $bg_color = '#fafafa') {
-                                        $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = ? ORDER BY taksit ASC", [$kart_id]);
+                                        $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = :kartid ORDER BY taksit ASC", ['kartid' => $kart_id]);
                                         ?>
                                         <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: <?= $bg_color ?>;">
                                             <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
@@ -659,7 +659,7 @@ if(isset($_SESSION['id'])) {
                                                             $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
                                                             $taksit = $row["taksit"] ?: 1;
                                                             $aylik_fiy = $top_fiy / $taksit;
-                                                            ?>
+                                                        ?>
                                                             <tr>
                                                                 <th class="text-end"><?= $taksit ?></th>
                                                                 <td class="text-end"><?= number_format($aylik_fiy, 2, ',', '.') ?></td>
