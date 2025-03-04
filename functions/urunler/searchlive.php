@@ -10,10 +10,10 @@ if (isset($_POST['searchQuery'])) {
     $result = $db->fetchAll("SELECT DISTINCT n.seo_link, n.id, n.UrunAdiTR, n.UrunKodu, m.title as marka_adi 
                             FROM nokta_urunler n 
                             LEFT JOIN nokta_urun_markalar m ON n.MarkaID = m.id 
-                            WHERE (n.UrunAdiTR LIKE :search OR n.UrunKodu LIKE :search OR m.title LIKE :search) 
+                            WHERE (n.UrunAdiTR LIKE '%$search%' OR n.UrunKodu LIKE '%$search%' OR m.title LIKE '%$search%') 
                             AND n.web_comtr = '1' 
                             ORDER BY n.UrunAdiTR ASC 
-                            LIMIT 10", ['search' => '%' . $search . '%']);
+                            LIMIT 10");
 
     $response = [];
     if (!empty($result)) {
