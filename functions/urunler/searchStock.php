@@ -1,6 +1,5 @@
 <?php
 //searchlive.php
-// Önce veritabanı bağlantısını sağlayın
 require_once '../db.php';
 $db = new Database();
 
@@ -12,11 +11,9 @@ if (isset($_POST['query'])) {
                             FROM nokta_urunler n 
                             LEFT JOIN nokta_urun_markalar m ON n.MarkaID = m.id 
                             WHERE (n.UrunAdiTR LIKE :search OR n.BLKODU LIKE :search OR m.title LIKE :search) 
-                            AND n.aktif = '1' 
+                            AND n.web_comtr = '1' 
                             ORDER BY n.UrunAdiTR ASC 
-                            LIMIT 10", [
-        'search' => '%' . $search . '%'
-    ]);
+                            LIMIT 10", ['search' => '%' . $search . '%']);
 
     if (!empty($result)) {
         foreach ($result as $row) {
