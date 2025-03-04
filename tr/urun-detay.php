@@ -10,7 +10,7 @@ $template = new Template('Nokta - Ürün Detay', $currentPage);
 $template->head();
 $database = new Database();
 $urun_seo = $_GET['id'];
-
+echo 'geldi1';
 $urun = $database->fetch("SELECT u.*, m.seo_link AS marka_seo, m.title AS marka_adi 
                             FROM nokta_urunler u
                             LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id
@@ -19,7 +19,8 @@ $urunId = $urun['id'];
 $BLKODU = $urun['BLKODU'];
 ////////////////////////////////////////////////
 // Ürünün cok_goren değerini kontrol et ve arttır
-$cok_goren = $urun['cok_goren'];
+$cok_goren = $urun['cok_goren'];;
+echo 'geldi2';
 if ($cok_goren === null || $cok_goren === '') {
     $cok_goren = 0;
 }
@@ -27,7 +28,7 @@ $cok_goren++;
 // cok_goren değerini güncelle
 $database ->update("UPDATE nokta_urunler SET cok_goren = $cok_goren WHERE id = $urunId");
 ///////////////////////////////////////////////////////////////////////////////
-
+echo 'geldi3';
 $kategoriIDs = explode(',', $urun['KategoriID']);
 $categoryId = $kategoriIDs[0]; // İlk kategori ID'sini alır
 $breadcrumbs = getBreadcrumbs($categoryId, $database);
@@ -50,12 +51,14 @@ function getBreadcrumbs($categoryId, $database) {
     $breadcrumbs = array_reverse($breadcrumbs); // Breadcrumbs'ları sırala
     return $breadcrumbs;
 }
+echo 'geldi4';
 if(isset($_SESSION['id'])) {
     $uye_id = $_SESSION['id'];
     $uye = $database->fetch("SELECT fiyat, satis_temsilcisi FROM uyeler WHERE id = $uye_id");
     $uye_fiyat = $uye['fiyat'];
     $uye_satis_temsilci = $uye['satis_temsilcisi'];
 }
+echo 'geldi5';
 ?>
 <style>
     .table-light.table-bordered.second th,
