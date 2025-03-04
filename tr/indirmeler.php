@@ -132,7 +132,7 @@ function livestock(searchQuery) {
                         results.forEach(function(result) {
                             dropdownMenu1.append(`
                                 <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
-                                    <img src="assets/images/urunler/${result.resim}" alt="" style="max-width: 50px; margin-right: 10px;">
+                                    <img src="assets/images/urunler/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;">
                                     ${result.UrunAdiTR} - ${result.BLKODU}
                                 </a>
                             `);
