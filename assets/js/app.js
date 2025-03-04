@@ -105,6 +105,7 @@ function ebultenKaydet() {
         data: { ebulten_mail: email, type: 'ebulten_kaydet' },
         dataType: 'json',
         success: function(response) {
+            console.log(response);
             if (response.cvp !== "success") {
                 Swal.fire({
                     icon: 'error',
