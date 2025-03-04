@@ -20,10 +20,9 @@ if (isset($_POST['searchQuery'])) {
 
             // Push data to the response array
             $response[] = [
-                'seo_link' => $row['seo_link'],
+                'id' => $row['id'],
                 'UrunKodu' => $row['UrunKodu'],  // Now included in the SELECT query
-                'UrunAdiTR' => $row['UrunAdiTR'], // Now included in the SELECT query
-                'MarkaAdi' => $row['marka_adi'],
+                'UrunAdiTR' => $row['UrunAdiTR'], 
                 'KResim' => $resim
             ];
         }
