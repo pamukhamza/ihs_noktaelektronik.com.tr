@@ -61,15 +61,8 @@ function getBreadcrumbs($categoryId, $db) {
 
 if(isset($_SESSION['id'])) {
     $uye_id = $_SESSION['id'];
-    // Üyeler tablosundan fiyatı çek
-    $query = "SELECT fiyat FROM uyeler WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $uye_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    $row = $database->fetch("SELECT fiyat FROM uyeler WHERE id = $uye_id");
     $uye_fiyat = $row['fiyat'];
-    $stmt->close();
 }
 ?>
 <style>
