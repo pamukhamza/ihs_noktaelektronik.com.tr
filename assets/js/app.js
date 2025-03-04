@@ -101,7 +101,7 @@ function ebultenKaydet() {
     var email = $("#ebulten_mail").val();
     $.ajax({
         type: "POST",
-        url: "function.php",
+        url: "function/edit_info.php",
         data: {ebulten_mail: email, type: 'ebulten_kaydet'},
         dataType: 'json',
         success: function(response) {
@@ -164,7 +164,6 @@ function sepetKaldir(gid) {
     updateSepetCount();
     toplamFiyatVeKDV();
 }
-//Favoriyi Sepete Ekle
 function sepeteFavoriEkle(fid, uid, id) {
     $.ajax({
         type: 'POST',

@@ -137,6 +137,18 @@ function sepeteUrunEkle() {
         ]);
     }
 }
+function ebultenKaydet() {
+    $database = new Database();
+    if (isset($_POST["ebulten_mail"])) {
+        $email = controlInput($_POST["ebulten_mail"]);
+        // Şu anki tarih ve saat için MySQL uyumlu formatı al
+        $currentDate = date("Y-m-d H:i:s", strtotime("+3 hours"));
+            $database->insert("INSERT IGNORE INTO nokta_ebulten (email, create_date, site) VALUES (:email, :create_date, 'comtr')" , ['email' => $email, 'create_date' => $currentDate]);
+            // Mail gönderme fonksiyonunu çağır
+            saveToMailjet($email, 368582);
+            echo json_encode(['cvp' => 'success']);
+    }
+}
 //////////////////////////////////////////////////
 //////////KULLANILANLAR YUKARIDA//////////////////
 //////////////////////////////////////////////////
@@ -608,7 +620,6 @@ function iade() {
     mailGonder($uye_email, 'İade Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
     exit;
 }
-
 function adresAktif(){
     global $db;
     $adresId = $_POST['adres_id'];
@@ -692,8 +703,11 @@ if (isset($_POST['type'])) {
       loglar();
       exit;
   }elseif ($type === 'adresAktif') {
-      adresAktif();
-      exit;
-  }
+        adresAktif();
+        exit;
+  }elseif ($type === 'ebulten_kaydet') {
+        ebultenKaydet();
+    exit;
+}
 }
   ?>
