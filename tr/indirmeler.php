@@ -130,7 +130,7 @@ $database = new Database();
                         results.forEach(function(result) {
                             dropdownMenu1.append(`
                                 <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
-                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images//${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;"> ${result.UrunAdiTR} - ${result.UrunKodu}
+                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;"> ${result.UrunAdiTR} - ${result.UrunKodu}
                                 </a>
                             `);
                         });
