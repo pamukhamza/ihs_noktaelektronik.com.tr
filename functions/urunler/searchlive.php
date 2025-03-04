@@ -18,8 +18,8 @@ if (isset($_POST['searchQuery'])) {
     $response = [];
     if (!empty($result)) {
         foreach ($result as $row) {
-            // Get product image
-            $urunResim = $db->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = :urun_id LIMIT 1", ['UrunID' => $row['id']]);
+            $urun_id = $row['id'];
+            $urunResim = $db->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = $urun_id LIMIT 1");
             $resim = !empty($urunResim['KResim']) ? $urunResim['KResim'] : 'gorsel_hazirlaniyor.jpg';
 
             // Push data to the response array
