@@ -124,12 +124,12 @@ $database = new Database();
                 data: { searchQuery: searchQuery },
                 success: function(response) {
                     var results = response;
+                    alert('hamza');
                     var dropdownMenu1 = $('#liveStockResults');
                     dropdownMenu1.empty(); // Önceki sonuçları temizle
                     if (results.length > 0) {
                         results.forEach(function(result) {
                             dropdownMenu1.append(`
-
                                 <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
                                     <img src="assets/images/urunler/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;">
                                      ${result.UrunAdiTR} - ${result.UrunKodu}
