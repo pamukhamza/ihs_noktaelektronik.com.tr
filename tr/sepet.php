@@ -569,9 +569,7 @@ if(isset($_GET['hata']) && $_GET['hata'] == 0) {
             var productId = $(this).data('product-id');
             var uye_id = <?= $_SESSION["id"] ?>;
             var type = 'favori';
-            // Store the reference to $(this) in a variable for later use
             var that = $(this);
-            // Send an AJAX request to the server to add the product to the favorites
             $.ajax({
                 type: 'POST',
                 url: 'functions/edit_info.php',
