@@ -980,7 +980,7 @@ function sepeteFavoriEkle(fid, uid, id) {
 function sepeteUrunEkle(uid, id, adet) {
     $.ajax({
         type: 'POST',
-        url: 'php/edit_info.php',
+        url: 'functions/edit_info.php',
         data: {
             'uye_id': id,
             'urun_id': uid,

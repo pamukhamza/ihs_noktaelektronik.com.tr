@@ -99,6 +99,44 @@ function teklif() {
     mailGonder($mail, 'Teklif Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
     exit;
 }
+function sepeteUrunEkle() {
+    $database = new Database();
+    $urun_id = $_POST['urun_id'];
+    $uye_id = $_POST['uye_id'];
+    $adet = !empty($_POST['adet']) ? $_POST['adet'] : 1;
+
+    // Ürünün mevcut adetini kontrol et
+    $existingAdet = $database->fetchColumn("SELECT adet FROM uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", [
+        'uye_id' => $uye_id,
+        'urun_id' => $urun_id
+    ]);
+
+    // Ürünün stok bilgisi
+    $urun_stok = $database->fetchColumn("SELECT stok FROM nokta_urunler WHERE id = :urun_id", [
+        'urun_id' => $urun_id
+    ]);
+
+    // Sepetteki mevcut adet
+    $sepet_adet = $database->fetchColumn("SELECT adet FROM uye_sepet WHERE urun_id = :urun_id AND uye_id = :uye_id", [
+        'urun_id' => $urun_id,
+        'uye_id' => $uye_id
+    ]);
+
+    if ($existingAdet !== false) { // Eğer ürün sepette varsa
+        $newAdet = $existingAdet + $adet;
+        $database->update("UPDATE uye_sepet SET adet = :adet WHERE uye_id = :uye_id AND urun_id = :urun_id", [
+            'adet' => $newAdet,
+            'uye_id' => $uye_id,
+            'urun_id' => $urun_id
+        ]);
+    } else { // Ürün sepette yoksa yeni ekle
+        $database->insert("INSERT INTO uye_sepet (uye_id, urun_id, adet) VALUES (:uye_id, :urun_id, :adet)", [
+            'uye_id' => $uye_id,
+            'urun_id' => $urun_id,
+            'adet' => $adet
+        ]);
+    }
+}
 //////////////////////////////////////////////////
 //////////KULLANILANLAR YUKARIDA//////////////////
 //////////////////////////////////////////////////
@@ -541,44 +579,7 @@ function adresSec() {
     $updateOthersQuery->bindParam(':sessionId', $sessionId, PDO::PARAM_INT);
     $updateOthersQuery->execute();
 }
-function sepeteUrunEkle() {
-    global $db;
-    $urun_id = $_POST['urun_id'];
-    $uye_id = $_POST['uye_id'];
-    $adet = $_POST['adet'];
 
-    // Kontrol için SQL sorgusu
-    $checkQuery = "SELECT adet FROM uye_sepet WHERE uye_id = ? AND urun_id = ?";
-    $checkStmt = $db->prepare($checkQuery);
-    $checkStmt->execute([$uye_id, $urun_id]);
-    $existingAdet = $checkStmt->fetchColumn();
-
-    $q = $db->prepare("SELECT stok FROM nokta_urunler WHERE id = ?");
-    $q->execute([$urun_id]);
-    $urun_stok = $q->fetchColumn();
-
-    $q = $db->prepare("SELECT adet FROM uye_sepet WHERE urun_id = ? AND uye_id = ?");
-    $q->execute([$urun_id, $uye_id]);
-    $sepet_adet = $q->fetchColumn();
-
-    if(empty($adet)) {
-        $adet = 1;
-    }
-
-    // Eğer aynı uye_id ve urun_id'ye sahip kayıt varsa adetini artır
-    if ($existingAdet !== false) {
-        $newAdet = $existingAdet + $adet;
-        // Adet artırma için SQL sorgusu
-        $updateQuery = "UPDATE uye_sepet SET adet = ? WHERE uye_id = ? AND urun_id = ?";
-        $updateStmt = $db->prepare($updateQuery);
-        $updateStmt->execute([$newAdet, $uye_id, $urun_id]);
-    } else {
-        // Yeni kayıt ekleme için SQL sorgusu
-        $insertQuery = "INSERT INTO uye_sepet (uye_id, urun_id, adet) VALUES (?, ?, ?)";
-        $insertStmt = $db->prepare($insertQuery);
-        $insertStmt->execute([$uye_id, $urun_id, $adet]);
-    }
-}
 function iade() {
     global $db;
 
