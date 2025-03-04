@@ -2,6 +2,8 @@
 //searchStock.php
 // Önce veritabanı bağlantısını sağlayın
 require_once '../db.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $db = new Database();
 
 if (isset($_POST['searchQuery'])) {
