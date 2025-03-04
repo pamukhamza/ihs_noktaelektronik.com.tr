@@ -986,6 +986,7 @@ function sepeteUrunEkle(uid, id, adet) {
             'urun_id': uid,
             'adet': adet,
             type: 'sepeteUrunEkle'
+            
         },
         success: function () {
             const Toast = Swal.mixin({
