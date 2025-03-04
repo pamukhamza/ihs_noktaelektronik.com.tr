@@ -1,17 +1,14 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-header('Content-Type: application/json');
-
+//searchlive.php
+// Önce veritabanı bağlantısını sağlayın
 require_once '../db.php';
 $db = new Database();
 
-if (isset($_POST['searchQuery'])) {
-    $search = trim($_POST['searchQuery']);
-
-    try {
-        $result = $db->fetchAll("
-            SELECT DISTINCT n.id, n.BLKODU, n.UrunAdiTR, n.stok, 
+if (isset($_POST['query'])) {
+    $search = $_POST['query'];
+    
+    // Search products
+    $result = $db->fetchAll(" SELECT DISTINCT n.id, n.BLKODU, n.UrunAdiTR, n.stok, 
                             (SELECT r.KResim 
                              FROM nokta_urunler_resimler r 
                              WHERE r.urun_id = n.id 
@@ -24,16 +21,21 @@ if (isset($_POST['searchQuery'])) {
             AND n.web_comtr = '1' 
             ORDER BY n.UrunAdiTR ASC 
             LIMIT 10",
-            ['search' => '%' . $search . '%']
-        );
+            ['search' => '%' . $search . '%']);
 
-        // Sonuç boşsa boş bir array döndür
-        echo json_encode($result ?: []);
-    } catch (PDOException $e) {
-        echo json_encode(['error' => $e->getMessage()]);
+    if (!empty($result)) {
+        foreach ($result as $row) {
+            ?>
+            <tr>
+                <td><?= $row['BLKODU'] ?></td>
+                <td><?= $row['UrunAdiTR'] ?></td>
+                <td><?= $row['marka_adi'] ?></td>
+                <td><?= $row['stok'] ?></td>
+            </tr>
+            <?php
+        }
+    } else {
+        echo '<tr><td colspan="4" class="text-center">Ürün bulunamadı...</td></tr>';
     }
-    exit;
 }
-
-echo json_encode(['error' => 'Invalid request']);
 ?>
