@@ -65,7 +65,7 @@ $database = new Database();
                                         ?>
                                                 <table class="table table-striped table-bordered second" style="width:100%">
                                                     <thead class="bg-light">
-                                                    <h4 class="text-center "><?php echo $baslikAdi; ?></h4>
+                                                    <h4 class="text-center "><?= $baslikAdi; ?></h4>
                                                     <tr class="border-0">
                                                         <th class="border-0">ID</th>
                                                         <th class="border-0">Tarih</th>
@@ -79,10 +79,10 @@ $database = new Database();
                                                     foreach ($yuklemeler as $row) {
                                                         ?>
                                                         <tr>
-                                                            <td><?php echo $row['id']; ?></td>
-                                                            <td><?php echo $row['datetime']; ?></td>
-                                                            <td><?php echo $row['version']; ?></td>
-                                                            <td><?php echo $row['aciklama']; ?></td>
+                                                            <td><?= $row['id']; ?></td>
+                                                            <td><?= $row['datetime']; ?></td>
+                                                            <td><?= $row['version']; ?></td>
+                                                            <td><?= $row['aciklama']; ?></td>
                                                             <?php
                                                             $dYol = $row["url_path"];
                                                             $dUzanti = pathinfo($dYol, PATHINFO_EXTENSION);
@@ -90,7 +90,7 @@ $database = new Database();
                                                             $dBaslik = duzenleString1($baslikAdi);
                                                             ?>
                                                             <td>
-                                                                <a href="javascript:void(0);" onclick="downloadFile('https://www.noktaelektronik.com.tr/assets<?php echo $row["url_path"]; ?>', '<?= $dUrunAdi ?>-<?=$dBaslik?>-<?= $row['id'] ?>.<?= $dUzanti?>')">
+                                                                <a href="javascript:void(0);" onclick="downloadFile('https://noktanet.s3.eu-central-1.amazonaws.com/<?= $row["url_path"]; ?>', '<?= $dUrunAdi ?>-<?=$dBaslik?>-<?= $row['id'] ?>.<?= $dUzanti?>')">
                                                                     İndir
                                                                 </a>
                                                             </td>
