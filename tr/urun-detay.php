@@ -1,7 +1,8 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 $currentPage = 'tdp';
 $template = new Template('Nokta - Teknik Destek Programı', $currentPage);
 
