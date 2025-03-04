@@ -216,22 +216,49 @@ if(isset($_SESSION['id'])) {
                                         <td class="fs-10 fw-bold px-2 py-1 bg-success text-light" ><?php if($uye_fiyat != '4'){ ?>Size  Özel<?php } ?>Toplam</td>
                                         </thead>
                                         <tbody>
-                                        <?php
-                                        function formatDovizListelemeNumber($number) {
-                                            $formatted_number = number_format((float) $number, 2, ',', '.');
-                                            return $formatted_number;
-                                        }
-                                        $dolar = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
-                                        $satis_dolar_kuru1 = $dolar['satis'];
-                                        $euro = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = 3");
-                                        $satis_euro_kuru1 = $euro['satis'];
+                                            <?php
+                                            function formatDovizListelemeNumber($number) {
+                                                $formatted_number = number_format((float) $number, 2, ',', '.');
+                                                return $formatted_number;
+                                            }
+                                            $dolar = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
+                                            $satis_dolar_kuru1 = $dolar['satis'];
+                                            $euro = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = 3");
+                                            $satis_euro_kuru1 = $euro['satis'];
 
-                                        if (!empty($urun["DSF".$uye_fiyat])) {
-                                            if ($urun["DOVIZ_BIRIMI"] == '$') {
-                                                $uodf =  $urun["DSF".$uye_fiyat];
-                                                $udf =  $urun["DSF4"];
-                                                $uof = $uodf * $satis_dolar_kuru1;
-                                                $uf = $udf * $satis_dolar_kuru1;
+                                            if (!empty($urun["DSF".$uye_fiyat])) {
+                                                if ($urun["DOVIZ_BIRIMI"] == '$') {
+                                                    $uodf =  $urun["DSF".$uye_fiyat];
+                                                    $udf =  $urun["DSF4"];
+                                                    $uof = $uodf * $satis_dolar_kuru1;
+                                                    $uf = $udf * $satis_dolar_kuru1;
+                                                    $uoef = $uof / $satis_euro_kuru1;
+                                                    $uef = $uf / $satis_euro_kuru1;
+                                                    $uodf1 = formatDovizListelemeNumber($uodf);
+                                                    $udf1 = formatDovizListelemeNumber($udf);
+                                                    $uof1 = formatDovizListelemeNumber($uof);
+                                                    $uf1 = formatDovizListelemeNumber($uf);
+                                                    $uoef1 = formatDovizListelemeNumber($uoef);
+                                                    $uef1 = formatDovizListelemeNumber($uef);
+                                                }elseif ($urun["DOVIZ_BIRIMI"] == '€'){
+                                                    $uoef =  $urun["DSF".$uye_fiyat];
+                                                    $uef =  $urun["DSF4"];
+                                                    $uof = $uoef * $satis_euro_kuru1;
+                                                    $uf = $uef * $satis_euro_kuru1;
+                                                    $uodf = $uof / $satis_dolar_kuru1;
+                                                    $udf = $uf / $satis_dolar_kuru1;
+                                                    $uodf1 = formatDovizListelemeNumber($uodf);
+                                                    $udf1 = formatDovizListelemeNumber($udf);
+                                                    $uof1 = formatDovizListelemeNumber($uof);
+                                                    $uf1 = formatDovizListelemeNumber($uf);
+                                                    $uoef1 = formatDovizListelemeNumber($uoef);
+                                                    $uef1 = formatDovizListelemeNumber($uef);
+                                                }
+                                            }else{
+                                                $uof =  $urun["KSF".$uye_fiyat];
+                                                $uf =  $urun["KSF4"];
+                                                $uodf = $uof / $satis_dolar_kuru1;
+                                                $udf = $uf / $satis_dolar_kuru1;
                                                 $uoef = $uof / $satis_euro_kuru1;
                                                 $uef = $uf / $satis_euro_kuru1;
                                                 $uodf1 = formatDovizListelemeNumber($uodf);
@@ -240,79 +267,52 @@ if(isset($_SESSION['id'])) {
                                                 $uf1 = formatDovizListelemeNumber($uf);
                                                 $uoef1 = formatDovizListelemeNumber($uoef);
                                                 $uef1 = formatDovizListelemeNumber($uef);
-                                            }elseif ($urun["DOVIZ_BIRIMI"] == '€'){
-                                                $uoef =  $urun["DSF".$uye_fiyat];
-                                                $uef =  $urun["DSF4"];
-                                                $uof = $uoef * $satis_euro_kuru1;
-                                                $uf = $uef * $satis_euro_kuru1;
-                                                $uodf = $uof / $satis_dolar_kuru1;
-                                                $udf = $uf / $satis_dolar_kuru1;
-                                                $uodf1 = formatDovizListelemeNumber($uodf);
-                                                $udf1 = formatDovizListelemeNumber($udf);
-                                                $uof1 = formatDovizListelemeNumber($uof);
-                                                $uf1 = formatDovizListelemeNumber($uf);
-                                                $uoef1 = formatDovizListelemeNumber($uoef);
-                                                $uef1 = formatDovizListelemeNumber($uef);
                                             }
-                                        }else{
-                                            $uof =  $urun["KSF".$uye_fiyat];
-                                            $uf =  $urun["KSF4"];
-                                            $uodf = $uof / $satis_dolar_kuru1;
-                                            $udf = $uf / $satis_dolar_kuru1;
-                                            $uoef = $uof / $satis_euro_kuru1;
-                                            $uef = $uf / $satis_euro_kuru1;
-                                            $uodf1 = formatDovizListelemeNumber($uodf);
-                                            $udf1 = formatDovizListelemeNumber($udf);
-                                            $uof1 = formatDovizListelemeNumber($uof);
-                                            $uf1 = formatDovizListelemeNumber($uf);
-                                            $uoef1 = formatDovizListelemeNumber($uoef);
-                                            $uef1 = formatDovizListelemeNumber($uef);
-                                        }
-                                        $urunKdv = $urun['kdv'];
-                                        $kdvOrani = 0.01 * (float)$urunKdv; // KDV oranını doğru bir şekilde hesaplamak için 0.01 ile çarptım
-                                        $kuof = $uof * $kdvOrani;
-                                        $tuof = $kuof + $uof;
-                                        $kuodf = $uodf * $kdvOrani;
-                                        $tuodf = $kuodf + $uodf;
-                                        $kuoef = $uoef * $kdvOrani;
-                                        $tuoef = $kuoef + $uoef;
-                                        $kuof = formatDovizListelemeNumber($kuof);
-                                        $tuof = formatDovizListelemeNumber($tuof);
-                                        $kuodf = formatDovizListelemeNumber($kuodf);
-                                        $tuodf = formatDovizListelemeNumber($tuodf);
-                                        $kuoef = formatDovizListelemeNumber($kuoef);
-                                        $tuoef = formatDovizListelemeNumber($tuoef);
-                                        ?>
-                                        <tr>
-                                            <td class="fs-10 px-2 py-1" >TL</td>
-                                            <td class="fs-10 px-2 py-1" ><?= $uf1 ?></td>
-                                            <?php if($uye_fiyat != '4'){ ?>
-                                                <td class="fs-10 px-2 py-1" ><?= $uof1 ?></td>
-                                            <?php } ?>
-                                            <td class="fs-10 px-2 py-1" >% <?= $urun['kdv'] ?></td>
-                                            <td class="fs-10 px-2 py-1" ><?= $kuof ?></td>
-                                            <td class="fs-10 px-2 py-1 fw-bold" ><?= $tuof ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fs-10 px-2 py-1" >USD</td>
-                                            <td class="fs-10 px-2 py-1" ><?= $udf1 ?></td>
-                                            <?php if($uye_fiyat != '4'){ ?>
-                                                <td class="fs-10 px-2 py-1" ><?= $uodf1 ?></td>
-                                            <?php } ?>
-                                            <td class="fs-10 px-2 py-1" >% <?= $urun['kdv'] ?></td>
-                                            <td class="fs-10 px-2 py-1" ><?= $kuodf ?></td>
-                                            <td class="fs-10 px-2 py-1 fw-bold" ><?= $tuodf ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fs-10 px-2 py-1" >EURO</td>
-                                            <td class="fs-10 px-2 py-1" ><?= $uef1 ?></td>
-                                            <?php if($uye_fiyat != '4'){ ?>
-                                                <td class="fs-10 px-2 py-1" ><?= $uoef1 ?></td>
-                                            <?php } ?>
-                                            <td class="fs-10 px-2 py-1" >% <?= $urun['kdv'] ?></td>
-                                            <td class="fs-10 px-2 py-1" ><?= $kuoef ?></td>
-                                            <td class="fs-10 px-2 py-1 fw-bold" ><?= $tuoef ?></td>
-                                        </tr>
+                                            $urunKdv = $urun['kdv'];
+                                            $kdvOrani = 0.01 * (float)$urunKdv; // KDV oranını doğru bir şekilde hesaplamak için 0.01 ile çarptım
+                                            $kuof = $uof * $kdvOrani;
+                                            $tuof = $kuof + $uof;
+                                            $kuodf = $uodf * $kdvOrani;
+                                            $tuodf = $kuodf + $uodf;
+                                            $kuoef = $uoef * $kdvOrani;
+                                            $tuoef = $kuoef + $uoef;
+                                            $kuof = formatDovizListelemeNumber($kuof);
+                                            $tuof = formatDovizListelemeNumber($tuof);
+                                            $kuodf = formatDovizListelemeNumber($kuodf);
+                                            $tuodf = formatDovizListelemeNumber($tuodf);
+                                            $kuoef = formatDovizListelemeNumber($kuoef);
+                                            $tuoef = formatDovizListelemeNumber($tuoef);
+                                            ?>
+                                            <tr>
+                                                <td class="fs-10 px-2 py-1" >TL</td>
+                                                <td class="fs-10 px-2 py-1" ><?= $uf1 ?></td>
+                                                <?php if($uye_fiyat != '4'){ ?>
+                                                    <td class="fs-10 px-2 py-1" ><?= $uof1 ?></td>
+                                                <?php } ?>
+                                                <td class="fs-10 px-2 py-1" >% <?= $urun['kdv'] ?></td>
+                                                <td class="fs-10 px-2 py-1" ><?= $kuof ?></td>
+                                                <td class="fs-10 px-2 py-1 fw-bold" ><?= $tuof ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fs-10 px-2 py-1" >USD</td>
+                                                <td class="fs-10 px-2 py-1" ><?= $udf1 ?></td>
+                                                <?php if($uye_fiyat != '4'){ ?>
+                                                    <td class="fs-10 px-2 py-1" ><?= $uodf1 ?></td>
+                                                <?php } ?>
+                                                <td class="fs-10 px-2 py-1" >% <?= $urun['kdv'] ?></td>
+                                                <td class="fs-10 px-2 py-1" ><?= $kuodf ?></td>
+                                                <td class="fs-10 px-2 py-1 fw-bold" ><?= $tuodf ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fs-10 px-2 py-1" >EURO</td>
+                                                <td class="fs-10 px-2 py-1" ><?= $uef1 ?></td>
+                                                <?php if($uye_fiyat != '4'){ ?>
+                                                    <td class="fs-10 px-2 py-1" ><?= $uoef1 ?></td>
+                                                <?php } ?>
+                                                <td class="fs-10 px-2 py-1" >% <?= $urun['kdv'] ?></td>
+                                                <td class="fs-10 px-2 py-1" ><?= $kuoef ?></td>
+                                                <td class="fs-10 px-2 py-1 fw-bold" ><?= $tuoef ?></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -334,22 +334,16 @@ if(isset($_SESSION['id'])) {
                                 echo '<div class="mt-3">' . $ad . ':</div>';
                                 // Benzersiz urun_id'leri kullanarak işlemleri gerçekleştir
                                 foreach ($uniqueUrunIds as $imageId) {
-                                    $urunAdiQuery = $db->prepare("SELECT UrunAdiTR, renk, beden, seo_link, BLKODU FROM nokta_urunler WHERE id = :imageId LIMIT 1");
-                                    $urunAdiQuery->bindParam(':imageId', $imageId);
-                                    $urunAdiQuery->execute();
-                                    $urunAdiResult = $urunAdiQuery->fetchAll();
+                                    $urunAdiResult = $database->fetchAll("SELECT UrunAdiTR, renk, beden, seo_link, id FROM nokta_urunler WHERE id = :imageId LIMIT 1", ['imageId' => $imageId]);
                                     foreach ($urunAdiResult as $urunAdiRow) {
-                                        $blkodu_grosel = $urunAdiRow['BLKODU'];
+                                        $blkodu_grosel = $urunAdiRow['id'];
                                         if ($ad == 'Renk') {
                                             ?>
                                             <a href="tr/urunler/<?= $urunAdiRow['seo_link'] ?>" data-bs-toggle="tooltip" title="<?= $urunAdiRow['renk'] ?>">
                                                 <?php
-                                                $foto = $db->prepare("SELECT * FROM nokta_urunler_resimler WHERE urun_id = :blkodu_grosel LIMIT 1");
-                                                $foto->bindParam(':blkodu_grosel', $blkodu_grosel);
-                                                $foto->execute();
-                                                $fot = $foto->fetchAll();
+                                                $fot = $database->fetchAll("SELECT * FROM nokta_urunler_resimler WHERE urun_id = :gorsell LIMIT 1", ['gorsell' => $blkodu_grosel]);
                                                 foreach ($fot as $k => $resim) {
-                                                    if (empty($resim['foto'])) {
+                                                    if (empty($resim['KResim'])) {
                                                         ?>
                                                         <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
                                                         <?php
@@ -364,15 +358,12 @@ if(isset($_SESSION['id'])) {
                                                             'Mor' => 'purple',
                                                             // Diğer renkler için buraya ekleme yapabilirsiniz
                                                         ];
-
                                                         $renk = $urunAdiRow['renk'];
                                                         $arkaPlanRenk = isset($renkler[$renk]) ? $renkler[$renk] : 'gray'; // Varsayılan olarak gri
-
                                                         //echo '<a class="rounded-0 mt-1 me-1 border-0 p-2 text-decoration-none btn btn-sm btn-secondary" style="background-color: ' . $arkaPlanRenk . ';" href="assets/images/urunler/' . $resim['foto'] . '">' . $renk . '</a>';
-
                                                         ?>
 
-                                                        <img src="assets/images/urunler/<?= $resim['foto'] ?>" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
+                                                        <img src="assets/images/urunler/<?= $resim['KResim'] ?>" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
                                                         <?php
                                                     }
                                                 }
@@ -419,13 +410,7 @@ if(isset($_SESSION['id'])) {
                                 <?php } } ?>
                         </div>
                             <?php if ($urun['stok'] < 1 || $urun['MIKTAR_KULBILIR'] < 1){
-                                $q = $db->prepare("SELECT * FROM uyeler WHERE id = :id ");
-                                $q->execute(array('id' => $_SESSION['id']));
-                                $uye = $q->fetch(PDO::FETCH_ASSOC);
-                                $uye_satis_temsilci = $uye['satis_temsilcisi'];
-                                $q = $db->prepare("SELECT * FROM kullanicilar WHERE id = :id ");
-                                $q->execute(array('id' => $uye_satis_temsilci));
-                                $temsilci = $q->fetch(PDO::FETCH_ASSOC);
+                                $temsilci = $database->fetch("SELECT * FROM users WHERE id = :id", ['id' => $uye_satis_temsilci]);
                                 ?>
                                 <script>
                                     function openTemsilci() {
@@ -485,42 +470,25 @@ if(isset($_SESSION['id'])) {
                         <?php if (!empty($urun['birlikte_al'])) { ?>
                             <ul class="list-group row list-group-horizontal my-2 d-flex justify-content-start align-items-end">
                                 <?php
-                                $session_id = $_SESSION['id'];
-                                $q = $db->prepare("SELECT * FROM uyeler WHERE id = :session_id");
-                                $q->bindParam(':session_id', $session_id, PDO::PARAM_INT);
-                                $q->execute();
-                                $uye = $q->fetch(PDO::FETCH_ASSOC);
-                                $uyeFiyat = $uye['fiyat'];
-
-                                $q = $db->prepare("SELECT * FROM nokta_urunler WHERE id = :urunid");
-                                $q->bindParam(':urunid', $urunId, PDO::PARAM_INT);
-                                $q->execute();
-                                $urunler = $q->fetchAll(PDO::FETCH_ASSOC);
                                 $birlikte_al_ids = explode(',', $urun['birlikte_al']);
-
                                 foreach($birlikte_al_ids as $birlikte_al_id) {
-                                    $d = $db->prepare("SELECT DISTINCT nr.foto, um.title, nu.*
+                                    $sepet = $database->fetch("SELECT DISTINCT nr.KResim, um.title, nu.*
                                             FROM nokta_urunler_resimler nr
                                             LEFT JOIN nokta_urunler nu ON nr.urun_id = nu.BLKODU
-                                            LEFT JOIN nokta_urun_markalar_1 um ON nu.MarkaID = um.id
-                                            WHERE nu.id = :urun_id
-                                            LIMIT 1");
-                                    $d->bindParam(':urun_id', $birlikte_al_id, PDO::PARAM_INT);
-                                    $d->execute();
-                                    $sepet = $d->fetchAll(PDO::FETCH_ASSOC);
-
+                                            LEFT JOIN nokta_urun_markalar um ON nu.MarkaID = um.id
+                                            WHERE nu.id = :urun_id LIMIT 1", ['urun_id' => $birlikte_al_id]);
                                     foreach($sepet as $sepeturun) {
                                         ?>
                                         <li class="list-group-item rounded-0 col-5 mt-1 me-1 border">
                                             <div class="row">
-                                                <?php if(empty($sepeturun['foto'])){ ?>
+                                                <?php if(empty($sepeturun['KResim'])){ ?>
                                                     <a href="tr/urunler/<?= $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
                                                         <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" style="width: 70px; border:1px solid lightgrey; border-radius: 6px">
                                                     </a>
                                                 <?php }else{ ?>
                                                     <div class="col-3">
                                                         <a href="tr/urunler/<?= $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
-                                                            <img src="assets/images/urunler/<?= $sepeturun["foto"]; ?>" style="width: 50px; border:1px solid lightgrey; border-radius: 6px">
+                                                            <img src="assets/images/urunler/<?= $sepeturun["KResim"]; ?>" style="width: 50px; border:1px solid lightgrey; border-radius: 6px">
                                                         </a>
                                                     </div>
                                                 <?php } ?>
@@ -574,21 +542,13 @@ if(isset($_SESSION['id'])) {
                         <div class="w-100">
                             <?php
                             // Yukleme basliklarini cekmek icin bir sorgu yapabilirsiniz.
-                            $baslikSorgusu = $db->prepare("SELECT * FROM nokta_yuklemeler WHERE is_active = 1");
-                            $baslikSorgusu->execute();
-                            $yuklemeBasliklari = $baslikSorgusu->fetchAll(PDO::FETCH_ASSOC);
-
-                            // Yukleme basliklarini dongude dolasarak tablolari olusturabilirsiniz.
+                            $yuklemeBasliklari = $database->fetch("SELECT * FROM nokta_yuklemeler WHERE is_active = 1");
                             foreach ($yuklemeBasliklari as $baslik) {
                                 $yuklemeID = $baslik['id'];
                                 $baslikAdi = $baslik['baslik'];
 
-                                // Veritabanından yüklemeleri çekmek için sorgu
-                                $yuklemeSorgusu = $db->prepare("SELECT * FROM nokta_urunler_yuklemeler WHERE urun_id = $urunId AND yukleme_id = $yuklemeID");
-                                $yuklemeSorgusu->execute();
-                                $yuklemeler = $yuklemeSorgusu->fetchAll(PDO::FETCH_ASSOC);
+                                $yuklemeler = $database->fetchAll("SELECT * FROM nokta_urunler_yuklemeler WHERE urun_id = $urunId AND yukleme_id = $yuklemeID");
 
-                                // Eğer yüklemeler varsa tabloyu oluşturun
                                 if (!empty($yuklemeler)) {
                                     ?>
                                     <table class="table table-light table-striped table-bordered second mt-4">
@@ -621,7 +581,7 @@ if(isset($_SESSION['id'])) {
                                                 $dBaslik =duzenleString1($baslikAdi);
                                                 ?>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0);" onclick="downloadFile('https://www.noktaelektronik.com.tr/assets<?= $row["url_path"]; ?>', '<?= $dUrunAdi ?>-<?=$dBaslik?>-<?= $row['id'] ?>.<?= $dUzanti?>')">
+                                                    <a href="<?= $row["url_path"]; ?>">
                                                         <?php
                                                         $dUzanti = pathinfo($dYol, PATHINFO_EXTENSION);
                                                         switch ($dUzanti) {
@@ -654,7 +614,6 @@ if(isset($_SESSION['id'])) {
                                                         ?>
                                                     </a>
                                                 </td>
-
                                             </tr>
                                         <?php } ?>
                                         </tbody>
@@ -684,8 +643,7 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 3 ORDER BY taksit ASC"); $q -> execute(  );
-                                            if ( $d = $q->fetchAll() ){
+                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 3 ORDER BY taksit ASC"); $q -> execute(  );
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
                                                     $tuof1 = str_replace(',', '.', $tuof1);
@@ -702,7 +660,7 @@ if(isset($_SESSION['id'])) {
                                                         <td class="text-end"><?= $top_fiy12 ?></td>
                                                     </tr>
                                                 <?php }
-                                            } ?>
+                                             ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -722,8 +680,8 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 5 ORDER BY taksit ASC"); $q -> execute(  );
-                                            if ( $d = $q->fetchAll() ){
+                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 5 ORDER BY taksit ASC"); $q -> execute(  );
+                                            
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
                                                     $tuof1 = str_replace(',', '.', $tuof1);
@@ -739,8 +697,8 @@ if(isset($_SESSION['id'])) {
                                                         <td class="text-end"><?= $aylik_fiy12 ?></td>
                                                         <td class="text-end"><?= $top_fiy12 ?></td>
                                                     </tr>
-                                                <?php }
-                                            } ?>
+                                                <?php } ?>
+                                            
                                             </tbody>
                                         </table>
                                     </div>
@@ -944,11 +902,6 @@ if(isset($_SESSION['id'])) {
                                                 <a style="font-size:12px; color:#0a90eb;" class="mt-2 urun-a border-bottom"><?= $marka['title'] ?></a>
                                                 <a style="font-size:12px;" class=" mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= $row['UrunKodu']; ?></a>
                                                 <?php if (isset($_SESSION['id'])) {
-
-                                                    $q = $db->prepare("SELECT * FROM uyeler WHERE id =:id");
-                                                    $q->execute(array('id' => $_SESSION['id']));
-                                                    $uye = $q->fetch(PDO::FETCH_ASSOC);
-                                                    $uye_fiyat = $uye['fiyat'];
 
                                                     ?>
 
