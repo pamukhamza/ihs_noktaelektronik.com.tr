@@ -68,6 +68,37 @@ function editFavori() {
         }
     }
 }
+function teklif() {
+    $database = new Database();
+    $mail = $_POST['email'];
+    $uye_id = $_POST['uye_id'];
+    $teklif_aciklama = $_POST['teklif_nedeni'];
+    $urun_id = $_POST['urun_no'];
+    $firmaAdi = "";
+    if (!empty($uye_id)) {
+        $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $uye_id]);
+        $firmaAdi = $uye['firmaUnvani'] ?? '';
+    }
+    if (!empty($uye_id)) {
+        $insertQuery = "INSERT INTO b2b_teklif (uye_id, urun_id, mail, aciklama) VALUES (:uye_id, :urun_id, :mail, :aciklama)";
+        $database->insert($insertQuery, [
+            'uye_id' => $uye_id,
+            'urun_id' => $urun_id,
+            'mail' => $mail,
+            'aciklama' => $teklif_aciklama
+        ]);
+    } else {
+        $insertQuery = "INSERT INTO b2b_teklif (urun_id, mail, aciklama) VALUES (:urun_id, :mail, :aciklama)";
+        $database->insert($insertQuery, [
+            'urun_id' => $urun_id,
+            'mail' => $mail,
+            'aciklama' => $teklif_aciklama
+        ]);
+    }
+    $mail_icerik = teklifAlindiMail($firmaAdi);
+    mailGonder($mail, 'Teklif Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+    exit;
+}
 //////////////////////////////////////////////////
 //////////KULLANILANLAR YUKARIDA//////////////////
 //////////////////////////////////////////////////
@@ -576,39 +607,7 @@ function iade() {
     mailGonder($uye_email, 'İade Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
     exit;
 }
-function teklif() {
-    global $db;
 
-    $mail = $_POST['email'];
-    $uye_id = $_POST['uye_id'];
-    $teklif_aciklama = $_POST['teklif_nedeni'];
-    $urun_id= $_POST['urun_no'];
-
-    $q = $db->prepare("SELECT * FROM uyeler WHERE id = ?");
-    $q->execute([$uye_id]);
-    $uye = $q->fetch(PDO::FETCH_ASSOC);
-
-    $firmaAdi = $uye["firmaUnvani"];
-
-    if(!empty($uye_id)){
-        $insertQuery = "INSERT INTO b2b_teklif (uye_id, urun_id, mail, aciklama) VALUES (?, ?, ?, ?)";
-        $insertStatement = $db->prepare($insertQuery);
-        $insertStatement->execute([$uye_id, $urun_id, $mail, $teklif_aciklama]);
-
-        $mail_icerik = teklifAlindiMail($firmaAdi);
-        mailGonder($mail, 'Teklif Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
-        exit;
-    } else {
-        $insertQuery = "INSERT INTO b2b_teklif (urun_id, mail, aciklama) VALUES (?, ?, ?)";
-        $insertStatement = $db->prepare($insertQuery);
-        $insertStatement->execute([$urun_id, $mail, $teklif_aciklama]);
-
-        $mail_icerik = teklifAlindiMail($firmaAdi);
-        mailGonder($mail, 'Teklif Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
-    }
-
-
-}
 function adresAktif(){
     global $db;
     $adresId = $_POST['adres_id'];

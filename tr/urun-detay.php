@@ -150,8 +150,7 @@ if(isset($_SESSION['id'])) {
                                             </li>
                                             <?php
                                         }
-                                    }
-                                    ?>
+                                    }?>
                                 </ul>
                             </div>
                         </div>
@@ -911,7 +910,7 @@ if(isset($_SESSION['id'])) {
             // Send an AJAX request to the server to add the product to the favorites
             $.ajax({
                 type: 'POST',
-                url: 'php/edit_info.php',
+                url: 'functions/edit_info.php',
                 data: {
                     product_id: productId,
                     uye_id: uye_id,
@@ -928,7 +927,6 @@ if(isset($_SESSION['id'])) {
                             timer: 1500,
                             showConfirmButton: false
                         });
-
                     } else if (response.includes('removed')) {
                         Swal.fire({
                             icon: 'info',
@@ -959,7 +957,7 @@ if(isset($_SESSION['id'])) {
             var email = $('#email').val();
             $.ajax({
                 type: 'POST',
-                url: 'php/edit_info.php',
+                url: 'functions/edit_info.php',
                 data: {
                     uye_id: uye_id,
                     email: email,
@@ -983,23 +981,6 @@ if(isset($_SESSION['id'])) {
     });
 </script>
 <script>
-    function downloadFile(url, newFilename) {
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = 'blob';
-        xhr.onload = function() {
-            var a = document.createElement('a');
-            a.href = window.URL.createObjectURL(xhr.response);
-            a.download = newFilename;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
-        xhr.open('GET', url);
-        xhr.send();
-    }
-</script>
-<script>
     document.getElementById("paylas").addEventListener("click", function() {
         // Paylaşım işlemini başlat
         if (navigator.share) {
@@ -1013,7 +994,6 @@ if(isset($_SESSION['id'])) {
         }
     });
 </script>
-
 <script>
     function openTemsilciAlert() {
         Swal.fire({
