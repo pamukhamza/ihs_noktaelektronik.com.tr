@@ -106,19 +106,24 @@ $database = new Database();
         </div>
     </div>
     <script>
-            var uye_id = <?php echo $_SESSION['id']; ?>;
-            function updateOnlineCount() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'functions/online_count.php',
-                    data: {
-                        uye_id: uye_id,
-                        type: 'updateOnlineStatus'
-                    }
-                });
-            }
+    <?php if (isset($_SESSION)): ?>
+        var uye_id = <?php echo json_encode($_SESSION['id']); ?>;
+        function updateOnlineCount() {
+            $.ajax({
+                type: 'POST',
+                url: 'functions/online_count.php',
+                data: {
+                    uye_id: uye_id,
+                    type: 'updateOnlineStatus'
+                }
+            });
+        }
 
-            setInterval(updateOnlineCount, 10000);
+        setInterval(updateOnlineCount, 10000);
+    <?php else: ?>
+        console.warn('Kullanıcı oturumu bulunamadı.');
+    <?php endif; ?>
+
     </script>
     <script>
         $(document).ready(function() {

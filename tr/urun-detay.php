@@ -774,7 +774,8 @@ if(isset($_SESSION['id'])) {
                             </div>
                             <div class="col-sm-12">
                                 <label for="teklif_nedeni" class="form-label">Açıklama</label>
-                                <input type="text" id="uye_id" value="<?= $_SESSION["id"]; ?>" hidden>
+                                <?php $uye_idip = isset($_SESSION['id']) ? $_SESSION['id'] : $_SERVER['REMOTE_ADDR']; ?>
+                                <input type="text" id="uye_id" value="<?= htmlspecialchars($uye_idip); ?>" hidden>
                                 <input type="text" id="urun_no" value="<?= $urunId ?>" hidden>
                                 <textarea type="text" class="form-control" id="teklif_nedeni" required></textarea>
                             </div>
