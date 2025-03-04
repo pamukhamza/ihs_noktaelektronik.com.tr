@@ -9,7 +9,7 @@ if (isset($_POST['searchQuery'])) {
                             WHERE (n.UrunAdiTR LIKE '%$search%' OR n.UrunKodu LIKE '%$search%' OR m.title LIKE '%$search%') 
                             AND n.web_comtr = '1' 
                             ORDER BY n.UrunAdiTR ASC 
-                            LIMIT 10");
+                            LIMIT 5");
 
     $response = [];
     if (!empty($result)) {
