@@ -90,7 +90,7 @@ $database = new Database();
                                                             $dBaslik = duzenleString1($baslikAdi);
                                                             ?>
                                                             <td>
-                                                                <a href="https://noktanet.s3.eu-central-1.amazonaws.com/<?= $row["url_path"]; ?>">
+                                                                <a href="https://noktanet.s3.eu-central-1.amazonaws.com/<?= $row["url_path"]; ?>" target="_blank">
                                                                     Görüntüle
                                                                 </a>
                                                             </td>
