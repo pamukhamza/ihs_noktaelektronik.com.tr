@@ -1,11 +1,11 @@
 <?php
-//searchlive.php
+//searchStock.php
 // Önce veritabanı bağlantısını sağlayın
 require_once '../db.php';
 $db = new Database();
 
-if (isset($_POST['query'])) {
-    $search = $_POST['query'];
+if (isset($_POST['searchQuery'])) {
+    $search = $_POST['searchQuery'];
     
     // Search products
     $result = $db->fetchAll(" SELECT DISTINCT n.id, n.BLKODU, n.UrunAdiTR, n.stok, 

@@ -1,4 +1,5 @@
 <?php
+//indirmeler.php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
 
