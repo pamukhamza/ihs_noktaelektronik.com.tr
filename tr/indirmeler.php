@@ -113,7 +113,6 @@ $database = new Database();
 </body>
 </html>
 <script src="bootstrap/bootstrap.bundle.min.js"></script>
-<script src="assets/js/jquery-1.7.2.min.js"></script>
 <script src="assets/js/alert.js"></script>
 <script>
     function livestock(searchQuery) {
