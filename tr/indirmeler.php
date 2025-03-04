@@ -124,26 +124,32 @@ function livestock(searchQuery) {
             data: { searchQuery: searchQuery },
             success: function(response) {
                 try {
-                    var results = JSON.parse(response);
+                    // Yanıtın boş olmasını kontrol et
+                    if (!response || typeof response !== 'object') {
+                        console.error('Invalid JSON response:', response);
+                        return;
+                    }
+
                     var dropdownMenu1 = $('#liveStockResults');
                     dropdownMenu1.empty();
 
-                    if (results.length > 0) {
-                        results.forEach(function(result) {
+                    if (Array.isArray(response) && response.length > 0) {
+                        response.forEach(function(result) {
+                            var imgSrc = result.resim ? `assets/images/urunler/${result.resim}` : 'assets/images/no-image.png';
                             dropdownMenu1.append(`
                                 <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
-                                    <img src="assets/images/urunler/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;">
+                                    <img src="${imgSrc}" alt="" style="max-width: 50px; margin-right: 10px;">
                                     ${result.UrunAdiTR} - ${result.BLKODU}
                                 </a>
                             `);
                         });
                         dropdownMenu1.show();
                     } else {
-                        dropdownMenu1.hide();
+                        dropdownMenu1.hide(); // Boş sonuçsa gizle
                     }
                 } catch (e) {
                     console.error("JSON parse error:", e);
-                    console.error("Response:", response); // Yanıtı kontrol edelim
+                    console.error("Response:", response);
                 }
             },
             error: function(xhr) {
@@ -155,6 +161,7 @@ function livestock(searchQuery) {
         $('#liveStockResults').empty().hide();
     }
 }
+
 
 </script>
 <script>

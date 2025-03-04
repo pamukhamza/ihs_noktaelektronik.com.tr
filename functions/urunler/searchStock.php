@@ -12,11 +12,11 @@ if (isset($_POST['searchQuery'])) {
     try {
         $result = $db->fetchAll("
             SELECT DISTINCT n.id, n.BLKODU, n.UrunAdiTR, n.stok, 
-                            (SELECT r.KResim 
+                            (SELECT r.resim 
                              FROM nokta_urunler_resimler r 
-                             WHERE r.UrunID = n.id 
+                             WHERE r.urun_id = n.id 
                              ORDER BY r.id ASC 
-                             LIMIT 1) as KResim,
+                             LIMIT 1) as resim,
                             m.title as marka_adi 
             FROM nokta_urunler n 
             LEFT JOIN nokta_urun_markalar m ON n.MarkaID = m.id 
@@ -27,7 +27,8 @@ if (isset($_POST['searchQuery'])) {
             ['search' => '%' . $search . '%']
         );
 
-        echo json_encode($result);
+        // Sonuç boşsa boş bir array döndür
+        echo json_encode($result ?: []);
     } catch (PDOException $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }
