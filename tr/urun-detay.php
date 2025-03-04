@@ -877,65 +877,47 @@ if(isset($_SESSION['id'])) {
                     <div class="splide__track">
                         <ul class="splide__list">
                             <?php
-                            $d = $database->fetchAll("SELECT * FROM nokta_urunler WHERE aktif = 1 AND KategoriID = $categoryId ORDER BY id ASC LIMIT 15;");
+                                $d = $database->fetchAll("SELECT * FROM nokta_urunler WHERE web_comtr = 1 AND KategoriID = :KategoriID ORDER BY id ASC LIMIT 15;", ['KategoriID' => $categoryId]);
 
-                                foreach ($d as $k => $row) {
-                                    // Ürün resmini getirmek için yeni bir sorgu
-                                    $resim_sorgusu = $db->prepare("SELECT * FROM nokta_urunler_resimler WHERE urun_id = :BLKODU ORDER BY sira ASC LIMIT 1");
-                                    $resim_sorgusu->execute(array(":BLKODU" => $row['BLKODU']));
-                                    $resim = $resim_sorgusu->fetch();
+                                foreach ($d as $row) {
+                                    // Ürün resmini getirmek için sorgu
+                                    $resim = $database->fetch("SELECT * FROM nokta_urunler_resimler WHERE urun_id = :urun_id ORDER BY sira ASC LIMIT 1", ['urun_id' => $row['id']]);
+                                    $resim_yolu = $resim ? "assets/images/urunler/" . $resim["foto"] : "assets/images/gorsel_hazirlaniyor.jpg";
 
-                                    $marka_sorgusu = $db->prepare("SELECT * FROM nokta_urun_markalar_1 WHERE id = :urun_id");
-                                    $marka_sorgusu->execute(array(":urun_id" => $row['MarkaID']));
-                                    $marka = $marka_sorgusu->fetch();
-
-                                    if ($resim) { $resim_yolu = "assets/images/urunler/" . $resim["foto"];
-                                    }else{// Eşleşen resim bulunamazsa varsayılan bir resim belirtin
-                                        $resim_yolu = "assets/images/gorsel_hazirlaniyor.jpg";}
+                                    // Marka bilgisi
+                                    $marka = $database->fetch("SELECT * FROM nokta_urun_markalar WHERE id = :id", ['id' => $row['MarkaID']]);
                                     ?>
 
                                     <li class="splide__slide d-flex justify-content-center mb-4 mt-2">
                                         <div class="card border-0 p-0 col-lg-3 col-md-3 col-sm-6 col-xs-12 urun-effect" style="width: 15rem;">
-                                            <a href="tr/urunler/<?= $row['seo_link'] ; ?>">
-                                                <?php if(empty($resim["foto"])){ ?>
-                                                    <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;"><img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" class="card-img-top img-fluid" alt="<?= $row['UrunAdiTR'] ?>"></div>
-                                                <?php } else{ ?>
-                                                    <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;"><img src="<?= $resim_yolu; ?>" class="card-img-top img-fluid" alt="<?= $row['UrunAdiTR'] ?>"></div>
-                                                <?php } ?>
+                                            <a href="tr/urunler/<?= htmlspecialchars($row['seo_link']) ?>">
+                                                <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;">
+                                                    <img src="<?= htmlspecialchars($resim_yolu) ?>" class="card-img-top img-fluid" alt="<?= htmlspecialchars($row['UrunAdiTR']) ?>">
+                                                </div>
                                             </a>
                                             <div class="card-body d-flex flex-column">
-                                                <a href="tr/urunler/<?= $row['seo_link'] ; ?>" style="font-weight:600;" class="mt-2 urun-a"><?= (strlen($row['UrunAdiTR']) > 52) ? substr($row['UrunAdiTR'], 0, 51) . '...' : $row['UrunAdiTR'];?></a>
-                                                <a style="font-size:12px; color:#0a90eb;" class="mt-2 urun-a border-bottom"><?= $marka['title'] ?></a>
-                                                <a style="font-size:12px;" class=" mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= $row['UrunKodu']; ?></a>
-                                                <?php if (isset($_SESSION['id'])) {
+                                                <a href="tr/urunler/<?= htmlspecialchars($row['seo_link']) ?>" style="font-weight:600;" class="mt-2 urun-a">
+                                                    <?= (strlen($row['UrunAdiTR']) > 52) ? htmlspecialchars(substr($row['UrunAdiTR'], 0, 51)) . '...' : htmlspecialchars($row['UrunAdiTR']); ?>
+                                                </a>
+                                                <a style="font-size:12px; color:#0a90eb;" class="mt-2 urun-a border-bottom">
+                                                    <?= htmlspecialchars($marka['title'] ?? '') ?>
+                                                </a>
+                                                <a style="font-size:12px;" class="mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= htmlspecialchars($row['UrunKodu']) ?></a>
 
-                                                    ?>
-
+                                                <?php if (isset($_SESSION['id'])): ?>
                                                     <a style="font-size:14px;" class="urun-a custom-underline">
-                                                        <?= isset($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
-                                                        $fiyat1 = isset($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
-                                                        echo formatNumber($fiyat1);?>
-
-                                                        + KDV</a>
+                                                        <?= htmlspecialchars($row["DOVIZ_BIRIMI"] ?? "₺") . formatNumber($row["DSF4"] ?? $row["KSF4"] ?? 0) ?> + KDV
+                                                    </a>
                                                     <a style="font-size:14px; color:#0a90eb;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a>
-                                                    <a style="font-size:14px; color:#f29720;" class=" urun-a fw-bold"><?= isset($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
-                                                        $fiyat = isset($row["DSF".$uye_fiyat]) ? $row["DSF".$uye_fiyat] : $row["KSF".$uye_fiyat];
-                                                        echo formatNumber($fiyat); ?> + KDV</a>
-                                                    <i class="fa-solid fa-cart-shopping fa-xl sepet-style sepet-hover"
-                                                       onclick="<?php
-                                                       $urunId = $row['id']; // Assuming 'urun_id' is the correct key for product ID in your $row array
-                                                       if (isset($_SESSION['id'])) {
-                                                           echo "sepeteUrunEkle($urunId, " . $_SESSION['id'] . ");";
-                                                       } else {
-                                                           echo "window.location.href = 'tr/giris';";
-                                                       }
-                                                       ?>">
-                                                    </i>
-                                                <?php } ?>
+                                                    <a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
+                                                        <?= htmlspecialchars($row["DOVIZ_BIRIMI"] ?? "₺") . formatNumber($row["DSF" . ($uye_fiyat ?? "4")] ?? $row["KSF" . ($uye_fiyat ?? "4")] ?? 0) ?> + KDV
+                                                    </a>
+                                                    <i class="fa-solid fa-cart-shopping fa-xl sepet-style sepet-hover" onclick="<?php echo isset($_SESSION['id']) ? 'sepeteUrunEkle(' . htmlspecialchars($row['id']) . ', ' . htmlspecialchars($_SESSION['id']) . ');' : 'window.location.href = \"tr/giris\";'; ?>"></i>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </li>
-                                <?php } ?>
+                            <?php } ?>
                         </ul>
                     </div>
                 </div>
