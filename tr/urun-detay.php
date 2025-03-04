@@ -30,13 +30,11 @@ $database ->update("UPDATE nokta_urunler SET cok_goren = $cok_goren WHERE id = $
 
 $kategoriIDs = explode(',', $urun['KategoriID']);
 $categoryId = $kategoriIDs[0]; // İlk kategori ID'sini alır
-$breadcrumbs = getBreadcrumbs($categoryId, $db);
+$breadcrumbs = getBreadcrumbs($categoryId, $database);
 // Breadcrumb kodunu buraya ekleyin
-function getBreadcrumbs($categoryId, $db) {
+function getBreadcrumbs($categoryId, $database) {
     $breadcrumbs = array();
     $currentCategory = $categoryId;
-
-    global $user_language;
     while ($currentCategory > 0) {
         $categoryData = $database->fetch("SELECT * FROM nokta_kategoriler WHERE id = $currentCategory");
         if ($categoryData) {
