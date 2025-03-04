@@ -5,7 +5,6 @@ require_once '../db.php';
 $db = new Database();
 if (isset($_POST['searchQuery'])) {
     $search = $_POST['searchQuery'];
-    
     // Search products
     $result = $db->fetchAll(" 
         SELECT DISTINCT n.id, n.BLKODU, n.UrunAdiTR, n.stok, 
@@ -22,10 +21,9 @@ if (isset($_POST['searchQuery'])) {
         ORDER BY n.UrunAdiTR ASC 
         LIMIT 10",
         ['search' => '%' . $search . '%']);
-
     // Prepare the response
     $response = [];
-    
+
     if (!empty($result)) {
         foreach ($result as $row) {
             // Add each result to the response array
@@ -39,7 +37,6 @@ if (isset($_POST['searchQuery'])) {
             ];
         }
     }
-
     // Send the response as JSON
     echo json_encode($response);
 }

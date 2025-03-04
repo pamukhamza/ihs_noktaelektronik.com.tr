@@ -89,7 +89,7 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="justify-content-start col-10 position-relative">
-                            <form class="dropdown" onsubmit="performSearch('tr'); return false;">
+                            <form class="dropdown" onsubmit="performSearch(); return false;">
                                 <div class="input-group ms-2 ps-2 rounded-5">
                                     <input type="text" class="form-control rounded-start-pill ps-4" id="stokArama" placeholder="Ara" style="background-color: white; border-color: #fc9803; outline: none;" onkeyup="liveSearch(this.value)">
                                     <button class="btn btn-outline-secondary bg-turuncu rounded-end-circle" type="submit" style="color:white; border-color: transparent">
@@ -211,10 +211,11 @@
                                             <?php
                                                 if(!empty($uye['satis_temsilcisi'])){
                                             ?>
-                                            <li class="text-white dropdown-item fw-bold mt-1" style="background-color: #a2a2a2;font-size:16px;">Satış Temsilciniz</li>
-                                            <li class="dropdown-item border-bottom"> <?= $temsilci['kullanici_ad'].' '.$temsilci['kullanici_soyad']; ?> </li>
-                                            <li class="dropdown-item border-bottom" ><?= $temsilci['kullanici_mail'] ?></li>
-                                            <li class="dropdown-item" ><?= $temsilci['kullanici_tel'] ?></li> <?php } ?>
+                                                <li class="text-white dropdown-item fw-bold mt-1" style="background-color: #a2a2a2;font-size:16px;">Satış Temsilciniz</li>
+                                                <li class="dropdown-item border-bottom"> <?= $temsilci['kullanici_ad'].' '.$temsilci['kullanici_soyad']; ?> </li>
+                                                <li class="dropdown-item border-bottom" ><?= $temsilci['kullanici_mail'] ?></li>
+                                                <li class="dropdown-item" ><?= $temsilci['kullanici_tel'] ?></li> 
+                                            <?php } ?>
                                         </ul>
                                     </div>
                                 <?php } else {
@@ -267,7 +268,7 @@
                         <nav class="nav justify-content-end">
                             <a class="btn odeme_btn_style zoom-effect" href="<?= $cariodemeLink; ?>" ><i class="fa-regular fa-credit-card me-2"></i>Online Ödeme</a>
 
-                            <a class="nav-item nav-link a-hvr" href="<?php echo $favorilerLink; ?>"><i class="fa-solid fa-heart me-1"></i>Favoriler</a>
+                            <a class="nav-item nav-link a-hvr" href="<?= $favorilerLink; ?>"><i class="fa-solid fa-heart me-1"></i>Favoriler</a>
                             <button type="button" id="cartDropdown" class="nav-item nav-link a-hvr me-2 dropdown-toggle" style="position: relative" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-cart-shopping me-1"></i>Sepetim
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-turuncu" id="sepetCount">
@@ -311,7 +312,7 @@
                             results.forEach(function(result) {
                                 dropdownMenu.append(`
                                     <a class="dropdown-item rounded-5" href="tr/urunler/${result.seo_link}">
-                                        <img src="assets/images/urunler/${result.resim}" alt="" style="max-width: 50px; margin-right: 10px;"> <span style="font-weight:bold;">${result.UrunKodu}</span> - ${result.UrunAdiTR}
+                                        <img src="assets/images/urunler/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;"> <span style="font-weight:bold;">${result.UrunKodu}</span> - ${result.UrunAdiTR}
                                     </a>
                                 `);
                             });

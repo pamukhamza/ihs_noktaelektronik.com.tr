@@ -674,7 +674,6 @@ function favoriKaldır(gid) {
         }
     });
 }
-
 function bannerSil(gid, gel) {
     Swal.fire({
         title: 'Emin misiniz?',
@@ -745,14 +744,14 @@ function haberSil(gid, gel) {
     });
 }
 
-function performSearch(user_language) {
+function performSearch() {
     var stokKoduValue = $("#stokArama").val();
-    var finalUrl = "urunler?lang=" + user_language + "&cat=&brand=&filter=&search=" + stokKoduValue;
+    var finalUrl = "tr/urunler?cat=&brand=&filter=&search=" + stokKoduValue;
     window.location.href = finalUrl;
 }
-function performSearchMobil(user_language) {
+function performSearchMobil() {
     var stokKoduValue = $("#stokArama1").val();
-    var finalUrl = "urunler?lang=" + user_language + "&cat=&brand=&filter=&search=" + stokKoduValue;
+    var finalUrl = "tr/urunler?cat=&brand=&filter=&search=" + stokKoduValue;
     window.location.href = finalUrl;
 }
 

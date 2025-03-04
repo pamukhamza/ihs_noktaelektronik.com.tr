@@ -4,25 +4,20 @@ $db = new Database();
 
 if (isset($_POST['query'])) {
     $search = $_POST['query'];
-    $lang = $_POST['lang'];
     $uye_id = $_POST['uye_id'];
 
     // Get user price level
-    $uye = $db->fetch("SELECT fiyat FROM uyeler WHERE id = :uye_id", [
-        'uye_id' => $uye_id
-    ]);
+    $uye = $db->fetch("SELECT fiyat FROM uyeler WHERE id = :uye_id", ['uye_id' => $uye_id]);
     $uyeFiyat = $uye['fiyat'];
 
     // Search products
-    $result = $db->fetchAll("SELECT DISTINCT n.*, m.title as marka_adi 
+    $result = $db->fetchAll("SELECT DISTINCT n.DSF4, n.DSF3, n.DSF2, n.DSF1, n.KSF4, n.KSF3, n.KSF2, n.KSF1, n.DOVIZ_BIRIMI, n.seo_link, n.id, m.title as marka_adi 
                             FROM nokta_urunler n 
-                            LEFT JOIN nokta_urun_markalar_1 m ON n.MarkaID = m.id 
-                            WHERE (n.UrunAdiTR LIKE :search OR n.BLKODU LIKE :search OR m.title LIKE :search) 
-                            AND n.aktif = '1' 
+                            LEFT JOIN nokta_urun_markalar m ON n.MarkaID = m.id 
+                            WHERE (n.UrunAdiTR LIKE :search OR n.UrunKodu LIKE :search OR m.title LIKE :search) 
+                            AND n.web_comtr = '1' 
                             ORDER BY n.UrunAdiTR ASC 
-                            LIMIT 10", [
-        'search' => '%' . $search . '%'
-    ]);
+                            LIMIT 10", ['search' => '%' . $search . '%']);
 
     if (!empty($result)) {
         foreach ($result as $row) {
@@ -30,12 +25,10 @@ if (isset($_POST['query'])) {
             $doviz = !empty($row["DSF" . $uyeFiyat]) ? $row["DOVIZ_BIRIMI"] : "₺";
             
             // Get product image
-            $urunResim = $db->fetch("SELECT foto FROM nokta_urunler_resimler WHERE urun_id = :urun_id LIMIT 1", [
-                'urun_id' => $row['BLKODU']
-            ]);
-            $resim = !empty($urunResim['foto']) ? $urunResim['foto'] : 'gorsel_hazirlaniyor.jpg';
+            $urunResim = $db->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = :urun_id LIMIT 1", ['UrunID' => $row['id']]);
+            $resim = !empty($urunResim['KResim']) ? $urunResim['KResim'] : 'gorsel_hazirlaniyor.jpg';
             ?>
-            <a href="<?= $lang ?>/urunler/<?= $row['seo_link'] ?>" class="list-group-item list-group-item-action">
+            <a href="tr/urunler/<?= $row['seo_link'] ?>" class="list-group-item list-group-item-action">
                 <div class="row">
                     <div class="col-2">
                         <img src="assets/images/urunler/<?= $resim ?>" style="width: 50px">
