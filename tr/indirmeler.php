@@ -90,8 +90,8 @@ $database = new Database();
                                                             $dBaslik = duzenleString1($baslikAdi);
                                                             ?>
                                                             <td>
-                                                                <a href="javascript:void(0);" onclick="downloadFile('https://noktanet.s3.eu-central-1.amazonaws.com/<?= $row["url_path"]; ?>', '<?= $dUrunAdi ?>-<?=$dBaslik?>-<?= $row['id'] ?>.<?= $dUzanti?>')">
-                                                                    İndir
+                                                                <a href="https://noktanet.s3.eu-central-1.amazonaws.com/<?= $row["url_path"]; ?>">
+                                                                    Görüntüle
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -144,22 +144,5 @@ $database = new Database();
         } else {
             $('#liveStockResults').empty().hide(); // 3 harften az ise sonuçları temizle ve gizle
         }
-    }
-</script>
-<script>
-    function downloadFile(url, newFilename) {
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = 'blob';
-        xhr.onload = function() {
-            var a = document.createElement('a');
-            a.href = window.URL.createObjectURL(xhr.response);
-            a.download = newFilename;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
-        xhr.open('GET', url);
-        xhr.send();
     }
 </script>
