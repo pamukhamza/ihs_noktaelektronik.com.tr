@@ -123,7 +123,6 @@ $database = new Database();
                 method: 'POST',
                 data: { searchQuery: searchQuery },
                 success: function(response) {
-                    console.log(response);
                     var results = JSON.parse(response);
                     var dropdownMenu1 = $('#liveStockResults');
                     dropdownMenu1.empty(); // Önceki sonuçları temizle
