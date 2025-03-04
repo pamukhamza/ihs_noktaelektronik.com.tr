@@ -7,11 +7,12 @@ $template = new Template('Nokta - Teknik Destek Programı', $currentPage);
 
 $template->head();
 $database = new Database();
+$urun_seo = $_GET['id'];
 
 $urun = $database->fetch("SELECT u.*, m.seo_link AS marka_seo, m.title AS marka_adi 
                             FROM nokta_urunler u
                             LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id
-                            WHERE u.seo_link = :id ", ['id' => $row["product_id"]]);
+                            WHERE u.seo_link = :id ", ['id' => $urun_seo]);
 $urunId = $urun['id'];
 $BLKODU = $urun['BLKODU'];
 ////////////////////////////////////////////////
