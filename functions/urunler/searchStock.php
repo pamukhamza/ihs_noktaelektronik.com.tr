@@ -13,7 +13,7 @@ if (isset($_POST['searchQuery'])) {
     $result = $db->fetchAll(" SELECT DISTINCT n.id, n.BLKODU, n.UrunAdiTR, n.stok, 
                             (SELECT r.KResim 
                              FROM nokta_urunler_resimler r 
-                             WHERE r.urun_id = n.id 
+                             WHERE r.UrunID = n.id 
                              ORDER BY r.id ASC 
                              LIMIT 1) as KResim,
                             m.title as marka_adi 
