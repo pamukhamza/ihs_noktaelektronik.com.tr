@@ -1,6 +1,6 @@
 <?php
     $database = new Database();
-    if(isset($_SESSION)){
+    if($_SESSION['id']){
         // Kullanıcı kimliği, sayfa adı ve IP adresini al
         $userId = $_SESSION['id']; // Örneğin, oturum kimliğinden kullanıcı kimliğini alabilirsiniz
         $pageName = $_SERVER['REQUEST_URI']; // Kullanıcının bulunduğu sayfa adını alabilirsiniz

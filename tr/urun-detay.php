@@ -416,7 +416,7 @@ if(isset($_SESSION['id'])) {
                                     </div>
                                 <?php } } ?>
                         </div>
-                            <?php if ($urun['stok'] < 1 || $urun['MIKTAR_KULBILIR'] < 1){
+                            <?php if ($urun['stok'] < 1 || $urun['stok'] < 1){
                                 $temsilci = $database->fetch("SELECT * FROM users WHERE id = :id", ['id' => $uye_satis_temsilci]);
                                 ?>
                                 <script>
