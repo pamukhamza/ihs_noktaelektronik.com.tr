@@ -881,8 +881,8 @@ if(isset($_SESSION['id'])) {
 
                                 foreach ($d as $row) {
                                     // Ürün resmini getirmek için sorgu
-                                    $resim = $database->fetch("SELECT * FROM nokta_urunler_resimler WHERE urun_id = :urun_id ORDER BY sira ASC LIMIT 1", ['urun_id' => $row['id']]);
-                                    $resim_yolu = $resim ? "assets/images/urunler/" . $resim["foto"] : "assets/images/gorsel_hazirlaniyor.jpg";
+                                    $resim = $database->fetch("SELECT * FROM nokta_urunler_resimler WHERE UrunID = :urun_id ORDER BY sira ASC LIMIT 1", ['urun_id' => $row['id']]);
+                                    $resim_yolu = $resim ? "assets/images/urunler/" . $resim["KResim"] : "assets/images/gorsel_hazirlaniyor.jpg";
 
                                     // Marka bilgisi
                                     $marka = $database->fetch("SELECT * FROM nokta_urun_markalar WHERE id = :id", ['id' => $row['MarkaID']]);
