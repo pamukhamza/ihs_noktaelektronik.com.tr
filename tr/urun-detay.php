@@ -635,233 +635,56 @@ if(isset($_SESSION['id'])) {
                     <div class="col-12 d-flex justify-content-center mt-3">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: #fafafa">
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/axess.svg" style="color:white" width="25%">
-                                    </div>
-                                    <div class="mt-3 mb-3 p-3">
-                                        <table class="table table-light">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-end">Taksit</th>
-                                                <th class="text-end">Taksit Tutarı</th>
-                                                <th class="text-end">Toplam Tutar</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
-                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 3 ORDER BY taksit ASC");
-                                                foreach( $d as $k => $row ) {
-                                                    $tuof1 = str_replace('.', '', $tuof);
-                                                    $tuof1 = str_replace(',', '.', $tuof1);
-                                                    $vadee1 = str_replace(',', '.', $row["vade"]);
-                                                    $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
-                                                    $taksit = $row["taksit"] != 0 ? $row["taksit"] : 1;
-                                                    $aylik_fiy = $top_fiy / $taksit;
-                                                    $top_fiy12 = number_format($top_fiy, 2, ',', '.'); // Format as 2 decimal places, comma as thousands separator, dot as decimal separator
-                                                    $aylik_fiy12 = number_format($aylik_fiy, 2, ',', '.'); // Same formatting as $top_fiy12
-                                                    ?>
-                                                    <tr>
-                                                        <th class="text-end"><?= $taksit?></th>
-                                                        <td class="text-end"><?= $aylik_fiy12 ?></td>
-                                                        <td class="text-end"><?= $top_fiy12 ?></td>
-                                                    </tr>
-                                                <?php }
-                                             ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0">
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/world.svg" style="color:white" width="25%">
-                                    </div>
-                                    <div class="mt-3 mb-3 p-3">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-end">Taksit</th>
-                                                <th class="text-end">Taksit Tutarı</th>
-                                                <th class="text-end">Toplam Tutar</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
-                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 5 ORDER BY taksit ASC");
-                                            
-                                                foreach( $d as $k => $row ) {
-                                                    $tuof1 = str_replace('.', '', $tuof);
-                                                    $tuof1 = str_replace(',', '.', $tuof1);
-                                                    $vadee1 = str_replace(',', '.', $row["vade"]);
-                                                    $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
-                                                    $taksit = $row["taksit"] != 0 ? $row["taksit"] : 1;
-                                                    $aylik_fiy = $top_fiy / $taksit;
-                                                    $top_fiy12 = number_format($top_fiy, 2, ',', '.'); // Format as 2 decimal places, comma as thousands separator, dot as decimal separator
-                                                    $aylik_fiy12 = number_format($aylik_fiy, 2, ',', '.'); // Same formatting as $top_fiy12
-                                                    ?>
-                                                    <tr>
-                                                        <th class="text-end"><?= $taksit ?></th>
-                                                        <td class="text-end"><?= $aylik_fiy12 ?></td>
-                                                        <td class="text-end"><?= $top_fiy12 ?></td>
-                                                    </tr>
-                                                <?php } ?>
-                                            
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: #fafafa">
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/maximum.svg" style="color:white" width="25%">
-                                    </div>
-                                    <div class="mt-3 mb-3 p-3">
-                                        <table class="table table-light">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-end">Taksit</th>
-                                                <th class="text-end">Taksit Tutarı</th>
-                                                <th class="text-end">Toplam Tutar</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
-                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 7 ORDER BY taksit ASC");
-                                            
-                                                foreach( $d as $k => $row ) {
-                                                    $tuof1 = str_replace('.', '', $tuof);
-                                                    $tuof1 = str_replace(',', '.', $tuof1);
-                                                    $vadee1 = str_replace(',', '.', $row["vade"]);
-                                                    $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
-                                                    $taksit = $row["taksit"] != 0 ? $row["taksit"] : 1;
-                                                    $aylik_fiy = $top_fiy / $taksit;
-                                                    $top_fiy12 = number_format($top_fiy, 2, ',', '.'); // Format as 2 decimal places, comma as thousands separator, dot as decimal separator
-                                                    $aylik_fiy12 = number_format($aylik_fiy, 2, ',', '.'); // Same formatting as $top_fiy12
-                                                    ?>
-                                                    <tr>
-                                                        <th class="text-end"><?= $taksit ?></th>
-                                                        <td class="text-end"><?= $aylik_fiy12 ?></td>
-                                                        <td class="text-end"><?= $top_fiy12 ?></td>
-                                                    </tr>
-                                                <?php }
-                                            ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0">
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/bonus-kart.svg" style="color:white" width="25%">
-                                    </div>
-                                    <div class="mt-3 mb-3 p-3">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-end">Taksit</th>
-                                                <th class="text-end">Taksit Tutarı</th>
-                                                <th class="text-end">Toplam Tutar</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
-                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 1 ORDER BY taksit ASC");
-                                            
-                                                foreach( $d as $k => $row ) {
-                                                    $tuof1 = str_replace('.', '', $tuof);
-                                                    $tuof1 = str_replace(',', '.', $tuof1);
-                                                    $vadee1 = str_replace(',', '.', $row["vade"]);
-                                                    $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
-                                                    $taksit = $row["taksit"] != 0 ? $row["taksit"] : 1;
-                                                    $aylik_fiy = $top_fiy / $taksit;
-                                                    $top_fiy12 = number_format($top_fiy, 2, ',', '.'); // Format as 2 decimal places, comma as thousands separator, dot as decimal separator
-                                                    $aylik_fiy12 = number_format($aylik_fiy, 2, ',', '.'); // Same formatting as $top_fiy12
-                                                    ?>
-                                                    <tr>
-                                                        <th class="text-end"><?= $taksit ?></th>
-                                                        <td class="text-end"><?= $aylik_fiy12 ?></td>
-                                                        <td class="text-end"><?= $top_fiy12 ?></td>
-                                                    </tr>
-                                                <?php }
-                                             ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: #fafafa">
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/bank-kart.svg" style="color:white" width="25%">
-                                    </div>
-                                    <div class="mt-3 mb-3 p-3">
-                                        <table class="table table-light">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-end">Taksit</th>
-                                                <th class="text-end">Taksit Tutarı</th>
-                                                <th class="text-end">Toplam Tutar</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
-                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 8 ORDER BY taksit ASC");
-                                          
-                                                foreach( $d as $k => $row ) {
-                                                    $tuof1 = str_replace('.', '', $tuof);
-                                                    $tuof1 = str_replace(',', '.', $tuof1);
-                                                    $vadee1 = str_replace(',', '.', $row["vade"]);
-                                                    $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
-                                                    $taksit = $row["taksit"] != 0 ? $row["taksit"] : 1;
-                                                    $aylik_fiy = $top_fiy / $taksit;
-                                                    $top_fiy12 = number_format($top_fiy, 2, ',', '.'); // Format as 2 decimal places, comma as thousands separator, dot as decimal separator
-                                                    $aylik_fiy12 = number_format($aylik_fiy, 2, ',', '.'); // Same formatting as $top_fiy12
-                                                    ?>
-                                                    <tr>
-                                                        <th class="text-end"><?= $taksit ?></th>
-                                                        <td class="text-end"><?= $aylik_fiy12 ?></td>
-                                                        <td class="text-end"><?= $top_fiy12 ?></td>
-                                                    </tr>
-                                                <?php }
-                                             ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0">
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <h6 style="height: 40px; line-height: 40px">DİĞER KARTLAR</h6>
-                                    </div>
-                                    <div class="mt-3 mb-3 p-3">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-end">Taksit</th>
-                                                <th class="text-end">Taksit Tutarı</th>
-                                                <th class="text-end">Toplam Tutar</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
-                                           $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 19 ORDER BY taksit ASC");
-                                            
-                                                foreach( $d as $k => $row ) {
-                                                    $tuof1 = str_replace('.', '', $tuof);
-                                                    $tuof1 = str_replace(',', '.', $tuof1);
-                                                    $vadee1 = str_replace(',', '.', $row["vade"]);
-                                                    $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
-                                                    $taksit = $row["taksit"] != 0 ? $row["taksit"] : 1;
-                                                    $aylik_fiy = $top_fiy / $taksit;
-                                                    $top_fiy12 = number_format($top_fiy, 2, ',', '.'); // Format as 2 decimal places, comma as thousands separator, dot as decimal separator
-                                                    $aylik_fiy12 = number_format($aylik_fiy, 2, ',', '.'); // Same formatting as $top_fiy12
-                                                    ?>
-                                                    <tr>
-                                                        <th class="text-end"><?= $taksit ?></th>
-                                                        <td class="text-end"><?= $aylik_fiy12 ?></td>
-                                                        <td class="text-end"><?= $top_fiy12 ?></td>
-                                                    </tr>
-                                                <?php }
-                                             ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <?php
+                                    function renderCard($database, $kart_id, $tuof, $img_src, $bg_color = '#fafafa') {
+                                        $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = ? ORDER BY taksit ASC", [$kart_id]);
+                                        ?>
+                                        <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: <?= $bg_color ?>;">
+                                            <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
+                                                <img src="<?= $img_src ?>" style="color:white" width="25%">
+                                            </div>
+                                            <div class="mt-3 mb-3 p-3">
+                                                <table class="table table-light">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-end">Taksit</th>
+                                                            <th class="text-end">Taksit Tutarı</th>
+                                                            <th class="text-end">Toplam Tutar</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php foreach ($d as $row): 
+                                                            $tuof1 = str_replace(['.', ','], ['', '.'], $tuof);
+                                                            $vadee1 = str_replace(',', '.', $row["vade"]);
+                                                            $top_fiy = $tuof1 + ($tuof1 * $vadee1 / 100);
+                                                            $taksit = $row["taksit"] ?: 1;
+                                                            $aylik_fiy = $top_fiy / $taksit;
+                                                            ?>
+                                                            <tr>
+                                                                <th class="text-end"><?= $taksit ?></th>
+                                                                <td class="text-end"><?= number_format($aylik_fiy, 2, ',', '.') ?></td>
+                                                                <td class="text-end"><?= number_format($top_fiy, 2, ',', '.') ?></td>
+                                                            </tr>
+                                                        <?php endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
+
+                                    $cards = [
+                                        ['kart_id' => 3, 'img_src' => 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/axess.svg'],
+                                        ['kart_id' => 5, 'img_src' => 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/world.svg'],
+                                        ['kart_id' => 7, 'img_src' => 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/maximum.svg'],
+                                        ['kart_id' => 1, 'img_src' => 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/bonus-kart.svg'],
+                                        ['kart_id' => 2, 'img_src' => 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/bank-kart.svg']
+                                    ];
+
+                                    foreach ($cards as $card) {
+                                        renderCard($database, $card['kart_id'], $tuof, $card['img_src']);
+                                    }
+                                ?>
                             </div>
                         </div>
                     </div>
