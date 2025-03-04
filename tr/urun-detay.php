@@ -4,7 +4,7 @@ require '../functions/functions.php';
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);   
 
-$currentPage = 'urun-detay';
+$currentPage = 'urundetay';
 $template = new Template('Nokta - Ürün Detay', $currentPage);
 
 $template->head();
@@ -174,32 +174,39 @@ if(isset($_SESSION['id'])) {
 
                         <?php if($urun['proje'] == 0 && $urun['stok'] > 0){ ?>
                             <div class="d-flex align-items-center">
-                                <h2 class="fw-bold mb-0 me-2" style="color:#f29720">
-                                    <?php
-                                    $dovizBirimi = "₺"; // Varsayılan değer
-                                    $fiyat = null;
+                            <h2 class="fw-bold mb-0 me-2" style="color:#f29720">
+                                <?php
+                                $dovizBirimi = "₺"; // Varsayılan değer
+                                $fiyat = null;
 
-                                    // DSF değerleri için döngü
+                                // Session kontrolü
+                                $uye_fiyat = isset($_SESSION['id']) ? $uye_fiyat : 4;
+
+                                // DSF değerleri için döngü
+                                for ($i = 4; $i >= 1; $i--) {
+                                    if (!empty($urun["DSF$i"])) {
+                                        $dovizBirimi = $urun["DOVIZ_BIRIMI"];
+                                        $fiyat = !empty($urun["DSF" . $uye_fiyat]) ? $urun["DSF" . $uye_fiyat] : null;
+                                        break; // İlk bulunan değeri al ve döngüyü kır
+                                    }
+                                }
+
+                                // Eğer fiyat bulunamadıysa, KSF kontrolü yap
+                                if (is_null($fiyat)) {
                                     for ($i = 4; $i >= 1; $i--) {
-                                        if (!empty($urun["DSF$i"])) {
-                                            $dovizBirimi = $urun["DOVIZ_BIRIMI"];
-                                            $fiyat = !empty($urun["DSF" . $uye_fiyat]) ? $urun["DSF" . $uye_fiyat] : null;
-                                            break; // İlk bulunan değeri al ve döngüyü kır
+                                        if (!empty($urun["KSF$i"])) {
+                                            $fiyat = $urun["KSF" . $uye_fiyat];
+                                            break; // İlk bulunan KSF değerini al ve döngüyü kır
                                         }
                                     }
-                                    // Eğer fiyat bulunamadıysa, KSF kontrolü yap
-                                    if (is_null($fiyat)) {
-                                        for ($i = 4; $i >= 1; $i--) {
-                                            if (!empty($urun["KSF$i"])) {
-                                                $fiyat = $urun["KSF" . $uye_fiyat];
-                                                break; // İlk bulunan KSF değerini al ve döngüyü kır
-                                            }
-                                        }
-                                    }
-                                    echo $dovizBirimi;
-                                    echo number_format((float) $fiyat, 2, ',', '');
-                                    ?> + KDV
-                                </h2>
+                                }
+
+                                // Fiyat ve döviz birimini göster
+                                echo $dovizBirimi;
+                                echo number_format((float) $fiyat, 2, ',', '');
+                                ?> + KDV
+                            </h2>
+
                             </div>
                             <?php if ($fiyat ) {
                                 ?>
