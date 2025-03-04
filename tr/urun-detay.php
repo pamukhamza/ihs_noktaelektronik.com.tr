@@ -41,7 +41,7 @@ function getBreadcrumbs($categoryId, $database) {
         if ($categoryData) {
             $breadcrumbs[] = array(
                 'id' => $categoryData['seo_link'],
-                'name' => $categoryData['kategori_adi']
+                'name' => $categoryData['KategoriAdiTr']
             );
             $currentCategory = $categoryData['parent_id'];
         } else {
@@ -164,7 +164,7 @@ echo 'geldi5';
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 ">
                     <div class="bg_fff h-100 shadow-sm ps-4 pt-4 pe-4 pb-2 border">
-                        <h2 class="fs-4 mb-3"><span class="me-2" style="color:#0a90eb"><a class="text-decoration-none" href="tr/urunler?cat=&brand=<?= $urunMar['seo_link'] ?>&filter=&search="><?= $urun['MARKASI'] ?></a></span><?= $urun['UrunAdiTR']; ?></h2>
+                        <h2 class="fs-4 mb-3"><span class="me-2" style="color:#0a90eb"><a class="text-decoration-none" href="tr/urunler?cat=&brand=<?= $urunMar['seo_link'] ?>&filter=&search="><?= $urun['marka_adi'] ?></a></span><?= $urun['UrunAdiTR']; ?></h2>
                         <!--<h5 class="text-body-tertiary fs-6" ><div style="width: 130px; float:left">Ürün Barkodu</div>: <?= $urun['barkod'] ?></h5>-->
                         <!--<h5 class="text-body-tertiary fs-6 " ><div style="width: 130px; float:left">Ürün Markası</div>: <span class="fw-bold fw-italic"></span></h5>-->
                         <h5 class="text-body-tertiary fs-6" ><div style="width: 90px; float:left;">Stok Kodu</div>:<span class="text-black"> <?= $urun['UrunKodu'] ?></span></h5>
