@@ -2,7 +2,7 @@
 require_once '../db.php';
 $db = new Database();
 
-if (isset($_POST['query']) && isset($_POST['uye_id'])) {
+if (isset($_POST['searchQuery']) && isset($_POST['uye_id'])) {
     $search = $_POST['query'];
     $uye_id = $_POST['uye_id'];
 
