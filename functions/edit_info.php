@@ -40,6 +40,34 @@ function uyeAdresEkle() {
     $stmt = $db->prepare($query);
     $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
 }
+function editFavori() {
+    $productId = $_POST['product_id'];
+    $userId = $_POST['uye_id'];
+    if (empty($userId)) {
+        header("Location: ../tr/giris.php");
+        exit(); // Redirect and stop execution
+    }
+    $database = new Database();
+    $checkQuery = "SELECT id FROM nokta_uye_favoriler WHERE uye_id = :uye_id AND urun_id = :urun_id";
+    $checkResult = $database->fetch($checkQuery, ['uye_id' => $userId, 'urun_id' => $productId]);
+    if ($checkResult) {
+        // Product exists, remove it
+        $removeQuery = "DELETE FROM nokta_uye_favoriler WHERE uye_id = :uye_id AND urun_id = :urun_id";
+        if ($database->delete($removeQuery, ['uye_id' => $userId, 'urun_id' => $productId])) {
+            echo "removed";
+        } else {
+            echo "error";
+        }
+    } else {
+        // Product doesn't exist, add it
+        $insertQuery = "INSERT INTO nokta_uye_favoriler (uye_id, urun_id) VALUES (:uye_id, :urun_id)";
+        if ($database->insert($insertQuery, ['uye_id' => $userId, 'urun_id' => $productId])) {
+            echo "added";
+        } else {
+            echo "error";
+        }
+    }
+}
 //////////////////////////////////////////////////
 //////////KULLANILANLAR YUKARIDA//////////////////
 //////////////////////////////////////////////////
@@ -400,36 +428,7 @@ function editBannerVideo() {
         $stmt->execute([$bLink, $image, $aktif]);
     }
 }
-function editFavori() {
-    $productId = $_POST['product_id'];
-    $userId = $_POST['uye_id'];
-    if(empty($userId)){
-        header("Location:../giris.php?lang=tr");
-        exit(); // Terminate script after redirect
-    }
-    else{
-        global $db;
-            $checkQuery = "SELECT id FROM nokta_uye_favoriler WHERE uye_id = ? AND urun_id = ?";
-            $checkStatement = $db->prepare($checkQuery);
-            $checkStatement->execute([$userId, $productId]);
 
-            if ($checkStatement->rowCount() > 0) {
-                // Product is already in favorites, remove it
-                $removeQuery = "DELETE FROM nokta_uye_favoriler WHERE uye_id = ? AND urun_id = ?";
-                $removeStatement = $db->prepare($removeQuery);
-                $removeStatement->execute([$userId, $productId]);
-
-                echo "removed";
-            } else {
-                // Product is not in favorites, add it
-                $insertQuery = "INSERT INTO nokta_uye_favoriler (uye_id, urun_id) VALUES (?, ?)";
-                $insertStatement = $db->prepare($insertQuery);
-                $insertStatement->execute([$userId, $productId]);
-
-                echo "added";
-            }
-    }
-}
 function uyeAdresDuzenle() {
     $adresId = controlInput($_POST['adresId']);
     $adres_basligi = controlInput($_POST['adres_basligi']);
