@@ -1,5 +1,12 @@
 <?php
 require_once 'db.php';
+function controlInput($data) {
+    // Veri temizleme işlemi
+    $data = trim($data);               // Baş ve son boşlukları temizler
+    $data = stripslashes($data);       // Yalnızca kaçış karakterlerini temizler
+    $data = htmlspecialchars($data);  // HTML karakterlerini temizler
+    return $data;
+}
 
 function sepeteFavoriEkle() {
     $urun_id = $_POST['urun_id'];
