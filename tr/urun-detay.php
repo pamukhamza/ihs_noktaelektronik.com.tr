@@ -643,7 +643,7 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 3 ORDER BY taksit ASC"); $q -> execute(  );
+                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 3 ORDER BY taksit ASC");
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
                                                     $tuof1 = str_replace(',', '.', $tuof1);
@@ -680,7 +680,7 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 5 ORDER BY taksit ASC"); $q -> execute(  );
+                                            $d = $database->fetchAll("SELECT * FROM b2b_banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 5 ORDER BY taksit ASC");
                                             
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
@@ -718,8 +718,8 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 7 ORDER BY taksit ASC"); $q -> execute(  );
-                                            if ( $d = $q->fetchAll() ){
+                                            $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 7 ORDER BY taksit ASC");
+                                            
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
                                                     $tuof1 = str_replace(',', '.', $tuof1);
@@ -736,7 +736,7 @@ if(isset($_SESSION['id'])) {
                                                         <td class="text-end"><?= $top_fiy12 ?></td>
                                                     </tr>
                                                 <?php }
-                                            } ?>
+                                            ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -756,8 +756,8 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 1 ORDER BY taksit ASC"); $q -> execute(  );
-                                            if ( $d = $q->fetchAll() ){
+                                            $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 1 ORDER BY taksit ASC");
+                                            
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
                                                     $tuof1 = str_replace(',', '.', $tuof1);
@@ -774,7 +774,7 @@ if(isset($_SESSION['id'])) {
                                                         <td class="text-end"><?= $top_fiy12 ?></td>
                                                     </tr>
                                                 <?php }
-                                            } ?>
+                                             ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -794,8 +794,8 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 8 ORDER BY taksit ASC"); $q -> execute(  );
-                                            if ( $d = $q->fetchAll() ){
+                                            $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 8 ORDER BY taksit ASC");
+                                          
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
                                                     $tuof1 = str_replace(',', '.', $tuof1);
@@ -812,7 +812,7 @@ if(isset($_SESSION['id'])) {
                                                         <td class="text-end"><?= $top_fiy12 ?></td>
                                                     </tr>
                                                 <?php }
-                                            } ?>
+                                             ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -832,8 +832,8 @@ if(isset($_SESSION['id'])) {
                                             </thead>
                                             <tbody>
                                             <?php
-                                            $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 19 ORDER BY taksit ASC"); $q -> execute(  );
-                                            if ( $d = $q->fetchAll() ){
+                                           $d = $database->fetchAll("SELECT * FROM banka_taksit_eslesme WHERE aktif = 1 AND kart_id = 19 ORDER BY taksit ASC");
+                                            
                                                 foreach( $d as $k => $row ) {
                                                     $tuof1 = str_replace('.', '', $tuof);
                                                     $tuof1 = str_replace(',', '.', $tuof1);
@@ -850,7 +850,7 @@ if(isset($_SESSION['id'])) {
                                                         <td class="text-end"><?= $top_fiy12 ?></td>
                                                     </tr>
                                                 <?php }
-                                            } ?>
+                                             ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -870,9 +870,8 @@ if(isset($_SESSION['id'])) {
                     <div class="splide__track">
                         <ul class="splide__list">
                             <?php
-                            $q = $db->prepare("SELECT * FROM nokta_urunler WHERE aktif = 1 AND KategoriID = $categoryId ORDER BY id ASC LIMIT 15;");
-                            $q->execute();
-                            if ($d = $q->fetchAll()) {
+                            $d = $database->fetchAll("SELECT * FROM nokta_urunler WHERE aktif = 1 AND KategoriID = $categoryId ORDER BY id ASC LIMIT 15;");
+
                                 foreach ($d as $k => $row) {
                                     // Ürün resmini getirmek için yeni bir sorgu
                                     $resim_sorgusu = $db->prepare("SELECT * FROM nokta_urunler_resimler WHERE urun_id = :BLKODU ORDER BY sira ASC LIMIT 1");
@@ -929,7 +928,7 @@ if(isset($_SESSION['id'])) {
                                             </div>
                                         </div>
                                     </li>
-                                <?php }} ?>
+                                <?php } ?>
                         </ul>
                     </div>
                 </div>
