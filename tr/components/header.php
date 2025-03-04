@@ -310,13 +310,14 @@ function liveSearch(searchQuery) {
                 dropdownMenu.empty(); // Clear previous results
                 if (results.length > 0) {
                     results.forEach(function(result) {
-                        dropdownMenu1.append(`
-                            <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
-                                <img src="assets/images/urunler/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;"> ${result.UrunAdiTR} - ${result.UrunKodu}
+                        dropdownMenu.append(`
+                            <a class="dropdown-item rounded-5" href="tr/urunler/${result.seo_link}">
+                                <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;">
+                                <span style="font-weight:bold;">${result.UrunKodu}</span> - ${result.UrunAdiTR}
                             </a>
                         `);
                     });
-                    dropdownMenu1.show(); // Show results
+                    dropdownMenu.show(); // Show results
                 } else {
                     dropdownMenu.hide(); // Hide if no results
                 }
