@@ -128,14 +128,14 @@ $database = new Database();
                     dropdownMenu1.empty(); // Önceki sonuçları temizle
                     if (results.length > 0) {
                         results.forEach(function(result) {
-                            dropdownMenu.append(`
+                            dropdownMenu1.append(`
                                 <a class="dropdown-item rounded-5" href="tr/urunler/${result.seo_link}">
                                     <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;">
                                     <span style="font-weight:bold;">${result.UrunKodu}</span> - ${result.UrunAdiTR}
                                 </a>
                             `);
                         });
-                        dropdownMenu.show(); // Show 
+                        dropdownMenu1.show(); // Show 
                     } else {
                         dropdownMenu1.hide(); // Sonuç yoksa gizle
                     }

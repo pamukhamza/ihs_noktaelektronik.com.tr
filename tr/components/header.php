@@ -305,7 +305,7 @@ function liveSearch(searchQuery) {
             method: 'POST',
             data: { searchQuery: searchQuery },
             success: function(response) {
-                var results = response;  // No need for JSON.parse() anymore
+                var results = response;
                 var dropdownMenu = $('#liveSearchResults');
                 dropdownMenu.empty(); // Clear previous results
                 if (results.length > 0) {
