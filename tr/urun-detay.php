@@ -3,8 +3,9 @@ require '../functions/admin_template.php';
 require '../functions/functions.php';
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);   
-$currentPage = 'tdp';
-$template = new Template('Nokta - Teknik Destek Programı', $currentPage);
+
+$currentPage = 'urun-detay';
+$template = new Template('Nokta - Ürün Detay', $currentPage);
 
 $template->head();
 $database = new Database();
@@ -13,7 +14,7 @@ $urun_seo = $_GET['id'];
 $urun = $database->fetch("SELECT u.*, m.seo_link AS marka_seo, m.title AS marka_adi 
                             FROM nokta_urunler u
                             LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id
-                            WHERE u.seo_link = :id ", ['id' => $urun_seo]);
+                            WHERE u.seo_link = $urun_seo ");
 $urunId = $urun['id'];
 $BLKODU = $urun['BLKODU'];
 ////////////////////////////////////////////////
@@ -24,7 +25,7 @@ if ($cok_goren === null || $cok_goren === '') {
 }
 $cok_goren++;
 // cok_goren değerini güncelle
-$database ->update("UPDATE nokta_urunler SET cok_goren = :cok_goren WHERE id = :id", ['id' => $urunId ,'cok_goren' => $cok_goren]);
+$database ->update("UPDATE nokta_urunler SET cok_goren = $cok_goren WHERE id = $urunId");
 ///////////////////////////////////////////////////////////////////////////////
 
 $kategoriIDs = explode(',', $urun['KategoriID']);
