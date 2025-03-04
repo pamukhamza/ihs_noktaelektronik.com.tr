@@ -534,7 +534,7 @@ if(isset($_SESSION['id'])) {
             <div class="tab-content bg-light" id="nav-tabContent">
                 <div class="p-4 border tab-pane fade show active bg_fff" id="nav-genel" role="tabpanel" aria-labelledby="nav-genel-tab" tabindex="0" style="text-align: justify;">
                     <div class="col-12 d-flex justify-content-center">
-                        <div class="col-md-12 col-lg-9 text-center"><?= $urun['OzellikTR']; ?></div>
+                        <div class="col-md-12 col-lg-9 text-center"><?= $urun['OzelliklerTR']; ?></div>
                     </div>
                 </div>
                 <div class="p-4 border tab-pane fade bg_fff" id="nav-teknik" role="tabpanel" aria-labelledby="nav-teknik-tab" tabindex="0">
