@@ -116,53 +116,34 @@ $database = new Database();
 <script src="assets/js/jquery-1.7.2.min.js"></script>
 <script src="assets/js/alert.js"></script>
 <script>
-function livestock(searchQuery) {
-    if (searchQuery.length >= 3) {
-        $.ajax({
-            url: 'functions/urunler/searchStock.php',
-            method: 'POST',
-            data: { searchQuery: searchQuery },
-            success: function(response) {
-                try {
-                    // Yanıtın boş olmasını kontrol et
-                    if (!response || typeof response !== 'object') {
-                        console.error('Invalid JSON response:', response);
-                        return;
-                    }
-
+    function livestock(searchQuery) {
+        if (searchQuery.length >= 3) {
+            $.ajax({
+                url: 'functions/urunler/searchStock.php',
+                method: 'POST',
+                data: { searchQuery: searchQuery },
+                success: function(response) {
+                    var results = JSON.parse(response);
                     var dropdownMenu1 = $('#liveStockResults');
-                    dropdownMenu1.empty();
-
-                    if (Array.isArray(response) && response.length > 0) {
-                        response.forEach(function(result) {
-                            var imgSrc = result.KResim ? `assets/images/urunler/${result.KResim}` : 'assets/images/no-image.png';
+                    dropdownMenu1.empty(); // Önceki sonuçları temizle
+                    if (results.length > 0) {
+                        results.forEach(function(result) {
                             dropdownMenu1.append(`
-                                <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
-                                    <img src="${imgSrc}" alt="" style="max-width: 50px; margin-right: 10px;">
-                                    ${result.UrunAdiTR} - ${result.BLKODU}
-                                </a>
-                            `);
+                                    <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
+                                        <img src="assets/images/urunler/${result.KResim}" alt="" style="max-width: 50px; margin-right: 10px;"> ${result.UrunAdiTR} - ${result.UrunKodu}
+                                    </a>
+                                `);
                         });
-                        dropdownMenu1.show();
+                        dropdownMenu1.show(); // Sonuçları göster
                     } else {
-                        dropdownMenu1.hide(); // Boş sonuçsa gizle
+                        dropdownMenu1.hide(); // Sonuç yoksa gizle
                     }
-                } catch (e) {
-                    console.error("JSON parse error:", e);
-                    console.error("Response:", response);
                 }
-            },
-            error: function(xhr) {
-                console.error("Ajax request failed. Status:", xhr.status);
-                console.error("Response:", xhr.responseText);
-            }
-        });
-    } else {
-        $('#liveStockResults').empty().hide();
+            });
+        } else {
+            $('#liveStockResults').empty().hide(); // 3 harften az ise sonuçları temizle ve gizle
+        }
     }
-}
-
-
 </script>
 <script>
     function downloadFile(url, newFilename) {
