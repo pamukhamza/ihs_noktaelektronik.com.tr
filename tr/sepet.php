@@ -378,7 +378,7 @@ if(isset($_GET['hata']) && $_GET['hata'] == 0) {
                                 <label class="form-check-label custom-option-content" for="customRadioDelivery3">
                                     <span class="custom-option-body">
                                         <!--<i class="bx bxl-telegram bx-lg"></i>-->
-                                        <img src="assets/images/kargo-icon.svg" width="140px">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/ikons/kargo-icon.svg" width="140px">
                                         <span class="custom-option-title mb-1 mt-3">Yurtiçi Kargo</span>
                                         <small>₺</small>
                                         <small class="kargo_ucreti">0.00</small>
