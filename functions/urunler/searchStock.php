@@ -1,13 +1,13 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+header('Content-Type: application/json');
+
 require_once '../db.php';
 $db = new Database();
 
-header('Content-Type: application/json');
-
 if (isset($_POST['searchQuery'])) {
-    $search = $_POST['searchQuery'];
+    $search = trim($_POST['searchQuery']);
 
     try {
         $result = $db->fetchAll("
@@ -27,5 +27,6 @@ if (isset($_POST['searchQuery'])) {
     }
     exit;
 }
-echo json_encode([]);
+
+echo json_encode(['error' => 'Invalid request']);
 ?>

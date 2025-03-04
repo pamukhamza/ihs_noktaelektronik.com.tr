@@ -127,11 +127,12 @@ function livestock(searchQuery) {
                     var results = JSON.parse(response);
                     var dropdownMenu1 = $('#liveStockResults');
                     dropdownMenu1.empty();
+
                     if (results.length > 0) {
                         results.forEach(function(result) {
                             dropdownMenu1.append(`
                                 <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
-                                    <img src="assets/images/urunler/${result.resim}" alt="" style="max-width: 50px; margin-right: 10px;"> 
+                                    <img src="assets/images/urunler/${result.resim}" alt="" style="max-width: 50px; margin-right: 10px;">
                                     ${result.UrunAdiTR} - ${result.BLKODU}
                                 </a>
                             `);
@@ -142,10 +143,12 @@ function livestock(searchQuery) {
                     }
                 } catch (e) {
                     console.error("JSON parse error:", e);
+                    console.error("Response:", response); // Yanıtı kontrol edelim
                 }
             },
-            error: function() {
-                console.error("Ajax request failed.");
+            error: function(xhr) {
+                console.error("Ajax request failed. Status:", xhr.status);
+                console.error("Response:", xhr.responseText);
             }
         });
     } else {
