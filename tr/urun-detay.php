@@ -83,6 +83,7 @@ if(isset($_SESSION['id'])) {
     .sepetEkleBtn{background-color: #FC9803; color:white;}
     .sepetEkleBtn:hover{background-color: #430666;color:white;}
 </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
 <body>
 <?php $template->header(); ?>
 <nav aria-label="breadcrumb" class="mt-3 container">
