@@ -12,11 +12,11 @@ if (isset($_POST['searchQuery'])) {
     try {
         $result = $db->fetchAll("
             SELECT DISTINCT n.id, n.BLKODU, n.UrunAdiTR, n.stok, 
-                            (SELECT r.resim 
+                            (SELECT r.KResim 
                              FROM nokta_urunler_resimler r 
                              WHERE r.urun_id = n.id 
                              ORDER BY r.id ASC 
-                             LIMIT 1) as resim,
+                             LIMIT 1) as KResim,
                             m.title as marka_adi 
             FROM nokta_urunler n 
             LEFT JOIN nokta_urun_markalar m ON n.MarkaID = m.id 

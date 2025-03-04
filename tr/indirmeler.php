@@ -135,7 +135,7 @@ function livestock(searchQuery) {
 
                     if (Array.isArray(response) && response.length > 0) {
                         response.forEach(function(result) {
-                            var imgSrc = result.resim ? `assets/images/urunler/${result.resim}` : 'assets/images/no-image.png';
+                            var imgSrc = result.KResim ? `assets/images/urunler/${result.KResim}` : 'assets/images/no-image.png';
                             dropdownMenu1.append(`
                                 <a class="dropdown-item rounded-5" href="tr/indirmeler?urun=${result.id}">
                                     <img src="${imgSrc}" alt="" style="max-width: 50px; margin-right: 10px;">
