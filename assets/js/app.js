@@ -102,8 +102,9 @@ function ebultenKaydet() {
     $.ajax({
         type: "POST",
         url: "functions/edit_info.php",  // Dosya yolu doğru mu?
-        data: { ebulten_mail: email, type: 'ebulten_kaydet' },
-        dataType: 'json',
+        data: { 'ebulten_mail': email,
+                type: 'ebulten_kaydet'},
+        
         success: function(response) {
             console.log(response);
             if (response.cvp !== "success") {
