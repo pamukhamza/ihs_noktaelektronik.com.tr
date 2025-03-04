@@ -129,8 +129,8 @@ if(isset($_SESSION['id'])) {
                                         ?>
                                         <li class="splide__slide d-flex align-items-center justify-content-center">
                                             <div>
-                                                <a href="assets/images/urunler/gorsel_hazirlaniyor.jpg" data-lightbox="product-images">
-                                                    <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" height="auto" width="100%">
+                                                <a href="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg" data-lightbox="product-images">
+                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg" height="auto" width="100%">
                                                 </a>
                                             </div>
                                         </li>
@@ -140,11 +140,11 @@ if(isset($_SESSION['id'])) {
                                         foreach($d as $k => $row) {
                                             ?>
                                             <li class="splide__slide d-flex align-items-center justify-content-center">
-                                                <a href="assets/images/urunler/<?= $row["KResim"]; ?>" data-lightbox="product-images">
+                                                <a href="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $row["KResim"]; ?>" data-lightbox="product-images">
                                                     <?php if(empty($row['KResim'])){ ?>
-                                                        <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" height="auto" width="100%">
+                                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg" height="auto" width="100%">
                                                     <?php }else{ ?>
-                                                        <img src="assets/images/urunler/<?= $row["KResim"]; ?>" height="auto" width="100%">
+                                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $row["KResim"]; ?>" height="auto" width="100%">
                                                     <?php } ?>
                                                 </a>
                                             </li>
@@ -352,7 +352,7 @@ if(isset($_SESSION['id'])) {
                                                 foreach ($fot as $k => $resim) {
                                                     if (empty($resim['KResim'])) {
                                                         ?>
-                                                        <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
+                                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
                                                         <?php
                                                     } else {
                                                         $renkler = [
@@ -370,7 +370,7 @@ if(isset($_SESSION['id'])) {
                                                         //echo '<a class="rounded-0 mt-1 me-1 border-0 p-2 text-decoration-none btn btn-sm btn-secondary" style="background-color: ' . $arkaPlanRenk . ';" href="assets/images/urunler/' . $resim['foto'] . '">' . $renk . '</a>';
                                                         ?>
 
-                                                        <img src="assets/images/urunler/<?= $resim['KResim'] ?>" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
+                                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $resim['KResim'] ?>" width="50px" height="50px" class="img-fluid rounded-2 mt-1 border rounded-2">
                                                         <?php
                                                     }
                                                 }
@@ -490,12 +490,12 @@ if(isset($_SESSION['id'])) {
                                             <div class="row">
                                                 <?php if(empty($sepeturun['KResim'])){ ?>
                                                     <a href="tr/urunler/<?= $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
-                                                        <img src="assets/images/urunler/gorsel_hazirlaniyor.jpg" style="width: 70px; border:1px solid lightgrey; border-radius: 6px">
+                                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg" style="width: 70px; border:1px solid lightgrey; border-radius: 6px">
                                                     </a>
                                                 <?php }else{ ?>
                                                     <div class="col-3">
                                                         <a href="tr/urunler/<?= $sepeturun['seo_link'] ; ?>" class="text-body text-decoration-none">
-                                                            <img src="assets/images/urunler/<?= $sepeturun["KResim"]; ?>" style="width: 50px; border:1px solid lightgrey; border-radius: 6px">
+                                                            <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $sepeturun["KResim"]; ?>" style="width: 50px; border:1px solid lightgrey; border-radius: 6px">
                                                         </a>
                                                     </div>
                                                 <?php } ?>
@@ -637,7 +637,7 @@ if(isset($_SESSION['id'])) {
                             <div class="row">
                                 <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: #fafafa">
                                     <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="assets/images/banka_logolar/axess.svg" style="color:white" width="25%">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/axess.svg" style="color:white" width="25%">
                                     </div>
                                     <div class="mt-3 mb-3 p-3">
                                         <table class="table table-light">
@@ -674,7 +674,7 @@ if(isset($_SESSION['id'])) {
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0">
                                     <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="assets/images/banka_logolar/world.svg" style="color:white" width="25%">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/world.svg" style="color:white" width="25%">
                                     </div>
                                     <div class="mt-3 mb-3 p-3">
                                         <table class="table">
@@ -712,7 +712,7 @@ if(isset($_SESSION['id'])) {
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: #fafafa">
                                     <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="assets/images/banka_logolar/maximum.svg" style="color:white" width="25%">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/maximum.svg" style="color:white" width="25%">
                                     </div>
                                     <div class="mt-3 mb-3 p-3">
                                         <table class="table table-light">
@@ -750,7 +750,7 @@ if(isset($_SESSION['id'])) {
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0">
                                     <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="assets/images/banka_logolar/bonus-kart.svg" style="color:white" width="25%">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/bonus-kart.svg" style="color:white" width="25%">
                                     </div>
                                     <div class="mt-3 mb-3 p-3">
                                         <table class="table">
@@ -788,7 +788,7 @@ if(isset($_SESSION['id'])) {
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 card rounded-0 border-0 p-0" style="background-color: #fafafa">
                                     <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 40px;background-color: #ecedee;">
-                                        <img src="assets/images/banka_logolar/bank-kart.svg" style="color:white" width="25%">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/bank-kart.svg" style="color:white" width="25%">
                                     </div>
                                     <div class="mt-3 mb-3 p-3">
                                         <table class="table table-light">
@@ -882,7 +882,8 @@ if(isset($_SESSION['id'])) {
                                 foreach ($d as $row) {
                                     // Ürün resmini getirmek için sorgu
                                     $resim = $database->fetch("SELECT * FROM nokta_urunler_resimler WHERE UrunID = :urun_id ORDER BY sira ASC LIMIT 1", ['urun_id' => $row['id']]);
-                                    $resim_yolu = $resim ? "assets/images/urunler/" . $resim["KResim"] : "assets/images/gorsel_hazirlaniyor.jpg";
+                                    $resim_yolu = $resim ? "https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/" . $resim["KResim"] 
+                                    : "https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg";
 
                                     // Marka bilgisi
                                     $marka = $database->fetch("SELECT * FROM nokta_urun_markalar WHERE id = :id", ['id' => $row['MarkaID']]);
