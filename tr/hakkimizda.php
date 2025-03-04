@@ -67,6 +67,7 @@ $database = new Database();
 <script src="bootstrap/bootstrap.bundle.min.js"></script>
 <script src="assets/js/jquery-3.7.0.min.js"></script>
 <script src="assets/js/alert.js"></script>
+<script src="assets/js/app.js"></script>
 <script src="assets/js/wow.min.js"></script>
 <script src="assets/js/easing.min.js"></script>
 <script src="assets/js/waypoints.min.js"></script>

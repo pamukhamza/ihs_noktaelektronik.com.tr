@@ -101,7 +101,7 @@ function ebultenKaydet() {
     var email = $("#ebulten_mail").val();
     $.ajax({
         type: "POST",
-        url: "function/edit_info.php",
+        url: "functions/edit_info.php",
         data: {ebulten_mail: email, type: 'ebulten_kaydet'},
         dataType: 'json',
         success: function(response) {
