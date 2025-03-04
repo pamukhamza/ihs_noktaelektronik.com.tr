@@ -1,23 +1,20 @@
 <?php
 require_once '../db.php';
 
-if (isset($_POST['searchQuery'])) {
+if (isset($_POST['searchQuery']) && isset($_POST['uye_id'])) {
     $db = new Database();
     $search = $_POST['searchQuery'];
     $uye_id = $_POST['uye_id'];
 
-    // Search products
-    $result = $db->fetchAll("SELECT DISTINCT n.seo_link, n.id, m.title as marka_adi 
+    $result = $db->fetchAll("SELECT DISTINCT n.seo_link, n.id, n.UrunAdiTR, n.UrunKodu, m.title as marka_adi 
                             FROM nokta_urunler n 
                             LEFT JOIN nokta_urun_markalar m ON n.MarkaID = m.id 
                             WHERE (n.UrunAdiTR LIKE :search OR n.UrunKodu LIKE :search OR m.title LIKE :search) 
                             AND n.web_comtr = '1' 
                             ORDER BY n.UrunAdiTR ASC 
                             LIMIT 10", ['search' => '%' . $search . '%']);
-    echo $result;
-    // Prepare the response array
-    $response = [];
 
+    $response = [];
     if (!empty($result)) {
         foreach ($result as $row) {
             // Get product image
@@ -27,8 +24,8 @@ if (isset($_POST['searchQuery'])) {
             // Push data to the response array
             $response[] = [
                 'seo_link' => $row['seo_link'],
-                'UrunKodu' => $row['UrunKodu'],  // Add this if needed for search result
-                'UrunAdiTR' => $row['UrunAdiTR'],
+                'UrunKodu' => $row['UrunKodu'],  // Now included in the SELECT query
+                'UrunAdiTR' => $row['UrunAdiTR'], // Now included in the SELECT query
                 'MarkaAdi' => $row['marka_adi'],
                 'KResim' => $resim
             ];
