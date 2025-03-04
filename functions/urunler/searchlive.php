@@ -1,9 +1,10 @@
 <?php
 require_once '../db.php';
-$db = new Database();
 
 if (isset($_POST['searchQuery'])) {
-    $search = $_POST['query'];
+    
+    $db = new Database();
+    $search = $_POST['searchQuery'];
     $uye_id = $_POST['uye_id'];
 
     // Search products
