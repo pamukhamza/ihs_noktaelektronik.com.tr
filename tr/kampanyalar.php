@@ -16,11 +16,11 @@ if (isset($_GET['camp'])) {
     $urun_id_list = $kampanya_row['urun_id'] ?? '';
     $urun_adi_kamp = $kampanya_row['ad'] ?? '';
 
-    $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.foto
+    $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.KResim
                           FROM nokta_urunler u
                           LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                           LEFT JOIN (
-                              SELECT urun_id, MIN(foto) AS foto
+                              SELECT urun_id, MIN(KResim) AS KResim
                               FROM nokta_urunler_resimler
                               WHERE sira = 1
                               GROUP BY urun_id
@@ -34,11 +34,11 @@ if (isset($_GET['camp'])) {
     $urun_idler = array_column($kampanyalar, 'urun_id');
     $urun_id_list = implode(',', $urun_idler);
 
-    $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.foto
+    $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.KResim
                       FROM nokta_urunler u
                       LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                       LEFT JOIN (
-                            SELECT UrunID, MIN(foto) AS foto
+                            SELECT UrunID, MIN(KResim) AS KResim
                             FROM nokta_urunler_resimler
                             WHERE sira = 1
                             GROUP BY UrunID
@@ -46,11 +46,11 @@ if (isset($_GET['camp'])) {
                       WHERE u.web_comtr = 1
                       AND FIND_IN_SET(u.id, :urun_id_list)";
 
-    $ozel_kodu1_sql = "SELECT DISTINCT u.*, m.title AS marka_adi, r.foto
+    $ozel_kodu1_sql = "SELECT DISTINCT u.*, m.title AS marka_adi, r.KResim
                    FROM nokta_urunler u
                    LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                    LEFT JOIN (
-                       SELECT UrunID, MIN(foto) AS foto
+                       SELECT UrunID, MIN(KResim) AS KResim
                        FROM nokta_urunler_resimler
                        WHERE sira = 1
                        GROUP BY UrunID
@@ -145,7 +145,7 @@ if (isset($_GET['camp'])) {
                         <div class="card urun-card rounded-0 shadow-sm p-0 mx-1 mt-1 mb-1">
                             <a href="tr/urunler/<?= $row['seo_link']; ?>">
                                 <div class="w-100 d-flex align-items-center" style="height: 245px;overflow: hidden">
-                                    <img src="<?php echo !empty($row['foto']) ? 'assets/images/urunler/'.$row['foto'] : 'assets/images/urunler/gorsel_hazirlaniyor.jpg'; ?>" class="card-img-top img-fluid">
+                                    <img src="<?php echo !empty($row['KResim']) ? 'assets/images/urunler/'.$row['KResim'] : 'assets/images/urunler/gorsel_hazirlaniyor.jpg'; ?>" class="card-img-top img-fluid">
                                 </div>
                             </a>
                             <div class="card-body d-flex flex-column"><!--
