@@ -739,7 +739,7 @@ function getBreadcrumbs($kategori, $database) {
                                     </button><?php 
                                 } ?>
                             </div>
-                            <i class="fa-regular fa-heart fa-xl favori-icon favori-buton favori-style" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Favorilere Ekle!" data-product-id="<?php global $urunId; echo $urunId; ?>"></i>
+                            <i class="fa-regular fa-heart fa-xl favori-icon favori-buton favori-style" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Favorilere Ekle!" data-product-id="<?= $row['id']; ?>"></i>
                         </div><?php 
                     } 
                 } else { ?>
@@ -803,7 +803,7 @@ function getBreadcrumbs($kategori, $database) {
                             <div class="col-sm-12">
                                 <label for="teklif_nedeni" class="form-label">Açıklama</label>
                                 <input type="text" id="uye_id" value="<?= $_SESSION["id"]; ?>" hidden>
-                                <input type="text" id="urun_no" value="<?= $urunId ?>" hidden>
+                                <input type="text" id="urun_no" value="<?= $row['id']; ?>" hidden>
                                 <textarea type="text" class="form-control" id="teklif_nedeni" required></textarea>
                             </div>
                         </div>
