@@ -38,11 +38,11 @@ if (isset($_GET['camp'])) {
                       FROM nokta_urunler u
                       LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                       LEFT JOIN (
-                            SELECT urun_id, MIN(foto) AS foto
+                            SELECT UrunID, MIN(foto) AS foto
                             FROM nokta_urunler_resimler
                             WHERE sira = 1
-                            GROUP BY urun_id
-                        ) r ON u.BLKODU = r.urun_id
+                            GROUP BY UrunID
+                        ) r ON u.id = r.UrunID
                       WHERE u.web_comtr = 1
                       AND FIND_IN_SET(u.id, :urun_id_list)";
 
@@ -50,11 +50,11 @@ if (isset($_GET['camp'])) {
                    FROM nokta_urunler u
                    LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
                    LEFT JOIN (
-                       SELECT urun_id, MIN(foto) AS foto
+                       SELECT UrunID, MIN(foto) AS foto
                        FROM nokta_urunler_resimler
                        WHERE sira = 1
-                       GROUP BY urun_id
-                   ) r ON u.BLKODU = r.urun_id
+                       GROUP BY UrunID
+                   ) r ON u.id = r.UrunID
                    WHERE u.web_comtr = 1
                    AND u.OZEL_KODU1 = 'Kampanyalı Ürünler'";
 
