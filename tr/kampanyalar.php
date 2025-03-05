@@ -6,6 +6,7 @@ $template = new Template('Nokta - Kampanyalar', $currentPage);
 
 $template->head();
 
+$db = new Database();
 if (isset($_GET['camp'])) {
     $camp = $_GET['camp'];
     
