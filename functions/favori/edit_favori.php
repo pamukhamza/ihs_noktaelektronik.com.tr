@@ -10,7 +10,7 @@ $database = new Database();
     }
     else{
         $checkStatement = $database->fetch("SELECT id FROM nokta_uye_favoriler WHERE uye_id = $userId AND urun_id = $productId");
-        if ($checkStatement) {
+        if (!empty($checkStatement)) {
             $database ->delete("DELETE FROM nokta_uye_favoriler WHERE uye_id = $userId AND urun_id = $productId");
             echo "removed";
         } else {
