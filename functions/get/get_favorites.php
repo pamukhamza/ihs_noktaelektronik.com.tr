@@ -1,5 +1,6 @@
 <?php
-require_once '../db.php';
+require '../admin_template.php';
+require '../functions.php';
 $db = new Database();
 
 $userId = $_SESSION['id'];
