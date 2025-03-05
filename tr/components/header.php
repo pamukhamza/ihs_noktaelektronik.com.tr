@@ -81,7 +81,7 @@
         <header class="p-1 bg-white menu-border">
             <nav class="navbar navbar-expand-lg ">
                 <div class="container">
-                    <a href="https://www.noktaelektronik.com.tr/tr" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
                         <span class="fs-4"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/logo_new.png" alt=""></span>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
