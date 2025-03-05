@@ -325,7 +325,7 @@ if (isset($_GET['camp'])) {
             // Send an AJAX request to the server to add the product to the favorites
             $.ajax({
                 type: 'POST',
-                url: 'functions/edit_info.php',
+                url: 'functions/favori/edit_favori.php',
                 data: {
                     product_id: productId,
                     uye_id: uye_id,
@@ -365,7 +365,7 @@ if (isset($_GET['camp'])) {
         // Fetch the list of favorite products using AJAX
         $.ajax({
             type: 'GET',
-            url: 'functions/favori/get_favorites.php',
+            url: 'functions/get/get_favorites.php',
             dataType: 'json',
             success: function (favoriteProducts) {
                 // Iterate through the favorite products and update their classes
