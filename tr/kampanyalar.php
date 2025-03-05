@@ -319,6 +319,7 @@ if (isset($_GET['camp'])) {
             var iconElement = $(this).find('.favori-icon'); // Assuming the icon is inside the favori-buton
             var uye_id = <?= $_SESSION["id"] ?>;
             var productId = $(this).data('product-id');
+            alert(productId);
             var type = 'favori';
             // Store the reference to $(this) in a variable for later use
             var that = $(this);
