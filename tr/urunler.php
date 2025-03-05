@@ -9,6 +9,7 @@ $template->head();
 $database = new Database();
 
 $kategori = $_GET['cat'] ?? '';
+$cat = $kategori;
 $marka = $_GET['brand'] ?? '';
 $ozellikler = $_GET['filter'] ?? '';
 $arama = $_GET['search'] ?? '';
@@ -221,7 +222,7 @@ function getBreadcrumbs($kategori, $database) {
                 <h5 class="border-bottom p-2">Kategori</h5>
                 <ul class="list-unstyled ps-0 kategori-effect">
                     <?php
-                           if (empty($cat)) {
+                        if (empty($cat)) {
                             if (empty($brand)) {
                                 // Kategori yok, marka yok
                                 $kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 0 ORDER BY sira";

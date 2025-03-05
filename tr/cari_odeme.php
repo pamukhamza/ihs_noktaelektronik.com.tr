@@ -465,7 +465,6 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
         const form = document.createElement('form');
         form.method = 'post';
         form.action = action;
-        
         for (const [name, value] of Object.entries(fields)) {
             if (value !== undefined) {
                 const input = document.createElement('input');
