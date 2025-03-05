@@ -46,19 +46,6 @@ if (isset($_GET['camp'])) {
                       WHERE u.web_comtr = 1
                       AND FIND_IN_SET(u.id, :urun_id_list)";
 
-    $ozel_kodu1_sql = "SELECT DISTINCT u.*, m.title AS marka_adi, r.KResim
-                   FROM nokta_urunler u
-                   LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
-                   LEFT JOIN (
-                       SELECT UrunID, MIN(KResim) AS KResim
-                       FROM nokta_urunler_resimler
-                       WHERE sira = 1
-                       GROUP BY UrunID
-                   ) r ON u.id = r.UrunID
-                   WHERE u.web_comtr = 1
-                   AND u.OZEL_KODU1 = 'Kampanyalı Ürünler'";
-
-    $nokta_urunler_sql = "$nokta_urunler_sql UNION $ozel_kodu1_sql";
     $nokta_urunler = $db->fetchAll($nokta_urunler_sql, ['urun_id_list' => $urun_id_list]);
 }
 ?>
