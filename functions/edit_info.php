@@ -1,5 +1,6 @@
 <?php
 require_once 'db.php';
+require_once 'functions.php';
 function controlInput($data) {
     // Veri temizleme işlemi
     $data = trim($data);               // Baş ve son boşlukları temizler
