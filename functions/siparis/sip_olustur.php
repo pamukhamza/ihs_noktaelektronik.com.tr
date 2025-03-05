@@ -68,8 +68,8 @@ function createXMLDocument($cari_kodu, $doviz_hes_isle, $tarihxml,$vadexml,$topl
     $xmlDoc->save('../assets/carihareket/' . $xmlFileName);
 }
 
-error_reporting(0); // HATA YAZDIRMA
-ini_set('display_errors', 0); // HATA YAZDIRMA
+error_reporting(1); // HATA YAZDIRMA
+ini_set('display_errors', 1); // HATA YAZDIRMA
 error_reporting(E_ALL);
 
 $dolarKur = $db->fetch("SELECT * FROM kurlar WHERE id = '2' ");
