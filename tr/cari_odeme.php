@@ -421,10 +421,10 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
             event.target.innerText = "Ödeme İşleniyor...";
 
             const posConfig = {
-                '1': { url: 'php/bank/param/payment.php' },
-                '2': { url: 'php/bank/garantipos/gpos.php', extra: { tip: values.tip } },
-                '3': { url: 'php/bank/kuveyt/2_Odeme.php', extra: { tip: values.tip } },
-                '4': { url: 'php/bank/turkiye_finans/request.php', extra: { tip: values.tip } }
+                '1': { url: 'functions/bank/param/payment.php' },
+                '2': { url: 'functions/bank/garantipos/gpos.php', extra: { tip: values.tip } },
+                '3': { url: 'functions/bank/kuveyt/2_Odeme.php', extra: { tip: values.tip } },
+                '4': { url: 'functions/bank/turkiye_finans/request.php', extra: { tip: values.tip } }
             };
 
             const config = posConfig[values.pos];
