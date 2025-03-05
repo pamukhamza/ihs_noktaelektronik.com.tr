@@ -33,7 +33,7 @@ if (isset($_GET['camp'])) {
     $kampanyalar = $db->fetchAll("SELECT urun_id FROM b2b_kampanyalar");
     $urun_idler = array_column($kampanyalar, 'urun_id');
     $urun_id_list = implode(',', $urun_idler);
-
+echo $urun_id_list;
     $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.KResim
                       FROM nokta_urunler u
                       LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
