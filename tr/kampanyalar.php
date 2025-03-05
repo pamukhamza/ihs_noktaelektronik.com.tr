@@ -33,7 +33,7 @@ if (isset($_GET['camp'])) {
     $kampanyalar = $db->fetchAll("SELECT urun_id FROM b2b_kampanyalar");
     $urun_idler = array_column($kampanyalar, 'urun_id');
     $urun_id_list = implode(',', $urun_idler);
-echo $urun_id_list;
+
     $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.KResim
                       FROM nokta_urunler u
                       LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
@@ -124,7 +124,7 @@ echo $urun_id_list;
         <div class="urunler-desktop">
             <div class="row">
                 <?php 
-                    if($nokta_urunler){
+                    if(!empty($nokta_urunler)){
                         foreach ($nokta_urunler as $row) { ?>
                             <div class="card urun-card rounded-0 shadow-sm p-0 mx-1 mt-1 mb-1">
                                 <a href="tr/urunler/<?= $row['seo_link']; ?>">
