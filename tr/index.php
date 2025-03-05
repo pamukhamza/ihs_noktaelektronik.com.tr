@@ -8,96 +8,98 @@ require '../functions/admin_template.php';
 require '../functions/functions.php';
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);  
+
 $currentPage = 'index';
 $template = new Template('Nokta Elektronik ve Bilişim Sistemleri', $currentPage);
 
 $template->head();
+$database = new Database();
 
 ?>
 <style>
-        .zoom-effect {position: relative;overflow: hidden;}
-        .zoom-animation {animation: zoomInOut 0.3s alternate;}
-        @keyframes zoomInOut {
-            0% {transform: scale(1);}
-            50% {transform: scale(1.1);}
-            100% {transform: scale(1);}
-        }
-        .urun-effect {transition: transform 0.3s ease;width: 15rem;}
-        .urun-effect:hover {box-shadow: 0px 0px 6px #888888;}
-        input {background-color: #D6E0E3;}
-        .urun-a {
-            text-decoration: none;
-            color: black;
-            font-size: 14px;
-        }
-        .favori-icon:hover {color: red;cursor: pointer;}
-        .kategori-effect li {transition: transform 0.3s ease;}
-        .kategori-effect li:hover {color: purple;}
-        .urun-effect {transition: transform 0.3s ease;}
-        .urun-effect:hover {box-shadow: 2px;}
-        .sepet-style {
-        cursor: pointer;
+    .zoom-effect {position: relative;overflow: hidden;}
+    .zoom-animation {animation: zoomInOut 0.3s alternate;}
+    @keyframes zoomInOut {
+        0% {transform: scale(1);}
+        50% {transform: scale(1.1);}
+        100% {transform: scale(1);}
+    }
+    .urun-effect {transition: transform 0.3s ease;width: 15rem;}
+    .urun-effect:hover {box-shadow: 0px 0px 6px #888888;}
+    input {background-color: #D6E0E3;}
+    .urun-a {
+        text-decoration: none;
+        color: black;
+        font-size: 14px;
+    }
+    .favori-icon:hover {color: red;cursor: pointer;}
+    .kategori-effect li {transition: transform 0.3s ease;}
+    .kategori-effect li:hover {color: purple;}
+    .urun-effect {transition: transform 0.3s ease;}
+    .urun-effect:hover {box-shadow: 2px;}
+    .sepet-style {
+    cursor: pointer;
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    }
+    .custom-underline { text-decoration: line-through;}
+    #stokArama1:focus {box-shadow: 0 0 0 0 rgba(13, 110, 253, .25);}
+    .mobil-banner {display: none;}
+    @media(max-width: 992px) {
+        .banner-responsive {display: none;}
+        .kategoriler {display: none;}
+        .mobil-banner {display: block;}
+    }
+    @media(min-width: 992px) {
+        .mobil-arama {display: none;}
+    }
+    @media(min-width: 1400px) {
+        .slider-carousel {float: right;width: 990px;}
+    }
+    @media(min-width: 992px) and (max-width: 1200px) {
+        .slider-carousel {float: right;width: 640px;}
+    }
+    @media(min-width: 1200px) and (max-width: 1400px) {
+        .slider-carousel {float: right;width: 820px;}
+    }
+    .teklifiste-style{
         position: absolute;
-        bottom: 30px;
-        right: 20px;
-        }
-        .custom-underline { text-decoration: line-through;}
-        #stokArama1:focus {box-shadow: 0 0 0 0 rgba(13, 110, 253, .25);}
-        .mobil-banner {display: none;}
-        @media(max-width: 992px) {
-            .banner-responsive {display: none;}
-            .kategoriler {display: none;}
-            .mobil-banner {display: block;}
-        }
-        @media(min-width: 992px) {
-            .mobil-arama {display: none;}
-        }
-        @media(min-width: 1400px) {
-            .slider-carousel {float: right;width: 990px;}
-        }
-        @media(min-width: 992px) and (max-width: 1200px) {
-            .slider-carousel {float: right;width: 640px;}
-        }
-        @media(min-width: 1200px) and (max-width: 1400px) {
-            .slider-carousel {float: right;width: 820px;}
-        }
-        .teklifiste-style{
-            position: absolute;
-            bottom: 20px;
-            width: 203px;
-            height: 38px;
-        }
-        .position-relative {position: relative;}
-        .play-button {
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-            z-index: 1; /* Buton video öğesinin üzerinde görünsün */
-        }
-        .play-button:hover {opacity: 1;}
-        .play-button svg {fill: #fff;}
-        .kategori-effect li {
-            position: relative;
-        }
-        .kategori-effect li:hover .sub-category {display: block;}
-        .sub-category {
-            min-width: 200px; /* Genişlik */
-            left: 280px; /* Ana kategorilerin genişliğine göre ayarlanmalı */
-            top: 0;
-            z-index: 10;
-        }
-        .sub-category a:hover {background-color: #f8f9fa;color: #333;}
-    </style>    
+        bottom: 20px;
+        width: 203px;
+        height: 38px;
+    }
+    .position-relative {position: relative;}
+    .play-button {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+        z-index: 1; /* Buton video öğesinin üzerinde görünsün */
+    }
+    .play-button:hover {opacity: 1;}
+    .play-button svg {fill: #fff;}
+    .kategori-effect li {
+        position: relative;
+    }
+    .kategori-effect li:hover .sub-category {display: block;}
+    .sub-category {
+        min-width: 200px; /* Genişlik */
+        left: 280px; /* Ana kategorilerin genişliğine göre ayarlanmalı */
+        top: 0;
+        z-index: 10;
+    }
+    .sub-category a:hover {background-color: #f8f9fa;color: #333;}
+</style>    
 <body>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NE2FRWRNBJ"></script>
@@ -108,10 +110,7 @@ $template->head();
 
     gtag('config', 'G-NE2FRWRNBJ');
 </script>
-<!-- HEADER ALANI -->
 <?php $template->header(); ?>
-<!-- HEADER ALANI SONU -->
-
     <!-- SLIDER ALANI -->
     <div class="container mt-4 mb-5">
         <form onsubmit="performSearchMobil(); return false;">
