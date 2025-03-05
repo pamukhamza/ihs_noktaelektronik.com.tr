@@ -9,17 +9,13 @@ $template = new Template('Nokta - Kampanyalar', $currentPage);
 $template->head();
 
 $db = new Database();
+
 if (isset($_GET['camp'])) {
     $camp = $_GET['camp'];
-    
-    // Kampanya bilgilerini al
-    $kampanya_sql = "SELECT ad, urun_id FROM b2b_kampanyalar WHERE link = :link";
-    $kampanya_row = $db->fetch($kampanya_sql, ['link' => $camp]);
-
+    $kampanya_row = $db->fetch("SELECT ad, urun_id FROM b2b_kampanyalar WHERE link = :link", ['link' => $camp]);
     $urun_id_list = $kampanya_row['urun_id'] ?? '';
     $urun_adi_kamp = $kampanya_row['ad'] ?? '';
 
-    // Ürünleri al
     $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.foto
                           FROM nokta_urunler u
                           LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
@@ -31,16 +27,13 @@ if (isset($_GET['camp'])) {
                           ) r ON u.BLKODU = r.urun_id
                           WHERE u.aktif = 1
                           AND FIND_IN_SET(u.id, :urun_id_list)";
-    
+
     $nokta_urunler = $db->fetchAll($nokta_urunler_sql, ['urun_id_list' => $urun_id_list]);
 } else {
-    // Tüm kampanya ürün ID'lerini al
-    $kampanyalar_sql = "SELECT urun_id FROM b2b_kampanyalar";
-    $kampanyalar = $db->fetchAll($kampanyalar_sql);
-
+    $kampanyalar = $db->fetchAll("SELECT urun_id FROM b2b_kampanyalar");
     $urun_idler = array_column($kampanyalar, 'urun_id');
     $urun_id_list = implode(',', $urun_idler);
-    // Kampanya ürünlerini al
+
     $nokta_urunler_sql = "SELECT u.*, m.title AS marka_adi, r.foto
                       FROM nokta_urunler u
                       LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
@@ -52,7 +45,7 @@ if (isset($_GET['camp'])) {
                         ) r ON u.BLKODU = r.urun_id
                       WHERE u.web_comtr = 1
                       AND FIND_IN_SET(u.id, :urun_id_list)";
-    // 'Kampanyalı Ürünler' olanları al
+
     $ozel_kodu1_sql = "SELECT DISTINCT u.*, m.title AS marka_adi, r.foto
                    FROM nokta_urunler u
                    LEFT JOIN nokta_urun_markalar m ON u.MarkaID = m.id 
