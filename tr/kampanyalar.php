@@ -344,7 +344,7 @@ if (isset($_GET['camp'])) {
                         });
                         iconElement.removeClass("fa-regular").addClass("fa-solid");
                         that.css("color", "red");
-                        window.location.reload();
+                        //window.location.reload();
                     } else if (response.includes('removed')) {
                         Swal.fire({
                             icon: 'info',
@@ -355,7 +355,7 @@ if (isset($_GET['camp'])) {
                             showConfirmButton: false
                         });
                         iconElement.removeClass("fa-solid").addClass("fa-regular");
-                        window.location.reload();
+                        //window.location.reload();
                     }
                 }
             });
