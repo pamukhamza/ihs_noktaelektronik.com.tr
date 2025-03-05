@@ -104,8 +104,6 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $lang               = $_POST["lang"];
     $siparisNumarasi = generateUniqueOrderNumber();
 
-
-
     //Adresler tablosundan adresi çek
     $teslimat = $db->fetch("SELECT * FROM adresler WHERE uye_id = $uye_id AND aktif = '1'");
     $teslimat_ad = $teslimat['ad'];
@@ -122,9 +120,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $teslimat_postakodu = $teslimat['posta_kodu'];
 
     //üyeler tablosundan fatura adresini çek
-    $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :uye_id", [
-        'uye_id' => $uye_id
-    ]);
+    $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :uye_id", ['uye_id' => $uye_id]);
 
     $uyecarikod = $uye['BLKODU'];
     $uye_gor_fiyat = $uye['fiyat'];
@@ -144,14 +140,14 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $uye_ilce = $uye['ilce'];
     $uye_muhasebekodu = $uye['muhasebe_kodu'];
 
-// Sipariş tablosuna verileri ekle
+    // Sipariş tablosuna verileri ekle
     $siparisEkleQuery = "INSERT INTO siparisler 
-(siparis_no, uye_id, durum, odeme_sekli, teslimat_ad, teslimat_soyad, teslimat_firmaadi, teslimat_adres, teslimat_telefon, teslimat_ulke, teslimat_il, teslimat_ilce, teslimat_tcno, 
- teslimat_vergino, teslimat_vergidairesi, teslimat_postakodu, uye_ad, uye_soyad, uye_email, uye_tel, uye_ulke, uye_adres, uye_postakodu, uye_tcno, uye_firmaadi, uye_vergidairesi, 
- uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) 
-VALUES (:siparisNumarasi, :uye_id, '1', :tip, :teslimat_ad, :teslimat_soyad, :teslimat_firmaadi, :teslimat_adres, :teslimat_telefon, :teslimat_ulke, :teslimat_il, :teslimat_ilce, :teslimat_tcno, 
- :teslimat_vergino, :teslimat_vergidairesi, :teslimat_postakodu, :uye_ad, :uye_soyad, :uye_email, :uye_tel, :uye_ulke, :uye_adres, :uye_postakodu, :uye_tcno, :uye_firmaadi, :uye_vergidairesi, 
- :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW())";
+    (siparis_no, uye_id, durum, odeme_sekli, teslimat_ad, teslimat_soyad, teslimat_firmaadi, teslimat_adres, teslimat_telefon, teslimat_ulke, teslimat_il, teslimat_ilce, teslimat_tcno, 
+    teslimat_vergino, teslimat_vergidairesi, teslimat_postakodu, uye_ad, uye_soyad, uye_email, uye_tel, uye_ulke, uye_adres, uye_postakodu, uye_tcno, uye_firmaadi, uye_vergidairesi, 
+    uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) 
+    VALUES (:siparisNumarasi, :uye_id, '1', :tip, :teslimat_ad, :teslimat_soyad, :teslimat_firmaadi, :teslimat_adres, :teslimat_telefon, :teslimat_ulke, :teslimat_il, :teslimat_ilce, :teslimat_tcno, 
+    :teslimat_vergino, :teslimat_vergidairesi, :teslimat_postakodu, :uye_ad, :uye_soyad, :uye_email, :uye_tel, :uye_ulke, :uye_adres, :uye_postakodu, :uye_tcno, :uye_firmaadi, :uye_vergidairesi, 
+    :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW())";
 
     $siparisEkleStmt = $db->insert($siparisEkleQuery, [
         ':siparisNumarasi' => $siparisNumarasi, ':uye_id' => $uye_id, ':tip' => $tip, ':teslimat_ad' => $teslimat_ad, ':teslimat_soyad' => $teslimat_soyad,
@@ -574,32 +570,21 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
 
     if($hesap == 1){$doviz = "$";}else{$doviz = "TL";}
 
-
-    $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE id = $banka_id ");
-    $q->execute();
-    $banka = $q->fetch(PDO::FETCH_ASSOC);
+    $banka = $db->fetch("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
     $ticariProgram = $banka["ticari_program"];
 
-    $q = $db->prepare("SELECT * FROM banka_pos_listesi WHERE id = $ticariProgram ");
-    $q->execute();
-    $banka_pos = $q->fetch(PDO::FETCH_ASSOC);
+    $banka_pos = $db->fetch("SELECT * FROM b2b_banka_pos_listesi WHERE id = $ticariProgram ");
     $blbnhskodu = $banka_pos["BLBNHSKODU"];
     $banka_adi = $banka_pos["BANKA_ADI"];
     $banka_tanimi = $banka_pos["TANIMI"];
 
-    $q = $db->prepare("SELECT * FROM uyeler WHERE id = $uye_id ");
-    $q->execute();
-    $uye = $q->fetch(PDO::FETCH_ASSOC);
+    $uye = $db->fetch("SELECT * FROM uyeler WHERE id = $uye_id ");
     $uyecarikod = $uye['BLKODU'];
     $uye_mail = $uye['email'];
     $firmaUnvani = $uye['firmaUnvani'];
 
-    $q = $db->prepare("SELECT * FROM kurlar WHERE id = 2");
-    $q->execute();
-    $doviz_kur = $q->fetch(PDO::FETCH_ASSOC);
-
-    $dov_al = str_replace('.', ',', $doviz_kur["alis"]);
-    $dov_sat = str_replace('.', ',', $doviz_kur["satis"]);
+    $dov_al = str_replace('.', ',', $alis_dolar);
+    $dov_sat = str_replace('.', ',', $satis_dolar);
 
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
@@ -612,8 +597,8 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         $tutar = str_replace(',', '.', $tutar);
         $pos_id = 1;
         $basarili = 1;
-        $stmt = $db->prepare("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)");
-        $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':islem_turu' => $cariOdeme, ':tutar' => $tutar, ':basarili' => $basarili));
+        $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)";
+        $db->insert($stmt , [':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':islem_turu' => $cariOdeme, ':tutar' => $tutar, ':basarili' => $basarili]);
 
         $inserted_id = $db->lastInsertId();
         dekontOlustur($uye_id, $inserted_id, $firmaUnvani,$maskedCardNo, $cardHolder ,$taksit_sayisi,$yantoplam,$degistirme_tarihi);
@@ -624,8 +609,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
 
         header("Location: ../onay?lang=tr&cari_odeme=");
 
-    }
-    elseif(isset($_GET['cariveriFinans']) && $_POST["mdStatus"] == "1") {
+    }elseif(isset($_GET['cariveriFinans']) && $_POST["mdStatus"] == "1") {
         $username = 'noktaadmin';
         $password = 'NEBsis28736.!';
         if($taksit_sayisi == 1 || $taksit_sayisi == 0){
@@ -678,33 +662,10 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
             $xmlResponse = simplexml_load_string($data);
             file_put_contents('gelenxml.xml', $xmlResponse);
             if ($xmlResponse->ProcReturnCode == "00") {
-
-                $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE id = $banka_id ");
-                $q->execute();
-                $banka = $q->fetch(PDO::FETCH_ASSOC);
-                $ticariProgram = $banka["ticari_program"];
-
-                $q = $db->prepare("SELECT * FROM banka_pos_listesi WHERE id = $ticariProgram ");
-                $q->execute();
-                $banka_pos = $q->fetch(PDO::FETCH_ASSOC);
-                $blbnhskodu = $banka_pos["BLBNHSKODU"];
-                $banka_adi = $banka_pos["BANKA_ADI"];
-                $banka_tanimi = $banka_pos["TANIMI"];
-
-                $q = $db->prepare("SELECT * FROM uyeler WHERE id = $uye_id ");
-                $q->execute();
-                $uye = $q->fetch(PDO::FETCH_ASSOC);
-                $uyecarikod = $uye['BLKODU'];
-                $firma_unvani = $uye['firmaUnvani'];
-                $cariMail = $uye['email'];
                 $yonetici_maili = 'h.pamuk@noktaelektronik.net';
 
-                $q = $db->prepare("SELECT * FROM kurlar WHERE id = 2");
-                $q->execute();
-                $doviz_kur = $q->fetch(PDO::FETCH_ASSOC);
-
-                $dov_al = str_replace('.', ',', $doviz_kur["alis"]);
-                $dov_sat = str_replace('.', ',', $doviz_kur["satis"]);
+                $dov_al = str_replace('.', ',', $alis_dolar);
+                $dov_sat = str_replace('.', ',', $satis_dolar);
 
                 $currentDateTime = date("d.m.Y H:i:s");
                 $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
@@ -717,18 +678,17 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 $sonucStr = "Ödeme işlemi başarılı: " . $xmlResponse->Response . ' Kod= ' . $xmlResponse->ProcReturnCode;
                 $oid = $xmlResponse->ReturnOid;
                 $transid = $xmlResponse->TransId;
-                $stmt = $db->prepare("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili, transid, siparis_no) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili, :transid, :siparis_no)");
-                $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':islem_turu' => $cariOdeme, ':tutar' => $yantoplam1, ':basarili' => $basarili, ':transid' => $transid, ':siparis_no' => $oid));
+                $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili, transid, siparis_no) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili, :transid, :siparis_no)";
+                $db->insert($stmt, ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $yantoplam1, 'basarili' => $basarili, 'transid' => $transid, 'siparis_no' => $oid]);
 
                 $inserted_id = $db->lastInsertId();
 
-                dekontOlustur($uye_id, $inserted_id, $firma_unvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
-
+                dekontOlustur($uye_id, $inserted_id, $firmaUnvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
                 createXMLDocument($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
-                $mail_icerik = cariOdeme($firma_unvani,$yantoplam,$taksit_sayisi);
-                mailGonder($cariMail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
-                header("Location: ../onay?lang=tr&cari_odeme=");
+                $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
+                mailGonder($uye_mail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
+                header("Location: ../../tr/onay?cari_odeme=");
                 exit();
 
             } else {
@@ -737,19 +697,16 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 $pos_id = 4;
                 $basarili = 0;
                 $sonucStr = "Ödeme işlemi başarısız: " . $xmlResponse->ErrMsg . ' Kod= ' . $xmlResponse->ProcReturnCode;
-                $stmt = $db->prepare("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
-                $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $yantoplam1, ':basarili' => $basarili));
+                $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+                $db->insert($stmt ,['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $yantoplam1, 'basarili' => $basarili]);
 
-                header("Location: ../cariodeme?lang=tr&code=".$xmlResponse->ProcReturnCode."&message=".$xmlResponse->ErrMsg);
+                header("Location: ../../tr/cariodeme?code=".$xmlResponse->ProcReturnCode."&message=".$xmlResponse->ErrMsg);
             }
-
             curl_close($ch);
-
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
-
     }
 }
 
@@ -775,12 +732,12 @@ if (isset($_GET['veri'])) {
     $tip = $decodedVeri["tip"];
     $lang = $decodedVeri["lang"];
 
-    $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE id = $banka_id ");
+    $q = $db->prepare("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
     $q->execute();
     $banka = $q->fetch(PDO::FETCH_ASSOC);
     $ticariProgram = $banka["ticari_program"];
 
-    $q = $db->prepare("SELECT * FROM banka_pos_listesi WHERE id = $ticariProgram ");
+    $q = $db->prepare("SELECT * FROM b2b_banka_pos_listesi WHERE id = $ticariProgram ");
     $q->execute();
     $banka_pos = $q->fetch(PDO::FETCH_ASSOC);
     $blbnhskodu = $banka_pos["BLBNHSKODU"];
@@ -1357,12 +1314,12 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
 
 
         if ($xmlResponse->ProcReturnCode == "00") {
-            $q = $db->prepare("SELECT * FROM banka_taksit_eslesme WHERE id = $banka_id ");
+            $q = $db->prepare("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
             $q->execute();
             $banka = $q->fetch(PDO::FETCH_ASSOC);
             $ticariProgram = $banka["ticari_program"];
 
-            $q = $db->prepare("SELECT * FROM banka_pos_listesi WHERE id = $ticariProgram ");
+            $q = $db->prepare("SELECT * FROM b2b_banka_pos_listesi WHERE id = $ticariProgram ");
             $q->execute();
             $banka_pos = $q->fetch(PDO::FETCH_ASSOC);
             $blbnhskodu = $banka_pos["BLBNHSKODU"];
