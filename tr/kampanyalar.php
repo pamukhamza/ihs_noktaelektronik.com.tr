@@ -13,7 +13,7 @@ if (isset($_GET['camp'])) {
     $camp = $_GET['camp'];
     
     // Kampanya bilgilerini al
-    $kampanya_sql = "SELECT ad, urun_id FROM kampanyalar WHERE link = :link";
+    $kampanya_sql = "SELECT ad, urun_id FROM b2b_kampanyalar WHERE link = :link";
     $kampanya_row = $db->fetch($kampanya_sql, ['link' => $camp]);
 
     $urun_id_list = $kampanya_row['urun_id'] ?? '';
@@ -35,7 +35,7 @@ if (isset($_GET['camp'])) {
     $nokta_urunler = $db->fetchAll($nokta_urunler_sql, ['urun_id_list' => $urun_id_list]);
 } else {
     // Tüm kampanya ürün ID'lerini al
-    $kampanyalar_sql = "SELECT urun_id FROM kampanyalar";
+    $kampanyalar_sql = "SELECT urun_id FROM b2b_kampanyalar";
     $kampanyalar = $db->fetchAll($kampanyalar_sql);
 
     $urun_idler = array_column($kampanyalar, 'urun_id');
