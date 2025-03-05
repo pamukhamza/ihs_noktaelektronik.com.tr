@@ -6,7 +6,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);  
 $currentPage = 'index';
 $template = new Template('Nokta Elektronik ve Bilişim Sistemleri', $currentPage);
 
