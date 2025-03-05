@@ -110,14 +110,11 @@ if (isset($_GET['camp'])) {
                 <h5 class="border-bottom p-2">Ürünler</h5>
                 <ul class="list-unstyled ps-0 kategori-effect">
                     <?php
-                        $kategori_sql = $database->fetchAll("SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 0 ORDER BY sira");
-                        foreach ($kategori_sql as $kategori_row) {
-                            $kategori_id = $kategori_row['id'];
-                            $kategori_adi = $kategori_row['kategori_adi'];
-                            $kategori_seo_link = $kategori_row['seo_link']; ?>
+                        $kategori_sql = $db->fetchAll("SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 0 ORDER BY sira");
+                        foreach ($kategori_sql as $kategori_row) { ?>
                         <li class="">
-                            <a href="tr/urunler?cat=<?= $kategori_seo_link; ?>&brand=&filter=&search=" style="text-align: left !important;" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
-                                <?= $kategori_adi; ?>
+                            <a href="tr/urunler?cat=<?= $kategori_row['seo_link']; ?>&brand=&filter=&search=" style="text-align: left !important;" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
+                                <?= $kategori_row['kategori_adi']; ?>
                             </a>
                         </li>
                     <?php } ?>
@@ -129,115 +126,107 @@ if (isset($_GET['camp'])) {
                 <?php 
                     if($nokta_urunler){
                         foreach ($nokta_urunler as $row) { ?>
-                        <div class="card urun-card rounded-0 shadow-sm p-0 mx-1 mt-1 mb-1">
-                            <a href="tr/urunler/<?= $row['seo_link']; ?>">
-                                <div class="w-100 d-flex align-items-center" style="height: 245px;overflow: hidden">
-                                    <img src="<?php echo !empty($row['KResim']) ? 'assets/images/urunler/'.$row['KResim'] : 'assets/images/urunler/gorsel_hazirlaniyor.jpg'; ?>" class="card-img-top img-fluid">
-                                </div>
-                            </a>
-                            <div class="card-body d-flex flex-column"><!--
-                            <div class="mb-2 mt-auto" style="font-size: 12px;"><a href="" class="rounded-1 text-decoration-none" style="color:black; background:rgba(255, 40, 18, 0.4); padding:2px"><i class="fa-solid fa-tags"></i>Birlikte Al Kazan</a>
-                            <a href="" class="rounded-1 text-decoration-none" style="color:black; background: rgba(0, 98, 255, 0.4); padding:2px"><i class="fa-solid fa-circle-play"></i>Videolu Ürün</a></div>-->
-                                <a href="tr/urunler/<?= $row['seo_link']; ?>" style="font-weight:600; color:#555555;" class="mt-2 urun-a"><strong><?php echo (strlen($row['UrunAdiTR']) > 65) ? substr($row['UrunAdiTR'], 0, 64) . '...' : $row['UrunAdiTR'];?></strong></a>
-                                <a style="font-size:12px; color:#0a90eb;" class="mt-2 border-bottom urun-a"><?= $row['marka_adi'] ; ?></a>
-                                <a style="font-size:12px;" class=" urun-a">Stok Kodu:<span style="font-weight: bold"> <?= $row['UrunKodu'] ; ?></span></a>
-                                <?php if($row['proje'] == 0){ ?>
-                                    <?php if (isset($_SESSION['id'])) {
-                                    $q = $db->prepare("SELECT * FROM uyeler WHERE id =:id");
-                                    $q->execute(array('id' => $_SESSION['id']));
-                                    $uye = $q->fetch(PDO::FETCH_ASSOC);
-                                    $uye_fiyat = $uye['fiyat'];
-                                if(!empty($row["stok"])){
-                                if($uye_fiyat != 4){
-                                    ?>
-                                    <a style="font-size:14px; color:#555555;" class="urun-a fw-bold">
-                                        <?php echo !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
-                                        $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
-                                        echo formatNumber($fiyat1);?> + KDV
-                                    </a>
-                                    <a style="font-size:14px; color:#0a90eb;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a>
-                                <?php } ?>
-                                    <a style="font-size:14px;color:#f29720;" class="urun-a fw-bold">
-                                        <?php echo !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
-                                        $fiyat = !empty($row["DSF".$uye_fiyat]) ? $row["DSF".$uye_fiyat] : $row["KSF".$uye_fiyat];
-                                        echo formatNumber($fiyat); ?> + KDV
-                                    </a>
-                                    <?php if(!empty($fiyat) && $row["stok"] > 0){ ?>
-                                    <i class="fa-solid fa-cart-shopping fa-xl sepet-style"
-                                       onclick="<?php
-                                       $urunId = $row['id'];
-                                       if (isset($_SESSION['id'])) {
-                                           echo "sepeteUrunEkle($urunId, " . (isset($_SESSION['id']) ? $_SESSION['id'] : 'default_value') . ");";
-                                       } else {
-                                           echo "window.location.href = 'tr/giris';";
-                                       }
-                                       ?>">
-                                    </i>
+                            <div class="card urun-card rounded-0 shadow-sm p-0 mx-1 mt-1 mb-1">
+                                <a href="tr/urunler/<?= $row['seo_link']; ?>">
+                                    <div class="w-100 d-flex align-items-center" style="height: 245px;overflow: hidden">
+                                        <img src="<?= !empty($row['KResim']) ? 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/'.$row['KResim'] :
+                                        'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/gorsel_hazirlaniyor.jpg'; ?>" class="card-img-top img-fluid">
+                                    </div>
+                                </a>
+                                <div class="card-body d-flex flex-column"><!--
+                                    <div class="mb-2 mt-auto" style="font-size: 12px;"><a href="" class="rounded-1 text-decoration-none" style="color:black; background:rgba(255, 40, 18, 0.4); padding:2px"><i class="fa-solid fa-tags"></i>Birlikte Al Kazan</a>
+                                    <a href="" class="rounded-1 text-decoration-none" style="color:black; background: rgba(0, 98, 255, 0.4); padding:2px"><i class="fa-solid fa-circle-play"></i>Videolu Ürün</a></div>-->
+                                    <a href="tr/urunler/<?= $row['seo_link']; ?>" style="font-weight:600; color:#555555;" class="mt-2 urun-a"><strong><?php echo (strlen($row['UrunAdiTR']) > 65) ? substr($row['UrunAdiTR'], 0, 64) . '...' : $row['UrunAdiTR'];?></strong></a>
+                                    <a style="font-size:12px; color:#0a90eb;" class="mt-2 border-bottom urun-a"><?= $row['marka_adi'] ; ?></a>
+                                    <a style="font-size:12px;" class=" urun-a">Stok Kodu:<span style="font-weight: bold"> <?= $row['UrunKodu'] ; ?></span></a>
+                                    <?php if($row['proje'] == 0){ ?>
+                                        <?php if (isset($_SESSION['id'])) {
 
-                                <?php }
-                                } else{ $q = $db->prepare("SELECT * FROM uyeler WHERE id = :id ");
-                                $q->execute(array('id' => $_SESSION['id']));
-                                $uye = $q->fetch(PDO::FETCH_ASSOC);
-                                $uye_satis_temsilci = $uye['satis_temsilcisi'];
-                                $q = $db->prepare("SELECT * FROM kullanicilar WHERE id = :id ");
-                                $q->execute(array('id' => $uye_satis_temsilci));
-                                $temsilci = $q->fetch(PDO::FETCH_ASSOC);
-                                if (!empty($uye_satis_temsilci)) { ?>
-                                    <button class="btn me-1 mt-3" style="background-color: #FC9803; color:white;" onclick="openTemsilciAlert()">
-                                        <i class="fa-solid fa-box-open me-1"></i><span style="font-size: 14px;">Stok Sorunuz</span>
-                                    </button>
-                                    <script>
-                                        function openTemsilciAlert() {
-                                            Swal.fire({
-                                                title: 'Satış Temsilciniz',
-                                                html: '<div style="text-align: left;">' +
-                                                    '<p>Ad Soyad: <?php echo $temsilci['kullanici_ad']; ?>  <?php echo $temsilci['kullanici_soyad']; ?></p>' +
-                                                    '<p>Mail:  <a href="mailto: <?php echo $temsilci['kullanici_mail']; ?>"><?php echo $temsilci['kullanici_mail']; ?></a></p>' +
-                                                    '<p>Telefon Numarası: <?php echo $temsilci['kullanici_tel']; ?></p>' +
-                                                    '</div>',
-                                                confirmButtonText: 'Tamam',
-                                                customClass: {
-                                                    popup: 'custom-popup-class',
-                                                    title: 'custom-title-class',
-                                                    htmlContainer: 'custom-html-container-class'
+                                            $uye = $db->fetch("SELECT * FROM uyeler WHERE id =:id", ['id' => $_SESSION['id']]);
+                                            $uye_fiyat = $uye['fiyat'];
+                                            if(!empty($row["stok"])){
+                                                if($uye_fiyat != 4){ ?>
+                                                    <a style="font-size:14px; color:#555555;" class="urun-a fw-bold">
+                                                        <?php echo !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
+                                                        $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
+                                                        echo formatNumber($fiyat1);?> + KDV
+                                                    </a>
+                                                    <a style="font-size:14px; color:#0a90eb;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a><?php 
+                                                } ?>
+                                                <a style="font-size:14px;color:#f29720;" class="urun-a fw-bold">
+                                                    <?php echo !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
+                                                    $fiyat = !empty($row["DSF".$uye_fiyat]) ? $row["DSF".$uye_fiyat] : $row["KSF".$uye_fiyat];
+                                                    echo formatNumber($fiyat); ?> + KDV
+                                                </a><?php 
+                                                if(!empty($fiyat) && $row["stok"] > 0){ ?>
+                                                    <i class="fa-solid fa-cart-shopping fa-xl sepet-style" onclick="<?php $urunId = $row['id'];
+                                                        if (isset($_SESSION['id'])) {
+                                                            echo "sepeteUrunEkle($urunId, " . (isset($_SESSION['id']) ? $_SESSION['id'] : 'default_value') . ");";
+                                                        } else {
+                                                            echo "window.location.href = 'tr/giris';";
+                                                        }
+                                                    ?>">
+                                                    </i><?php 
                                                 }
-                                            });
+                                            } else{ 
+                                                $uye_satis_temsilci = $uye['satis_temsilcisi'];
+                                                $temsilci = $db->fetch("SELECT * FROM users WHERE id = :id ", ['id' => $uye_satis_temsilci]);
+                                                if (!empty($uye_satis_temsilci)) { ?>
+                                                    <button class="btn me-1 mt-3" style="background-color: #FC9803; color:white;" onclick="openTemsilciAlert()">
+                                                        <i class="fa-solid fa-box-open me-1"></i><span style="font-size: 14px;">Stok Sorunuz</span>
+                                                    </button>
+                                                    <script>
+                                                        function openTemsilciAlert() {
+                                                            Swal.fire({
+                                                                title: 'Satış Temsilciniz',
+                                                                html: '<div style="text-align: left;">' +
+                                                                    '<p>Ad Soyad: <?php echo $temsilci['kullanici_ad']; ?>  <?php echo $temsilci['kullanici_soyad']; ?></p>' +
+                                                                    '<p>Mail:  <a href="mailto: <?php echo $temsilci['kullanici_mail']; ?>"><?php echo $temsilci['kullanici_mail']; ?></a></p>' +
+                                                                    '<p>Telefon Numarası: <?php echo $temsilci['kullanici_tel']; ?></p>' +
+                                                                    '</div>',
+                                                                confirmButtonText: 'Tamam',
+                                                                customClass: {
+                                                                    popup: 'custom-popup-class',
+                                                                    title: 'custom-title-class',
+                                                                    htmlContainer: 'custom-html-container-class'
+                                                                }
+                                                            });
+                                                        }
+                                                    </script><?php 
+                                                } else { ?>
+                                                    <button class="btn me-1 mt-2" style="background-color: #FC9803; color:white;" onclick="openTemsilciAlert()">
+                                                        <i class="fa-solid fa-universal-access me-1"></i><span style="font-size: 14px;">Satış Temsilcinize Danışınız</span>
+                                                    </button>
+                                                    <script>
+                                                        function openTemsilciAlert() {
+                                                            Swal.fire({
+                                                                title: 'İletişim Bilgileri',
+                                                                html: '<div style="text-align: left;">' +
+                                                                    '<p>Mail:  <a href="mailto:destek@noktaelektronik.com.tr">destek@noktaelektronik.com.tr</a></p>' +
+                                                                    '<p>Telefon Numarası: 0850 333 02 08</p>' +
+                                                                    '</div>',
+                                                                confirmButtonText: 'Tamam',
+                                                                customClass: {
+                                                                    popup: 'custom-popup-class',
+                                                                    title: 'custom-title-class',
+                                                                    htmlContainer: 'custom-html-container-class'
+                                                                }
+                                                            });
+                                                        }
+                                                    </script><?php 
+                                                } 
+                                            }
                                         }
-                                    </script>
-                                <?php } else { ?>
-                                    <button class="btn me-1 mt-2" style="background-color: #FC9803; color:white;" onclick="openTemsilciAlert()">
-                                        <i class="fa-solid fa-universal-access me-1"></i><span style="font-size: 14px;">Satış Temsilcinize Danışınız</span>
-                                    </button>
-                                    <script>
-                                        function openTemsilciAlert() {
-                                            Swal.fire({
-                                                title: 'İletişim Bilgileri',
-                                                html: '<div style="text-align: left;">' +
-                                                    '<p>Mail:  <a href="mailto:destek@noktaelektronik.com.tr">destek@noktaelektronik.com.tr</a></p>' +
-                                                    '<p>Telefon Numarası: 0850 333 02 08</p>' +
-                                                    '</div>',
-                                                confirmButtonText: 'Tamam',
-                                                customClass: {
-                                                    popup: 'custom-popup-class',
-                                                    title: 'custom-title-class',
-                                                    htmlContainer: 'custom-html-container-class'
-                                                }
-                                            });
-                                        }
-                                    </script>
-                                <?php } ?>
-                                <?php
-                                }
-                                }
-                                }else{ ?>
-                                    <button type="submit" class="btn btn-danger mt-3 teklifOnaybtn"><i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste</button>
-                                <?php } ?>
-                            </div>
-                            <i class="fa-regular fa-heart fa-xl favori-icon favori-buton favori-style" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Favorilere Ekle!" data-product-id="<?= $urunId ?>"></i>
-                        </div>
-                    <?php } } else { ?>
-                    <div class="alert alert-danger text-center px-5" role="alert">Ürün Bulunamadı!</div>
-                <?php } ?>
+                                    }else{ ?>
+                                        <button type="submit" class="btn btn-danger mt-3 teklifOnaybtn"><i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste</button><?php 
+                                    } ?>
+                                </div>
+                                <i class="fa-regular fa-heart fa-xl favori-icon favori-buton favori-style" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Favorilere Ekle!" data-product-id="<?= $urunId ?>"></i>
+                            </div><?php 
+                        } 
+                    } else { ?>
+                        <div class="alert alert-danger text-center px-5" role="alert">Ürün Bulunamadı!</div><?php 
+                    } ?>
             </div>
         </div>
         <!-- Ürün listeleme Bölümü Sonu -->
