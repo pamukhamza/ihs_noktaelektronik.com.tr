@@ -945,7 +945,7 @@ function getBreadcrumbs($kategori, $database) {
             // Send an AJAX request to the server to add the product to the favorites
             $.ajax({
                 type: 'POST',
-                url: 'php/edit_info.php',
+                url: 'functions/favori/edit_favori.php',
                 data: {
                     product_id: productId,
                     uye_id: uye_id,
