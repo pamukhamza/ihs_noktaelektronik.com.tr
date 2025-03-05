@@ -319,7 +319,6 @@ if (isset($_GET['camp'])) {
             var iconElement = $(this).find('.favori-icon'); // Assuming the icon is inside the favori-buton
             var uye_id = <?= $_SESSION["id"] ?>;
             var productId = $(this).data('product-id');
-            alert(productId);
             var type = 'favori';
             // Store the reference to $(this) in a variable for later use
             var that = $(this);
@@ -345,7 +344,7 @@ if (isset($_GET['camp'])) {
                         });
                         iconElement.removeClass("fa-regular").addClass("fa-solid");
                         that.css("color", "red");
-                        //window.location.reload();
+                        window.location.reload();
                     } else if (response.includes('removed')) {
                         Swal.fire({
                             icon: 'info',
@@ -356,7 +355,7 @@ if (isset($_GET['camp'])) {
                             showConfirmButton: false
                         });
                         iconElement.removeClass("fa-solid").addClass("fa-regular");
-                        //window.location.reload();
+                        window.location.reload();
                     }
                 }
             });
