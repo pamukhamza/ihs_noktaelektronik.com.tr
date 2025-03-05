@@ -446,7 +446,7 @@ function getBreadcrumbs($kategori, $database) {
                             $activeClass = $first ? 'active' : '';
                             echo '<div class="carousel-item ' . $activeClass . '" data-bs-interval="3000">
                                         <a href="' . $row["link"] . '">
-                                            <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider' . $row["photo"] . '" class="d-block w-100"  height="auto" style="max-height: 300px;" alt="...">
+                                            <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/' . $row["photo"] . '" class="d-block w-100"  height="auto" style="max-height: 300px;" alt="...">
                                         </a>
                                     </div>';
                             // Update the flag after marking the first item
