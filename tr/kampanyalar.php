@@ -114,7 +114,7 @@ if (isset($_GET['camp'])) {
                         foreach ($kategori_sql as $kategori_row) { ?>
                         <li class="">
                             <a href="tr/urunler?cat=<?= $kategori_row['seo_link']; ?>&brand=&filter=&search=" style="text-align: left !important;" class="btn d-inline-flex align-items-center rounded border-0 collapsed">
-                                <?= $kategori_row['kategori_adi']; ?>
+                                <?= $kategori_row['KategoriAdiTr']; ?>
                             </a>
                         </li>
                     <?php } ?>
@@ -268,7 +268,7 @@ if (isset($_GET['camp'])) {
         </div>
     </div>
 </div>
-<?php $template->header(); ?>
+<?php $template->footer(); ?>
 </body>
 </html>
 <script src="bootstrap/bootstrap.bundle.min.js"></script>
