@@ -67,7 +67,7 @@ function createXMLDocument($cari_kodu, $doviz_hes_isle, $tarihxml,$vadexml,$topl
     $xmlFileName = 'CRHRKT_' . $cari_kodu . uniqid(4) . '.xml';
     $xmlDoc->save('../assets/carihareket/' . $xmlFileName);
 }
-
+echo 'nerede';
 error_reporting(1); // HATA YAZDIRMA
 ini_set('display_errors', 1); // HATA YAZDIRMA
 error_reporting(E_ALL);
