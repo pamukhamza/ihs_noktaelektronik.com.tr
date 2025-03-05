@@ -10,7 +10,6 @@ $database = new Database();
         exit(); // Terminate script after redirect
     }
     else{
-        global $db;
         $checkStatement = $database->fetch("SELECT id FROM nokta_uye_favoriler WHERE uye_id = $userId AND urun_id = $productId");
         if ($checkStatement->rowCount() > 0) {
             $database ->delete("DELETE FROM nokta_uye_favoriler WHERE uye_id = $userId AND urun_id = $productId");
