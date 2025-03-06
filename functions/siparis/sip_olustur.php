@@ -559,7 +559,8 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //Transfer sonuçlarını al.
             $data = curl_exec($ch);
             $xmlResponse = simplexml_load_string($data);
-            file_put_contents('gelenxml.xml', $xmlResponse);
+            file_put_contents(sys_get_temp_dir() . '/gelenxml.xml', $xmlResponse);
+
             if ($xmlResponse->ProcReturnCode == "00") {
                 $yonetici_maili = 'h.pamuk@noktaelektronik.net';
 
