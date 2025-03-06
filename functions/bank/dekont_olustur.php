@@ -69,7 +69,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         $dekont_adi = "dekont" . uniqid() . ".pdf";
         
         // Set the complete file path
-        $upload_dir = __DIR__ . '/../../assets/uploads/dekontlar/';
+        $upload_dir = __DIR__ . '/../../assets/dekontlar/';
         
         // Create directory if it doesn't exist
         if (!is_dir($upload_dir)) {

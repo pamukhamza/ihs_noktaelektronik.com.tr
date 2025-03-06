@@ -457,7 +457,6 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
 }
 
 if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
-    echo "geldi1";
     if(isset($_GET['cariveri'])) {
         $veri = base64_decode($_GET['cariveri']);
     } elseif(isset($_GET['cariveriFinans'])) {
@@ -474,29 +473,22 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
     $taksit_sayisi = $decodedVeri["taksit"];
     $uye_id = $decodedVeri["uye_id"];
     $lang = $decodedVeri["lang"];
-    echo "geldi2";
     if($hesap == 1){$doviz = "$";}else{$doviz = "TL";}
-echo " uyeid".$uye_id;
-
     $banka = $db->fetch("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
     $ticariProgram = $banka["ticari_program"];
-    echo "geldi3";
     $banka_pos = $db->fetch("SELECT * FROM b2b_banka_pos_listesi WHERE id = $ticariProgram ");
     $blbnhskodu = $banka_pos["BLBNHSKODU"];
     $banka_adi = $banka_pos["BANKA_ADI"];
     $banka_tanimi = $banka_pos["TANIMI"];
-    echo "geldi4";
     $uye = $db->fetch("SELECT * FROM uyeler WHERE id = $uye_id ");
     $uyecarikod = $uye['BLKODU'];
     $uye_mail = $uye['email'];
     $firmaUnvani = $uye['firmaUnvani'];
-    echo "geldi111";
     $dov_al = str_replace('.', ',', $alis_dolar);
     $dov_sat = str_replace('.', ',', $satis_dolar);
 
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
-    echo "geldi5";
     if(isset($_GET['cariveri'])) {
         //Param Pos
         $sonucStr = $_POST['TURKPOS_RETVAL_Sonuc_Str'];
@@ -505,13 +497,10 @@ echo " uyeid".$uye_id;
         $tutar = str_replace(',', '.', $tutar);
         $pos_id = 1;
         $basarili = 1;
-        echo "geldi6";
         $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)";
         $db->insert($stmt , ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $tutar, 'basarili' => $basarili]);
-        echo "geldi7";
         $inserted_id = $db->lastInsertId();
         dekontOlustur($uye_id, $inserted_id, $firmaUnvani,$maskedCardNo, $cardHolder ,$taksit_sayisi,$yantoplam,$degistirme_tarihi);
-        echo "geldi8";
         posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
         $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
@@ -520,7 +509,6 @@ echo " uyeid".$uye_id;
         header("Location: ../../tr/onay?cari_odeme=");
 
     }elseif(isset($_GET['cariveriFinans']) && $_POST["mdStatus"] == "1") {
-        echo "geldi5";
         $username = 'noktaadmin';
         $password = 'NEBsis28736.!';
         if($taksit_sayisi == 1 || $taksit_sayisi == 0){
@@ -593,9 +581,7 @@ echo " uyeid".$uye_id;
                 $db->insert($stmt, ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $yantoplam1, 'basarili' => $basarili, 'transid' => $transid, 'siparis_no' => $oid]);
 
                 $inserted_id = $db->lastInsertId();
-                echo "geldi6";
                 dekontOlustur($uye_id, $inserted_id, $firmaUnvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
-                echo "geldi7";
                 posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
                 $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
@@ -1093,7 +1079,7 @@ if (isset($_GET['veri'])) {
     $kurhareket1->appendChild($doviz_satis1);
     // DOVIZ ALANI SONU
     $xmlFileName = 'fatura_' . $siparisNumarasi . '.xml';
-    $xmlDoc->save('../assets/faturalar/' . $xmlFileName);
+    $xmlDoc->save('../../assets/faturalar/' . $xmlFileName);
 
     function updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, $kullanildi) {
         // uye_id sütununun boş olup olmadığını kontrol et
@@ -1677,7 +1663,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
             $kurhareket1->appendChild($doviz_satis1);
             // DOVIZ ALANI SONU
             $xmlFileName = 'fatura_' . $siparisNumarasi . '.xml';
-            $xmlDoc->save('../assets/faturalar/' . $xmlFileName);
+            $xmlDoc->save('../../assets/faturalar/' . $xmlFileName);
 
             function updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, $kullanildi) {
                 // uye_id sütununun boş olup olmadığını kontrol et
