@@ -1,7 +1,31 @@
 <?php
 require_once "db.php";
 $db = new Database();
+function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
+    // Maks. Dosya boyutu
+    $max_file_size = 6 * 1024 * 1024; // 6MB in bytes
+    if ($file["size"] > $max_file_size) {
+        return false;
+    }
 
+    // Get the original file extension
+    $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    // Generate a unique filename with the original extension
+    $unique_filename = uniqid() . '.' . $fileExtension;
+    $uploadPath = $upload_path . $unique_filename;
+
+    try {
+        $result = $s3Client->putObject([
+            'Bucket' => $bucket,
+            'Key'    => $uploadPath,
+            'SourceFile' => $file['tmp_name']
+        ]);
+        return $unique_filename; // Return the unique filename on success
+    } catch (AwsException $e) {
+        return false; // Return false on failure
+    }
+}
 function saveToMailjet($email, $listId) {
     $apikey = '29f750523bec17ec1b06c03b2766d98f';
     $apisecret = '8b52ce1e9ca02de74c0038a0c0c6c270';

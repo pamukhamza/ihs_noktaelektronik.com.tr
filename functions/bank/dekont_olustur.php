@@ -2,6 +2,7 @@
 // Include the TCPDF library
 require_once '../../vendor/tcpdf/tcpdf.php';
 include_once '../db.php';
+include_once '../functions.php';
 require '../../vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
@@ -84,19 +85,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         // Get PDF content as a string (no local saving)
         $pdf_content = $pdf->Output('', 'S'); // 'S' returns PDF as a string
 
-        // Upload to S3
-        $bucket = $config['s3']['bucket'];
-        $s3_key = 'uploads/dekontlar/' . $dekont_adi;
-
-        $result = $s3Client->putObject([
-            'Bucket' => $bucket,
-            'Key'    => $s3_key,
-            'Body'   => $pdf_content, // Sending PDF content directly
-            'ACL'    => 'public-read'
-        ]);
-
-        // S3 URL
-        $s3_url = $result['ObjectURL'];
+        $file = uploadImageToS3($pdf_content, 'uploads/dekont/', $s3Client, $config['s3']['bucket']);
 
         // Save to database
         $islem_no = "COD_" . uniqid();
@@ -108,7 +97,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
             'islem_no' => $islem_no,
             'tutar' => $odenentutar,
             'dekont' => $dekont_adi,
-            'dekont_url' => $s3_url,
+            'dekont_url' => $dekont_adi,
             'tarih' => $date
         ];
         $database->insert($query, $params);
