@@ -425,18 +425,12 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     }
 
     if (!empty($promosyon_kodu)) {
-        $promosyonQuery = "SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :promosyon_kodu";
-        $promosyonStmt = $db->prepare($promosyonQuery);
-        $promosyonStmt->bindParam(':promosyon_kodu', $promosyon_kodu);
-        $promosyonStmt->execute();
-        $promosyon = $promosyonStmt->fetch(PDO::FETCH_ASSOC);
-
+        $promosyon = $db->fetch("SELECT * FROM b2b_promosyon WHERE promosyon_kodu = $promosyon_kodu");
         $maxKullanim = $promosyon["max_kullanim_sayisi"];
         $promosyonKullanildi = $promosyon["kullanildi"];
         $promosyon_kullanim_sayisi = $promosyon["kullanim_sayisi"] ?? 0;
 
         $promosyon_kullanim_sayisi += 1;
-
         if ($promosyonKullanildi == 1) {
             echo "Promosyon kullanildi";
             exit;
@@ -451,9 +445,9 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     }
 
     if($lang == "tr"){
-        header("Location: ../../onay?lang=tr&siparis-numarasi=$siparisNumarasi");
+        header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
     }elseif($lang == "en"){
-        header("Location: ../../onay?lang=en&siparis-numarasi=$siparisNumarasi");
+        header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
     }
     $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
     mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
@@ -516,7 +510,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
         mailGonder($uye_mail, 'Cari Ödeme Bildirimi', $mail_icerik, 'Nokta Elektronik');
 
-        header("Location: ../onay?lang=tr&cari_odeme=");
+        header("Location: ../../tr/onay?cari_odeme=");
 
     }elseif(isset($_GET['cariveriFinans']) && $_POST["mdStatus"] == "1") {
         $username = 'noktaadmin';
