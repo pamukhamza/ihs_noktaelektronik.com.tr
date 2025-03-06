@@ -56,7 +56,7 @@ if(isset($_POST["cariOdeme"])){
         });
     </script><?php 
 } else {
-    global $db;
+    $db = new Database();
     $odemetaksit = $_POST['odemetaksit'];
     if ($odemetaksit == 1 || $odemetaksit == 0) {
         $odemetaksit = 0;
@@ -81,7 +81,7 @@ if(isset($_POST["cariOdeme"])){
     $basarili = 0;
     $sonucStr = 'Sipariş ödeme sayfasına giriş yapıldı!';
     $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
-    $db->insert($stmt ,[':uye_id' => $_POST["uye_id"], ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $_POST["toplam"], ':basarili' => $basarili]);
+    $db->insert($stmt ,['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili]);
 
     $verimizB64 = base64_encode(json_encode($verimiz));
 

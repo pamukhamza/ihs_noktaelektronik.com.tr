@@ -1,81 +1,13 @@
 <?php
 require_once '../db.php';
 require_once '../functions.php';
-require_once '../dekont_olustur.php';
-
+require_once '../bank/dekont_olustur.php';
+require_once '../wolvox/pos_olustur.php';
 $db = new Database();
-
-function createXMLDocument($cari_kodu, $doviz_hes_isle, $tarihxml,$vadexml,$toplamxml,$toplamdvzxml,$dvz_alisxml,$dvz_satisxml,$aciklamaxml,$blbnhskoduxml,$banka_adixml,$taksit_sayisixml,$doviz, $tanimi)
-{
-    // Create a new XML document
-    $xmlDoc = new DOMDocument('1.0', 'UTF-8');
-    $xmlDoc->formatOutput = true;
-    $root = $xmlDoc->createElement('WCH');
-    $xmlDoc->appendChild($root);
-    // AYAR ALANI BASLANGIC
-    $ayar = $xmlDoc->createElement('AYAR');
-    $root->appendChild($ayar);
-    $trsver = $xmlDoc->createElement('TRSVER');
-    $trsver->appendChild($xmlDoc->createCDATASection('ASWCH1.02.03'));
-    $ayar->appendChild($trsver);
-    $dbname = $xmlDoc->createElement('DBNAME');
-    $dbname->appendChild($xmlDoc->createCDATASection('WOLVOX'));
-    $ayar->appendChild($dbname);
-    $peruser = $xmlDoc->createElement('PERSUSER');
-    $peruser->appendChild($xmlDoc->createCDATASection('sa'));
-    $ayar->appendChild($peruser);
-    $sube_kodu = $xmlDoc->createElement('SUBE_KODU');
-    $sube_kodu->appendChild($xmlDoc->createCDATASection('3402'));
-    $ayar->appendChild($sube_kodu);
-    //AYAR ALANI SON
-    // CARI BILGI ALANI BASLANGIC
-    $carihrkt = $xmlDoc->createElement('CARIHAREKET');
-    $root->appendChild($carihrkt);
-
-    $hareket = $xmlDoc->createElement('HAREKET');
-    $carihrkt->appendChild($hareket);
-    $cariElements = [
-        'BLCRKODU' => $cari_kodu,
-        'DOVIZ_HES_ISLE' => $doviz_hes_isle,
-        'ISLEM_TURU' => '6',
-        'TARIHI' => $tarihxml,
-        'DEGISTIRME_TARIHI' => $tarihxml,
-        'VADESI' => $vadexml,
-        'KPBDVZ' => $doviz_hes_isle,
-        'KPB_ATUT' => $toplamxml,
-        'DVZ_ATUT' => $toplamdvzxml,
-        'GM_ENTEGRASYON' => '1',
-        'MUH_DURUM' => '1',
-        'DOVIZ_KULLAN' => $doviz_hes_isle,
-        'DOVIZ_ALIS' => $dvz_alisxml,
-        'DOVIZ_SATIS' => $dvz_satisxml,
-        'DOVIZ_BIRIMI' => $doviz,
-        'ACIKLAMA' => $aciklamaxml,
-        'KASA_ADI' => '',
-        'BLBNHSKODU' => $blbnhskoduxml,
-        'BANKA_ADI' => $banka_adixml,
-        'KAYDEDEN' => 'B2B Sistem',
-        'POS_DETAY' => $tanimi,
-        'SUBE_KODU' => '3402',
-        'TAKSIT_SAYISI' => $taksit_sayisixml
-    ];
-    foreach ($cariElements as $elementName => $elementValue) {
-        $element = $xmlDoc->createElement($elementName);
-        $element->appendChild($xmlDoc->createCDATASection($elementValue));
-        $hareket->appendChild($element);
-    }
-    $xmlFileName = 'CRHRKT_' . $cari_kodu . uniqid(4) . '.xml';
-    $xmlDoc->save('../assets/carihareket/' . $xmlFileName);
-}
-echo 'nerede';
-error_reporting(1); // HATA YAZDIRMA
-ini_set('display_errors', 1); // HATA YAZDIRMA
-error_reporting(E_ALL);
 
 $dolarKur = $db->fetch("SELECT * FROM kurlar WHERE id = '2' ");
 $satis_dolar = $dolarKur['satis'];
 $alis_dolar = $dolarKur['alis'];
-
 $euroKur = $db->fetch("SELECT * FROM kurlar WHERE id = '3' ");
 $satis_euro = $euroKur['satis'];
 $alis_euro = $euroKur['alis'];
@@ -87,9 +19,7 @@ function generateUniqueOrderNumber() {
     $orderNumber = $prefix . $datePart . $randomPart;
     return $orderNumber;
 }
-
 $siparisNumarasi = generateUniqueOrderNumber();
-
 if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $yanSepetToplami    = $_POST["yanSepetToplami"];
     $yanSepetKdv        = $_POST["yanSepetKdv"];
@@ -105,43 +35,42 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $siparisNumarasi = generateUniqueOrderNumber();
 
     //Adresler tablosundan adresi çek
-    $teslimat = $db->fetch("SELECT * FROM adresler WHERE uye_id = $uye_id AND aktif = '1'");
-    $teslimat_ad = $teslimat['ad'];
-    $teslimat_soyad = $teslimat['soyad'];
-    $teslimat_firmaadi = $teslimat['firma_adi'];
-    $teslimat_adres = $teslimat['adres'];
-    $teslimat_telefon = $teslimat['telefon'];
-    $teslimat_ulke = $teslimat['ulke'];
-    $teslimat_il = $teslimat['il'];
-    $teslimat_ilce = $teslimat['ilce'];
-    $teslimat_tcno = $teslimat['tc_no'];
-    $teslimat_vergino = $teslimat['vergi_no'];
-    $teslimat_vergidairesi = $teslimat['vergi_dairesi'];
-    $teslimat_postakodu = $teslimat['posta_kodu'];
+    $teslimat = $db->fetch("SELECT * FROM b2b_adresler WHERE uye_id = $uye_id AND aktif = '1'");
+        $teslimat_ad = $teslimat['ad'];
+        $teslimat_soyad = $teslimat['soyad'];
+        $teslimat_firmaadi = $teslimat['firma_adi'];
+        $teslimat_adres = $teslimat['adres'];
+        $teslimat_telefon = $teslimat['telefon'];
+        $teslimat_ulke = $teslimat['ulke'];
+        $teslimat_il = $teslimat['il'];
+        $teslimat_ilce = $teslimat['ilce'];
+        $teslimat_tcno = $teslimat['tc_no'];
+        $teslimat_vergino = $teslimat['vergi_no'];
+        $teslimat_vergidairesi = $teslimat['vergi_dairesi'];
+        $teslimat_postakodu = $teslimat['posta_kodu'];
 
     //üyeler tablosundan fatura adresini çek
     $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :uye_id", ['uye_id' => $uye_id]);
-
-    $uyecarikod = $uye['BLKODU'];
-    $uye_gor_fiyat = $uye['fiyat'];
-    $uye_ad = $uye['ad'];
-    $uye_soyad = $uye['soyad'];
-    $uyeAdSoyad = $uye_ad . ' ' . $uye_soyad;
-    $uye_email = $uye['email'];
-    $uye_tel = $uye['tel'];
-    $uye_ulke = $uye['ulke'];
-    $uye_adres = $uye['adres'];
-    $uye_postakodu = $uye['posta_kodu'];
-    $uye_tcno = $uye['tc_no'];
-    $uye_firmaadi = $uye['firmaUnvani'];
-    $uye_vergidairesi = $uye['vergi_dairesi'];
-    $uye_vergino = $uye['vergi_no'];
-    $uye_il = $uye['il'];
-    $uye_ilce = $uye['ilce'];
-    $uye_muhasebekodu = $uye['muhasebe_kodu'];
+        $uyecarikod = $uye['BLKODU'];
+        $uye_gor_fiyat = $uye['fiyat'];
+        $uye_ad = $uye['ad'];
+        $uye_soyad = $uye['soyad'];
+        $uyeAdSoyad = $uye_ad . ' ' . $uye_soyad;
+        $uye_email = $uye['email'];
+        $uye_tel = $uye['tel'];
+        $uye_ulke = $uye['ulke'];
+        $uye_adres = $uye['adres'];
+        $uye_postakodu = $uye['posta_kodu'];
+        $uye_tcno = $uye['tc_no'];
+        $uye_firmaadi = $uye['firmaUnvani'];
+        $uye_vergidairesi = $uye['vergi_dairesi'];
+        $uye_vergino = $uye['vergi_no'];
+        $uye_il = $uye['il'];
+        $uye_ilce = $uye['ilce'];
+        $uye_muhasebekodu = $uye['muhasebe_kodu'];
 
     // Sipariş tablosuna verileri ekle
-    $siparisEkleQuery = "INSERT INTO siparisler 
+    $siparisEkleQuery = "INSERT INTO b2b_siparisler 
     (siparis_no, uye_id, durum, odeme_sekli, teslimat_ad, teslimat_soyad, teslimat_firmaadi, teslimat_adres, teslimat_telefon, teslimat_ulke, teslimat_il, teslimat_ilce, teslimat_tcno, 
     teslimat_vergino, teslimat_vergidairesi, teslimat_postakodu, uye_ad, uye_soyad, uye_email, uye_tel, uye_ulke, uye_adres, uye_postakodu, uye_tcno, uye_firmaadi, uye_vergidairesi, 
     uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) 
@@ -164,7 +93,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
 
     if ($siparisId) {
         // Üye sepetinden ürünleri al
-        $uyeSepetUrunleriQuery = "SELECT * FROM uye_sepet WHERE uye_id = :uye_id";
+        $uyeSepetUrunleriQuery = "SELECT * FROM b2b_uye_sepet WHERE uye_id = :uye_id";
         $uyeSepetUrunleri = $db->fetchAll($uyeSepetUrunleriQuery, ['uye_id' => $uye_id]);
     
         if ($uyeSepetUrunleri) {
@@ -202,29 +131,29 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     
                 $doviz_satis_fiyati = ($urun['DOVIZ_BIRIMI'] == '$') ? $satis_dolar : $satis_euro;
     
-                $siparisUrunEkleQuery = "INSERT INTO siparis_urunler (sip_id, urun_id, BLKODU, adet, birim_fiyat, dolar_satis) VALUES (:siparisId, :urun_id, :urun_blkodu, :miktar, :uyenin_fiyati, :doviz_satis_fiyati)";
+                $siparisUrunEkleQuery = "INSERT INTO b2b_siparis_urunler (sip_id, urun_id, BLKODU, adet, birim_fiyat, dolar_satis) VALUES (:siparisId, :urun_id, :urun_blkodu, :miktar, :uyenin_fiyati, :doviz_satis_fiyati)";
                 $db->insert($siparisUrunEkleQuery, [
                     'siparisId' => $siparisId, 'urun_id' => $urun_id, 'urun_blkodu' => $urun_blkodu, 'miktar' => $miktar, 'uyenin_fiyati' => $uyenin_fiyati, 'doviz_satis_fiyati' => $doviz_satis_fiyati
                 ]);
     
                 if (!$db->lastInsertId()) {
-                    echo "Ürün eklerken hata oluştu: " . $db->errorInfo()[2];
+                    echo "Ürün eklerken hata oluştu: " ;
                     break; // Hata durumunda döngüyü sonlandırabilirsiniz
                 }
             }
     
             // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adımı dikkatlice kullanın)
-            $uyeSepetSilQuery = "DELETE FROM uye_sepet WHERE uye_id = :uye_id";
+            $uyeSepetSilQuery = "DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id";
             $db->delete($uyeSepetSilQuery, ['uye_id' => $uye_id]);
     
             if (!$db->lastInsertId()) {
-                echo "Üye sepetini temizlerken hata oluştu: " . $db->errorInfo()[2];
+                echo "Üye sepetini temizlerken hata oluştu: ";
             }
         } else {
-            echo "Üye sepeti sorgulama hatası: " . $db->errorInfo()[2];
+            echo "Üye sepeti sorgulama hatası: ";
         }
     } else {
-        echo "Sipariş oluşturma hatası: " . $db->errorInfo()[2];
+        echo "Sipariş oluşturma hatası: ";
     }
 
     $currentDateTime = date("d.m.Y H:i:s");
@@ -293,21 +222,13 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     // URUNLER ALANI BASLANGICI
     $faturaHareket = $xmlDoc->createElement('FATURAHAREKET');
     $root->appendChild($faturaHareket);
-    $uyeSiparisUrunleriQuery = "SELECT * FROM siparis_urunler WHERE sip_id = :siparisId";
-    $uyeSiparisUrunleriStmt = $db->prepare($uyeSiparisUrunleriQuery);
-    $uyeSiparisUrunleriStmt->bindParam(':siparisId', $siparisId);
-    $uyeSiparisUrunleriStmt->execute();
-
-    while ($row = $uyeSiparisUrunleriStmt->fetch(PDO::FETCH_ASSOC)) {
+    $uyeSiparisUrunleriStmt = $db->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $siparisId");
+    foreach ($uyeSiparisUrunleriStmt as $row) {
         $urun_id = $row['urun_id'];
         $urun_adet = $row['adet'];
         $birim_fiyat = $row['birim_fiyat'];
 
-        $uyeSiparisUrunQuery = "SELECT * FROM nokta_urunler WHERE id = :urun_id";
-        $uyeSiparisUrunStmt = $db->prepare($uyeSiparisUrunQuery);
-        $uyeSiparisUrunStmt->bindParam(':urun_id', $urun_id);
-        $uyeSiparisUrunStmt->execute();
-        $noktaurun = $uyeSiparisUrunStmt->fetch(PDO::FETCH_ASSOC);
+        $noktaurun = $db->fetch("SELECT * FROM nokta_urunler WHERE id = $urun_id");
         $urun_blkodu = $noktaurun['BLKODU'];
         $hareket = $xmlDoc->createElement('HAREKET');
         $faturaHareket->appendChild($hareket);
@@ -487,36 +408,24 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $kurhareket1->appendChild($doviz_satis1);
     // DOVIZ ALANI SONU
     $xmlFileName = 'fatura_' . $siparisNumarasi . '.xml';
-    $xmlDoc->save('../assets/faturalar/' . $xmlFileName);
+    $xmlDoc->save('../../assets/faturalar/' . $xmlFileName);
 
     function updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, $kullanildi) {
-        // uye_id sütununun boş olup olmadığını kontrol et
-        $checkUyeIdQuery = "SELECT uye_id FROM promosyon WHERE promosyon_kodu = :promosyon_kodu";
-        $checkUyeIdStatement = $db->prepare($checkUyeIdQuery);
-        $checkUyeIdStatement->execute(array('promosyon_kodu' => $promosyon_kodu));
-        $uyeIdResult = $checkUyeIdStatement->fetch(PDO::FETCH_ASSOC);
-
+        $uyeIdResult = "SELECT uye_id FROM b2b_promosyon WHERE promosyon_kodu = $promosyon_kodu";
         if ($uyeIdResult) {
             if (empty($uyeIdResult['uye_id'])) { // uye_id boşsa, direkt $uye_id'yi yaz
                 $newUyeId = $uye_id;
             } else { // uye_id doluysa, mevcut değere $uye_id'yi virgülle ekle
                 $newUyeId = $uyeIdResult['uye_id'] . ',' . $uye_id;
             }
-
             // Promosyonu güncelle
-            $updatePromosyonQuery = "UPDATE promosyon SET kullanim_sayisi = :kullanim_sayisi, kullanildi = :kullanildi, uye_id = :uye_id WHERE promosyon_kodu = :promosyon_kodu";
-            $updatePromosyonStatement = $db->prepare($updatePromosyonQuery);
-            $updatePromosyonStatement->execute(array(
-                'kullanim_sayisi' => $promosyon_kullanim_sayisi,
-                'kullanildi' => $kullanildi,
-                'uye_id' => $newUyeId,
-                'promosyon_kodu' => $promosyon_kodu
-            ));
+            $updatePromosyonQuery = "UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, kullanildi = :kullanildi, uye_id = :uye_id WHERE promosyon_kodu = :promosyon_kodu";
+            $db ->update($updatePromosyonQuery,['kullanim_sayisi' => $promosyon_kullanim_sayisi,'kullanildi' => $kullanildi,'uye_id' => $newUyeId,'promosyon_kodu' => $promosyon_kodu]);
         }
     }
 
     if (!empty($promosyon_kodu)) {
-        $promosyonQuery = "SELECT * FROM promosyon WHERE promosyon_kodu = :promosyon_kodu";
+        $promosyonQuery = "SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :promosyon_kodu";
         $promosyonStmt = $db->prepare($promosyonQuery);
         $promosyonStmt->bindParam(':promosyon_kodu', $promosyon_kodu);
         $promosyonStmt->execute();
@@ -602,7 +511,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
 
         $inserted_id = $db->lastInsertId();
         dekontOlustur($uye_id, $inserted_id, $firmaUnvani,$maskedCardNo, $cardHolder ,$taksit_sayisi,$yantoplam,$degistirme_tarihi);
-        createXMLDocument($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
+        posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
         $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
         mailGonder($uye_mail, 'Cari Ödeme Bildirimi', $mail_icerik, 'Nokta Elektronik');
@@ -684,7 +593,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 $inserted_id = $db->lastInsertId();
 
                 dekontOlustur($uye_id, $inserted_id, $firmaUnvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
-                createXMLDocument($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
+                posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
                 $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
                 mailGonder($uye_mail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
@@ -759,7 +668,7 @@ if (isset($_GET['veri'])) {
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
 
-    createXMLDocument($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplamxml,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, 'TL', $banka_tanimi);
+    posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplamxml,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, 'TL', $banka_tanimi);
 
     //Adresler tablosundan adresi çek
     $tadres = $db->prepare("SELECT * FROM adresler WHERE uye_id = $uye_id AND aktif = '1'");
@@ -1341,7 +1250,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
             $currentDateTime = date("d.m.Y H:i:s");
             $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
 
-            createXMLDocument($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, 'TL', $banka_tanimi);
+            posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, 'TL', $banka_tanimi);
 
             //Adresler tablosundan adresi çek
             $tadres = $db->prepare("SELECT * FROM adresler WHERE uye_id = $uye_id AND aktif = '1'");
