@@ -8,10 +8,10 @@ require_once '../bank/dekont_olustur.php';
 require_once '../wolvox/pos_olustur.php';
 $db = new Database();
 
-$dolarKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = '2' ");
+$dolarKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
 $satis_dolar = $dolarKur['satis'];
 $alis_dolar = $dolarKur['alis'];
-$euroKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = '3' ");
+$euroKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 3");
 $satis_euro = $euroKur['satis'];
 $alis_euro = $euroKur['alis'];
 
@@ -457,6 +457,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
 }
 
 if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
+    echo "geldi1";
     if(isset($_GET['cariveri'])) {
         $veri = base64_decode($_GET['cariveri']);
     } elseif(isset($_GET['cariveriFinans'])) {
@@ -473,17 +474,17 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
     $taksit_sayisi = $decodedVeri["taksit"];
     $uye_id = $decodedVeri["uye_id"];
     $lang = $decodedVeri["lang"];
-
+    echo "geldi2";
     if($hesap == 1){$doviz = "$";}else{$doviz = "TL";}
 
     $banka = $db->fetch("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
     $ticariProgram = $banka["ticari_program"];
-
+    echo "geldi3";
     $banka_pos = $db->fetch("SELECT * FROM b2b_banka_pos_listesi WHERE id = $ticariProgram ");
     $blbnhskodu = $banka_pos["BLBNHSKODU"];
     $banka_adi = $banka_pos["BANKA_ADI"];
     $banka_tanimi = $banka_pos["TANIMI"];
-
+    echo "geldi4";
     $uye = $db->fetch("SELECT * FROM uyeler WHERE id = $uye_id ");
     $uyecarikod = $uye['BLKODU'];
     $uye_mail = $uye['email'];
@@ -504,7 +505,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         $pos_id = 1;
         $basarili = 1;
         $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)";
-        $db->insert($stmt , [':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':islem_turu' => $cariOdeme, ':tutar' => $tutar, ':basarili' => $basarili]);
+        $db->insert($stmt , ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $tutar, 'basarili' => $basarili]);
 
         $inserted_id = $db->lastInsertId();
         dekontOlustur($uye_id, $inserted_id, $firmaUnvani,$maskedCardNo, $cardHolder ,$taksit_sayisi,$yantoplam,$degistirme_tarihi);
@@ -516,6 +517,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         header("Location: ../../tr/onay?cari_odeme=");
 
     }elseif(isset($_GET['cariveriFinans']) && $_POST["mdStatus"] == "1") {
+        echo "geldi5";
         $username = 'noktaadmin';
         $password = 'NEBsis28736.!';
         if($taksit_sayisi == 1 || $taksit_sayisi == 0){
@@ -588,8 +590,9 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 $db->insert($stmt, ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $yantoplam1, 'basarili' => $basarili, 'transid' => $transid, 'siparis_no' => $oid]);
 
                 $inserted_id = $db->lastInsertId();
-
+                echo "geldi6";
                 dekontOlustur($uye_id, $inserted_id, $firmaUnvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
+                echo "geldi7";
                 posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
                 $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
@@ -638,14 +641,10 @@ if (isset($_GET['veri'])) {
     $tip = $decodedVeri["tip"];
     $lang = $decodedVeri["lang"];
 
-    $q = $db->prepare("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
-    $q->execute();
-    $banka = $q->fetch(PDO::FETCH_ASSOC);
+    $banka = $db->fetch("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
     $ticariProgram = $banka["ticari_program"];
 
-    $q = $db->prepare("SELECT * FROM b2b_banka_pos_listesi WHERE id = $ticariProgram ");
-    $q->execute();
-    $banka_pos = $q->fetch(PDO::FETCH_ASSOC);
+    $banka_pos = $db->fetch("SELECT * FROM b2b_banka_pos_listesi WHERE id = $ticariProgram ");
     $blbnhskodu = $banka_pos["BLBNHSKODU"];
     $banka_adi = $banka_pos["BANKA_ADI"];
     $banka_tanimi = $banka_pos["TANIMI"];
