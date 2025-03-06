@@ -1,6 +1,5 @@
 <?php
-ini_set('display_errors', 1);  // Hataları ekrana göster
-error_reporting(E_ALL);   
+
 require_once '../db.php';
 require_once '../functions.php';
 require_once '../bank/dekont_olustur.php';
@@ -667,9 +666,7 @@ if (isset($_GET['veri'])) {
     posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplamxml,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, 'TL', $banka_tanimi);
 
     //Adresler tablosundan adresi çek
-    $tadres = $db->prepare("SELECT * FROM adresler WHERE uye_id = $uye_id AND aktif = '1'");
-    $tadres->execute();
-    $teslimat = $tadres->fetch(PDO::FETCH_ASSOC);
+    $teslimat = $db->fetch("SELECT * FROM adresler WHERE uye_id = $uye_id AND aktif = '1'");
     $teslimat_ad = $teslimat['ad'];
     $teslimat_soyad = $teslimat['soyad'];
     $teslimat_firmaadi = $teslimat['firma_adi'];
@@ -684,9 +681,7 @@ if (isset($_GET['veri'])) {
     $teslimat_postakodu = $teslimat['posta_kodu'];
 
     //üyeler tablosundan fatura adresini çek
-    $fadres = $db->prepare("SELECT * FROM uyeler WHERE id = $uye_id ");
-    $fadres->execute();
-    $uye = $fadres->fetch(PDO::FETCH_ASSOC);
+    $uye = $db->fetch("SELECT * FROM uyeler WHERE id = $uye_id ");
     $uyecarikod = $uye['BLKODU'];
     $uye_gor_fiyat = $uye['fiyat'];
     $uye_ad = $uye['ad'];
