@@ -464,6 +464,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         $veri = base64_decode($_GET['cariveriFinans']);
     }
     $decodedVeri = json_decode($veri, true);
+    echo $decodedVeri;
     $yantoplam = $decodedVeri["yantoplam"];
     $cardNo = $decodedVeri["cardNo"];
     $cariOdeme = "cari";
