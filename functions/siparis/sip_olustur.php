@@ -489,13 +489,13 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
     $uyecarikod = $uye['BLKODU'];
     $uye_mail = $uye['email'];
     $firmaUnvani = $uye['firmaUnvani'];
-
+    echo "geldi111";
     $dov_al = str_replace('.', ',', $alis_dolar);
     $dov_sat = str_replace('.', ',', $satis_dolar);
 
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
-
+    echo "geldi5";
     if(isset($_GET['cariveri'])) {
         //Param Pos
         $sonucStr = $_POST['TURKPOS_RETVAL_Sonuc_Str'];
@@ -504,11 +504,13 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         $tutar = str_replace(',', '.', $tutar);
         $pos_id = 1;
         $basarili = 1;
+        echo "geldi6";
         $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)";
         $db->insert($stmt , ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $tutar, 'basarili' => $basarili]);
-
+        echo "geldi7";
         $inserted_id = $db->lastInsertId();
         dekontOlustur($uye_id, $inserted_id, $firmaUnvani,$maskedCardNo, $cardHolder ,$taksit_sayisi,$yantoplam,$degistirme_tarihi);
+        echo "geldi8";
         posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
         $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
