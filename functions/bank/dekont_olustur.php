@@ -86,7 +86,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
 
         // Upload to S3
         $bucket = $config['s3']['bucket'];
-        $s3_key = 'dekontlar/' . $dekont_adi;
+        $s3_key = 'uploads/dekontlar/' . $dekont_adi;
 
         $result = $s3Client->putObject([
             'Bucket' => $bucket,
