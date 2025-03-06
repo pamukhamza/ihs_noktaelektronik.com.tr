@@ -85,9 +85,10 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         $temp_file_path = sys_get_temp_dir() . '/' . uniqid('dekont_') . '.pdf';
         file_put_contents($temp_file_path, $pdf_content);
 
-        // PDF'yi S3'e yükleyin
-        $file = uploadImageToS3($temp_file_path, 'uploads/dekont/', $s3Client, $config['s3']['bucket']);
-
+        $file_url = uploadImageToS3($temp_file_path, 'uploads/dekont/', $s3Client, $config['s3']['bucket']);
+        if ($file_url) {
+            $dekont_adi = basename($temp_file_path);
+        }
 
         // Save to database
         $islem_no = "COD_" . uniqid();
