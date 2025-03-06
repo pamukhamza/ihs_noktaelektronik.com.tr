@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 require_once '../db.php';
 require_once '../functions.php';
 require_once '../bank/dekont_olustur.php';
