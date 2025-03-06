@@ -91,15 +91,14 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
 
         // Save to database
         $islem_no = "COD_" . uniqid();
-        $query = "INSERT INTO b2b_dekontlar (uye_id, pos_odeme_id, islem_no, tutar, dekont, dekont_url, tarih) 
-                 VALUES (:uye_id, :pos_odeme_id, :islem_no, :tutar, :dekont, :dekont_url, :tarih)";
+        $query = "INSERT INTO b2b_dekontlar (uye_id, pos_odeme_id, islem_no, tutar, dekont,  tarih) 
+                 VALUES (:uye_id, :pos_odeme_id, :islem_no, :tutar, :dekont, :tarih)";
         $params = [
             'uye_id' => $uye_id,
             'pos_odeme_id' => $odeme_id,
             'islem_no' => $islem_no,
             'tutar' => $odenentutar,
             'dekont' => $dekont_adi,
-            'dekont_url' => $dekont_adi,
             'tarih' => $date
         ];
         $database->insert($query, $params);
