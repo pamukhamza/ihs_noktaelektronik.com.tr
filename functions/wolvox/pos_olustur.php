@@ -71,7 +71,7 @@ function posXmlOlustur(
 
     // XML dosyasını kaydet
     $xmlFileName = 'CRHRKT_' . $cari_kodu . uniqid(4) . '.xml';
-    $filePath = '../../assets/xml/pos/' . $xmlFileName;
+    $filePath = '../../assets/pos/' . $xmlFileName;
     $xmlDoc->save($filePath);
 
     return $filePath;
