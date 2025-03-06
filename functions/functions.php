@@ -1,31 +1,27 @@
 <?php
 require_once "db.php";
 $db = new Database();
-function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
-    // Maks. Dosya boyutu
-    $max_file_size = 6 * 1024 * 1024; // 6MB in bytes
-    if ($file["size"] > $max_file_size) {
-        return false;
-    }
-
-    // Get the original file extension
-    $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
-
-    // Generate a unique filename with the original extension
-    $unique_filename = uniqid() . '.' . $fileExtension;
-    $uploadPath = $upload_path . $unique_filename;
-
+// uploadImageToS3 fonksiyonunu dosya yolu ile yükleme için düzenleyin
+function uploadImageToS3($file_path, $upload_path, $s3Client, $bucket) {
     try {
+        // S3 yükleme yolu
+        $s3_file_path = $upload_path . basename($file_path); // Dosyanın basename'ini S3'e koyuyoruz
+
+        // Dosyayı S3'e yükleyin
         $result = $s3Client->putObject([
             'Bucket' => $bucket,
-            'Key'    => $uploadPath,
-            'SourceFile' => $file['tmp_name']
+            'Key'    => $s3_file_path,
+            'SourceFile' => $file_path // SourceFile için dosya yolunu geçiyoruz
         ]);
-        return $unique_filename; // Return the unique filename on success
+
+        // Yükleme başarılı ise dosya adını veya URL'yi döndürüyoruz
+        return basename($file_path); // veya $result['ObjectURL'] dönebilirsiniz, S3 URL'si için
     } catch (AwsException $e) {
-        return false; // Return false on failure
+        error_log('S3 yükleme hatası: ' . $e->getMessage());
+        return false;
     }
 }
+
 function saveToMailjet($email, $listId) {
     $apikey = '29f750523bec17ec1b06c03b2766d98f';
     $apisecret = '8b52ce1e9ca02de74c0038a0c0c6c270';

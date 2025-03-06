@@ -79,13 +79,15 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         $pdf->SetXY(150, 50);
         $pdf->Cell(0, 10, $date, 0, 1, 'R');
 
-        // File name
+        // Dosya adı ve PDF içeriğini geçici bir dosyaya kaydetme
         $dekont_adi = "dekont_" . uniqid() . ".pdf";
+        $pdf_content = $pdf->Output('', 'S');
+        $temp_file_path = sys_get_temp_dir() . '/' . uniqid('dekont_') . '.pdf';
+        file_put_contents($temp_file_path, $pdf_content);
 
-        // Get PDF content as a string (no local saving)
-        $pdf_content = $pdf->Output('', 'S'); // 'S' returns PDF as a string
+        // PDF'yi S3'e yükleyin
+        $file = uploadImageToS3($temp_file_path, 'uploads/dekont/', $s3Client, $config['s3']['bucket']);
 
-        $file = uploadImageToS3($pdf_content, 'uploads/dekont/', $s3Client, $config['s3']['bucket']);
 
         // Save to database
         $islem_no = "COD_" . uniqid();
@@ -101,7 +103,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
             'tarih' => $date
         ];
         $database->insert($query, $params);
-
+        unlink($temp_file_path);
         return true;
     } catch (Exception $e) {
         error_log('Dekont oluşturma veya S3 yükleme hatası: ' . $e->getMessage());
