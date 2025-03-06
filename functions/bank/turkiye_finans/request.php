@@ -4,7 +4,7 @@ session_regenerate_id(true);
 include('../../db.php');
 if(isset($_POST["cariOdeme"])){
     echo $_POST["uye_id"];
-    exit
+    exit;
     $verimiz = [
         "cardHolder" => $_POST['cardName'],
         "cardNo" => $_POST['cardNumber'],
