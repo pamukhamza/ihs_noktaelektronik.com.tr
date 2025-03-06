@@ -7,10 +7,10 @@ require_once '../bank/dekont_olustur.php';
 require_once '../wolvox/pos_olustur.php';
 $db = new Database();
 
-$dolarKur = $db->fetch("SELECT * FROM kurlar WHERE id = '2' ");
+$dolarKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = '2' ");
 $satis_dolar = $dolarKur['satis'];
 $alis_dolar = $dolarKur['alis'];
-$euroKur = $db->fetch("SELECT * FROM kurlar WHERE id = '3' ");
+$euroKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = '3' ");
 $satis_euro = $euroKur['satis'];
 $alis_euro = $euroKur['alis'];
 
