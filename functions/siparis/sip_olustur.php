@@ -476,6 +476,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
     $lang = $decodedVeri["lang"];
     echo "geldi2";
     if($hesap == 1){$doviz = "$";}else{$doviz = "TL";}
+echo " uyeid".$uye_id;
 
     $banka = $db->fetch("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = $banka_id ");
     $ticariProgram = $banka["ticari_program"];
