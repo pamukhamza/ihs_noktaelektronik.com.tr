@@ -80,14 +80,9 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
 
         // File name
         $dekont_adi = "dekont_" . uniqid() . ".pdf";
-        $pdf_file = __DIR__ . '/../../assets/dekontlar/' . $dekont_adi;
 
-        // Save PDF locally
-        if (!is_dir(__DIR__ . '/../../assets/dekontlar/')) {
-            mkdir(__DIR__ . '/../../assets/dekontlar/', 0755, true);
-        }
-
-        $pdf->Output($pdf_file, 'F');
+        // Get PDF content as a string (no local saving)
+        $pdf_content = $pdf->Output('', 'S'); // 'S' returns PDF as a string
 
         // Upload to S3
         $bucket = $config['s3']['bucket'];
@@ -96,7 +91,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         $result = $s3Client->putObject([
             'Bucket' => $bucket,
             'Key'    => $s3_key,
-            'SourceFile' => $pdf_file,
+            'Body'   => $pdf_content, // Sending PDF content directly
             'ACL'    => 'public-read'
         ]);
 
@@ -117,9 +112,6 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
             'tarih' => $date
         ];
         $database->insert($query, $params);
-
-        // Optionally delete the local PDF after upload
-        unlink($pdf_file);
 
         return true;
     } catch (Exception $e) {
