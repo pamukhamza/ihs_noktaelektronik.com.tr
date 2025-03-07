@@ -33,20 +33,31 @@ $sql = "SELECT u.*, m.title AS marka_adi, r.KResim
 $params = [];
 
 if (!empty($kategori)) {
+    // Kategorinin ID'sini al
     $kategori_id = $database->fetchColumn("SELECT id FROM nokta_kategoriler WHERE web_comtr = 1 AND seo_link = :seoLink", ['seoLink' => $kategori]);
 
-    // Alt kategorileri SQL ile bulma
-    $sqlAltKategoriler = "SELECT id FROM nokta_kategoriler WHERE parent_id = :kategori_id";
-    $alt_kategori_ids = $database->fetchAll($sqlAltKategoriler, ['kategori_id' => $kategori_id]);
+    // Alt kategorileri bulmak için recursive bir fonksiyon
+    function getAltKategoriler($database, $kategori_id) {
+        $alt_kategori_ids = [];
+        $sql = "SELECT id FROM nokta_kategoriler WHERE parent_id = :kategori_id";
+        $alt_kategoriler = $database->fetchAll($sql, ['kategori_id' => $kategori_id]);
 
-    // Alt kategorilerin ID'lerini bir araya getirme
-    $alt_kategori_ids = array_map(function($item) {
-        return $item['id'];
-    }, $alt_kategori_ids);
-    
+        foreach ($alt_kategoriler as $alt_kategori) {
+            $alt_kategori_ids[] = $alt_kategori['id'];
+            // Alt kategorilerin altındaki kategorilere de bak
+            $alt_kategori_ids = array_merge($alt_kategori_ids, getAltKategoriler($database, $alt_kategori['id']));
+        }
+        return $alt_kategori_ids;
+    }
+
+    // Alt kategori ID'lerini al
+    $alt_kategori_ids = getAltKategoriler($database, $kategori_id);
     $alt_kategori_ids[] = $kategori_id; // Ana kategori de eklenmeli
+
+    // SQL sorgusuna dahil et
     $sql .= " AND KategoriID IN (" . implode(',', array_map('intval', $alt_kategori_ids)) . ")";
 }
+
 
 
 if (!empty($marka)) {
