@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);  
 require_once 'db.php';
-require_once 'mail/mail_gonder.php';
+require_once '../mail/mail_gonder.php';
 function controlInput($data) {
     // Veri temizleme işlemi
     $data = trim($data);               // Baş ve son boşlukları temizler
