@@ -1,7 +1,35 @@
 <?php
 require_once 'db.php';
-ini_set('display_errors', 1);  // Hataları ekrana göster
-error_reporting(E_ALL);   
+function saveToMailjet($email, $listId) {
+    $apikey = '29f750523bec17ec1b06c03b2766d98f';
+    $apisecret = '8b52ce1e9ca02de74c0038a0c0c6c270';
+
+    // Mailjet API endpoint URL
+    $url = "https://api.mailjet.com/v3/REST/contactslist/$listId/managecontact";
+
+    // Veri dizisi oluşturma
+    $data = [
+    'Email' => $email,
+    'Action' => 'addnoforce', // Ekleme işlemi, varsa zorlama yapmadan ekle
+    ];
+
+    // HTTP isteği oluşturma
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    ]);
+    curl_setopt($ch, CURLOPT_USERPWD, "$apikey:$apisecret");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+    // İstek gönderme
+    $response = curl_exec($ch);
+    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    // CURL kapatma
+    curl_close($ch);
+}
 function controlInput($data) {
     // Veri temizleme işlemi
     $data = trim($data);               // Baş ve son boşlukları temizler
@@ -9,7 +37,6 @@ function controlInput($data) {
     $data = htmlspecialchars($data);  // HTML karakterlerini temizler
     return $data;
 }
-
 function sepeteFavoriEkle() {
     $urun_id = $_POST['urun_id'];
     $uye_id = $_POST['uye_id'];
@@ -131,7 +158,6 @@ function sepeteUrunEkle() {
     }
     echo "Ürün sepete eklendi.";
 }
-
 function ebultenKaydet() {
     $database = new Database();
     if (isset($_POST["ebulten_mail"])) {
@@ -504,7 +530,6 @@ function editBannerVideo() {
         $stmt->execute([$bLink, $image, $aktif]);
     }
 }
-
 function uyeAdresDuzenle() {
     $adresId = controlInput($_POST['adresId']);
     $adres_basligi = controlInput($_POST['adres_basligi']);
@@ -530,7 +555,6 @@ function uyeAdresDuzenle() {
             $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
         }
 }
-
 function sepetAdres() {
     global $db;
     $adresId = $_POST['id'];
@@ -586,7 +610,6 @@ function adresSec() {
     $updateOthersQuery->bindParam(':sessionId', $sessionId, PDO::PARAM_INT);
     $updateOthersQuery->execute();
 }
-
 function iade() {
     global $db;
 
@@ -652,7 +675,6 @@ function loglar(){
     $table_html .= '</tbody></table>';
     echo $table_html;
 }
-
 if (isset($_POST['type'])) {
   $type = $_POST['type'];
   if ($type === 'ariza') {

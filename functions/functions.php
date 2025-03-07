@@ -21,37 +21,6 @@ function uploadImageToS3($file_path, $upload_path, $s3Client, $bucket) {
         return false;
     }
 }
-
-function saveToMailjet($email, $listId) {
-    $apikey = '29f750523bec17ec1b06c03b2766d98f';
-    $apisecret = '8b52ce1e9ca02de74c0038a0c0c6c270';
-
-    // Mailjet API endpoint URL
-    $url = "https://api.mailjet.com/v3/REST/contactslist/$listId/managecontact";
-
-    // Veri dizisi oluşturma
-    $data = [
-    'Email' => $email,
-    'Action' => 'addnoforce', // Ekleme işlemi, varsa zorlama yapmadan ekle
-    ];
-
-    // HTTP isteği oluşturma
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json',
-    ]);
-    curl_setopt($ch, CURLOPT_USERPWD, "$apikey:$apisecret");
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-    // İstek gönderme
-    $response = curl_exec($ch);
-    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-    // CURL kapatma
-    curl_close($ch);
-}
 function IP(){
     if(getenv("HTTP_CLIENT_IP")){
         $ip = getenv("HTTP_CLIENT_IP");
