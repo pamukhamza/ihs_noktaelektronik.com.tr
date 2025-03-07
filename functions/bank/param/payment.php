@@ -6,7 +6,7 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 0);
 ob_start();
 session_start();
-include('../../../baglanti.php');
+include('../../db.php');
 @include('validation.php');
 @include('env.php');
 @include "Auth.php";
@@ -18,20 +18,20 @@ ini_set('display_startup_errors', 1);
 
 global $env;
 if(isset($_POST["cariOdeme"])){
-    global $db;
+    $database = new Database();
     function isSucceced($value)
     {
         if ($value->TP_Islem_OdemeResult->Sonuc > 0) {
             echo "<script>window.top.location='".$value->TP_Islem_OdemeResult->UCD_URL."'</script>";
         } else {
-            $errorUrl = "https://www.noktaelektronik.com.tr/cariodeme?lang=tr&s=31";
+            $errorUrl = "https://denemeb2b.noktaelektronik.net/tr/cariodeme?s=31";
             header("Location: $errorUrl");
             exit();
         }
     }
     if ($_POST) {
         $bin = substr($_POST['cardNumber'], 0, 6); // 'cardNumber'ın ilk 6 hanesini al
-        $url = 'https://www.noktaelektronik.com.tr/php/bank/param/binSorgula1.php?bin=' . $bin; // 'binsorgula.php' adresine GET isteği yap
+        $url = 'https://denemeb2b.noktaelektronik.net/functions/bank/param/binSorgula1.php?bin=' . $bin; // 'binsorgula.php' adresine GET isteği yap
         $result = file_get_contents($url); // İstek sonucunu al
         $gelposid = $result;
         $odemetutar = $_POST['odemetutar'];
@@ -68,103 +68,8 @@ if(isset($_POST["cariOdeme"])){
             "yearOfExpireDate" => "20" . $_POST['expYear'],
             "creditCardCvc" => $_POST['cvCode'],
             "creditCardOwnerName" => "5372403939",
-            "errorUrl" => "https://www.noktaelektronik.com.tr/tr/cariodeme",
-            "succesUrl" => "https://www.noktaelektronik.com.tr/php/sip_olustur?cariveri=" . $verimizB64,
-            "orderID" => rand(0, 999999),
-            "paymentUrl" => "http://localhost/param/index.php",
-            "orderExplanation" => date("d-m-Y H:i:s") . " tarihindeki ödeme",
-            "installment" => $_POST['odemetaksit'],
-            "transactionPayment" => $odemetutar,
-            "totalPayment" => $odemetutar,
-            "transactionID" => "",
-            "ipAdr" => $_SERVER['REMOTE_ADDR']
-        ];
-
-        $data = new TotalPaymentTransaction(
-            $transactionsValueList["cardType"],
-            "",
-            $transactionsValueList["guid"],
-            $transactionsValueList["cardHolderName"],
-            $transactionsValueList["cardNo"],
-            $transactionsValueList["monthOfExpireDate"],
-            $transactionsValueList["yearOfExpireDate"],
-            $transactionsValueList["creditCardCvc"],
-            $transactionsValueList["creditCardOwnerName"],
-            $transactionsValueList["errorUrl"],
-            $transactionsValueList["succesUrl"],
-            $transactionsValueList["orderID"],
-            $transactionsValueList["orderExplanation"],
-            $transactionsValueList["installment"],
-            $transactionsValueList["transactionPayment"],
-            $transactionsValueList["totalPayment"],
-            $transactionsValueList["transactionID"],
-            $transactionsValueList["ipAdr"],
-            $transactionsValueList["paymentUrl"]
-        );
-
-        $authObject = new Auth($transactionSecurityStr = $env['CLIENT_CODE'] .
-            $transactionsValueList["guid"] .
-            $transactionsValueList["spid"] .
-            $transactionsValueList["installment"] .
-            $transactionsValueList["transactionPayment"] .
-            $transactionsValueList["totalPayment"] .
-            $transactionsValueList["orderID"] .
-            $transactionsValueList["errorUrl"] .
-            $transactionsValueList["succesUrl"]);
-
-        $data->Islem_Hash = $client->SHA2B64($authObject)->SHA2B64Result;
-        //print_r($data);
-        $response = $client->TP_Islem_Odeme($data);
-        print_r($response);
-        isSucceced($response);
-    }
-}
-elseif(isset($_POST["adminCariOdeme"])) {
-    function isSucceced($value)
-    {
-        if ($value->TP_Islem_OdemeResult->Sonuc > 0) {
-            echo "<script>window.top.location='".$value->TP_Islem_OdemeResult->UCD_URL."'</script>";
-        } else {
-            $errorUrl = "https://www.noktaelektronik.com.tr/admin/muhasebe/adminManuelOdeme.php";
-            header("Location: $errorUrl");
-            exit();
-        }
-    }
-    if ($_POST) {
-        $bin = substr($_POST['cardNumber'], 0, 6); // 'cardNumber'ın ilk 6 hanesini al
-        $url = 'https://www.noktaelektronik.com.tr/php/bank/param/binSorgula1.php?bin=' . $bin; // 'binsorgula.php' adresine GET isteği yap
-        $result = file_get_contents($url); // İstek sonucunu al
-        $gelposid = $result;
-        $odemetutar = $_POST['odemetutar'];
-
-
-        $verimiz = [
-            "cardHolder" => $_POST['cardName'],
-            "cardNo" => $_POST['cardNumber'],
-            "yantoplam" => $_POST["toplam"],
-            "banka_id" => $_POST["banka_id"],
-            "hesap" => $_POST["hesap"],
-            "taksit" => $_POST["taksit_sayisi"],
-            "uye_id" => $_POST["uye_id"],
-            "lang" => $_POST["lang"],
-        ];
-        $verimizB64 = base64_encode(json_encode($verimiz));
-
-        session_regenerate_id(true);
-        $ipAdr = $_SERVER['REMOTE_ADDR'];
-        $client = new SoapClient($env['URL']);
-        $transactionsValueList = [
-            "cardType" => $gelposid,
-            "spid" => $gelposid,
-            "guid" => $env['GUID'],
-            "cardHolderName" => $_POST['cardName'],
-            "cardNo" => $_POST['cardNumber'],
-            "monthOfExpireDate" => $_POST['expMonth'],
-            "yearOfExpireDate" => "20" . $_POST['expYear'],
-            "creditCardCvc" => $_POST['cvCode'],
-            "creditCardOwnerName" => "5372403939",
-            "errorUrl" => "https://www.noktaelektronik.com.tr/admin/muhasebe/adminManuelOdeme.php",
-            "succesUrl" => "https://www.noktaelektronik.com.tr/admin/muhasebe/manualodeme?cariveri=" . $verimizB64,
+            "errorUrl" => "https://denemeb2b.noktaelektronik.net/tr/cariodeme",
+            "succesUrl" => "https://denemeb2b.noktaelektronik.net/functions/siparis/sip_olustur?cariveri=" . $verimizB64,
             "orderID" => rand(0, 999999),
             "paymentUrl" => "http://localhost/param/index.php",
             "orderExplanation" => date("d-m-Y H:i:s") . " tarihindeki ödeme",
@@ -220,7 +125,7 @@ else {
         if ($value->TP_Islem_OdemeResult->Sonuc > 0) {
             echo "<script>window.top.location='".$value->TP_Islem_OdemeResult->UCD_URL."'</script>";
         } else {
-            $errorUrl = "https://www.noktaelektronik.com.tr/sepet?lang=tr&s=31";
+            $errorUrl = "https://denemeb2b.noktaelektronik.net/tr/sepet?s=31";
             header("Location: $errorUrl");
             exit();
         }
@@ -252,7 +157,7 @@ else {
         $verimizB64 = base64_encode(json_encode($verimiz));
 
         $bin = substr($_POST['cardNumber'], 0, 6); // 'cardNumber'ın ilk 6 hanesini al
-        $url = 'https://www.noktaelektronik.com.tr/php/bank/param/binSorgula1.php?bin=' . $bin; // 'binsorgula.php' adresine GET isteği yap
+        $url = 'https://denemeb2b.noktaelektronik.net/functions/bank/param/binSorgula1.php?bin=' . $bin; // 'binsorgula.php' adresine GET isteği yap
         $result = file_get_contents($url); // İstek sonucunu al
         $gelposid = $result;
 
@@ -268,8 +173,8 @@ else {
             "yearOfExpireDate" => "20" . $_POST['expYear'],
             "creditCardCvc" => $_POST['cvCode'],
             "creditCardOwnerName" => "5372403939",
-            "errorUrl" => "https://www.noktaelektronik.com.tr/cariodeme?lang=tr",
-            "succesUrl" => "https://www.noktaelektronik.com.tr/php/sip_olustur?veri=" .$verimizB64,
+            "errorUrl" => "https://denemeb2b.noktaelektronik.net/tr/cariodeme?lang=tr",
+            "succesUrl" => "https://denemeb2b.noktaelektronik.net/functions/siparis/sip_olustur?veri=" .$verimizB64,
             "orderID" => rand(0,999999),
             "paymentUrl" => "http://localhost/param/index.php",
             "orderExplanation" => date("d-m-Y H:i:s") . " tarihindeki ödeme",
