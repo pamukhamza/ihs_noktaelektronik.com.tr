@@ -1,8 +1,6 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-ini_set('display_errors', 1);  // Hataları ekrana göster
-error_reporting(E_ALL);   
 $currentPage = 'urunler';
 $template = new Template('Nokta - Ürünler', $currentPage);
 
@@ -848,7 +846,7 @@ if ($alt_kategori_result) {
             var email = $('#email').val();
             $.ajax({
                 type: 'POST',
-                url: 'php/edit_info.php',
+                url: 'functions/edit_info.php',
                 data: {
                     uye_id: uye_id,
                     email: email,

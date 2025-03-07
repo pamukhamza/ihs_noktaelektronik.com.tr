@@ -1,5 +1,6 @@
 <?php
 require_once 'db.php';
+require_once 'mail/mail_gonder.php';
 function controlInput($data) {
     // Veri temizleme işlemi
     $data = trim($data);               // Baş ve son boşlukları temizler
@@ -117,19 +118,10 @@ function teklif() {
     }
     if (!empty($uye_id)) {
         $insertQuery = "INSERT INTO b2b_teklif (uye_id, urun_id, mail, aciklama) VALUES (:uye_id, :urun_id, :mail, :aciklama)";
-        $database->insert($insertQuery, [
-            'uye_id' => $uye_id,
-            'urun_id' => $urun_id,
-            'mail' => $mail,
-            'aciklama' => $teklif_aciklama
-        ]);
+        $database->insert($insertQuery, ['uye_id' => $uye_id, 'urun_id' => $urun_id, 'mail' => $mail, 'aciklama' => $teklif_aciklama]);
     } else {
         $insertQuery = "INSERT INTO b2b_teklif (urun_id, mail, aciklama) VALUES (:urun_id, :mail, :aciklama)";
-        $database->insert($insertQuery, [
-            'urun_id' => $urun_id,
-            'mail' => $mail,
-            'aciklama' => $teklif_aciklama
-        ]);
+        $database->insert($insertQuery, ['urun_id' => $urun_id,'mail' => $mail,'aciklama' => $teklif_aciklama]);
     }
     $mail_icerik = teklifAlindiMail($firmaAdi);
     mailGonder($mail, 'Teklif Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
