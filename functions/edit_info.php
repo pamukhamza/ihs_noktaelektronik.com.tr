@@ -114,35 +114,17 @@ function sepeteUrunEkle() {
     $adet = !empty($_POST['adet']) ? $_POST['adet'] : 1;
 
     // Ürünün mevcut adetini kontrol et
-    $existingAdet = $database->fetchColumn("SELECT adet FROM uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", [
-        'uye_id' => $uye_id,
-        'urun_id' => $urun_id
-    ]);
-
+    $existingAdet = $database->fetch("SELECT adet FROM b2b_uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['uye_id' => $uye_id,'urun_id' => $urun_id]);
     // Ürünün stok bilgisi
-    $urun_stok = $database->fetchColumn("SELECT stok FROM nokta_urunler WHERE id = :urun_id", [
-        'urun_id' => $urun_id
-    ]);
-
+    $urun_stok = $database->fetch("SELECT stok FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
     // Sepetteki mevcut adet
-    $sepet_adet = $database->fetchColumn("SELECT adet FROM uye_sepet WHERE urun_id = :urun_id AND uye_id = :uye_id", [
-        'urun_id' => $urun_id,
-        'uye_id' => $uye_id
-    ]);
+    $sepet_adet = $database->fetch("SELECT adet FROM b2b_uye_sepet WHERE urun_id = :urun_id AND uye_id = :uye_id", ['urun_id' => $urun_id,'uye_id' => $uye_id]);
 
     if ($existingAdet !== false) { // Eğer ürün sepette varsa
         $newAdet = $existingAdet + $adet;
-        $database->update("UPDATE uye_sepet SET adet = :adet WHERE uye_id = :uye_id AND urun_id = :urun_id", [
-            'adet' => $newAdet,
-            'uye_id' => $uye_id,
-            'urun_id' => $urun_id
-        ]);
+        $database->update("UPDATE b2b_uye_sepet SET adet = :adet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['adet' => $newAdet,'uye_id' => $uye_id,'urun_id' => $urun_id]);
     } else { // Ürün sepette yoksa yeni ekle
-        $database->insert("INSERT INTO uye_sepet (uye_id, urun_id, adet) VALUES (:uye_id, :urun_id, :adet)", [
-            'uye_id' => $uye_id,
-            'urun_id' => $urun_id,
-            'adet' => $adet
-        ]);
+        $database->insert("INSERT INTO b2b_uye_sepet (uye_id, urun_id, adet) VALUES (:uye_id, :urun_id, :adet)", ['uye_id' => $uye_id,'urun_id' => $urun_id,'adet' => $adet]);
     }
 }
 function ebultenKaydet() {
