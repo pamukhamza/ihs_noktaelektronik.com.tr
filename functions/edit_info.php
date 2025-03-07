@@ -111,22 +111,26 @@ function sepeteUrunEkle() {
     $database = new Database();
     $urun_id = $_POST['urun_id'];
     $uye_id = $_POST['uye_id'];
-    $adet = !empty($_POST['adet']) ? $_POST['adet'] : 1;
+    $eklenen_adet = !empty($_POST['adet']) ? (int)$_POST['adet'] : 1;
 
-    // Ürünün mevcut adetini kontrol et
-    $existingAdet = $database->fetch("SELECT adet FROM b2b_uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['uye_id' => $uye_id,'urun_id' => $urun_id]);
     // Ürünün stok bilgisi
     $urun_stok = $database->fetch("SELECT stok FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
-    // Sepetteki mevcut adet
-    $sepet_adet = $database->fetch("SELECT adet FROM b2b_uye_sepet WHERE urun_id = :urun_id AND uye_id = :uye_id", ['urun_id' => $urun_id,'uye_id' => $uye_id]);
+    $urun_stok_durumu = $urun_stok['stok'] ?? 0;
+    $yeni_adet = 0;
+    // Ürünün sepetteki mevcut adeti
+    $existingAdet = $database->fetch("SELECT adet FROM b2b_uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['uye_id' => $uye_id,'urun_id' => $urun_id]);
 
-    if ($existingAdet !== false) { // Eğer ürün sepette varsa
-        $newAdet = $existingAdet + $adet;
-        $database->update("UPDATE b2b_uye_sepet SET adet = :adet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['adet' => $newAdet,'uye_id' => $uye_id,'urun_id' => $urun_id]);
+    $mevcut_adet = $existingAdet['adet'] ?? 0;
+    $yeni_adet = $mevcut_adet + $eklenen_adet;
+
+    if ($existingAdet) { // Ürün sepette varsa adet güncelle
+        $database->update("UPDATE b2b_uye_sepet SET adet = :adet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['adet' => $yeni_adet,'uye_id' => $uye_id,'urun_id' => $urun_id]);
     } else { // Ürün sepette yoksa yeni ekle
-        $database->insert("INSERT INTO b2b_uye_sepet (uye_id, urun_id, adet) VALUES (:uye_id, :urun_id, :adet)", ['uye_id' => $uye_id,'urun_id' => $urun_id,'adet' => $adet]);
+        $database->insert("INSERT INTO b2b_uye_sepet (uye_id, urun_id, adet) VALUES (:uye_id, :urun_id, :adet)", ['uye_id' => $uye_id,'urun_id' => $urun_id,'adet' => $eklenen_adet]);
     }
+    echo "Ürün sepete eklendi.";
 }
+
 function ebultenKaydet() {
     $database = new Database();
     if (isset($_POST["ebulten_mail"])) {
