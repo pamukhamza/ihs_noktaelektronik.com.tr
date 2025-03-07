@@ -967,7 +967,8 @@ if(isset($_SESSION['id'])) {
                     urun_no: urun_no,
                     type: 'teklif'
                 },
-                success: function() {
+                success: function(don) {
+                    console.log(don);
                     $('#teklifOnayModal').modal('hide');
                     Swal.fire({
                         title: "Teklifiniz Alınmıştır!",
