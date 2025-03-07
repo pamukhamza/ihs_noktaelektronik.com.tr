@@ -201,7 +201,8 @@ function sepeteUrunEkle(uid, id, adet) {
             type: 'sepeteUrunEkle'
 
         },
-        success: function () {
+        success: function (gel) {
+            console.log(gel);
             const Toast = Swal.mixin({
                 toast: true,
                 position: "center",

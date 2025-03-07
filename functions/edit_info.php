@@ -17,15 +17,15 @@ function sepeteFavoriEkle() {
     $adet = 1;
     $database = new Database();
     try {
-        $checkQuery = "SELECT adet FROM uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id";
+        $checkQuery = "SELECT adet FROM b2b_uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id";
         $existingAdet = $database->fetchColumn($checkQuery, ['uye_id' => $uye_id,'urun_id' => $urun_id]);
 
         if ($existingAdet !== false) {
             $newAdet = $existingAdet + 1;
-            $updateQuery = "UPDATE uye_sepet SET adet = :adet WHERE uye_id = :uye_id AND urun_id = :urun_id";
+            $updateQuery = "UPDATE b2b_uye_sepet SET adet = :adet WHERE uye_id = :uye_id AND urun_id = :urun_id";
             $database->update($updateQuery, ['adet' => $newAdet,'uye_id' => $uye_id,'urun_id' => $urun_id]);
         } else {
-            $insertQuery = "INSERT INTO uye_sepet (uye_id, urun_id, adet) VALUES (:uye_id, :urun_id, :adet)";
+            $insertQuery = "INSERT INTO b2b_uye_sepet (uye_id, urun_id, adet) VALUES (:uye_id, :urun_id, :adet)";
             $database->insert($insertQuery, ['uye_id' => $uye_id,'urun_id' => $urun_id,'adet' => $adet]);
         }
     } catch (Exception $e) {
@@ -46,7 +46,7 @@ function uyeAdresEkle() {
     $adres_turu = 'teslimat';
     $database = new Database();
 
-    $query = "INSERT INTO adresler (uye_id, adres_turu, adres_basligi, ad, soyad, adres, telefon, ulke, il, ilce, posta_kodu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO b2b_adresler (uye_id, adres_turu, adres_basligi, ad, soyad, adres, telefon, ulke, il, ilce, posta_kodu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($query);
     $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
 }
