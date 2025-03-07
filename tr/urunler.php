@@ -12,8 +12,11 @@ $database = new Database();
 $kategori = $_GET['cat'] ?? '';
 $cat = $kategori;
 $marka = $_GET['brand'] ?? '';
+$brand = $marka;
 $ozellikler = $_GET['filter'] ?? '';
+$filter = $ozellikler;
 $arama = $_GET['search'] ?? '';
+$search = $arama;
 $stkParam = isset($_GET['stk']) ? '&stk=' . $_GET['stk'] : '';
 
 $sql = "SELECT u.*, m.title AS marka_adi, r.KResim
@@ -234,7 +237,7 @@ function getBreadcrumbs($kategori, $database) {
                                     $kategori_seo_link = $kategori_row['seo_link'];
                                     ?>
                                     <li>
-                                        <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=&search=<?= $search ?>" 
+                                        <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>" 
                                            class="btn d-inline-flex align-items-center rounded border-0 collapsed" 
                                            style="text-align: left !important;">
                                             <?= htmlspecialchars($kategori_adi) ?>
@@ -261,7 +264,7 @@ function getBreadcrumbs($kategori, $database) {
                                     if (!in_array($kategori_adi, $eklenen_kategoriler)) {
                                         ?>
                                         <li>
-                                            <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=&search=<?= $search ?>" 
+                                            <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>" 
                                                class="btn d-inline-flex align-items-center rounded border-0 collapsed" 
                                                style="text-align: left !important;">
                                                 <?= htmlspecialchars($kategori_adi) ?>
@@ -285,7 +288,7 @@ function getBreadcrumbs($kategori, $database) {
                                 foreach ($alt_kategori_result as $alt_kategori) {
                                     ?>
                                     <li>
-                                        <a href="tr/urunler?cat=<?= $alt_kategori['seo_link'] ?>&brand=<?= $brand ?>&filter=&search=<?= $search ?>" 
+                                        <a href="tr/urunler?cat=<?= $alt_kategori['seo_link'] ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>" 
                                            class="btn d-inline-flex align-items-center rounded border-0 collapsed" 
                                            style="text-align: left !important;">
                                             <?= htmlspecialchars($alt_kategori['KategoriAdiTr']) ?>
@@ -305,7 +308,7 @@ function getBreadcrumbs($kategori, $database) {
                                               'transform: translateX(8px); color: purple; font-weight: bold;' : '';
                                     ?>
                                     <li>
-                                        <a href="tr/urunler?cat=<?= $alt_kategori['seo_link'] ?>&brand=<?= $brand ?>&filter=&search=<?= $search ?>" 
+                                        <a href="tr/urunler?cat=<?= $alt_kategori['seo_link'] ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>" 
                                            class="btn d-inline-flex align-items-center rounded border-0 collapsed" 
                                            style="text-align: left !important; <?= $style ?>">
                                             <?= htmlspecialchars($alt_kategori['KategoriAdiTr']) ?>
