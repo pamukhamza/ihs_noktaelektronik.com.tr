@@ -297,7 +297,7 @@ function getBreadcrumbs($kategori, $database) {
                                 $ust_kategori = $database->fetch($ust_kategori_sql, ['id' => $kategori_id]);
                     
                                 $ust_kategori_id = $ust_kategori['parent_id'] ?? 0;
-                                $alt_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = :parent_id";
+                                $alt_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = :parent_id"; 
                                 $alt_kategori_result = $database->fetchAll($alt_kategori_sql, ['parent_id' => $ust_kategori_id]);
                     
                                 foreach ($alt_kategori_result as $alt_kategori) {
