@@ -199,9 +199,9 @@ function sepeteUrunEkle(uid, id, adet) {
             'urun_id': uid,
             'adet': adet,
             type: 'sepeteUrunEkle'
+
         },
-        success: function (gel) {
-            console.log(gel);
+        success: function () {
             const Toast = Swal.mixin({
                 toast: true,
                 position: "center",
@@ -215,19 +215,14 @@ function sepeteUrunEkle(uid, id, adet) {
             });
             Toast.fire({
                 icon: "success",
-                title: "Ürün sepete eklendi."
+                title: "Ürün sepetinize eklendi."
             });
 
             sepetGuncelle();
             updateSepetCount();
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX Error: " + error);
-            console.log(xhr.responseText); // Daha fazla detay
         }
     });
 }
-
 // URL parametresini kontrol etmek ve uyarı mesajını göstermek için fonksiyon
 function checkAndGetWarning() {
     const urlParams = new URLSearchParams(window.location.search);

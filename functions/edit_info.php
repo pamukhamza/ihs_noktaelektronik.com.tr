@@ -1,6 +1,5 @@
 <?php
 require_once 'db.php';
-require_once 'functions.php';
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);   
 function controlInput($data) {
