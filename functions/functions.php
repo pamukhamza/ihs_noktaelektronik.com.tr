@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 1);  // Hataları ekrana göster
-error_reporting(E_ALL);  
 require_once "db.php";
 $db = new Database();
 // uploadImageToS3 fonksiyonunu dosya yolu ile yükleme için düzenleyin
@@ -368,78 +366,6 @@ if (isset($_POST['sifre_unuttum'])) {
 
 
 
-
-
-
-
-
-
-
-if (isset($_POST['sifre_guncelle'])) {
-    include("lang.php");
-    $eski_parola = md5(controlInput($_POST['eski_parola']));
-    $yeni_parola = controlInput($_POST['yeni_parola']);
-    $yeni_parola_tekrar = controlInput($_POST['yeni_parola_tekrar']);
-    $user_id = controlInput($_POST['user_id']);
-    $user_language = controlInput($_POST['lang']);
-
-    if ($yeni_parola != $yeni_parola_tekrar) {
-        echo translate("girilen_sifre_eslesmiyor", $lang, $user_language);
-        exit();
-    }
-
-    $query = "SELECT parola FROM uyeler WHERE id = ?";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$user_id]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($row) {
-        $stored_md5_password = $row['parola'];
-
-        if ($eski_parola == $stored_md5_password) {
-            $yeni_parola = md5($yeni_parola);
-            $currentDateTime = date("Y-m-d H:i:s");
-            $new_date = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
-            $update_query = "UPDATE uyeler SET parola = ?, DEGISTIRME_TARIHI = ? WHERE id = ?";
-            $stmt = $db->prepare($update_query);
-            $stmt->execute([$yeni_parola, $new_date, $user_id]);
-            echo translate("sifre_guncellendi", $lang, $user_language);
-        } else {
-            echo translate("eski_sifre_hatali", $lang, $user_language);
-        }
-    } else {
-        echo "User not found.";
-    }
-}
-if (isset($_POST['sifre_kaydet'])) {
-    $yeni_parola = controlInput($_POST['yeni_parola']);
-    $code = controlInput($_POST['code']);
-
-    $query = "SELECT * FROM sifre_degistirme WHERE kod = ?";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$code]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($row) {
-        $uye_id = $row['uye_id'];
-        $hashed_new_password = md5($yeni_parola);
-
-        $currentDateTime = date("Y-m-d H:i:s");
-        $new_date = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
-
-        $update_query = "UPDATE uyeler SET parola = ?, DEGISTIRME_TARIHI = ? WHERE id = ?";
-        $stmt = $db->prepare($update_query);
-        $stmt->execute([$hashed_new_password, $new_date, $uye_id]);
-
-        $delete_query = "DELETE FROM sifre_degistirme WHERE kod = ?";
-        $delete_statement = $db->prepare($delete_query);
-        $delete_statement->execute([$code]);
-
-        echo "Şifre Güncellendi";
-    } else {
-        echo "Tekrar şifre yenileme talebinde bulununuz.";
-    }
-}
 
 
 ?>
