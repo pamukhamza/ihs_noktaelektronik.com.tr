@@ -254,35 +254,53 @@ function getBreadcrumbs($kategori, $database) {
                                     </li>
                                 <?php }
                             } else {
-                                // Marka var, kategori yok
-                                $eklenen_kategoriler = [];
-                                foreach ($result as $row) {
-                                    $kategoriID = $row['KategoriID'];
-                                    $en_ust_kategori_id = $kategoriID;
-                                    while ($en_ust_kategori_id != 0) {
-                                        $ust_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id";
-                                        $ust_kategori_row = $database->fetch($ust_kategori_sql, ['id' => $en_ust_kategori_id]);
-                                        if ($ust_kategori_row) {
-                                            $en_ust_kategori_id = $ust_kategori_row['parent_id'];
-                                            $kategori_adi = $ust_kategori_row['KategoriAdiTr'];
-                                            $kategori_seo_link = $ust_kategori_row['seo_link'];
-                                        } else {
-                                            break;
-                                        }
-                                    }
-                                    if (!in_array($kategori_adi, $eklenen_kategoriler)) {
-                                        ?>
-                                        <li>
-                                            <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>" 
-                                               class="btn d-inline-flex align-items-center rounded border-0 collapsed" 
-                                               style="text-align: left !important;">
-                                                <?= htmlspecialchars($kategori_adi) ?>
-                                            </a>
-                                        </li>
-                                        <?php
-                                        $eklenen_kategoriler[] = $kategori_adi;
-                                    }
-                                }
+$eklenen_kategoriler = [];
+
+// Marka id'sini almak için nokta_urun_markalar tablosunda seo_link ile arama
+$marka_sql = "SELECT id FROM nokta_urun_markalar WHERE seo_link = :seo_link";
+$marka_row = $database->fetch($marka_sql, ['seo_link' => $brand]);
+
+if ($marka_row) {
+    $marka_id = $marka_row['id'];
+
+    // category_brand_rel tablosundan kat_id'leri çekiyoruz
+    $kategori_sql = "SELECT kat_id FROM category_brand_rel WHERE marka_id = :marka_id";
+    $kategori_rows = $database->fetchAll($kategori_sql, ['marka_id' => $marka_id]);
+
+    foreach ($kategori_rows as $kategori_row) {
+        $kategoriID = $kategori_row['kat_id'];
+        $en_ust_kategori_id = $kategoriID;
+
+        // Kategorileri üst kategorilere kadar çıkıyoruz
+        while ($en_ust_kategori_id != 0) {
+            $ust_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id";
+            $ust_kategori_row = $database->fetch($ust_kategori_sql, ['id' => $en_ust_kategori_id]);
+
+            if ($ust_kategori_row) {
+                $en_ust_kategori_id = $ust_kategori_row['parent_id'];
+                $kategori_adi = $ust_kategori_row['KategoriAdiTr'];
+                $kategori_seo_link = $ust_kategori_row['seo_link'];
+            } else {
+                break;
+            }
+        }
+
+        // Kategori daha önce eklenmediyse ekle
+        if (!in_array($kategori_adi, $eklenen_kategoriler)) {
+            ?>
+            <li>
+                <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>"
+                   class="btn d-inline-flex align-items-center rounded border-0 collapsed"
+                   style="text-align: left !important;">
+                    <?= htmlspecialchars($kategori_adi) ?>
+                </a>
+            </li>
+            <?php
+            $eklenen_kategoriler[] = $kategori_adi;
+        }
+    }
+}
+
                             }
                         } else {
                           // Seçili kategori bilgilerini al
@@ -743,7 +761,7 @@ if ($alt_kategori_result) {
                                             } 
                                         } 
                                     }else{ ?>
-                                        <a style="font-size:14px; color:#555555;" class="urun-a fw-bold">
+                                        <a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
                                             <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
                                             $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
                                             echo formatNumber($fiyat1);?> + KDV
