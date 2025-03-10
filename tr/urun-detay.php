@@ -729,7 +729,7 @@ if(isset($_SESSION['id'])) {
                                                 </a>
                                                 <a style="font-size:12px;" class="mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= htmlspecialchars($row['UrunKodu']) ?></a>
 
-                                                <?php if (isset($_SESSION['id'])): ?>
+                                                <?php if (isset($_SESSION['id'])){ ?>
                                                     <a style="font-size:14px;" class="urun-a custom-underline">
                                                         <?= htmlspecialchars($row["DOVIZ_BIRIMI"] ?? "₺") . formatNumber($row["DSF4"] ?? $row["KSF4"] ?? 0) ?> + KDV
                                                     </a>
@@ -738,7 +738,13 @@ if(isset($_SESSION['id'])) {
                                                         <?= htmlspecialchars($row["DOVIZ_BIRIMI"] ?? "₺") . formatNumber($row["DSF" . ($uye_fiyat ?? "4")] ?? $row["KSF" . ($uye_fiyat ?? "4")] ?? 0) ?> + KDV
                                                     </a>
                                                     <i class="fa-solid fa-cart-shopping fa-xl sepet-style sepet-hover" onclick="<?php echo isset($_SESSION['id']) ? 'sepeteUrunEkle(' . htmlspecialchars($row['id']) . ', ' . htmlspecialchars($_SESSION['id']) . ');' : 'window.location.href = \"tr/giris\";'; ?>"></i>
-                                                <?php endif; ?>
+                                                <?php }else{ ?>
+                                                        <a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
+                                                            <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
+                                                            $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
+                                                            echo formatNumber($fiyat1);?> + KDV
+                                                        </a><?php
+                                                    }  ?>
                                             </div>
                                         </div>
                                     </li>

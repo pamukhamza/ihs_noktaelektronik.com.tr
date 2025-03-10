@@ -214,7 +214,13 @@ if (isset($_GET['camp'])) {
                                                     </script><?php 
                                                 } 
                                             }
-                                        }
+                                        }else{ ?>
+                                            <a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
+                                                <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
+                                                $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
+                                                echo formatNumber($fiyat1);?> + KDV
+                                            </a><?php
+                                        } 
                                     }else{ ?>
                                         <button type="submit" class="btn btn-danger mt-3 teklifOnaybtn"><i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste</button><?php 
                                     } ?>
