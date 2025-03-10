@@ -173,6 +173,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
         $('#passwordReset').submit(function(event) {
             event.preventDefault();
             var mail = $('#mail').val();
+
+            $('input[type="submit"]').prop('disabled', true);
             $.ajax({
                 type: "POST",
                 url: "functions/functions.php",
@@ -198,9 +200,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                             showConfirmButton: true
                         });
                     }
+                    $('input[type="submit"]').prop('disabled', false);
+                },
+                error: function() {
+                    $('input[type="submit"]').prop('disabled', false);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+                        showConfirmButton: true
+                    });
                 }
             });
         });
     });
 </script>
-
