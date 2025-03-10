@@ -9,7 +9,7 @@ function dynamicSil(gid, gel, customType, successMessage, redirectPage) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'php/delete.php',
+                url: 'functions/delete.php',
                 type: 'POST',
                 data: {
                     'gid': gid,

@@ -1,20 +1,17 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 $currentPage = 'bilgiler';
 $template = new Template('Nokta B2B - Bilgiler', $currentPage);
-
 $template->head();
 $database = new Database();
 
 $session_id = $_SESSION['id'];
 ?>
-
 <body>
-<!-- HEADER ALANI -->
 <?php $template->header(); ?>
-<!-- HEADER ALANI SONU -->
 <nav aria-label="breadcrumb" class="container mt-4">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><symbol id="house-door-fill" viewBox="0 0 16 16">
             <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/></symbol>
@@ -51,19 +48,16 @@ $session_id = $_SESSION['id'];
                                     <br>   veya <a href="mailto:destek@noktaelektronik.com.tr">destek@noktaelektronik.com.tr</a> adresine mail atabilirsiniz.</p>
                             </div>
                             <?php
-
-                            $uye = $database->fetchAll("
-                                        SELECT u.*, il.*, ilce.*
-                                        FROM uyeler AS u
-                                        JOIN iller AS il ON u.il = il.il_id
-                                        JOIN ilceler AS ilce ON u.ilce = ilce.ilce_id
-                                        WHERE u.id = :session_id
+                                $uye = $database->fetchAll("SELECT u.*, il.*, ilce.*
+                                            FROM uyeler AS u
+                                            JOIN iller AS il ON u.il = il.il_id
+                                            JOIN ilceler AS ilce ON u.ilce = ilce.ilce_id
+                                            WHERE u.id = :session_id
                                         ", ['session_id' => $session_id]);
-                            foreach($uye as $row){
+                                foreach($uye as $row){
                                 ?>
                                 <div class="form-floating col-6 p-1">
                                     <input type="text" class="form-control" id="ad" name="ad" placeholder="" value="<?= $row["ad"]; ?>" disabled>
-                                    <input type="text" hidden name="lang" value="tr">
                                     <label for="ad">Adınız</label>
                                 </div>
                                 <div class="form-floating col-6 p-1">
@@ -133,24 +127,6 @@ $session_id = $_SESSION['id'];
                                     <textarea name="adres" id="adres" class="form-control" disabled><?= $row["adres"]; ?></textarea>
                                     <label for="adres">Adres</label>
                                 </div>
-                                <div class="col-12 p-1" hidden>
-                                    <?php
-                                    $foto = $row["vergi_levhasi"];
-                                    if($foto == ''){?>
-                                        <?php echo '';
-                                    }else{?>
-                                        <div class="row my-2">
-                                            <div class="col-3">
-                                                <h6>Mevcut Vergi Levhası:</h6>
-                                            </div>
-                                            <div class="col-3">
-                                                <a href="assets/uploads/<?= $foto ?>"><i class="fa-regular fa-file-lines fa-2xl"></i></a>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-                                    <label for="vergi_levhasi" class="form-label">Vergi Levhası</label>
-                                    <input type="file" name="vergi_levhasi" id="vergi_levhasi" class="form-control" disabled>
-                                </div>
                             <?php } ?>
                         </div>
                     </div>
@@ -170,7 +146,7 @@ $session_id = $_SESSION['id'];
                                         <tbody class="table-group-divider">
                                         <?php
                                         $d = $database->fetchAll("SELECT * FROM b2b_adresler WHERE uye_id = $session_id");
-                                        foreach( $d as $k => $row ) {
+                                        foreach($d as $row) {
                                             ?>
                                             <tr class="border">
                                                 <td class="p-2 text-center border fs-10"><?= $row["adres_basligi"]; ?></td>
@@ -295,6 +271,7 @@ $session_id = $_SESSION['id'];
 <script src="assets/splide/splide.min.js"></script>
 <script src="assets/js/alert.js"></script>
 <script src="assets/js/jquery-3.7.0.min.js"></script>
+<script src="assets/js/app.js"></script>
 <script>
     $(document).ready(function() {
         $('.adres-aktif-checkbox').change(function() {
@@ -343,87 +320,65 @@ $session_id = $_SESSION['id'];
         dropdownMenu.width(dropdownToggle.outerWidth());
     });
 </script>
-<!-- Şifre değiştirme başlangıcı -->
 <script>
     $(document).ready(function() {
-        // Add event listener to the password fields
-        $('#yeni_parola, #yeni_parola_tekrar').on('input', function() {
-            // Get the values of both password fields
-            var password1 = $('#yeni_parola').val();
-            var password2 = $('#yeni_parola_tekrar').val();
-
-            // Get the message element
-            var messageElement = $('#password-match-message');
-
-            // Check if both password inputs are empty
-            if (password1 === '' && password2 === '') {
-                // Both inputs are empty, hide the message
-                messageElement.text('').css('color', 'transparent');
-            } else {
-                // Check if passwords match
-                if (password1 === password2) {
-                    // Passwords match, update the message
-                    messageElement.text('Şifreler Eşleşiyor').css('color', 'green');
-                } else {
-                    // Passwords do not match, update the message
-                    messageElement.text('Şifreler Eşleşmiyor!').css('color', 'red');
-                }
-            }
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        // Add event listener to the form submission
         $('#passwordForm').submit(function(event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault(); // Formun varsayılan submit işlemini engelle
+            var submitButton = $('button[name="sifre_guncelle"]');
+            submitButton.prop('disabled', true).text('Güncelleniyor...'); // Butonu devre dışı bırak
 
             var user_id = $('input[name="user_id"]').val();
-            var lang = $('input[name="lang"]').val();
             var eski_parola = $('#eski_parola').val();
             var yeni_parola = $('#yeni_parola').val();
             var yeni_parola_tekrar = $('#yeni_parola_tekrar').val();
-
             $.ajax({
                 type: "POST",
-                url: "function.php",
+                url: "functions/functions.php",
                 data: {
                     user_id: user_id,
-                    lang: lang,
                     eski_parola: eski_parola,
                     yeni_parola: yeni_parola,
                     yeni_parola_tekrar: yeni_parola_tekrar,
                     sifre_guncelle: 'sifre_guncelle'
                 },
                 success: function(response) {
-                    // Handle the response from the server
                     $('#password-match-message').html(response);
-
                     if (response.includes("successfully")) {
-                        $('#passwordForm')[0].reset(); // Reset the form
+                        $('#passwordForm')[0].reset(); // Formu sıfırla
                     }
                 },
                 error: function() {
-                    // Handle error
                     alert("An error occurred during the AJAX request.");
+                },
+                complete: function() {
+                    submitButton.prop('disabled', false).text('Güncelle'); // İşlem bitince butonu etkinleştir
                 }
             });
         });
-
-        // Add event listener to the password fields for real-time matching check
         $('#yeni_parola, #yeni_parola_tekrar').on('input', function() {
-            // Your existing password matching check logic
+            var password1 = $('#yeni_parola').val();
+            var password2 = $('#yeni_parola_tekrar').val();
+            var messageElement = $('#password-match-message');
+
+            if (password1 === '' && password2 === '') {
+                messageElement.text('').css('color', 'transparent');
+            } else {
+                if (password1 === password2) {
+                    messageElement.text('Şifreler Eşleşiyor').css('color', 'green');
+                } else {
+                    messageElement.text('Şifreler Eşleşmiyor!').css('color', 'red');
+                }
+            }
         });
     });
 </script>
-<!-- Şifre değiştirme sonu -->
 <!-- adres başlangıcı -->
 <script>
         function loadIlceler() {
             var il_id = $('#il').val();
             var ilce = $('#ilce_id').val();
             $.ajax({
-                url: "php/ile_gore_ilce.php",
+                url: "functions/adres/ile_gore_ilce.php",
                 type: "POST",
                 data: {
                     il_id: il_id,
@@ -561,7 +516,7 @@ $session_id = $_SESSION['id'];
             var ilce_adi = $('.ilce_adi1').val();
             var lang = $('.dilturu1').val();
             $.ajax({
-                url: "php/ile_gore_ilce_bilgiler.php",
+                url: "functions/adres/ile_gore_ilce_bilgiler.php",
                 type: "POST",
                 data: {
                     il_id: il_id,
@@ -584,7 +539,5 @@ $session_id = $_SESSION['id'];
             // Attach the function to the 'change' event of #il
             $('.il1').on('change', loadIlceler1);
         });
-
-
     });
 </script>
