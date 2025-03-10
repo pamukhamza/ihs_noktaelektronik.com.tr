@@ -364,26 +364,22 @@ function getBreadcrumbs($kategori, $database) {
                 <h5 class="border-bottom p-2">Marka</h5>
                 <ul class="list-unstyled ps-1" style="overflow-y: scroll; max-height:280px">
                     <?php
-                    
                         if (!empty($kategori)) {
                             $kategori_ids = $kategori_id ;
-                                // category_brand_rel tablosundan ilgili kategoriye ait marka ID'lerini al
-                                $marka_ids = $database->fetchAll("SELECT marka_id FROM category_brand_rel WHERE kat_id = :kategori_id", ['kategori_id' => $kategori_ids]);
+                            // category_brand_rel tablosundan ilgili kategoriye ait marka ID'lerini al
+                            $marka_ids = $database->fetchAll("SELECT marka_id FROM category_brand_rel WHERE kat_id = :kategori_id", ['kategori_id' => $kategori_ids]);
 
-                                // Marka ID'lerini array haline getir
-                                $marka_id_list = array_column($marka_ids, 'marka_id');
-                                $marka_id_str = implode(',', array_map('intval', $marka_id_list));
+                            // Marka ID'lerini array haline getir
+                            $marka_id_list = array_column($marka_ids, 'marka_id');
+                            $marka_id_str = implode(',', array_map('intval', $marka_id_list));
 
-                                if (!empty($marka_id_str)) {
-                                    // nokta_urun_markalar tablosundan ilgili markaları al
-                                    $markalar_result = $database->fetchAll("SELECT title AS marka_adi, seo_link AS marka_seo FROM nokta_urun_markalar WHERE id IN ($marka_id_str) AND web_comtr = 1 ORDER BY marka_adi");
-                                }
-                            
-                        } else {
-                            // Kategori boş ise tüm markaları getir
+                            if (!empty($marka_id_str)) {
+                                // nokta_urun_markalar tablosundan ilgili markaları al
+                                $markalar_result = $database->fetchAll("SELECT title AS marka_adi, seo_link AS marka_seo FROM nokta_urun_markalar WHERE id IN ($marka_id_str) AND web_comtr = 1 ORDER BY marka_adi");
+                            }
+                        } else { // Kategori boş ise tüm markaları getir
                             $markalar_result = $database->fetchAll("SELECT title AS marka_adi, seo_link AS marka_seo FROM nokta_urun_markalar WHERE web_comtr = 1 ORDER BY marka_adi");
                         }
-
                         // Markaları checkbox olarak göster
                         if (!empty($markalar_result)) {
                             foreach ($markalar_result as $marka_row) {
@@ -398,8 +394,7 @@ function getBreadcrumbs($kategori, $database) {
                                 <div class="form-check">
                                     <input class="form-check-input brand-checkbox" type="checkbox" id="marka-<?= $marka_adi; ?>" name="marka[]" value="<?= $marka_seo; ?>" <?= $checked; ?>>
                                     <label class="form-check-label" for="marka-<?= $marka_adi; ?>"><?= $marka_adi; ?></label>
-                                </div>
-                                <?php
+                                </div> <?php
                             }
                         }
                     ?>
