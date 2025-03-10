@@ -674,9 +674,9 @@ function getBreadcrumbs($kategori, $database) {
                                 <a href="tr/urunler/<?= $row['seo_link'] ; ?>" style="font-weight:600; color:#555555;" class="mt-2 urun-a"><strong><?= (strlen($row['UrunAdiTR']) > 55) ? substr($row['UrunAdiTR'], 0, 54) . '...' : $row['UrunAdiTR'];?></strong></a>
                                 <a style="font-size:12px; color:#0a90eb;" class="mt-2 border-bottom urun-a"><?= $row['marka_adi'] ; ?></a>
                                 <a style="font-size:12px;" class=" urun-a">Stok Kodu:<span style="font-weight: bold"> <?= $row['UrunKodu'] ; ?></span></a>
-                                <?php 
-                                if($row['proje'] == 0){ ?>
-                                    <?php if (isset($_SESSION['id'])) {
+                                <?php
+                                if (isset($_SESSION['id'])) {
+                                    if($row['proje'] == 0){ 
                                         $uye = $database->fetch("SELECT fiyat, satis_temsilcisi FROM uyeler WHERE id =:id", ['id' => $_SESSION['id']]);
                                         $uye_fiyat = $uye['fiyat'];
                                         $uye_satis_temsilci = $uye['satis_temsilcisi'];
@@ -754,18 +754,41 @@ function getBreadcrumbs($kategori, $database) {
                                                 </script><?php 
                                             } 
                                         } 
-                                    }else{ ?>
+                                    }else{?>
+                                        <span class="mt-5"></span>
+                                        <button type="submit" class="btn btn-danger buton-style teklifOnaybtn" style="background-color: #DC3545;">
+                                            <i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste
+                                        </button> <?php
+                                    }
+                                } else {
+                                    if($row['proje'] == 0){ ?>
                                         <a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
                                             <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
                                             $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
                                             echo formatNumber($fiyat1);?> + KDV
                                         </a><?php
-                                    } 
-                                } else{ ?>
-                                    <span class="mt-5"></span>
-                                    <button type="submit" class="btn btn-danger buton-style teklifOnaybtn" style="background-color: #DC3545;">
-                                        <i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste
-                                    </button><?php 
+                                    }else{?>
+                                        <button class="btn buton-style" onclick="openTemsilciAlert()">
+                                            <i class="fa-solid fa-universal-access me-1"></i><span style="font-size: 14px;">Satış Temsilcinize Danışınız</span>
+                                        </button>
+                                        <script>
+                                            function openTemsilciAlert() {
+                                                Swal.fire({
+                                                    title: 'İletişim Bilgileri',
+                                                    html: '<div style="text-align: left;">' +
+                                                        '<p>Mail:  <a href="mailto:destek@noktaelektronik.com.tr">destek@noktaelektronik.com.tr</a></p>' +
+                                                        '<p>Telefon Numarası: 0850 333 02 08</p>' +
+                                                        '</div>',
+                                                    confirmButtonText: 'Tamam',
+                                                    customClass: {
+                                                        popup: 'custom-popup-class',
+                                                        title: 'custom-title-class',
+                                                        htmlContainer: 'custom-html-container-class'
+                                                    }
+                                                });
+                                            }
+                                        </script><?php 
+                                    }
                                 } ?>
                             </div>
                             <i class="fa-regular fa-heart fa-xl favori-icon favori-buton favori-style" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Favorilere Ekle!" data-product-id="<?= $row['id']; ?>"></i>
@@ -890,8 +913,6 @@ function getBreadcrumbs($kategori, $database) {
 </script>
 <script>
     $(document).ready(function(){
-        console.log('jQuery versiyonu:', $.fn.jquery);
-
         // Marka seçildiğinde
         $('.brand-checkbox').change(function() {
             updateFiltersInUrl();
