@@ -398,8 +398,8 @@ function getBreadcrumbs($kategori, $database) {
                                 }
                                 ?>
                                 <div class="form-check">
-                                    <input class="form-check-input brand-checkbox" type="checkbox" id="marka-<?= htmlspecialchars($marka_adi); ?>" name="marka[]" value="<?= htmlspecialchars($marka_seo); ?>" <?= $checked; ?>>
-                                    <label class="form-check-label" for="marka-<?= htmlspecialchars($marka_adi); ?>"><?= htmlspecialchars($marka_adi); ?></label>
+                                    <input class="form-check-input brand-checkbox" type="checkbox" id="marka-<?= $marka_adi; ?>" name="marka[]" value="<?= $marka_seo; ?>" <?= $checked; ?>>
+                                    <label class="form-check-label" for="marka-<?= $marka_adi; ?>"><?= $marka_adi; ?></label>
                                 </div>
                                 <?php
                             }
