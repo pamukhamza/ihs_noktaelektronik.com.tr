@@ -365,8 +365,7 @@ if (isset($_POST['sifre_unuttum'])) {
         $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
 
         // Insert the reset code into the database
-        $insertResult = $db->insert("INSERT INTO sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", 
-                                    ['uye_id' => $uye_id, 'kod' => $uniqKod]);
+        $insertResult = $db->insert("INSERT INTO b2b_sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", ['uye_id' => $uye_id, 'kod' => $uniqKod]);
 
         if ($insertResult) {
             // Send reset email
