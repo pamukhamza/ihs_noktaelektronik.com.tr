@@ -47,15 +47,14 @@ if (!empty($kategori)) {
         }
         return $alt_kategori_ids;
     }
+
     // Alt kategori ID'lerini al
     $alt_kategori_ids = getAltKategoriler($database, $kategori_id);
     $alt_kategori_ids[] = $kategori_id; // Ana kategori de eklenmeli
-    $alt_kategori_ids_str = implode(',', array_map('intval', $alt_kategori_ids));
 
     // SQL sorgusuna dahil et
     $sql .= " AND KategoriID IN (" . implode(',', array_map('intval', $alt_kategori_ids)) . ")";
 }
-
 
 if (!empty($marka)) {
     $marka = !empty($marka) ? explode(',', $marka) : [];
