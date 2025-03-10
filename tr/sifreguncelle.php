@@ -82,11 +82,17 @@ error_reporting(0);
     $(document).ready(function() {
         $('#passwordForm').submit(function(event) {
             event.preventDefault();
+            
+            // Butonu devre dışı bırak
+            var submitButton = $('button[name="sifre_guncelle"]');
+            submitButton.prop('disabled', true).text('Gönderiliyor...');
+
             var code = $('#code').val();
             var yeni_parola = $('#yeni_parola').val();
+            
             $.ajax({
                 type: "POST",
-                url: "function.php",
+                url: "functions/functions.php",
                 data: {
                     code: code,
                     yeni_parola: yeni_parola,
@@ -100,9 +106,14 @@ error_reporting(0);
                 },
                 error: function() {
                     alert("An error occurred during the AJAX request.");
+                },
+                complete: function() {
+                    // İşlem tamamlanınca butonu tekrar aktif et
+                    submitButton.prop('disabled', false).text('Gönder');
                 }
             });
         });
+
         $('#yeni_parola, #yeni_parola_tekrar').on('input', function() { });
     });
 </script>
