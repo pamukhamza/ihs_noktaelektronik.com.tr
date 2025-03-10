@@ -341,27 +341,44 @@ function updateUserPage($userId, $pageName, $ipAddress) {
      ['user_id' => $userId, 'page_name' => $pageName, 'ip_address' => $ipAddress, 'st' => $satis_temsilcisi]);
 }
 if (isset($_POST['sifre_unuttum'])) {
+    // Validate email input
     $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
 
+    if (!$mail) {
+        echo 'invalid_email';  // Return an error if email is not valid
+        exit();
+    }
+    include '../mail/mail_gonder.php';
+
+    // Fetch user data
     $userData = $db->fetch("SELECT * FROM uyeler WHERE email = :email", ['email' => $mail]);
 
-
+    // Check if user exists
     if ($userData) {
-        if ($userData['email'] == $mail) {
-            echo 'success';
-            include '../mail/mail_gonder.php';
-            $uye_id = $userData['id'];
-            $ad = $userData['ad'];
-            $soyad = $userData['soyad'];
-            $adsoyad = $ad . ' ' . $soyad;
-            $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
+        // Proceed with password reset logic
+        $uye_id = $userData['id'];
+        $ad = $userData['ad'];
+        $soyad = $userData['soyad'];
+        $adsoyad = $ad . ' ' . $soyad;
+        
+        // Generate a unique code for password reset
+        $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
 
-            $db->insert("INSERT INTO sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", ['uye_id' => $uye_id, 'kod' => $uniqKod]);
+        // Insert the reset code into the database
+        $insertResult = $db->insert("INSERT INTO sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", 
+                                    ['uye_id' => $uye_id, 'kod' => $uniqKod]);
 
+        if ($insertResult) {
+            // Send reset email
             $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
             mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
-        } else { echo 'error'; }
-    } else { echo 'error'; }
+            echo 'success';  // Return success message
+        } else {
+            echo 'db_error';  // Return an error if inserting into the database fails
+        }
+    } else {
+        echo 'error';  // User not found in database
+    }
 }
 
 
