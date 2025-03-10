@@ -1,6 +1,8 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);  
 $currentPage = 'urunler';
 $template = new Template('Nokta - Ürünler', $currentPage);
 
@@ -362,10 +364,11 @@ function getBreadcrumbs($kategori, $database) {
                 <h5 class="border-bottom p-2">Marka</h5>
                 <ul class="list-unstyled ps-1" style="overflow-y: scroll; max-height:280px">
                     <?php
+                    
                         if (!empty($kategori)) {
                             // Kategorinin ID'sini al
-                            $kategori_id = $database->fetch("SELECT id FROM nokta_kategoriler WHERE seo_link = :seoLink", ['seoLink' => $kategori]);
-                            $kategori_id = $kategori_id['id'] ;
+                            $kategori_id = $database->fetchColumn("SELECT id FROM nokta_kategoriler WHERE seo_link = :seoLink", ['seoLink' => $kategori]);
+
                             if ($kategori_id) {
                                 // category_brand_rel tablosundan ilgili kategoriye ait marka ID'lerini al
                                 $marka_ids = $database->fetchAll("SELECT marka_id FROM category_brand_rel WHERE kat_id = :kategori_id", ['kategori_id' => $kategori_id]);
