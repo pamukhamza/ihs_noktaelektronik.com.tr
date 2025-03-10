@@ -701,8 +701,10 @@ if(isset($_SESSION['id'])) {
                     <div class="splide__track">
                         <ul class="splide__list">
                             <?php
-                                $d = $database->fetchAll("SELECT * FROM nokta_urunler WHERE web_comtr = 1 AND KategoriID = :KategoriID ORDER BY id ASC LIMIT 15;", ['KategoriID' => $categoryId]);
-
+                                $d = $database->fetchAll(
+                                    "SELECT * FROM nokta_urunler WHERE web_comtr = 1 AND KategoriID = :KategoriID AND id != :urunId ORDER BY id ASC LIMIT 15;", 
+                                    ['KategoriID' => $categoryId, 'urunId' => $urunId]
+                                );
                                 foreach ($d as $row) {
                                     // Ürün resmini getirmek için sorgu
                                     $resim = $database->fetch("SELECT * FROM nokta_urunler_resimler WHERE UrunID = :urun_id ORDER BY sira ASC LIMIT 1", ['urun_id' => $row['id']]);
