@@ -367,7 +367,9 @@ function getBreadcrumbs($kategori, $database) {
                     
                         if (!empty($kategori)) {
                             // Kategorinin ID'sini al
+                            echo"gelel";
                             $kategori_id = $database->fetch("SELECT id FROM nokta_kategoriler WHERE seo_link = :seoLink", ['seoLink' => $kategori]);
+                            echo "geleleee";
                             $kategori_ids = $kategori_id['id'] ;
                                 // category_brand_rel tablosundan ilgili kategoriye ait marka ID'lerini al
                                 $marka_ids = $database->fetchAll("SELECT marka_id FROM category_brand_rel WHERE kat_id = :kategori_id", ['kategori_id' => $kategori_ids]);
