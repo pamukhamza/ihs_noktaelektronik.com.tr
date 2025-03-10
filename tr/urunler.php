@@ -34,8 +34,8 @@ $params = [];
 
 if (!empty($kategori)) {
     // Kategorinin ID'sini al
-    $kategori_id = $database->fetchColumn("SELECT id FROM nokta_kategoriler WHERE web_comtr = 1 AND seo_link = :seoLink", ['seoLink' => $kategori]);
-
+    $kategori_id = $database->fetch("SELECT id FROM nokta_kategoriler WHERE web_comtr = 1 AND seo_link = :seoLink", ['seoLink' => $kategori]);
+    $kategori_id = $kategori_id['id'] ?? 0;
     // Alt kategorileri bulmak için recursive bir fonksiyon
     function getAltKategoriler($database, $kategori_id) {
         $alt_kategori_ids = [];
