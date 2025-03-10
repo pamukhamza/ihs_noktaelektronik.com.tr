@@ -368,10 +368,9 @@ function getBreadcrumbs($kategori, $database) {
                         if (!empty($kategori)) {
                             // Kategorinin ID'sini al
                             $kategori_id = $database->fetch("SELECT id FROM nokta_kategoriler WHERE seo_link = :seoLink", ['seoLink' => $kategori]);
-                            $kategori_id = $kategori_id['id'] ;
-                            if ($kategori_id) {
+                            $kategori_ids = $kategori_id['id'] ;
                                 // category_brand_rel tablosundan ilgili kategoriye ait marka ID'lerini al
-                                $marka_ids = $database->fetchAll("SELECT marka_id FROM category_brand_rel WHERE kat_id = :kategori_id", ['kategori_id' => $kategori_id]);
+                                $marka_ids = $database->fetchAll("SELECT marka_id FROM category_brand_rel WHERE kat_id = :kategori_id", ['kategori_id' => $kategori_ids]);
 
                                 // Marka ID'lerini array haline getir
                                 $marka_id_list = array_column($marka_ids, 'marka_id');
@@ -381,7 +380,7 @@ function getBreadcrumbs($kategori, $database) {
                                     // nokta_urun_markalar tablosundan ilgili markaları al
                                     $markalar_result = $database->fetchAll("SELECT title AS marka_adi, seo_link AS marka_seo FROM nokta_urun_markalar WHERE id IN ($marka_id_str) AND web_comtr = 1 ORDER BY marka_adi");
                                 }
-                            }
+                            
                         } else {
                             // Kategori boş ise tüm markaları getir
                             $markalar_result = $database->fetchAll("SELECT title AS marka_adi, seo_link AS marka_seo FROM nokta_urun_markalar WHERE web_comtr = 1 ORDER BY marka_adi");
