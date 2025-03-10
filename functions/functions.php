@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);  
 require_once "db.php";
 $db = new Database();
 // uploadImageToS3 fonksiyonunu dosya yolu ile yükleme için düzenleyin
