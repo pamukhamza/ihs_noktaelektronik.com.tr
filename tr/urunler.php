@@ -768,6 +768,7 @@ function getBreadcrumbs($kategori, $database) {
                                             echo formatNumber($fiyat1);?> + KDV
                                         </a><?php
                                     }else{?>
+                                        <span class="mt-5"></span>
                                         <button class="btn buton-style" onclick="openTemsilciAlert()">
                                             <i class="fa-solid fa-universal-access me-1"></i><span style="font-size: 14px;">Satış Temsilcinize Danışınız</span>
                                         </button>
