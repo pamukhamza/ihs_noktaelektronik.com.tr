@@ -889,17 +889,6 @@ function getBreadcrumbs($kategori, $database) {
     });
 </script>
 <script>
-    $(document).ready(function() {
-    console.log('Sayfa yüklendi!');
-    console.log('Kategori:', "<?= htmlspecialchars($kategori ?? '', ENT_QUOTES, 'UTF-8'); ?>");
-    console.log('Arama:', "<?= htmlspecialchars($arama ?? '', ENT_QUOTES, 'UTF-8'); ?>");
-
-    $('.brand-checkbox, .filter-checkbox, #stokta_olanlar').change(function() {
-        console.log('Checkbox değişti:', $(this).val());
-        updateFiltersInUrl();
-    });
-});
-
     $(document).ready(function(){
         console.log('jQuery versiyonu:', $.fn.jquery);
 
@@ -968,7 +957,7 @@ function getBreadcrumbs($kategori, $database) {
                 var filterParam = selectedFilters.join(',');
 
                 var currentUrl = window.location.href.split('?')[0];
-                var newUrl = currentUrl + '?cat=<?= $kategori; ?>&brand=' + brandParam + '&filter=' + filterParam + '&search=<?= $arama; ?>';
+                var newUrl = currentUrl + '?cat=<?= $cat; ?>&brand=' + brandParam + '&filter=' + filterParam + '&search=<?= $arama; ?>';
                 window.location.href = newUrl;
             }
         }
