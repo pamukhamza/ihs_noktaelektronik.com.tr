@@ -889,7 +889,20 @@ function getBreadcrumbs($kategori, $database) {
     });
 </script>
 <script>
+    $(document).ready(function() {
+    console.log('Sayfa yüklendi!');
+    console.log('Kategori:', "<?= htmlspecialchars($kategori ?? '', ENT_QUOTES, 'UTF-8'); ?>");
+    console.log('Arama:', "<?= htmlspecialchars($arama ?? '', ENT_QUOTES, 'UTF-8'); ?>");
+
+    $('.brand-checkbox, .filter-checkbox, #stokta_olanlar').change(function() {
+        console.log('Checkbox değişti:', $(this).val());
+        updateFiltersInUrl();
+    });
+});
+
     $(document).ready(function(){
+        console.log('jQuery versiyonu:', $.fn.jquery);
+
         // Marka seçildiğinde
         $('.brand-checkbox').change(function() {
             updateFiltersInUrl();
