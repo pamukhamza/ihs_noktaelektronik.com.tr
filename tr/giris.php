@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                 <div class="col-md-6 box-1 ">
                     <div class="d-flex flex-wrap align-content-between">
                         <div class="py-4 ps-4">
-                            <a><img src="assets/images/site/logo_beyaz.png" width="225px"></a>
+                            <a><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/logo_new.png" width="225px"></a>
                             <h2 class="my-2 text-white">Bayi Girişi</h2>
                             <p class="text-white h6 my-4">Merhaba! Bayimiz olmak için lütfen <a href="tr/kayitol" class="text-white fw-bold">tıklayınız.</a></p>
                             <p class="text-white h6 my-4"></p>
@@ -89,11 +89,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                             <ul class="list-unstyled d-flex mt-1">
                                 <?php $d = $db->fetchAll("SELECT * FROM settings WHERE id = '1'");
                                     foreach( $d as $k => $row ){ ?>
-                                        <li class=""><a class="link-body-emphasis text-white" href="<?php echo $row['instagram'];?>"><i class="fa-brands fa-instagram fa-xl" ></i></a></li>
-                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?php echo $row['twitter'];?>"><i class="fa-brands fa-x-twitter fa-xl"></i></a></li>
-                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?php echo $row['facebook'];?>"><i class="fa-brands fa-facebook fa-xl" ></i></a></li>
-                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?php echo $row['linkedin'];?>"><i class="fa-brands fa-linkedin-in fa-xl"></i></a></li>
-                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?php echo $row['youtube'];?>"><i class="fa-brands fa-youtube fa-xl" ></i></a></li>
+                                        <li class=""><a class="link-body-emphasis text-white" href="<?= $row['instagram'];?>"><i class="fa-brands fa-instagram fa-xl" ></i></a></li>
+                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?= $row['twitter'];?>"><i class="fa-brands fa-x-twitter fa-xl"></i></a></li>
+                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?= $row['facebook'];?>"><i class="fa-brands fa-facebook fa-xl" ></i></a></li>
+                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?= $row['linkedin'];?>"><i class="fa-brands fa-linkedin-in fa-xl"></i></a></li>
+                                        <li class="ms-3"><a class="link-body-emphasis text-white" href="<?= $row['youtube'];?>"><i class="fa-brands fa-youtube fa-xl" ></i></a></li>
                                     <?php } ?>
                             </ul>
                         </div>
@@ -172,13 +172,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
     $(document).ready(function() {
         $('#passwordReset').submit(function(event) {
             event.preventDefault();
-            var lang = $('input[name="lang"]').val();
             var mail = $('#mail').val();
             $.ajax({
                 type: "POST",
                 url: "functions/functions.php",
                 data: {
-                    lang: lang,
                     mail: mail,
                     sifre_unuttum: 'sifre_unuttum'
                 },

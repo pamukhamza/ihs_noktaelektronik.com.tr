@@ -92,7 +92,6 @@ function ebultenKaydet() {
             echo json_encode(['cvp' => 'success']);
     }
 }
-
 if (isset($_POST['takip_kodu'])) {
     $takip_kodu = controlInput($_POST['takip_kodu']);
 
@@ -165,9 +164,6 @@ if (isset($_POST['takip_kodu'])) {
         echo '</div>';
     }
 }
-
-
-
 function validateAndSaveImage($file, $upload_path) {
     // Dosya Türü Doğrulama
     $allowedTypes = array('image/jpeg', 'image/png', 'image/gif');
@@ -268,9 +264,6 @@ function validateAndSaveVideo($file, $upload_path) {
         return false;
     }
 }
-
-
-
 /////////////////////////////////////
 ////ALTTAKİLER DÜZGÜN//////////
 function formatVirgulluNumber($number){
@@ -347,5 +340,104 @@ function updateUserPage($userId, $pageName, $ipAddress) {
     $stmt = $db->insert("REPLACE INTO user_pages (user_id, page_name, ip_address, satis_temsilcisi) VALUES (:user_id, :page_name, :ip_address, :st)" ,
      ['user_id' => $userId, 'page_name' => $pageName, 'ip_address' => $ipAddress, 'st' => $satis_temsilcisi]);
 }
+if (isset($_POST['sifre_unuttum'])) {
+    $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
+
+    $userData = $db->fetch("SELECT * FROM uyeler WHERE email = :email", ['email' => $mail]);
+
+
+    if ($userData) {
+        if ($userData['email'] == $mail) {
+            echo 'success';
+            include '../mail/mail_gonder.php';
+            $uye_id = $userData['id'];
+            $ad = $userData['ad'];
+            $soyad = $userData['soyad'];
+            $adsoyad = $ad . ' ' . $soyad;
+            $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
+
+            $db->insert("INSERT INTO sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", ['uye_id' => $uye_id, 'kod' => $uniqKod]);
+
+            $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
+            mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
+        } else { echo 'error'; }
+    } else { echo 'error'; }
+}
+
+
+
+
+
+
+
+
+
+
+if (isset($_POST['sifre_guncelle'])) {
+    include("lang.php");
+    $eski_parola = md5(controlInput($_POST['eski_parola']));
+    $yeni_parola = controlInput($_POST['yeni_parola']);
+    $yeni_parola_tekrar = controlInput($_POST['yeni_parola_tekrar']);
+    $user_id = controlInput($_POST['user_id']);
+    $user_language = controlInput($_POST['lang']);
+
+    if ($yeni_parola != $yeni_parola_tekrar) {
+        echo translate("girilen_sifre_eslesmiyor", $lang, $user_language);
+        exit();
+    }
+
+    $query = "SELECT parola FROM uyeler WHERE id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->execute([$user_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $stored_md5_password = $row['parola'];
+
+        if ($eski_parola == $stored_md5_password) {
+            $yeni_parola = md5($yeni_parola);
+            $currentDateTime = date("Y-m-d H:i:s");
+            $new_date = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
+            $update_query = "UPDATE uyeler SET parola = ?, DEGISTIRME_TARIHI = ? WHERE id = ?";
+            $stmt = $db->prepare($update_query);
+            $stmt->execute([$yeni_parola, $new_date, $user_id]);
+            echo translate("sifre_guncellendi", $lang, $user_language);
+        } else {
+            echo translate("eski_sifre_hatali", $lang, $user_language);
+        }
+    } else {
+        echo "User not found.";
+    }
+}
+if (isset($_POST['sifre_kaydet'])) {
+    $yeni_parola = controlInput($_POST['yeni_parola']);
+    $code = controlInput($_POST['code']);
+
+    $query = "SELECT * FROM sifre_degistirme WHERE kod = ?";
+    $stmt = $db->prepare($query);
+    $stmt->execute([$code]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $uye_id = $row['uye_id'];
+        $hashed_new_password = md5($yeni_parola);
+
+        $currentDateTime = date("Y-m-d H:i:s");
+        $new_date = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
+
+        $update_query = "UPDATE uyeler SET parola = ?, DEGISTIRME_TARIHI = ? WHERE id = ?";
+        $stmt = $db->prepare($update_query);
+        $stmt->execute([$hashed_new_password, $new_date, $uye_id]);
+
+        $delete_query = "DELETE FROM sifre_degistirme WHERE kod = ?";
+        $delete_statement = $db->prepare($delete_query);
+        $delete_statement->execute([$code]);
+
+        echo "Şifre Güncellendi";
+    } else {
+        echo "Tekrar şifre yenileme talebinde bulununuz.";
+    }
+}
+
 
 ?>
