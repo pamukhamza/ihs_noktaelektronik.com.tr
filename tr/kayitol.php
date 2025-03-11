@@ -114,6 +114,7 @@ $database = new Database();
                                 <button name="kurumsalkayitol" type="submit" class="btn btn-primary">Kayıt Ol</button>
                             </div>
                         </form>
+                        <div id="responseMessage"></div>
                     </div>
                 </div>
             </div>
@@ -230,4 +231,33 @@ $database = new Database();
             input.setCustomValidity('Sadece sayı ve en fazla 10 karakter girebilirsiniz. Ör:5xxxxxxxxx ');// Doğrulama başarısız, hata mesajını ayarla
         }
     }
+</script>
+<script>
+$(document).ready(function() {
+    $('#kurumsalkayitol').on('submit', function(e) {
+        e.preventDefault(); // Sayfanın yenilenmesini engelle
+
+        var formData = new FormData(this); // Form verilerini al
+
+        $.ajax({
+            url: $(this).attr('action'), // form action değerini kullan
+            type: $(this).attr('method'), // form method değerini kullan
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json', // JSON yanıt bekleniyor
+            success: function(response) {
+                if (response.success) {
+                    $('#responseMessage').html('<div class="alert alert-success">' + response.message + '</div>');
+                } else {
+                    $('#responseMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
+                }
+            },
+            error: function() {
+                $('#responseMessage').html('<div class="alert alert-danger">Bir hata oluştu.</div>');
+            }
+        });
+    });
+});
+
 </script>
