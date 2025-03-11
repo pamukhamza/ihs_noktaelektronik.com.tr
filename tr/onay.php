@@ -140,7 +140,8 @@ echo "</div>";
                       <div class="col-xl-9 mb-3 mb-xl-0">
                         <ul class="list-group">
                             <?php
-                                while ($surun = $database->fetch("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id")) {
+                                $sUrunler = $database->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id")
+                                foreach ($sUrunler as $surun) {
                                     $urun_id = $surun['urun_id'];
                                     $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = '$urun_id' ");
                                     $foto = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = '$urun_id' LIMIT 1");
