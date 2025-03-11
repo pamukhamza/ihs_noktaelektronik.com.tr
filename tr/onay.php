@@ -11,7 +11,7 @@ date_default_timezone_set('Europe/Istanbul');
 
 if (isset($_GET["siparis-numarasi"])){
     $siparis_no = $_GET['siparis-numarasi'];
-    $sip = $database->fetch("SELECT * FROM siparisler WHERE siparis_no = '$siparis_no' ");
+    $sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE siparis_no = '$siparis_no' ");
     $sip_id = $sip['id'];
     $havale = $sip["odeme_sekli"];
 

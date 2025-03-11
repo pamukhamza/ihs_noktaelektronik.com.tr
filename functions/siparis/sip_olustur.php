@@ -233,13 +233,13 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
         $MIKTARI_2->appendChild($xmlDoc->createCDATASection($urun_adet));
         $hareket->appendChild($MIKTARI_2);
         $BIRIMI_2 = $xmlDoc->createElement('BIRIMI_2');
-        $BIRIMI_2->appendChild($xmlDoc->createCDATASection($noktaurun['BIRIMI']));
+        $BIRIMI_2->appendChild($xmlDoc->createCDATASection($noktaurun['birim']));
         $hareket->appendChild($BIRIMI_2);
         $MIKTARI = $xmlDoc->createElement('MIKTARI');
         $MIKTARI->appendChild($xmlDoc->createCDATASection($urun_adet));
         $hareket->appendChild($MIKTARI);
         $BIRIMI = $xmlDoc->createElement('BIRIMI');
-        $BIRIMI->appendChild($xmlDoc->createCDATASection($noktaurun['BIRIMI']));
+        $BIRIMI->appendChild($xmlDoc->createCDATASection($noktaurun['birim']));
         $hareket->appendChild($BIRIMI);
         $KDV_ORANI = $xmlDoc->createElement('KDV_ORANI');
         $KDV_ORANI->appendChild($xmlDoc->createCDATASection($noktaurun['kdv']));
