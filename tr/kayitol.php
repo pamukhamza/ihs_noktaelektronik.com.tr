@@ -135,12 +135,8 @@ $database = new Database();
             <div class="modal-body">
                 <div class="row g-3">
                     <div class="col-sm-12">
-                        <?php
-                        $text_to_display = $user_language == 'en' ? 'sablon_yazi' : 'sablon_baslik';
-                        if ( $d = $database->fetchAll("SELECT * FROM nokta_sablonlar WHERE id = 6 ") ){foreach( $d as $k => $row ) {
-                            ?>
-                            <p><?php echo $row["sablon_yazi"]; ?></p>
-                        <?php }} ?>
+                        <h5>Üyelik Sözleşmesi</h5>
+                        <p>Üyelik Sözleşmesi metni buraya gelecek.</p>
                     </div>
                 </div>
                 <hr class="my-4">
