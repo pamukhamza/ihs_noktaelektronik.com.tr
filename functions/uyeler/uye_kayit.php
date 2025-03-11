@@ -80,19 +80,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($success) {
         // Get the new user's ID
         $new_user_id = $db->lastInsertId();
+        $adsoyad = $_POST['ad'] . " " . $_POST['soyad'];
 
-        // Send activation email
-        $activation_link = "https://www.noktaelektronik.com/aktivasyon?kod=" . $aktivasyon_kodu;
-        $to = $_POST['email'];
-        $subject = "Nokta Elektronik - Hesap Aktivasyonu";
-        $message = "Sayın " . $_POST['ad'] . " " . $_POST['soyad'] . ",\n\n";
-        $message .= "Hesabınızı aktifleştirmek için aşağıdaki linke tıklayın:\n";
-        $message .= $activation_link . "\n\n";
-        $message .= "Saygılarımızla,\nNokta Elektronik";
-        $headers = "From: info@noktaelektronik.com";
-
-        mail($to, $subject, $message, $headers);
-
+        $mail_icerik = uyeOnayMail($adsoyad, $_POST['eposta'], $aktivasyon_kodu);
+        mailGonder($_POST['eposta'], 'Nokta Elektronik B2B Üyelik Aktivasyonu', $mail_icerik, 'Nokta Elektronik B2B Üyelik Aktivasyonu');
         $response = [
             'status' => 'success',
             'message' => 'Kayıt başarılı. Lütfen e-posta adresinize gönderilen aktivasyon linkini kullanın.'

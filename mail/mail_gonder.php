@@ -1094,7 +1094,7 @@ function iadeOnayMail($uye, $siparis_no){
 
     return $content;
 }
-function uyeOnayMail($uye, $uye_mail, $uye_id){
+function uyeOnayMail($uye, $uye_mail, $aktivasyon){
     ob_start();
     ?>
     <table style=" margin-left: auto; margin-right: auto;  height:auto; width: 100%; min-width: 350px; max-width: 750px; font-family: &quot;Source Sans Pro&quot;, Arial, Tahoma, Geneva, sans-serif;">
@@ -1142,7 +1142,7 @@ function uyeOnayMail($uye, $uye_mail, $uye_id){
         <tbody>
         <tr>
             <td style="display: block; width: 100%; height: 45px;  font-family: &quot;Source Sans Pro&quot;, Arial, Verdana, Tahoma, Geneva, sans-serif; background-color: #27cbcc;  font-size: 20px; line-height: 45px; text-align: center; text-decoration-line: none; white-space: nowrap; font-weight: 600;">
-                <a href="https://www.noktaelektronik.com.tr/aktivasyon?id=<?= $uye_id ?>" style="text-decoration-line: none; color: rgb(255, 255, 255); white-space: nowrap;">Üyeliğinizi aktif etmek için tıklayınız.</a>
+                <a href="https://www.noktaelektronik.com.tr/aktivasyon?id=<?= $aktivasyon ?>" style="text-decoration-line: none; color: rgb(255, 255, 255); white-space: nowrap;">Üyeliğinizi aktif etmek için tıklayınız.</a>
             </td>
         </tr>
         </tbody>
