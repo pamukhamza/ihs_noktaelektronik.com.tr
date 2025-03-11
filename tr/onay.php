@@ -88,9 +88,9 @@ echo "</div>";
                       <div class="col-12 col-lg-8 mx-auto text-center mb-3">
                         <h4 class="mt-2">Teşekkürler! 😇</h4>
                           <?php if(isset($_GET["siparis-numarasi"])){ ?>
-                        <p><a href="javascript:void(0)">#<?= $sip['siparis_no']?></a> Numaralı siparişiniz alınmıştır!</p>
-                        <p><a href="mailto:john.doe@example.com"><?= $sip['uye_email']?></a>mail adresinize sipariş bilgilerinizi gönderdik. Mail 2 dakika içerinde size ulaşmadıysa lütfen spam klasörünü kontrol ediniz.</p>
-                        <p><span class="fw-medium"><i class="bx bx-time-five me-1"></i> Sipariş Tarihi:&nbsp;</span><?= $sip['tarih']?></p>
+                            <p><a href="javascript:void(0)">#<?= $sip['siparis_no']?></a> Numaralı siparişiniz alınmıştır!</p>
+                            <p><a href="mailto:john.doe@example.com"><?= $sip['uye_email']?></a>mail adresinize sipariş bilgilerinizi gönderdik. Mail 2 dakika içerinde size ulaşmadıysa lütfen spam klasörünü kontrol ediniz.</p>
+                            <p><span class="fw-medium"><i class="bx bx-time-five me-1"></i> Sipariş Tarihi:&nbsp;</span><?= $sip['tarih']?></p>
                           <?php } ?>
                       </div>
                       <!-- Confirmation details -->
@@ -142,11 +142,8 @@ echo "</div>";
                             <?php
                                 while ($surun = $database->fetch("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id")) {
                                     $urun_id = $surun['urun_id'];
-
                                     $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = '$urun_id' ");
-                                    $blkodu = $urun['BLKODU'];
-
-                                    $foto = $database->fetch("SELECT foto FROM nokta_urunler_resimler WHERE urun_id = '$blkodu' LIMIT 1");
+                                    $foto = $database->fetch("SELECT foto FROM nokta_urunler_resimler WHERE urun_id = '$urun_id' LIMIT 1");
                                 ?>
                               <li class="list-group-item p-4">
                                 <div class="d-flex gap-3">
@@ -250,14 +247,8 @@ if (isset($_POST['TURKPOS_RETVAL_Sonuc_Str'])) {
   $tutar = $tutar / 100;
   $pos_id = 1;
   $basarili = 1;
-  $stmt = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
-  $params = [
-    ':uye_id' => $uye_id,
-    ':pos_id' => $pos_id,
-    ':islem' => $sonucStr,
-    ':tutar' => $tutar,
-    ':basarili' => $basarili
-  ];
+  $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+  $params = [':uye_id' => $uye_id,':pos_id' => $pos_id,':islem' => $sonucStr,':tutar' => $tutar,':basarili' => $basarili];
   $database->insert($stmt, $params);
 
 }
@@ -268,14 +259,8 @@ if (isset($_POST['errmsg'])) {
   $tutar = $tutar / 100;
   $pos_id = 2;
   $basarili = 1;
-  $stmt = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
-  $params = [
-    ':uye_id' => $uye_id,
-    ':pos_id' => $pos_id,
-    ':islem' => $sonucStr,
-    ':tutar' => $tutar,
-    ':basarili' => $basarili
-  ];
+  $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+  $params = [':uye_id' => $uye_id,':pos_id' => $pos_id,':islem' => $sonucStr,':tutar' => $tutar,':basarili' => $basarili];
   $database->insert($stmt, $params);
 }
 //Kuveyt POS
@@ -288,13 +273,7 @@ if(isset($_POST['AuthenticationResponse'])) {
   $pos_id = 3;
   $basarili = 1;
   $stmt = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
-  $params = [
-    ':uye_id' => $uye_id,
-    ':pos_id' => $pos_id,
-    ':islem' => $responseMessage,
-    ':tutar' => $tutar,
-    ':basarili' => $basarili
-  ];
+  $params = [':uye_id' => $uye_id,':pos_id' => $pos_id,':islem' => $responseMessage,':tutar' => $tutar,':basarili' => $basarili];
   $database->insert($stmt, $params);
 }
 
