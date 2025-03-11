@@ -7,6 +7,8 @@ $currentPage = 'kayitol';
 $template = new Template('Nokta Elektronik - Kayıt Ol', $currentPage);
 
 $template->head();
+
+$database = new Database();
 ?>
 <body>
 <style>
