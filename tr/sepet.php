@@ -6,21 +6,76 @@ $currentPage = 'sepet';
 $template = new Template('Nokta - Sepetim', $currentPage);
 
 $template->head();
-
 $database = new Database();
-
 $uye_id = $_SESSION["id"];
 echo '<div style="display: none">';
 foreach ($_POST as $key => $value) {
     echo $key . ': ' . $value . '<br>';
 }
 echo "</div>";
+//https://sanalpos.kuveytturk.com.tr/
+if(isset($_POST['AuthenticationResponse'])) {
+    $data = urldecode($_POST['AuthenticationResponse']);
+    $xml = simplexml_load_string($data);
+    $responseMessage = (string) $xml->ResponseMessage;
+    $tutar = $xml->VPosMessage->Amount;
+    $tutar = $tutar / 100;
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
+    echo "<script>";
+    echo "Swal.fire({";
+    echo "  title: 'Başarısız İşlem !',";
+    echo "  text: '$responseMessage',";
+    echo "  icon: 'error',";
+    echo "});";
+    echo "</script>";
+    $pos_id = 3;
+    $basarili = 0;
+    $stmt = $db->prepare("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
+    $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $responseMessage, ':tutar' => $tutar, ':basarili' => $basarili));
 
+}
+//Param Pos
+//https://posws1.param.com.tr/
+if (isset($_GET['error']) && !empty($_GET['error'])) echo '<div class="alert alert-danger" role="alert">' . urldecode($_GET['error']) . '</div>';
+if (isset($_POST['TURKPOS_RETVAL_Sonuc_Str'])) {
+    $sonucStr = $_POST['TURKPOS_RETVAL_Sonuc_Str'];
+    $dekont = $_POST['TURKPOS_RETVAL_Dekont_ID'];
+    $tutar = $_POST['TURKPOS_RETVAL_Tahsilat_Tutari'];
+    $tutar = str_replace(',', '.', $tutar);
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
+    echo "<script>";
+    echo "Swal.fire({";
+    echo "  title: 'Başarısız İşlem !',";
+    echo "  text: '$sonucStr',";
+    echo "  icon: 'error',";
+    echo "});";
+    echo "</script>";
+    $pos_id = 1;
+    $basarili = 0;
+    $stmt = $db->prepare("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
+    $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $tutar, ':basarili' => $basarili));
+
+}
+//Garanti Pos
+if (isset($_POST['errmsg'])) {
+    $sonucStr = $_POST['mderrormessage'];
+    $tutar = $_POST["txnamount"];
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
+    echo "<script>";
+    echo "Swal.fire({";
+    echo "  title: 'Başarısız İşlem !',";
+    echo "  text: '$sonucStr',";
+    echo "  icon: 'error',";
+    echo "});";
+    echo "</script>";
+    $pos_id = 2;
+    $basarili = 0;
+    $stmt = $db->prepare("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
+    $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $tutar, ':basarili' => $basarili));
+}
 
 // Fetch data from database
 $result = $database->fetchAll("SELECT * FROM uye_sepet");
-
-
 function formatNumber1($number) {
     // Veritabanından gelen sayı formatı kontrol et
     if (!is_numeric($number)) { return null; }
@@ -55,18 +110,12 @@ function gelenFiyatDuzenle1($sayi) {
 }
 
 $session_id = $_SESSION['id'];
-$uye = $database->fetch("SELECT * FROM uyeler WHERE id = :session_id", [
-    'session_id' => $session_id
-]);
+$uye = $database->fetch("SELECT * FROM uyeler WHERE id = :session_id", ['session_id' => $session_id]);
 $uyeFiyat = $uye['fiyat'];
 
-$urun123 = $database->fetchAll("
-SELECT DISTINCT f.id AS sepet_id, f.uye_id, f.urun_id, u.stok
-FROM uye_sepet AS f
-JOIN nokta_urunler AS u ON f.urun_id = u.id
-WHERE f.uye_id = :session_id", [
-    'session_id' => $session_id
-]);
+$urun123 = $database->fetchAll("SELECT DISTINCT f.id AS sepet_id, f.uye_id, f.urun_id, u.stok
+                                FROM uye_sepet AS f JOIN nokta_urunler AS u ON f.urun_id = u.id
+                                WHERE f.uye_id = :session_id", [ 'session_id' => $session_id ]);
 
 foreach($urun123 as $row){
     $id = $row["sepet_id"]; // uye_sepet tablosundaki sepet_id
