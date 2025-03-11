@@ -142,21 +142,21 @@ echo "</div>";
                                 $sUrunler = $database->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id");
                                 foreach ($sUrunler as $surun) {
                                     $urun_id = $surun['urun_id'];
-                                    $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = '$urun_id' ");
-                                    $foto = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = '$urun_id' LIMIT 1");
+                                    $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = $urun_id");
+                                    $foto = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = $urun_id LIMIT 1");
                                 ?>
                                   <li class="list-group-item p-4">
                                     <div class="d-flex gap-3">
                                       <div class="flex-shrink-0">
-                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $foto['KResim']; ?>" alt="google home" class="w-px-75">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $foto['KResim']; ?>" class="w-px-75">
                                       </div>
                                       <div class="flex-grow-1">
                                         <div class="row">
                                           <div class="col-md-8">
                                             <a href="javascript:void(0)" class="text-body">
-                                              <p><?= $urun['UrunAdiTR'] ?></p>
+                                              <p><?= $urun['UrunAdiTR']; ?></p>
                                             </a>
-                                            <div class="text-muted mb-1 d-flex flex-wrap"><span class="me-1">Adet:</span> <a  class="me-3"><?= $surun['adet'] ?></a></div>
+                                            <div class="text-muted mb-1 d-flex flex-wrap"><span class="me-1">Adet:</span> <a  class="me-3"><?= $surun['adet'] ;?></a></div>
                                           </div>
                                           <div class="col-md-4">
                                             <div class="text-md-end">
@@ -167,7 +167,7 @@ echo "</div>";
                                                             if($urun['DSF4'] == NULL || $urun['DSF4'] == '' ){$birimi = '₺';}
                                                             echo $birimi;
                                                         ?>
-                                                        <?= $surun['birim_fiyat'] ?>
+                                                        <?= $surun['birim_fiyat'] ;?>
                                                     </span>
                                                 </div>
                                             </div>
