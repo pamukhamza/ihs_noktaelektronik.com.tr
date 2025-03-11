@@ -1,13 +1,12 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 $currentPage = 'kayitol';
 $template = new Template('Nokta Elektronik - Kayıt Ol', $currentPage);
 
 $template->head();
-$database = new Database();
-
 ?>
 <body>
 <style>
