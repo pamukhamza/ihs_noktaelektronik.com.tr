@@ -9,7 +9,6 @@ $template->head();
 $database = new Database();
 
 ?>
-    
 <body>
 <style>
     body {
@@ -18,7 +17,6 @@ $database = new Database();
         font-optical-sizing: auto;
         font-style: normal;
     }
-
 </style>
 <?php $zorunlu = "<span style='color: red;'>*</span>"?>
 <div class="container">
@@ -160,33 +158,6 @@ $database = new Database();
 <script>
     $(document).ready(function() {
         function loadIlceler() {
-            var il_id = $('.il').val();
-            var ilce = $('.ilce_id').val();
-            $.ajax({
-                url: "functions/adres/ile_gore_ilce.php",
-                type: "POST",
-                data: {
-                    il_id: il_id,
-                    ilce: ilce
-                },
-                cache: false,
-                success: function(result) {
-                    $(".ilce").html(result);
-                }
-            });
-        }
-        // Execute the function when the page loads
-        $(document).ready(function() {
-            // Check if il is not empty, then load ilceler
-            if ($('.il').val() !== '') {
-                loadIlceler();
-            }
-            // Attach the function to the 'change' event of #il
-            $('.il').on('change', loadIlceler);
-        });
-    });
-    $(document).ready(function() {
-        function loadIlceler() {
             var il_id = $('.il1').val();
             var ilce = $('.ilce_id1').val();
             $.ajax({
@@ -208,12 +179,9 @@ $database = new Database();
             if ($('.il1').val() !== '') {
                 loadIlceler();
             }
-
             // Attach the function to the 'change' event of #il
             $('.il1').on('change', loadIlceler);
         });
-
-
     });
 </script>
 <script>
@@ -254,68 +222,30 @@ $database = new Database();
             // Get the values of both password fields
             var password1 = $('#parola').val();
             var password2 = $('#parola2').val();
-
-            // Get the message element
             var messageElement = $('#password-match-message');
 
-            // Check if both password inputs are empty
             if (password1 === '' && password2 === '') {
-                // Both inputs are empty, hide the message
                 messageElement.text('').css('color', 'transparent');
             } else {
-                // Check if passwords match
                 if (password1 === password2) {
-                    // Passwords match, update the message
                     messageElement.text('Şifreler eşleşiyor').css('color', 'green');
                 } else {
-                    // Passwords do not match, update the message
-                    messageElement.text('Şifreler eşleşmiyor').css('color', 'red');
-                }
-            }
-        });
-        // Add event listener to the password fields
-        $('#parola3, #parola4').on('input', function() {
-            // Get the values of both password fields
-            var password1 = $('#parola3').val();
-            var password2 = $('#parola4').val();
-
-            // Get the message element
-            var messageElement = $('#password-match-message2');
-
-            // Check if both password inputs are empty
-            if (password1 === '' && password2 === '') {
-                // Both inputs are empty, hide the message
-                messageElement.text('').css('color', 'transparent');
-            } else {
-                // Check if passwords match
-                if (password1 === password2) {
-                    // Passwords match, update the message
-                    messageElement.text('Şifreler eşleşiyor').css('color', 'green');
-                } else {
-                    // Passwords do not match, update the message
                     messageElement.text('Şifreler eşleşmiyor').css('color', 'red');
                 }
             }
         });
     });
-
 </script>
-
 <script>
     function validatePhoneNumber(input) {
         // Sadece sayıları içeren bir regex
         var regex = /^[0-9]*$/;
-
-        // Girilen değeri al
         var inputValue = input.value;
-
-        // Eğer giriş geçerli bir sayı ise ve en fazla 10 karakter içeriyorsa
-        if (regex.test(inputValue) && inputValue.length <= 10) {
-            // Doğrulama başarılı, hata mesajını temizle
-            input.setCustomValidity('');
+        
+        if (regex.test(inputValue) && inputValue.length <= 10) {// Eğer giriş geçerli bir sayı ise ve en fazla 10 karakter içeriyorsa
+            input.setCustomValidity('');// Doğrulama başarılı, hata mesajını temizle
         } else {
-            // Doğrulama başarısız, hata mesajını ayarla
-            input.setCustomValidity('Sadece sayı ve en fazla 10 karakter girebilirsiniz. Ör:5xxxxxxxxx ');
+            input.setCustomValidity('Sadece sayı ve en fazla 10 karakter girebilirsiniz. Ör:5xxxxxxxxx ');// Doğrulama başarısız, hata mesajını ayarla
         }
     }
 </script>
