@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Check if email already exists
     $existing_user = $db->fetch("SELECT id FROM uyeler WHERE email = :email", [
-        'email' => $_POST['email']
+        'email' => $_POST['eposta']
     ]);
 
     if ($existing_user) {
