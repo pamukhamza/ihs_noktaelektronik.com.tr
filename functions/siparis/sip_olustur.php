@@ -96,7 +96,6 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $siparisId = $db->lastInsertId();
 
     if ($siparisId) {
-        // Üye sepetinden ürünleri al
         $uyeSepetUrunleriQuery = "SELECT * FROM b2b_uye_sepet WHERE uye_id = :uye_id";
         $uyeSepetUrunleri = $db->fetchAll($uyeSepetUrunleriQuery, ['uye_id' => $uye_id]);
     
@@ -143,7 +142,6 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
                     break; // Hata durumunda döngüyü sonlandırabilirsiniz
                 }
             }
-    
             // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adımı dikkatlice kullanın)
             $uyeSepetSilQuery = "DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id";
             $db->delete($uyeSepetSilQuery, ['uye_id' => $uye_id]);
@@ -440,11 +438,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
         }
     }
 
-    if($lang == "tr"){
-        header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-    }elseif($lang == "en"){
-        header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-    }
+    header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
     $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
     mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
 }
@@ -739,8 +733,6 @@ if (isset($_GET['veri'])) {
         } else {
             echo "Üye sepetinde ürün bulunamadı.";
         }
-
-
         // Create a new XML document
         $xmlDoc = new DOMDocument('1.0', 'UTF-8');
         $xmlDoc->formatOutput = true;
@@ -928,7 +920,7 @@ if (isset($_GET['veri'])) {
     }
     function updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, $kullanildi) {
         // uye_id sütununun boş olup olmadığını kontrol et
-        $uyeIdResult = $db->fetch("SELECT uye_id FROM promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
+        $uyeIdResult = $db->fetch("SELECT uye_id FROM b2b_promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
         if ($uyeIdResult) {
             if (empty($uyeIdResult['uye_id'])) { // uye_id boşsa, direkt $uye_id'yi yaz
                 $newUyeId = $uye_id;
@@ -942,7 +934,7 @@ if (isset($_GET['veri'])) {
     }
 
     if (!empty($promosyon_kodu)) {
-        $promosyon = $db->fetch("SELECT * FROM promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
+        $promosyon = $db->fetch("SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
         $maxKullanim = $promosyon["max_kullanim_sayisi"];
         $promosyonKullanildi = $promosyon["kullanildi"];
         $promosyon_kullanim_sayisi = $promosyon["kullanim_sayisi"] ?? 0;
@@ -1040,7 +1032,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
             $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :uye_id " , ['uye_id' => $uye_id]);
             $uyecarikod = $uye['BLKODU'];
 
-            $doviz_kur = $db->fetch("SELECT * FROM kurlar WHERE id = 2");
+            $doviz_kur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
             $dov_al = str_replace('.', ',', $doviz_kur["alis"]);
             $dov_sat = str_replace('.', ',', $doviz_kur["satis"]);
 
@@ -1348,7 +1340,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
 
             function updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, $kullanildi) {
                 // uye_id sütununun boş olup olmadığını kontrol et
-                $uyeIdResult = $db->fetch("SELECT uye_id FROM promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
+                $uyeIdResult = $db->fetch("SELECT uye_id FROM b2b_promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
 
                 if ($uyeIdResult) {
                     if (empty($uyeIdResult['uye_id'])) { // uye_id boşsa, direkt $uye_id'yi yaz
@@ -1364,7 +1356,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
             }
 
             if (!empty($promosyon_kodu)) {
-                $promosyon = $db->fetch("SELECT * FROM promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
+                $promosyon = $db->fetch("SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :promosyon_kodu", ['promosyon_kodu' => $promosyon_kodu]);
                 $maxKullanim = $promosyon["max_kullanim_sayisi"];
                 $promosyonKullanildi = $promosyon["kullanildi"];
                 $promosyon_kullanim_sayisi = $promosyon["kullanim_sayisi"] ?? 0;

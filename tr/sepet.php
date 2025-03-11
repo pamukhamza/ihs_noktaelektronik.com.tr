@@ -13,66 +13,6 @@ foreach ($_POST as $key => $value) {
     echo $key . ': ' . $value . '<br>';
 }
 echo "</div>";
-//https://sanalpos.kuveytturk.com.tr/
-if(isset($_POST['AuthenticationResponse'])) {
-    $data = urldecode($_POST['AuthenticationResponse']);
-    $xml = simplexml_load_string($data);
-    $responseMessage = (string) $xml->ResponseMessage;
-    $tutar = $xml->VPosMessage->Amount;
-    $tutar = $tutar / 100;
-    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
-    echo "<script>";
-    echo "Swal.fire({";
-    echo "  title: 'Başarısız İşlem !',";
-    echo "  text: '$responseMessage',";
-    echo "  icon: 'error',";
-    echo "});";
-    echo "</script>";
-    $pos_id = 3;
-    $basarili = 0;
-    $stmt = $db->prepare("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
-    $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $responseMessage, ':tutar' => $tutar, ':basarili' => $basarili));
-
-}
-//Param Pos
-//https://posws1.param.com.tr/
-if (isset($_GET['error']) && !empty($_GET['error'])) echo '<div class="alert alert-danger" role="alert">' . urldecode($_GET['error']) . '</div>';
-if (isset($_POST['TURKPOS_RETVAL_Sonuc_Str'])) {
-    $sonucStr = $_POST['TURKPOS_RETVAL_Sonuc_Str'];
-    $dekont = $_POST['TURKPOS_RETVAL_Dekont_ID'];
-    $tutar = $_POST['TURKPOS_RETVAL_Tahsilat_Tutari'];
-    $tutar = str_replace(',', '.', $tutar);
-    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
-    echo "<script>";
-    echo "Swal.fire({";
-    echo "  title: 'Başarısız İşlem !',";
-    echo "  text: '$sonucStr',";
-    echo "  icon: 'error',";
-    echo "});";
-    echo "</script>";
-    $pos_id = 1;
-    $basarili = 0;
-    $stmt = $db->prepare("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
-    $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $tutar, ':basarili' => $basarili));
-
-}
-//Garanti Pos
-if (isset($_POST['errmsg'])) {
-    $sonucStr = $_POST['mderrormessage'];
-    $tutar = $_POST["txnamount"];
-    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
-    echo "<script>";
-    echo "Swal.fire({";
-    echo "  title: 'Başarısız İşlem !',";
-    echo "  text: '$sonucStr',";
-    echo "  icon: 'error',";
-    echo "});";
-    echo "</script>";
-    $pos_id = 2;
-    $basarili = 0;
-    $stmt = $db->prepare("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
-    $stmt->execute(array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $tutar, ':basarili' => $basarili));
-}
 
 // Fetch data from database
 $result = $database->fetchAll("SELECT * FROM uye_sepet");
@@ -128,26 +68,20 @@ foreach($urun123 as $row){
 }
 ?>
 <style>
-    @media (max-width: 992px) {
-        #sepet_yonlendirmeleri{display: none}
-    }
-    .mavi-arkaplan{
-        background-color: #430666;
-        color: white;
-        font-weight: unset;
-    }
+    @media (max-width: 992px) {#sepet_yonlendirmeleri{display: none}}
+    .mavi-arkaplan{background-color: #430666;color: white;font-weight: unset;}
 </style>
 <body>
 <?php $template->header(); 
 if(isset($_GET['hata']) && $_GET['hata'] == 0) {
-    echo "<script>
+    echo"<script>
             Swal.fire({
-              icon: 'error',
-              title: 'Ödeme alınırken hata oluştu.',
-              showConfirmButton: false,
-              timer: 2000
+                icon: 'error',
+                title: 'Ödeme alınırken hata oluştu.',
+                showConfirmButton: false,
+                timer: 2000
             });
-          </script>";
+        </script>";
 }
 ?>
 <!-- Content -->
@@ -284,7 +218,6 @@ if(isset($_GET['hata']) && $_GET['hata'] == 0) {
                                                         <s class="text-muted">
                                                             <?= !empty($row["DSF4"]) || !empty($row["DSF3"]) ? $row["DOVIZ_BIRIMI"] : "₺";
                                                             $fiyat = !empty($row["DSF4"]) ? $row["DSF4"] : $row["KSF4"];
-
                                                             echo formatNumber1($fiyat);  ?>
                                                         </s>
                                                         <?php } ?>
@@ -1065,14 +998,8 @@ if(isset($_POST['AuthenticationResponse'])) {
     echo "</script>";
     $pos_id = 3;
     $basarili = 0;
-    $database->insert("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", [
-        'uye_id' => $uye_id,
-        'pos_id' => $pos_id,
-        'islem' => $responseMessage,
-        'tutar' => $tutar,
-        'basarili' => $basarili
-    ]);
-
+    $database->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", 
+                                        ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $responseMessage,'tutar' => $tutar,'basarili' => $basarili]);
 }
 //Param Pos
 //https://posws1.param.com.tr/
@@ -1092,14 +1019,8 @@ if (isset($_POST['TURKPOS_RETVAL_Sonuc_Str'])) {
     echo "</script>";
     $pos_id = 1;
     $basarili = 0;
-    $database->insert("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", [
-        'uye_id' => $uye_id,
-        'pos_id' => $pos_id,
-        'islem' => $sonucStr,
-        'tutar' => $tutar,
-        'basarili' => $basarili
-    ]);
-
+    $database->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", 
+                                                ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'tutar' => $tutar,'basarili' => $basarili]);
 }
 //Garanti Pos
 if (isset($_POST['errmsg'])) {
@@ -1115,13 +1036,8 @@ if (isset($_POST['errmsg'])) {
     echo "</script>";
     $pos_id = 2;
     $basarili = 0;
-    $database->insert("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", [
-        'uye_id' => $uye_id,
-        'pos_id' => $pos_id,
-        'islem' => $sonucStr,
-        'tutar' => $tutar,
-        'basarili' => $basarili
-    ]);
+    $database->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", 
+                                                ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'tutar' => $tutar,'basarili' => $basarili]);
 }
 
 ?>
