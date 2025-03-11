@@ -235,29 +235,53 @@ $database = new Database();
 <script>
 $(document).ready(function() {
     $('#kurumsalkayitol').on('submit', function(e) {
-        e.preventDefault(); // Sayfanın yenilenmesini engelle
+        e.preventDefault(); // Sayfa yenilenmesini engelle
 
         var formData = new FormData(this); // Form verilerini al
+        var submitButton = $(this).find('button[type="submit"]'); // Butonu bul
+
+        // Butonu devre dışı bırak ve yükleniyor durumuna geç
+        submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Kaydediliyor...');
 
         $.ajax({
-            url: $(this).attr('action'), // form action değerini kullan
-            type: $(this).attr('method'), // form method değerini kullan
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
             data: formData,
             processData: false,
             contentType: false,
-            dataType: 'json', // JSON yanıt bekleniyor
+            dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    $('#responseMessage').html('<div class="alert alert-success">' + response.message + '</div>');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı!',
+                        text: response.message,
+                        confirmButtonText: 'Tamam'
+                    });
                 } else {
-                    $('#responseMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: response.message,
+                        confirmButtonText: 'Tamam'
+                    });
                 }
             },
             error: function() {
-                $('#responseMessage').html('<div class="alert alert-danger">Bir hata oluştu.</div>');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Bir hata oluştu, lütfen tekrar deneyin.',
+                    confirmButtonText: 'Tamam'
+                });
+            },
+            complete: function() {
+                // İşlem tamamlandığında butonu aktif hale getir
+                submitButton.prop('disabled', false).text('Kayıt Ol');
             }
         });
     });
 });
+
 
 </script>
