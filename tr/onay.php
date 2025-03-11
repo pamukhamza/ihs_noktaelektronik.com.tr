@@ -143,12 +143,12 @@ echo "</div>";
                                 while ($surun = $database->fetch("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id")) {
                                     $urun_id = $surun['urun_id'];
                                     $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = '$urun_id' ");
-                                    $foto = $database->fetch("SELECT foto FROM nokta_urunler_resimler WHERE urun_id = '$urun_id' LIMIT 1");
+                                    $foto = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = '$urun_id' LIMIT 1");
                                 ?>
                               <li class="list-group-item p-4">
                                 <div class="d-flex gap-3">
                                   <div class="flex-shrink-0">
-                                    <img src="assets/images/urunler/<?php echo $foto['foto']; ?>" alt="google home" class="w-px-75">
+                                    <img src="assets/images/urunler/<?php echo $foto['KResim']; ?>" alt="google home" class="w-px-75">
                                   </div>
                                   <div class="flex-grow-1">
                                     <div class="row">
