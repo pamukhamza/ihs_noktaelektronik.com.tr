@@ -141,9 +141,9 @@ echo "</div>";
                             <?php
                                 $sUrunler = $database->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id");
                                 foreach ($sUrunler as $surun) {
-                                    $urun_id = $surun['urun_id'];
-                                    echo $urun_id . '</br>';
-                                    $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = $urun_id");
+                                    $urun_BLKODU = $surun['BLKODU'];
+                                    $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE BLKODU = $urun_BLKODU");
+                                    $urun_id = $urun['id'];
                                     $foto = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = $urun_id LIMIT 1");
                                 ?>
                                   <li class="list-group-item p-4">
