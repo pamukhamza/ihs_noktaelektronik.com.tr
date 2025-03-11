@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $response = array();
     
     // Validate required fields
-    $required_fields = ['ad', 'soyad', 'email', 'sifre', 'tel', 'firmaUnvani', 'vergi_dairesi', 'vergi_no'];
+    $required_fields = ['ad', 'soyad', 'email', 'sifre', 'tel', 'firmaUnvani', 'vergi_dairesi'];
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
             $response = [
@@ -126,6 +126,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo json_encode($response);
         exit;
         }
+    }
+    if (empty($_POST['vergi_no']) && empty($_POST['tc_no'])) {
+        $response = [
+            'status' => 'error',
+            'message' => 'Vergi numarası veya TC kimlik numarasından en az biri doldurulmalıdır.'
+        ];
+        echo json_encode($response);
+        exit;
     }
 
     // Check if email already exists
@@ -142,7 +150,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
-    // Generate activation code
     $aktivasyon_kodu = bin2hex(random_bytes(16));
 
     // Hash password
@@ -213,5 +220,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     echo json_encode($response);
     exit;
 }
-
 ?>
