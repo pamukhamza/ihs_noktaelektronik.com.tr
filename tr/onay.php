@@ -148,7 +148,7 @@ echo "</div>";
                               <li class="list-group-item p-4">
                                 <div class="d-flex gap-3">
                                   <div class="flex-shrink-0">
-                                    <img src="assets/images/urunler/<?php echo $foto['KResim']; ?>" alt="google home" class="w-px-75">
+                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $foto['KResim']; ?>" alt="google home" class="w-px-75">
                                   </div>
                                   <div class="flex-grow-1">
                                     <div class="row">
@@ -162,7 +162,6 @@ echo "</div>";
                                         <div class="text-md-end">
                                             <div class="my-2 my-lg-4">
                                                 <span class="text-primary">
-
                                                     <?php
                                                         $birimi = $urun["DOVIZ_BIRIMI"];
                                                         if($urun['DSF4'] == NULL || $urun['DSF4'] == '' ){$birimi = '₺';}
