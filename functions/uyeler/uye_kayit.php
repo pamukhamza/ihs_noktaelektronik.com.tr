@@ -1,5 +1,6 @@
 <?php
 include '../functions.php';
+include '../../mail/mail_gonder.php';
 require_once '../db.php';
 
 $db = new Database();
