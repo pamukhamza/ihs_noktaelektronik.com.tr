@@ -1,7 +1,8 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 $currentPage = 'onay';
 $template = new Template('Nokta Elektronik - Onay', $currentPage);
 
@@ -142,7 +143,6 @@ echo "</div>";
                                 while ($surun = $database->fetch("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id")) {
                                     $urun_id = $surun['urun_id'];
 
-                                   
                                     $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = '$urun_id' ");
                                     $blkodu = $urun['BLKODU'];
 
