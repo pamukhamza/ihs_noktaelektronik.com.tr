@@ -145,8 +145,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
             // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adımı dikkatlice kullanın)
             $uyeSepetSilQuery = "DELETE FROM uye_sepet WHERE uye_id = :uye_id";
             $db->delete($uyeSepetSilQuery, ['uye_id' => $uye_id]);
-    
-            if (!$db->lastInsertId()) { echo "Üye sepetini temizlerken hata oluştu: "; }
+
         } else { echo "Üye sepeti sorgulama hatası: "; }
     } else { echo "Sipariş oluşturma hatası: "; }
 
