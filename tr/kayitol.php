@@ -67,10 +67,10 @@ $database = new Database();
                                 <input type="tel" class="form-control" id="sabit_tel" name="sabit_tel" placeholder="Sabit Telefon Numarası">
                             </div>
                             <div class="col-md-6 my-2">
-                                <input type="password" class="form-control" id="parola4" required name="parola4" placeholder="Şifre" minlength="6">
+                                <input type="password" class="form-control" id="parola" required name="parola" placeholder="Şifre" minlength="6">
                             </div>
                             <div class="col-md-6 my-2">
-                                <input type="password" class="form-control" id="parola3" required name="parola3" placeholder="Şifre Tekrar" minlength="6">
+                                <input type="password" class="form-control" id="parola2" required name="parola2" placeholder="Şifre Tekrar" minlength="6">
                                 <div id="password-match-message2" style="color: lightgreen;"></div>
                             </div>
                             <div class="col-md-6 my-2">

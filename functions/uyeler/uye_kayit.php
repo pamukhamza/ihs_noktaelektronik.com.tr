@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $response = array();
     
     // Validate required fields
-    $required_fields = ['ad', 'soyad', 'email', 'sifre', 'tel', 'firmaUnvani', 'vergi_dairesi'];
+    $required_fields = ['ad', 'soyad', 'eposta', 'parola', 'tel', 'firma_ad', 'vergi_dairesi'];
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
             $response = [
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $aktivasyon_kodu = bin2hex(random_bytes(16));
 
     // Hash password
-    $hashed_password = password_hash($_POST['sifre'], PASSWORD_DEFAULT);
+    $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
 
     // Insert new user
     $success = $db->insert("INSERT INTO uyeler (
@@ -61,12 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         )", [
         'ad' => $_POST['ad'],
         'soyad' => $_POST['soyad'],
-        'email' => $_POST['email'],
+        'email' => $_POST['eposta'],
         'sifre' => $hashed_password,
         'tel' => $_POST['tel'],
-        'firmaUnvani' => $_POST['firmaUnvani'],
+        'firmaUnvani' => $_POST['firma_ad'],
         'vergi_dairesi' => $_POST['vergi_dairesi'],
-        'vergi_no' => $_POST['vergi_no'],
+        'vergi_no' => $_POST['vergi_no'] ?? null,
+        'tc_no' => $_POST['tc_no'] ?? null,
         'ulke' => $_POST['ulke'] ?? 'Türkiye',
         'il' => $_POST['il'] ?? '',
         'ilce' => $_POST['ilce'] ?? '',
@@ -78,12 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($success) {
         // Get the new user's ID
         $new_user_id = $db->lastInsertId();
-
-        // Log the registration
-        $db->insert("INSERT INTO uye_log (uye_id, islem, tarih) VALUES (:uye_id, :islem, NOW())", [
-            'uye_id' => $new_user_id,
-            'islem' => 'Kayıt yapıldı'
-        ]);
 
         // Send activation email
         $activation_link = "https://www.noktaelektronik.com/aktivasyon?kod=" . $aktivasyon_kodu;
