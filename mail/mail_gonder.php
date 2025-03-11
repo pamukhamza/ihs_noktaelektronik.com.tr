@@ -26,7 +26,6 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
             $mail->addBCC("muhasebe@noktaelektronik.net");
         }
         if($konu != "Arızalı Cihaz Durumu!"){
-            $mail->addBCC("h.kececi@noktaelektronik.net");
             $mail->addBCC("h.pamuk@noktaelektronik.net");
             $mail->addBCC("kadir@noktaelektronik.net");
         }

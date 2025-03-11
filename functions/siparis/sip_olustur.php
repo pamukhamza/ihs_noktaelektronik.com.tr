@@ -437,7 +437,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
         }
     }
 
-    //header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
+    header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
     $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
     mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
 }
