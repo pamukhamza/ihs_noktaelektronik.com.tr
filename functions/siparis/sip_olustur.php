@@ -96,7 +96,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     $siparisId = $db->lastInsertId();
 
     if ($siparisId) {
-        $uyeSepetUrunleriQuery = "SELECT * FROM b2b_uye_sepet WHERE uye_id = :uye_id";
+        $uyeSepetUrunleriQuery = "SELECT * FROM uye_sepet WHERE uye_id = :uye_id";
         $uyeSepetUrunleri = $db->fetchAll($uyeSepetUrunleriQuery, ['uye_id' => $uye_id]);
     
         if ($uyeSepetUrunleri) {
@@ -143,7 +143,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
                 }
             }
             // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adımı dikkatlice kullanın)
-            $uyeSepetSilQuery = "DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id";
+            $uyeSepetSilQuery = "DELETE FROM uye_sepet WHERE uye_id = :uye_id";
             $db->delete($uyeSepetSilQuery, ['uye_id' => $uye_id]);
     
             if (!$db->lastInsertId()) { echo "Üye sepetini temizlerken hata oluştu: "; }
@@ -693,7 +693,7 @@ if (isset($_GET['veri'])) {
     if ($siparisEkleStatement) {
         $siparisId = $db->lastInsertId(); // Eklenen siparişin ID'sini al
         // Üye sepetinden ürünleri al
-        $uyeSepetUrunleri = $db->fetchAll("SELECT * FROM b2b_uye_sepet WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
+        $uyeSepetUrunleri = $db->fetchAll("SELECT * FROM uye_sepet WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
 
         if ($uyeSepetUrunleri) {
             foreach ($uyeSepetUrunleri as $row) {
@@ -727,7 +727,7 @@ if (isset($_GET['veri'])) {
                             VALUES (:siparisId, :urun_id, :urun_blkodu, :miktar, :uyenin_fiyati, :doviz_satis_fiyati)", [ 'siparisId' => $siparisId, 'urun_id' => $urun_id, 
                             'urun_blkodu' => $urun_blkodu, 'miktar' => $miktar,'uyenin_fiyati' => $uyenin_fiyati, 'doviz_satis_fiyati' => $doviz_satis_fiyati ]);
             }
-            if (!$db->delete("DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id", ['uye_id' => $uye_id])) {
+            if (!$db->delete("DELETE FROM uye_sepet WHERE uye_id = :uye_id", ['uye_id' => $uye_id])) {
                 echo "Üye sepetini temizlerken hata oluştu.";
             }
         } else {
@@ -1094,7 +1094,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                 $siparisId = $db->lastInsertId(); // Eklenen siparişin ID'sini al
 
                 // Üye sepetinden ürünleri al
-                $uyeSepetUrunleriStatement = $db->fetchAll("SELECT * FROM b2b_uye_sepet WHERE uye_id = :uye_id" , ['uye_id' => $uye_id]);
+                $uyeSepetUrunleriStatement = $db->fetchAll("SELECT * FROM uye_sepet WHERE uye_id = :uye_id" , ['uye_id' => $uye_id]);
                 if ($uyeSepetUrunleriStatement) {
                     foreach($uyeSepetUrunleriStatement as $row){
                         $urun_id = $row['urun_id'];
@@ -1141,7 +1141,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                         }
                     }
                     // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adımı dikkatlice kullanın)
-                    $uyeSepetSilStatement = $db->delete("DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id" , ['uye_id' => $uye_id]);
+                    $uyeSepetSilStatement = $db->delete("DELETE FROM uye_sepet WHERE uye_id = :uye_id" , ['uye_id' => $uye_id]);
 
                     if (!$uyeSepetSilStatement) {
                         echo "Üye sepetini temizlerken hata oluştu: ";
