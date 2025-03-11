@@ -15,7 +15,6 @@ if (isset($_GET["siparis-numarasi"])){
     $sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE siparis_no = '$siparis_no' ");
     $sip_id = $sip['id'];
     $havale = $sip["odeme_sekli"];
-
     if ($havale == "Havale/EFT") {
         echo "<script>";
         echo "Swal.fire({";
@@ -140,43 +139,43 @@ echo "</div>";
                       <div class="col-xl-9 mb-3 mb-xl-0">
                         <ul class="list-group">
                             <?php
-                                $sUrunler = $database->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id")
+                                $sUrunler = $database->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id");
                                 foreach ($sUrunler as $surun) {
                                     $urun_id = $surun['urun_id'];
                                     $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id = '$urun_id' ");
                                     $foto = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = '$urun_id' LIMIT 1");
                                 ?>
-                              <li class="list-group-item p-4">
-                                <div class="d-flex gap-3">
-                                  <div class="flex-shrink-0">
-                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $foto['KResim']; ?>" alt="google home" class="w-px-75">
-                                  </div>
-                                  <div class="flex-grow-1">
-                                    <div class="row">
-                                      <div class="col-md-8">
-                                        <a href="javascript:void(0)" class="text-body">
-                                          <p><?= $urun['UrunAdiTR'] ?></p>
-                                        </a>
-                                        <div class="text-muted mb-1 d-flex flex-wrap"><span class="me-1">Adet:</span> <a  class="me-3"><?= $surun['adet'] ?></a></div>
+                                  <li class="list-group-item p-4">
+                                    <div class="d-flex gap-3">
+                                      <div class="flex-shrink-0">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $foto['KResim']; ?>" alt="google home" class="w-px-75">
                                       </div>
-                                      <div class="col-md-4">
-                                        <div class="text-md-end">
-                                            <div class="my-2 my-lg-4">
-                                                <span class="text-primary">
-                                                    <?php
-                                                        $birimi = $urun["DOVIZ_BIRIMI"];
-                                                        if($urun['DSF4'] == NULL || $urun['DSF4'] == '' ){$birimi = '₺';}
-                                                        echo $birimi;
-                                                    ?>
-                                                    <?= $surun['birim_fiyat'] ?>
-                                                </span>
+                                      <div class="flex-grow-1">
+                                        <div class="row">
+                                          <div class="col-md-8">
+                                            <a href="javascript:void(0)" class="text-body">
+                                              <p><?= $urun['UrunAdiTR'] ?></p>
+                                            </a>
+                                            <div class="text-muted mb-1 d-flex flex-wrap"><span class="me-1">Adet:</span> <a  class="me-3"><?= $surun['adet'] ?></a></div>
+                                          </div>
+                                          <div class="col-md-4">
+                                            <div class="text-md-end">
+                                                <div class="my-2 my-lg-4">
+                                                    <span class="text-primary">
+                                                        <?php
+                                                            $birimi = $urun["DOVIZ_BIRIMI"];
+                                                            if($urun['DSF4'] == NULL || $urun['DSF4'] == '' ){$birimi = '₺';}
+                                                            echo $birimi;
+                                                        ?>
+                                                        <?= $surun['birim_fiyat'] ?>
+                                                    </span>
+                                                </div>
                                             </div>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </div>
-                              </li>
+                                  </li>
                             <?php  } ?>
                         </ul>
                       </div>
