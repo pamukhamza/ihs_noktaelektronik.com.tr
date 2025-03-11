@@ -139,7 +139,7 @@ echo "</div>";
                       <div class="col-xl-9 mb-3 mb-xl-0">
                         <ul class="list-group">
                             <?php
-                                while ($surun = $database->fetch("SELECT * FROM siparis_urunler WHERE sip_id = $sip_id")) {
+                                while ($surun = $database->fetch("SELECT * FROM b2b_siparis_urunler WHERE sip_id = $sip_id")) {
                                     $urun_id = $surun['urun_id'];
 
                                    
@@ -174,7 +174,6 @@ echo "</div>";
                                                     <?= $surun['birim_fiyat'] ?>
                                                 </span>
                                             </div>
-
                                         </div>
                                       </div>
                                     </div>
@@ -197,11 +196,11 @@ echo "</div>";
                             <dt class="col-sm-6 fw-normal">KDV</dt>
                             <dd class="col-sm-6 text-end">₺<?php echo $sip['sepet_kdv'];?></dd>
 
-                              <dt class="col-sm-6 fw-normal">İndirim</dt>
-                              <dd class="col-sm-6 text-end"><?php echo $sip['indirim'];?></dd>
+                            <dt class="col-sm-6 fw-normal">İndirim</dt>
+                            <dd class="col-sm-6 text-end"><?php echo $sip['indirim'];?></dd>
 
-                              <dt class="col-sm-6 fw-normal">Kargo Ücreti</dt>
-                              <dd class="col-sm-6 text-end">₺<?php echo $sip['kargo_ucreti'];?></dd>
+                            <dt class="col-sm-6 fw-normal">Kargo Ücreti</dt>
+                            <dd class="col-sm-6 text-end">₺<?php echo $sip['kargo_ucreti'];?></dd>
                           </dl>
                           <hr class="mx-n4">
                           <dl class="row mb-0">
