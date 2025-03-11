@@ -172,19 +172,13 @@ $template->head();
                 }
             });
         }
-        // Execute the function when the page loads
-        $(document).ready(function() {
-            // Check if il is not empty, then load ilceler
-            if ($('.il1').val() !== '') {
-                loadIlceler();
-            }
-            // Attach the function to the 'change' event of #il
-            $('.il1').on('change', loadIlceler);
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
+        // Check if il is not empty, then load ilceler
+        if ($('.il1').val() !== '') {
+            loadIlceler();
+        }
+        // Attach the function to the 'change' event of #il
+        $('.il1').on('change', loadIlceler);
+
         $('.sozBtn').click(function() {
             $('#sozlesmeModal').modal('show');
         });
@@ -192,10 +186,7 @@ $template->head();
             $("#onay").prop("checked", true);
             $('#sozlesmeModal').modal('hide');
         });
-    });
-</script>
-<script>
-    $(document).ready(function() {
+
         // Initially hide the fields
         $("#vergiNo").show();
         $("#tcNo").hide();
@@ -212,11 +203,7 @@ $template->head();
                 $("#tcNo").hide();
             }
         });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        // Add event listener to the password fields
+   
         $('#parola, #parola2').on('input', function() {
             // Get the values of both password fields
             var password1 = $('#parola').val();
@@ -234,8 +221,6 @@ $template->head();
             }
         });
     });
-</script>
-<script>
     function validatePhoneNumber(input) {
         // Sadece sayıları içeren bir regex
         var regex = /^[0-9]*$/;
