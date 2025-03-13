@@ -452,7 +452,7 @@ $database = new Database();
                                 
                                                     <?php 
                                                     if ($row['proje'] == 0) {
-                                                        isset($_SESSION['id']){
+                                                        if(isset($_SESSION['id'])){
                                                             $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $_SESSION['id']]);
                                                             $uye_fiyat = $uye['fiyat'] ?? 4;
                                                             if ($uye_fiyat != 4) { ?>
