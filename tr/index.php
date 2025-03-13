@@ -355,50 +355,52 @@ $database = new Database();
                                 
                                         <li class="splide__slide d-flex justify-content-center px-3 mb-4 mt-2">
                                             <div class="card p-0 col-lg-3 col-md-3 col-sm-6 col-xs-12 my-2 mx-2 urun-effect" style="width: 15rem;">
-                                                <a href="tr/urunler/<?= htmlspecialchars($row['seo_link']); ?>">
+                                                <a href="tr/urunler/<?= $row['seo_link']; ?>">
                                                     <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;">
-                                                        <img src="<?= htmlspecialchars($resim_yolu); ?>" class="card-img-top img-fluid" alt="<?= htmlspecialchars($text_to_display); ?>">
+                                                        <img src="<?= $resim_yolu; ?>" class="card-img-top img-fluid" alt="<?= $text_to_display; ?>">
                                                     </div>
                                                 </a>
                                                 <div class="card-body d-flex flex-column">
                                                     <a style="font-weight:600;" class="mt-2 urun-a">
-                                                        <?= (strlen($text_to_display) > 50) ? substr($text_to_display, 0, 49) . '...' : htmlspecialchars($text_to_display); ?>
+                                                        <?= (strlen($text_to_display) > 50) ? substr($text_to_display, 0, 49) . '...' : $text_to_display; ?>
                                                     </a>
-                                                    <a style="font-size:12px;" class="mt-2 urun-a border-bottom"><?= htmlspecialchars($row['MarkaAdi'] ?? 'Marka Yok'); ?></a>
-                                                    <a style="font-size:12px;" class="mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= htmlspecialchars($row['UrunKodu']); ?></a>
-                                
-                                                    <?php if ($row['proje'] == 0 && isset($_SESSION['id'])) {
-                                                        $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $_SESSION['id']]);
-                                                        $uye_fiyat = $uye['fiyat'] ?? 0;
-                                
-                                                        if ($uye_fiyat != 4) { ?>
-                                                            <a style="font-size:14px;" class="urun-a custom-underline">
+                                                    <a style="font-size:12px;" class="mt-2 urun-a border-bottom"><?= $row['MarkaAdi'] ?? 'Marka Yok'; ?></a>
+                                                    <a style="font-size:12px;" class="mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= $row['UrunKodu']; ?></a>
+                                                    <?php 
+                                                    if ($row['proje'] == 0) {
+                                                        isset($_SESSION['id']){
+                                                            $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $_SESSION['id']]);
+                                                            $uye_fiyat = $uye['fiyat'] ?? 4;
+                                                            if ($uye_fiyat != 4) { ?>
+                                                                <a style="font-size:14px;" class="urun-a custom-underline">
+                                                                    <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺"; ?>
+                                                                    <?= formatNumber($row["DSF4"] ?? $row["KSF4"]); ?> + KDV
+                                                                </a>
+                                                                <a style="font-size:14px; color:red;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a> <?php 
+                                                            } ?>
+                                    
+                                                            <a style="font-size:14px;" class="urun-a fw-bold">
                                                                 <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺"; ?>
-                                                                <?= formatNumber($row["DSF4"] ?? $row["KSF4"]); ?> + KDV
+                                                                <?= formatNumber($row["DSF$uye_fiyat"] ?? $row["KSF$uye_fiyat"]); ?> + KDV
                                                             </a>
-                                
-                                                            <a style="font-size:14px; color:red;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a>
-                                                        <?php } ?>
-                                
-                                                        <a style="font-size:14px;" class="urun-a fw-bold">
-                                                            <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺"; ?>
-                                                            <?= formatNumber($row["DSF$uye_fiyat"] ?? $row["KSF$uye_fiyat"]); ?> + KDV
-                                                        </a>
-                                                        <?php $urunId = $row['id']; ?>
-                                                        <i class="fa-solid fa-cart-shopping fa-xl sepet-style" onclick="sepeteUrunEkle(<?= $row['id']; ?>, <?= $_SESSION['id'] ?? 'null'; ?>);"></i>
-                                                    <?php } else { ?>
+                                                            <?php $urunId = $row['id']; ?>
+                                                            <i class="fa-solid fa-cart-shopping fa-xl sepet-style" onclick="sepeteUrunEkle(<?= $row['id']; ?>, <?= $_SESSION['id'] ?? 'null'; ?>);"></i><?php
+                                                        } else { ?>
+                                                            <button type="submit" class="btn btn-danger mt-3 teklifOnaybtn">
+                                                                <i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste
+                                                            </button><?php
+                                                        }
+                                                    } else { ?>
                                                         <button type="submit" class="btn btn-danger mt-3 teklifOnaybtn">
                                                             <i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste
-                                                        </button>
-                                                    <?php } ?>
+                                                        </button> <?php 
+                                                    } ?>
                                                 </div>
-                                
                                                 <a href="#" class="rounded-1 text-decoration-none" style="font-size:13px; color:white; background: rgba(255, 0, 0, 0.6); padding:2px; position: absolute; top: 10px; left: 10px;">
                                                     <i class="fa-solid fa-bullhorn pe-1"></i>Yeni!
                                                 </a>
                                             </div>
                                         </li>
-                                
                                         <?php
                                     }
                                 }
@@ -448,30 +450,35 @@ $database = new Database();
                                                     <a style="font-size:12px;" class="mt-2 urun-a border-bottom"><?= htmlspecialchars($row['MarkaAdi'] ?? 'Marka Yok'); ?></a>
                                                     <a style="font-size:12px;" class="mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= htmlspecialchars($row['UrunKodu']); ?></a>
                                 
-                                                    <?php if ($row['proje'] == 0 && isset($_SESSION['id'])) {
-                                                        $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $_SESSION['id']]);
-                                                        $uye_fiyat = $uye['fiyat'] ?? 0;
-                                
-                                                        if ($uye_fiyat != 4) { ?>
-                                                            <a style="font-size:14px;" class="urun-a custom-underline">
+                                                    <?php 
+                                                    if ($row['proje'] == 0) {
+                                                        isset($_SESSION['id']){
+                                                            $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $_SESSION['id']]);
+                                                            $uye_fiyat = $uye['fiyat'] ?? 4;
+                                                            if ($uye_fiyat != 4) { ?>
+                                                                <a style="font-size:14px;" class="urun-a custom-underline">
+                                                                    <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺"; ?>
+                                                                    <?= formatNumber($row["DSF4"] ?? $row["KSF4"]); ?> + KDV
+                                                                </a>
+                                                                <a style="font-size:14px; color:red;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a> <?php 
+                                                            } ?>
+                                    
+                                                            <a style="font-size:14px;" class="urun-a fw-bold">
                                                                 <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺"; ?>
-                                                                <?= formatNumber($row["DSF4"] ?? $row["KSF4"]); ?> + KDV
+                                                                <?= formatNumber($row["DSF$uye_fiyat"] ?? $row["KSF$uye_fiyat"]); ?> + KDV
                                                             </a>
-                                
-                                                            <a style="font-size:14px; color:red;" class="urun-a fw-bold mt-1">Size Özel Fiyat</a>
-                                                        <?php } ?>
-                                
-                                                        <a style="font-size:14px;" class="urun-a fw-bold">
-                                                            <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺"; ?>
-                                                            <?= formatNumber($row["DSF$uye_fiyat"] ?? $row["KSF$uye_fiyat"]); ?> + KDV
-                                                        </a>
-                                                        <?php $urunId = $row['id']; ?>
-                                                        <i class="fa-solid fa-cart-shopping fa-xl sepet-style" onclick="sepeteUrunEkle(<?= $urunId; ?>, <?= $_SESSION['id'] ?? 'null'; ?>);"></i>
-                                                    <?php } else { ?>
+                                                            <?php $urunId = $row['id']; ?>
+                                                            <i class="fa-solid fa-cart-shopping fa-xl sepet-style" onclick="sepeteUrunEkle(<?= $row['id']; ?>, <?= $_SESSION['id'] ?? 'null'; ?>);"></i><?php
+                                                        } else { ?>
+                                                            <button type="submit" class="btn btn-danger mt-3 teklifOnaybtn">
+                                                                <i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste
+                                                            </button><?php
+                                                        }
+                                                    } else { ?>
                                                         <button type="submit" class="btn btn-danger mt-3 teklifOnaybtn">
                                                             <i class="fa-solid fa-reply fa-flip-horizontal"></i> Teklif İste
-                                                        </button>
-                                                    <?php } ?>
+                                                        </button> <?php 
+                                                    } ?>
                                                 </div>
                                 
                                                 <a href="#" class="rounded-1 text-decoration-none" style="font-size:13px; color:white; background: rgba(255, 0, 0, 0.6); padding:2px; position: absolute; top: 10px; left: 10px;">
