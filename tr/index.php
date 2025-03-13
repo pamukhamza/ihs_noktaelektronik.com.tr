@@ -176,17 +176,17 @@ $database = new Database();
                         <?php
                             $d = $database->fetchAll("SELECT * FROM slider WHERE `site` = 'b2b' AND is_active = 1 ORDER BY order_by ASC");
                             $first = true;
-                                foreach ($d as $k => $row) {
-                                    // Add active class for the first item, don't add for others
-                                    $activeClass = $first ? 'active' : '';
-                                    echo '<div class="carousel-item ' . $activeClass . '" data-bs-interval="3000">
-                                            <a href="' . $row["link"] . '">
-                                                <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/' . $row["photo"] . '" class="d-block w-100 rounded-2" alt="...">
-                                            </a>
-                                        </div>';
-                                    // Change the flag after marking the first item
-                                    $first = false;
-                                }
+                            foreach ($d as $k => $row) {
+                                // Add active class for the first item, don't add for others
+                                $activeClass = $first ? 'active' : '';
+                                echo '<div class="carousel-item ' . $activeClass . '" data-bs-interval="3000">
+                                        <a href="' . $row["link"] . '">
+                                            <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/' . $row["photo"] . '" class="d-block w-100 rounded-2" alt="...">
+                                        </a>
+                                    </div>';
+                                // Change the flag after marking the first item
+                                $first = false;
+                            }
                         ?>
                     </div>
                     <!-- Carousel Indicators (Dots) -->
@@ -206,20 +206,20 @@ $database = new Database();
     </div>
     <div class="container mt-5">
         <!-- Markalarimiz -->
-            <div class="slider rounded-3 mt-5">
-                <div class="slide-track" id="slideTrack">
-                    <?php
-                    $q = "SELECT * FROM nokta_urun_markalar WHERE web_comtr = 1 ORDER BY order_by ASC";
-                    $brands = $database->fetchAll($q);
+        <div class="slider rounded-3 mt-5">
+            <div class="slide-track" id="slideTrack">
+                <?php
+                $q = "SELECT * FROM nokta_urun_markalar WHERE web_comtr = 1 ORDER BY order_by ASC";
+                $brands = $database->fetchAll($q);
 
-                    foreach($brands as $row) {
-                        ?>
-                        <div class="slide-marka d-flex justify-content-center">
-                            <a href="tr/markalar"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/brands/<?= $row['hover_img']; ?>" style="max-height:100px; height:100%;" alt="" /></a>
-                        </div>
-                    <?php } ?>
-                </div>
+                foreach($brands as $row) {
+                    ?>
+                    <div class="slide-marka d-flex justify-content-center">
+                        <a href="tr/markalar"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/brands/<?= $row['hover_img']; ?>" style="max-height:100px; height:100%;" alt="" /></a>
+                    </div>
+                <?php } ?>
             </div>
+        </div>
         <!-- Markalarimiz Sonu -->
         <!-- BANNER ALANI -->
         <div class="d-flex mt-4">
@@ -286,47 +286,47 @@ $database = new Database();
         <!-- MOBIL BANNER ALANI -->
         <div class="d-flex mt-4 ">
             <div class="row banner-responsive mobil-banner">
-                    <div class="col-12 d-flex justify-content-center ">
-                    <div class="row">
-                    <?php $q = "SELECT * FROM b2b_banner WHERE id = '1'";
-                    if ( $d = $database->fetchAll($q) ){
-                        foreach( $d as $k => $row ){ ?>
-                                <!--
-                            <div class="col-12 mt-3">
-                                <a href="<?=  $row['banner_link']; ?>"><img  src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="1" width="100%" alt=""></a>
-                            </div>-->
-                            <div class="col-12 mt-3">
-                                <video class="rounded shadow-sm" style="width: 100%; height: auto;" controls>
-                                    <source src="assets/uploads/videolar/banner_video1.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                        <?php }}
-                    $q = "SELECT * FROM b2b_banner WHERE id = '2'";
-                    if ( $d = $database->fetchAll($q) ){
-                        foreach( $d as $k => $row ){?>
-                            <div class="col-6 mt-3">
-                                <a href="<?=  $row['banner_link']; ?>"><img  src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="2" width="100%" alt=""></a>
-                            </div>
-                        <?php }}
-                    $q = "SELECT * FROM b2b_banner WHERE id = '3'";
-                    if ( $d = $database->fetchAll($q) ){
-                        foreach( $d as $k => $row ){?>
-                            <div class="col-6 mt-3">
-                                <a href="<?=  $row['banner_link']; ?>"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="3" width="100%" height="100%" alt=""></a>
-                            </div>
-                        <?php }}
-                    $q = "SELECT * FROM b2b_banner WHERE id = '4'";
-                    if ( $d = $database->fetchAll($q) ){
-                        foreach( $d as $k => $row ){?>
-                            <div class="col-12 mt-3">
-                                <a href="<?=  $row['banner_link']; ?>"><img  src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="4" width="100%" alt=""></a>
-                            </div>
-                        <?php }} ?>
-                            </div>
-                            </div>
+                <div class="col-12 d-flex justify-content-center ">
+                <div class="row">
+                <?php $q = "SELECT * FROM b2b_banner WHERE id = '1'";
+                if ( $d = $database->fetchAll($q) ){
+                    foreach( $d as $k => $row ){ ?>
+                            <!--
+                        <div class="col-12 mt-3">
+                            <a href="<?=  $row['banner_link']; ?>"><img  src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="1" width="100%" alt=""></a>
+                        </div>-->
+                        <div class="col-12 mt-3">
+                            <video class="rounded shadow-sm" style="width: 100%; height: auto;" controls>
+                                <source src="assets/uploads/videolar/banner_video1.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    <?php }}
+                $q = "SELECT * FROM b2b_banner WHERE id = '2'";
+                if ( $d = $database->fetchAll($q) ){
+                    foreach( $d as $k => $row ){?>
+                        <div class="col-6 mt-3">
+                            <a href="<?=  $row['banner_link']; ?>"><img  src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="2" width="100%" alt=""></a>
+                        </div>
+                    <?php }}
+                $q = "SELECT * FROM b2b_banner WHERE id = '3'";
+                if ( $d = $database->fetchAll($q) ){
+                    foreach( $d as $k => $row ){?>
+                        <div class="col-6 mt-3">
+                            <a href="<?=  $row['banner_link']; ?>"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="3" width="100%" height="100%" alt=""></a>
+                        </div>
+                    <?php }}
+                $q = "SELECT * FROM b2b_banner WHERE id = '4'";
+                if ( $d = $database->fetchAll($q) ){
+                    foreach( $d as $k => $row ){?>
+                        <div class="col-12 mt-3">
+                            <a href="<?=  $row['banner_link']; ?>"><img  src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?=  $row['banner_foto']; ?>" class="shadow-sm rounded" data-banner-id="4" width="100%" alt=""></a>
+                        </div>
+                    <?php }} ?>
                         </div>
                     </div>
+                </div>
+            </div>
         </div>
         <!-- MOBIL BANNER ALANI SONU -->
         <!--URUNLER SLIDER -->
@@ -367,7 +367,7 @@ $database = new Database();
                                                     <a style="font-size:12px;" class="mt-2 urun-a border-bottom"><?= $row['MarkaAdi'] ?? 'Marka Yok'; ?></a>
                                                     <a style="font-size:12px;" class="mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= $row['UrunKodu']; ?></a>
                                                     <?php 
-                                                    if ($row['proje'] == 0) {
+                                                    if (empty($row['proje'])) {
                                                         if(isset($_SESSION['id'])){
                                                             $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $_SESSION['id']]);
                                                             $uye_fiyat = $uye['fiyat'] ?? 4;
@@ -451,7 +451,7 @@ $database = new Database();
                                                     <a style="font-size:12px;" class="mb-2 urun-a">Stok Kodu<span class="ps-1">:</span><?= htmlspecialchars($row['UrunKodu']); ?></a>
                                 
                                                     <?php 
-                                                    if ($row['proje'] == 0) {
+                                                    if (empty($row['proje'])) {
                                                         if(isset($_SESSION['id'])){
                                                             $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $_SESSION['id']]);
                                                             $uye_fiyat = $uye['fiyat'] ?? 4;
