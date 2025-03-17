@@ -35,12 +35,7 @@ $database = new Database();
     .kategori-effect li:hover {color: purple;}
     .urun-effect {transition: transform 0.3s ease;}
     .urun-effect:hover {box-shadow: 2px;}
-    .sepet-style {
-    cursor: pointer;
-    position: absolute;
-    bottom: 30px;
-    right: 20px;
-    }
+    .sepet-style {cursor: pointer;position: absolute;bottom: 30px;right: 20px;}
     .custom-underline { text-decoration: line-through;}
     #stokArama1:focus {box-shadow: 0 0 0 0 rgba(13, 110, 253, .25);}
     .mobil-banner {display: none;}
@@ -86,9 +81,7 @@ $database = new Database();
     }
     .play-button:hover {opacity: 1;}
     .play-button svg {fill: #fff;}
-    .kategori-effect li {
-        position: relative;
-    }
+    .kategori-effect li {position: relative;}
     .kategori-effect li:hover .sub-category {display: block;}
     .sub-category {
         min-width: 200px; /* Genişlik */
