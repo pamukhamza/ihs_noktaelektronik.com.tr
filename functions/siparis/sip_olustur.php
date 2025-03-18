@@ -80,7 +80,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
     uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) 
     VALUES (:siparisNumarasi, :uye_id, '1', :tip, :teslimat_ad, :teslimat_soyad, :teslimat_firmaadi, :teslimat_adres, :teslimat_telefon, :teslimat_ulke, :teslimat_il, :teslimat_ilce, :teslimat_tcno, 
     :teslimat_vergino, :teslimat_vergidairesi, :teslimat_postakodu, :uye_ad, :uye_soyad, :uye_email, :uye_tel, :uye_ulke, :uye_adres, :uye_postakodu, :uye_tcno, :uye_firmaadi, :uye_vergidairesi, 
-    :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW())";
+    :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW() + INTERVAL 3 HOUR)";
 
     $siparisEkleStmt = $db->insert($siparisEkleQuery, [
         'siparisNumarasi' => $siparisNumarasi, 'uye_id' => $uye_id, 'tip' => $tip, 'teslimat_ad' => $teslimat_ad, 'teslimat_soyad' => $teslimat_soyad,
@@ -678,7 +678,7 @@ if (isset($_GET['veri'])) {
      uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) VALUES                                                                                                                  
     (:siparisNumarasi, :uye_id, '1', :tip, :teslimat_ad, :teslimat_soyad, :teslimat_firmaadi, :teslimat_adres, :teslimat_telefon, :teslimat_ulke, :teslimat_il, :teslimat_ilce, :teslimat_tcno, 
      :teslimat_vergino, :teslimat_vergidairesi, :teslimat_postakodu, :uye_ad, :uye_soyad, :uye_email, :uye_tel, :uye_ulke, :uye_adres, :uye_postakodu, :uye_tcno, :uye_firmaadi, :uye_vergidairesi, 
-     :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW())";
+     :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW() + INTERVAL 3 HOUR)";
     $params =['siparisNumarasi'=> $siparisNumarasi, 'uye_id'=> $uye_id, 'tip'=> $tip, 'teslimat_ad'=> $teslimat_ad, 'teslimat_soyad'=> $teslimat_soyad, 
     'teslimat_firmaadi'=> $teslimat_firmaadi, 'teslimat_adres'=> $teslimat_adres, 'teslimat_telefon'=> $teslimat_telefon, 'teslimat_ulke'=> $teslimat_ulke, 
     'teslimat_il'=> $teslimat_il, 'teslimat_ilce'=> $teslimat_ilce, 'teslimat_tcno'=> $teslimat_tcno, 'teslimat_vergino'=> $teslimat_vergino, 
@@ -1079,7 +1079,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                 uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) VALUES
                 (:siparisNumarasi, :uye_id, '1', :tip, :teslimat_ad, :teslimat_soyad, :teslimat_firmaadi, :teslimat_adres, :teslimat_telefon, :teslimat_ulke, :teslimat_il, :teslimat_ilce, :teslimat_tcno,
                 :teslimat_vergino, :teslimat_vergidairesi, :teslimat_postakodu, :uye_ad, :uye_soyad, :uye_email, :uye_tel, :uye_ulke, :uye_adres, :uye_postakodu, :uye_tcno, :uye_firmaadi, :uye_vergidairesi,
-                :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW())";
+                :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu, :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW() + INTERVAL 3 HOUR)";
             $sippar = ['siparisNumarasi'=> $siparisNumarasi,'uye_id'=> $uye_id,'tip'=> $tip,'teslimat_ad'=> $teslimat_ad,'teslimat_soyad'=> $teslimat_soyad,'teslimat_firmaadi'=> $teslimat_firmaadi,
             'teslimat_adres'=> $teslimat_adres,'teslimat_telefon'=> $teslimat_telefon,'teslimat_ulke'=> $teslimat_ulke,'teslimat_il'=> $teslimat_il,'teslimat_ilce'=> $teslimat_ilce,
             'teslimat_tcno'=> $teslimat_tcno,'teslimat_vergino'=> $teslimat_vergino,'teslimat_vergidairesi'=> $teslimat_vergidairesi,'teslimat_postakodu'=> $teslimat_postakodu,'uye_ad'=> $uye_ad,
