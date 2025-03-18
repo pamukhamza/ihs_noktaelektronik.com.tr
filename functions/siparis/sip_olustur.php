@@ -1375,11 +1375,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                 }
             }
             
-            if($lang == "tr"){
-                header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-            }elseif($lang == "en"){
-                header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-            }
+            header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
             $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
             mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
             $pos_id = 4;
