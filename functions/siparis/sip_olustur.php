@@ -802,7 +802,7 @@ if (isset($_GET['veri'])) {
             $urun_adet = $row['adet'];
             $birim_fiyat = $row['birim_fiyat'];
 
-            $noktaurun = $db->prepare("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
+            $noktaurun = $db->fetch("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
             $dovizimiz = '';
 
             if($noktaurun['DSF' . $uye_gor_fiyat] == NULL || $noktaurun['DSF' . $uye_gor_fiyat] == ''){
@@ -1055,8 +1055,6 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
             $teslimat_vergidairesi = $teslimat['vergi_dairesi'];
             $teslimat_postakodu = $teslimat['posta_kodu'];
 
-            //üyeler tablosundan fatura adresini çek
-            $uye = $db->prepare("SELECT * FROM uyeler WHERE id = :uye_id ", ['uye_id' => $uye_id]);
             $uyecarikod = $uye['BLKODU'];
             $uye_gor_fiyat = $uye['fiyat'];
             $uye_ad = $uye['ad'];
@@ -1131,7 +1129,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                         $db->update("UPDATE nokta_urunler SET cok_satan = :cok_satan WHERE id = :id" , ['cok_satan' => $cok_satan, 'id' => $urun_id]);
 
                         $querysipur = "INSERT INTO siparis_urunler (sip_id, urun_id, adet, BLKODU, birim_fiyat, dolar_satis) VALUES (:siparisId, :urun_id, :miktar, :urun_blkodu, :uyenin_fiyati, :doviz_satis_fiyati)";
-                        $siparisUrunEkleStatement = $db->prepare($querysipur, ['siparisId'=> $siparisId, 'urun_id'=> $urun_id, 'miktar'=> $miktar, 'urun_blkodu'=> $urun_blkodu, 
+                        $siparisUrunEkleStatement = $db->insert($querysipur, ['siparisId'=> $siparisId, 'urun_id'=> $urun_id, 'miktar'=> $miktar, 'urun_blkodu'=> $urun_blkodu, 
                                                                     'uyenin_fiyati'=> $uyenin_fiyati, 'doviz_satis_fiyati'=> $doviz_satis_fiyati]);
 
                         if (!$siparisUrunEkleStatement) {
@@ -1223,7 +1221,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                 $urun_adet = $row['adet'];
                 $birim_fiyat = $row['birim_fiyat'];
     
-                $noktaurun = $db->prepare("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
+                $noktaurun = $db->fetch("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
                 $dovizimiz = '';
     
                 if($noktaurun['DSF' . $uye_gor_fiyat] == NULL || $noktaurun['DSF' . $uye_gor_fiyat] == ''){
