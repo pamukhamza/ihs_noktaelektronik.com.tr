@@ -976,7 +976,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
     $yanIndirim = $decodedVeri["yanIndirim"];
     $deliveryOption = $decodedVeri["deliveryOption"];
     $yanKargo = $decodedVeri["yanKargo"];
-    $promosyon_kodu = $decodedVeri["promosyonKodu"];
+    $promosyon_kodu = $decodedVeri["promosyon_kodu"];
     $desi = $decodedVeri["desi"];
     $siparisOdeme = "siparis";
     $hesap = "0";
