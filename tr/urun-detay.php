@@ -589,7 +589,7 @@ if(isset($_SESSION['id'])) {
                                                 $dBaslik =duzenleString1($baslikAdi);
                                                 ?>
                                                 <td class="text-center">
-                                                    <a href="<?= $row["url_path"]; ?>">
+                                                    <a href="https://noktanet.s3.eu-central-1.amazonaws.com/<?= $row["url_path"]; ?>">
                                                         <?php
                                                         $dUzanti = pathinfo($dYol, PATHINFO_EXTENSION);
                                                         switch ($dUzanti) {
