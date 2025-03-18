@@ -825,7 +825,7 @@ if (isset($_GET['veri'])) {
 
             $fiyati = $tlFiyat * floatval($dovizimiz); // Convert $dovizimiz to float as well
             $birim_fiyat_tl = str_replace('.', ',', $fiyati);
-
+            $formatted_UYGL_ISK_FIYATI = '';
             if (!empty($yanIndirim) && $yanIndirim != 0) {
                 $ISK_KDVSZ_TTR = 5 * $yanIndirim / 6; //kdvsiz iskonto tutar
                 $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20; //ürün için satır toplamı iskontoda kullanıcak
@@ -1244,7 +1244,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
     
                 $fiyati = $tlFiyat * floatval($dovizimiz); // Convert $dovizimiz to float as well
                 $birim_fiyat_tl = str_replace('.', ',', $fiyati);
-    
+                $formatted_UYGL_ISK_FIYATI = '';
                 if (!empty($yanIndirim) && $yanIndirim != 0) {
                     $ISK_KDVSZ_TTR = 5 * $yanIndirim / 6; //kdvsiz iskonto tutar
                     $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20; //ürün için satır toplamı iskontoda kullanıcak
