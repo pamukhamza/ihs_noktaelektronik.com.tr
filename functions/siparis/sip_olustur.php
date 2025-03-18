@@ -841,7 +841,7 @@ if (isset($_GET['veri'])) {
             $hareket = $xmlDoc->createElement('HAREKET');
             $faturaHareket->appendChild($hareket);
             $elements = [
-                'BLKODU' => $noktaurun['BLKODU'],
+                'BLSTKODU' => $noktaurun['BLKODU'],
                 'MIKTARI_2' => $urun_adet,
                 'BIRIMI_2' => $noktaurun['BIRIMI'],
                 'MIKTARI' => $urun_adet,
@@ -1260,7 +1260,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                 $hareket = $xmlDoc->createElement('HAREKET');
                 $faturaHareket->appendChild($hareket);
                 $elements = [
-                    'BLKODU' => $noktaurun['BLKODU'],
+                    'BLSTKODU' => $noktaurun['BLKODU'],
                     'MIKTARI_2' => $urun_adet,
                     'BIRIMI_2' => $noktaurun['BIRIMI'],
                     'MIKTARI' => $urun_adet,
