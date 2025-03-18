@@ -722,7 +722,7 @@ if (isset($_GET['veri'])) {
                     'urun_id' => $urun_id
                 ]);
 
-                $db->insert("INSERT INTO siparis_urunler (sip_id, urun_id, BLKODU, adet, birim_fiyat, dolar_satis) 
+                $db->insert("INSERT INTO b2b_siparis_urunler (sip_id, urun_id, BLKODU, adet, birim_fiyat, dolar_satis) 
                             VALUES (:siparisId, :urun_id, :urun_blkodu, :miktar, :uyenin_fiyati, :doviz_satis_fiyati)", [ 'siparisId' => $siparisId, 'urun_id' => $urun_id, 
                             'urun_blkodu' => $urun_blkodu, 'miktar' => $miktar,'uyenin_fiyati' => $uyenin_fiyati, 'doviz_satis_fiyati' => $doviz_satis_fiyati ]);
             }
@@ -1128,7 +1128,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                         // cok_satan değerini güncelle
                         $db->update("UPDATE nokta_urunler SET cok_satan = :cok_satan WHERE id = :id" , ['cok_satan' => $cok_satan, 'id' => $urun_id]);
 
-                        $querysipur = "INSERT INTO siparis_urunler (sip_id, urun_id, adet, BLKODU, birim_fiyat, dolar_satis) VALUES (:siparisId, :urun_id, :miktar, :urun_blkodu, :uyenin_fiyati, :doviz_satis_fiyati)";
+                        $querysipur = "INSERT INTO b2b_siparis_urunler (sip_id, urun_id, adet, BLKODU, birim_fiyat, dolar_satis) VALUES (:siparisId, :urun_id, :miktar, :urun_blkodu, :uyenin_fiyati, :doviz_satis_fiyati)";
                         $siparisUrunEkleStatement = $db->insert($querysipur, ['siparisId'=> $siparisId, 'urun_id'=> $urun_id, 'miktar'=> $miktar, 'urun_blkodu'=> $urun_blkodu, 
                                                                     'uyenin_fiyati'=> $uyenin_fiyati, 'doviz_satis_fiyati'=> $doviz_satis_fiyati]);
 
