@@ -44,14 +44,27 @@ $database = new Database();
                                         SELECT s.id AS sipar_id, s.odeme_sekli, s.kargo_firmasi, s.siparis_no, s.tarih , s.durum, u.*
                                         FROM b2b_siparisler AS s
                                         JOIN b2b_siparis_durum AS u ON s.durum = u.id
-                                        WHERE s.uye_id = :session_id
+                                        WHERE s.uye_id = :session_id ORDER BY s.tarih DESC
                                         ", ['session_id' => $session_id]);
                                 foreach($sepet as $row){
                                 ?>
                                     <tr class="border">
                                         <td class="p-2 text-center border fs-10"><?= $row["siparis_no"] ?></td>
                                         <td class="p-2 text-center border fs-10"><?= $row["odeme_sekli"] ?></td>
-                                        <td class="p-2 text-center border fs-10"><?= $row["kargo_firmasi"] ?></td>
+                                        <td class="p-2 text-center border fs-10">
+                                            <?php 
+                                                switch ($row["kargo_firmasi"]) {
+                                                    case 0: echo "Mağazadan Teslim Alma";
+                                                        break;
+                                                    case 1: echo "Özel Kargo";
+                                                        break;
+                                                    case 2: echo "Yurtiçi Kargo";
+                                                        break;
+                                                    default: echo "Bilinmeyen Kargo";
+                                                        break;
+                                                }
+                                            ?>
+                                        </td>
                                         <td class="p-2 text-center border fs-10"><?= $row["durum"] ?></td>
                                         <td class="p-2 text-center border fs-10"><?= $row["tarih"] ?></td>
                                         <td class="p-2 text-center border fs-10" style="background-color: grey;">
