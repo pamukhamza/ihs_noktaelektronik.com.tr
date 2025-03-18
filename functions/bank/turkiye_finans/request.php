@@ -74,7 +74,7 @@ if(isset($_POST["cariOdeme"])){
         "uye_id" => $_POST["uye_id"],
         "tip" => $_POST["tip"],
         "lang" => $_POST["lang"],
-        "promosyon_kodu" => $_POST['promosyon_kodu']
+        "promosyon_kodu" => $_POST['promosyonKodu']
     ];
 
     $pos_id = 4;
