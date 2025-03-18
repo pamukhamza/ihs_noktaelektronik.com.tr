@@ -11,10 +11,14 @@ $db = new Database();
 
 $dolarKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
 $satis_dolar = $dolarKur['satis'];
+$satis_dolar = str_replace('.', ',', $satis_dolar);
 $alis_dolar = $dolarKur['alis'];
+$alis_dolar = str_replace('.', ',', $alis_dolar);
 $euroKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 3");
 $satis_euro = $euroKur['satis'];
+$satis_euro = str_replace('.', ',', $satis_euro);
 $alis_euro = $euroKur['alis'];
+$alis_euro = str_replace('.', ',', $alis_euro);
 
 function generateUniqueOrderNumber() {
     $prefix = 'WEB';
@@ -295,20 +299,16 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
 
         if($noktaurun['DOVIZ_BIRIMI'] == '$'){
             $DOVIZ_ALIS = $xmlDoc->createElement('DOVIZ_ALIS');
-            $alis_dolar = str_replace('.', ',', $alis_dolar);
             $DOVIZ_ALIS->appendChild($xmlDoc->createCDATASection($alis_dolar));
             $hareket->appendChild($DOVIZ_ALIS);
             $DOVIZ_SATIS = $xmlDoc->createElement('DOVIZ_SATIS');
-            $satis_dolar = str_replace('.', ',', $satis_dolar);
             $DOVIZ_SATIS->appendChild($xmlDoc->createCDATASection($satis_dolar));
             $hareket->appendChild($DOVIZ_SATIS);
         }elseif($noktaurun['DOVIZ_BIRIMI'] == '€'){
             $DOVIZ_ALIS = $xmlDoc->createElement('DOVIZ_ALIS');
-            $alis_euro = str_replace('.', ',', $alis_euro);
             $DOVIZ_ALIS->appendChild($xmlDoc->createCDATASection($alis_euro));
             $hareket->appendChild($DOVIZ_ALIS);
             $DOVIZ_SATIS = $xmlDoc->createElement('DOVIZ_SATIS');
-            $satis_euro = str_replace('.', ',', $satis_euro);
             $DOVIZ_SATIS->appendChild($xmlDoc->createCDATASection($satis_euro));
             $hareket->appendChild($DOVIZ_SATIS);
         }
@@ -470,8 +470,8 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
     $uyecarikod = $uye['BLKODU'];
     $uye_mail = $uye['email'];
     $firmaUnvani = $uye['firmaUnvani'];
-    $dov_al = str_replace('.', ',', $alis_dolar);
-    $dov_sat = str_replace('.', ',', $satis_dolar);
+    $dov_al =  $alis_dolar;
+    $dov_sat = $satis_dolar;
 
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
@@ -550,8 +550,8 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
             if ($xmlResponse->ProcReturnCode == "00") {
                 $yonetici_maili = 'h.pamuk@noktaelektronik.net';
 
-                $dov_al = str_replace('.', ',', $alis_dolar);
-                $dov_sat = str_replace('.', ',', $satis_dolar);
+                $dov_al = $alis_dolar;
+                $dov_sat = $satis_dolar;
 
                 $currentDateTime = date("d.m.Y H:i:s");
                 $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
