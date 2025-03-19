@@ -390,9 +390,9 @@ if(isset($_SESSION['id'])) {
                             }
                         }
                         if($urun['proje'] == 0){ ?>
-                        <div class="d-flex align-items-center mb-3 mt-4">
-                            <?php if($urun["stok"] > 0) {
-                                if (empty($urun['miktar_seciniz'])) {?>
+                        <div class="d-flex align-items-center mb-3 mt-4"><?php 
+                            if($urun["stok"] > 0) {
+                                if (empty($urun['miktar_seciniz'])) { ?>
                                     <div class="input-group me-3" style="width: 130px;">
                                         <button class="btn btn-lg btn-outline-secondary" type="button" id="decrementBtn">-</button>
                                         <input style="width: 45px" type="text" class="form-control text-center" id="quantityInput" value="1">
@@ -400,22 +400,24 @@ if(isset($_SESSION['id'])) {
                                         <button class="btn btn-lg btn-outline-secondary" type="button" id="incrementBtn">+</button>
                                     </div>
                                     <input type="text" id="output" hidden>
-                                <?php } else {
-                                    // $urun['miktar_seciniz'] alanından veriyi çekiyoruz
+                                <?php 
+                                } else {
                                     $miktarlar = $urun['miktar_seciniz'];
-                                    // Virgülle ayrılmış değerleri diziye çevir
                                     $miktarDizisi = explode(",", $miktarlar);
+                                    $miktarDizisi = array_map('trim', $miktarDizisi); // Boşlukları temizle
                                     ?>
                                     <div class="input-group me-3" style="width: 130px;">
                                         <select class="form-select" id="output" aria-label="Miktar Seçiniz">
                                             <?php foreach ($miktarDizisi as $miktar): ?>
-                                                <?php if ($miktar <= $urun["stok"]): ?>
-                                                    <option value="<?= $miktar; ?>"><?= $miktar; ?></option>
+                                                <?php if (is_numeric($miktar) && intval($miktar) <= intval($urun["stok"])): // Sayıya çevirerek kıyasla ?>
+                                                    <option value="<?= intval($miktar); ?>"><?= intval($miktar); ?></option>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
-                                <?php } } ?>
+                                <?php 
+                                }
+                            } ?>
                         </div>
                             <?php if ($urun['stok'] < 1 || $urun['stok'] < 1){
                                 $temsilci = $database->fetch("SELECT * FROM users WHERE id = :id", ['id' => $uye_satis_temsilci]);

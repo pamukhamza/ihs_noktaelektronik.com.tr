@@ -137,7 +137,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                         ?>
                                         <tr class="border">
                                             <td class="p-2 text-center border fs-10">
-                                                <a href="urunler/<?= $sep["seo_link"] ?>" class="btn btn-primary mb-2" style="font-size:12px; width:110px"><i class="fa-solid fa-box pe-1"></i>Ürüne Git</a>
+                                                <a href="tr/urunler/<?= $sep["seo_link"] ?>" class="btn btn-primary mb-2" style="font-size:12px; width:110px"><i class="fa-solid fa-box pe-1"></i>Ürüne Git</a>
                                                 </br>
                                                 <?php
                                                 // 15 gün eklenmiş tarih, şu anki tarihten küçükse 15 gün geçmiştir
@@ -248,16 +248,15 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                 <form id="applicationForm" method="post" class="needs-validation">
                     <div class="row g-3">
                         <div class="col-sm-12">
-                                <div class="col-sm-12 pb-2">
-                                    <p class="border-bottom pb-3">İade işleminizi tamamlamak için iade nedeninizi yazdıktan sonra devam et butonuna tıklayınız.</br> Karşınıza çıkacak ekranda iade için kargo bilgilerini görüntüleyebileceksiniz.</p>
-                                </div>
-                                <div class="col-sm-12">
-                                    <label for="iade_nedeni" class="form-label">İade Nedeni</label>
-                                    <input type="text" id="uye_id" value="<?= $_SESSION["id"]; ?>" hidden>
-                                    <input type="text" id="sip_no" value="<?= $siparis_no ?>" hidden>
-                                    <textarea type="text" class="form-control" id="iade_nedeni" required></textarea>
-                                </div>
-
+                            <div class="col-sm-12 pb-2">
+                                <p class="border-bottom pb-3">İade işleminizi tamamlamak için iade nedeninizi yazdıktan sonra devam et butonuna tıklayınız.</br> Karşınıza çıkacak ekranda iade için kargo bilgilerini görüntüleyebileceksiniz.</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="iade_nedeni" class="form-label">İade Nedeni</label>
+                                <input type="text" id="uye_id" value="<?= $_SESSION["id"]; ?>" hidden>
+                                <input type="text" id="sip_no" value="<?= $siparis_no ?>" hidden>
+                                <textarea type="text" class="form-control" id="iade_nedeni" required></textarea>
+                            </div>
                         </div>
                     </div>
                     <hr class="my-4">
@@ -356,8 +355,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
         });
         $('#applicationForm').submit(function(e) {
             e.preventDefault();
-
-
+            
             var uye_id = $('#uye_id').val();
             var iade_nedeni = $('#iade_nedeni').val();
             var sip_no = $('#sip_no').val();
