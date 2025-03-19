@@ -204,7 +204,7 @@ function getBreadcrumbs($kategori, $database) {
     </svg>
     <ol class="breadcrumb ">
         <li class="breadcrumb-item">
-            <a class="link-body-emphasis" href="index">
+            <a class="link-body-emphasis" href="tr/">
                 <svg class="bi" width="15" height="15"><use xlink:href="#house-door-fill"></use></svg><span class="visually-hidden">Anasayfa</span>
             </a>
         </li>
