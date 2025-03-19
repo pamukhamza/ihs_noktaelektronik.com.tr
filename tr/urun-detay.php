@@ -403,9 +403,9 @@ if(isset($_SESSION['id'])) {
                                 <?php 
                                 } else {
                                     $miktarlar = $urun['miktar_seciniz'];
+                                    echo $miktarlar;
                                     $miktarDizisi = explode(",", $miktarlar);
                                     $miktarDizisi = array_map('trim', $miktarDizisi);
-                                    echo $miktarDizisi;
                                     ?>
                                     <div class="input-group me-3" style="width: 130px;">
                                         <select class="form-select" id="output" aria-label="Miktar Seçiniz">
