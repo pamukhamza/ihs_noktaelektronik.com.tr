@@ -507,54 +507,113 @@ function getBreadcrumbs($kategori, $database) {
                             <div class="border shadow-sm" style="background-color: #ffffff;">
                                 <h5 class="border p-2">Kategori</h5>
                                 <ul class="list-unstyled ps-0 kategori-effect ">
-                                    <?php
-                                        function getKategoriLink($seo_link, $brand) {
-                                            return "tr/urunler?cat=$seo_link&brand=" . htmlspecialchars($brand) . "&filter=&search=";
-                                        }
+                                <?php
+                        if (empty($cat)) {
+                            if (empty($brand)) {
+                                // Kategori yok, marka yok
+                                $kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 0 ORDER BY sira";
+                                $kategori_result = $database->fetchAll($kategori_sql);
+                                foreach ($kategori_result as $kategori_row) {
+                                    $kategori_id = $kategori_row['id'];
+                                    $kategori_adi = $kategori_row['KategoriAdiTr'];
+                                    $kategori_seo_link = $kategori_row['seo_link'];
+                                    ?>
+                                    <li>
+                                        <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>" 
+                                           class="btn d-inline-flex align-items-center rounded border-0 collapsed" 
+                                           style="text-align: left !important;">
+                                            <?= htmlspecialchars($kategori_adi) ?>
+                                        </a>
+                                    </li>
+                                <?php }
+                            } else {
+                                $eklenen_kategoriler = [];
 
-                                        function fetchTopCategory($database, $kategoriID) {
-                                            while ($kategoriID != 0) {
-                                                $ust_kategori = $database->fetch("SELECT parent_id, KategoriAdiTr, seo_link FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id", ['id' => $kategoriID]);
-                                                if ($ust_kategori) {
-                                                    $kategoriID = $ust_kategori['parent_id'];
-                                                } else {
-                                                    break;
-                                                }
-                                            }
-                                            return $ust_kategori ?? null;
-                                        }
-                                        $eklenen_kategoriler = [];
+                                // Marka id'sini almak için nokta_urun_markalar tablosunda seo_link ile arama
+                                $marka_sql = "SELECT id FROM nokta_urun_markalar WHERE seo_link = :seo_link";
+                                $marka_row = $database->fetch($marka_sql, ['seo_link' => $brand]);
 
-                                        if (empty($cat)) {
-                                            $query = empty($brand) ? "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 0" : $result;
-                                            $kategoriler = empty($brand) ? $database->fetchAll($query) : $result;
+                                if ($marka_row) {
+                                    $marka_id = $marka_row['id'];
 
-                                            foreach ($kategoriler as $row) {
-                                                $kategori = empty($brand) ? $row : fetchTopCategory($database, $row['KategoriID']);
-                                                if ($kategori && !in_array($kategori['KategoriAdiTr'], $eklenen_kategoriler)) {
-                                                    echo "<li><a href='" . getKategoriLink($kategori['seo_link'], $brand) . "' class='btn d-inline-flex align-items-center rounded border-0 collapsed' style='text-align: left !important;'>" . htmlspecialchars($kategori['KategoriAdiTr']) . "</a></li>";
-                                                    $eklenen_kategoriler[] = $kategori['KategoriAdiTr'];
-                                                }
-                                            }
-                                        } else {
-                                            $alt_kategoriler = $database->fetchAll("SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = 
-                                                                (SELECT id FROM nokta_kategoriler WHERE seo_link = :seo_link)", ['seo_link' => $cat]);
+                                    // category_brand_rel tablosundan kat_id'leri çekiyoruz
+                                    $kategori_sql = "SELECT kat_id FROM category_brand_rel WHERE marka_id = :marka_id";
+                                    $kategori_rows = $database->fetchAll($kategori_sql, ['marka_id' => $marka_id]);
 
-                                            if ($alt_kategoriler) {
-                                                foreach ($alt_kategoriler as $kategori) {
-                                                    echo "<li><a href='" . getKategoriLink($kategori['seo_link'], $brand) . "' class='btn d-inline-flex align-items-center rounded border-0 collapsed' style='text-align: left !important;'>" . htmlspecialchars($kategori['KategoriAdiTr']) . "</a></li>";
-                                                }
+                                    foreach ($kategori_rows as $kategori_row) {
+                                        $kategoriID = $kategori_row['kat_id'];
+                                        $en_ust_kategori_id = $kategoriID;
+
+                                        // Kategorileri üst kategorilere kadar çıkıyoruz
+                                        while ($en_ust_kategori_id != 0) {
+                                            $ust_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id";
+                                            $ust_kategori_row = $database->fetch($ust_kategori_sql, ['id' => $en_ust_kategori_id]);
+
+                                            if ($ust_kategori_row) {
+                                                $en_ust_kategori_id = $ust_kategori_row['parent_id'];
+                                                $kategori_adi = $ust_kategori_row['KategoriAdiTr'];
+                                                $kategori_seo_link = $ust_kategori_row['seo_link'];
                                             } else {
-                                                $parent = $database->fetch("SELECT parent_id, KategoriAdiTr FROM nokta_kategoriler WHERE seo_link = :seo_link", ['seo_link' => $cat]);
-                                                $sibling_kategoriler = $database->fetchAll("SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = :parent_id", ['parent_id' => $parent['parent_id']]);
-                                                
-                                                foreach ($sibling_kategoriler as $kategori) {
-                                                    $style = ($kategori['KategoriAdiTr'] === $parent['KategoriAdiTr']) ? 'transform: translateX(8px);color:purple;font-weight:bold;' : '';
-                                                    echo "<li><a href='" . getKategoriLink($kategori['seo_link'], $brand) . "' class='btn d-inline-flex align-items-center rounded border-0 collapsed' style='text-align: left !important; $style'>" . htmlspecialchars($kategori['KategoriAdiTr']) . "</a></li>";
-                                                }
+                                                break;
                                             }
                                         }
-                                        ?>
+
+                                        // Kategori daha önce eklenmediyse ekle
+                                        if (!in_array($kategori_adi, $eklenen_kategoriler)) {
+                                            ?>
+                                            <li>
+                                                <a href="tr/urunler?cat=<?= $kategori_seo_link ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>"
+                                                class="btn d-inline-flex align-items-center rounded border-0 collapsed"
+                                                style="text-align: left !important;">
+                                                    <?= htmlspecialchars($kategori_adi) ?>
+                                                </a>
+                                            </li>
+                                            <?php
+                                            $eklenen_kategoriler[] = $kategori_adi;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                          // Seçili kategori bilgilerini al
+                            $kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND seo_link = :cat";
+                            $kategori = $database->fetch($kategori_sql, ['cat' => $cat]);
+                            $kategori_id = $kategori['id'] ?? 0;
+                            $selected_kategori_adi = $kategori['KategoriAdiTr'] ?? '';
+
+                            // Alt kategorileri çek
+                            $alt_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = :parent_id ORDER BY sira";
+                            $alt_kategori_result = $database->fetchAll($alt_kategori_sql, ['parent_id' => $kategori_id]);
+
+                            // Eğer alt kategori bulunamazsa üst kategoriyi bul
+                            if (!$alt_kategori_result) {
+                                $ust_kategori_sql = "SELECT parent_id FROM nokta_kategoriler WHERE web_comtr = 1 AND id = :id";
+                                $ust_kategori = $database->fetch($ust_kategori_sql, ['id' => $kategori_id]);
+                                $ust_kategori_id = $ust_kategori['parent_id'] ?? 0;
+
+                                // Üst kategorinin alt kategorilerini getir
+                                $alt_kategori_sql = "SELECT * FROM nokta_kategoriler WHERE web_comtr = 1 AND parent_id = :parent_id ORDER BY sira";
+                                $alt_kategori_result = $database->fetchAll($alt_kategori_sql, ['parent_id' => $ust_kategori_id]);
+                            }
+
+                            if ($alt_kategori_result) {
+                                foreach ($alt_kategori_result as $alt_kategori) {
+                                    // Seçili kategoriye özel stil
+                                    $style = ($alt_kategori['seo_link'] === $cat) ? 'color: purple; font-weight: bold;' : '';
+                                    ?>
+                                    <li>
+                                        <a href="tr/urunler?cat=<?= $alt_kategori['seo_link'] ?>&brand=<?= $brand ?>&filter=<?= $filter ?>&search=<?= $search ?>" 
+                                        class="btn d-inline-flex align-items-center rounded border-0 collapsed" 
+                                        style="text-align: left !important; <?= $style ?>">
+                                            <?= htmlspecialchars($alt_kategori['KategoriAdiTr']) ?>
+                                        </a>
+                                    </li>
+                                <?php }
+                            } else {
+                                echo '<li>Herhangi bir alt kategori bulunamadı.</li>';
+                            }
+                        } 
+                    ?>
                                 </ul>
                             </div>
                             <!--Markalar filterleme -->
