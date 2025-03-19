@@ -64,7 +64,21 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                             <div class="row font-size-14px pt-1"><div class="col-md-4"><strong>Tarih:</strong></div><div class="col-md-8"><?= $row["tarih"]; ?></div></div>
                             <div class="row font-size-14px pt-1"><div class="col-md-4"><strong>Durum:</strong></div><div class="col-md-8"><?= $row["durum"]; ?></div></div>
                             <div class="row font-size-14px pt-1"><div class="col-md-4"><strong>Ödeme Şekli:</strong></div><div class="col-md-8"><?= $row["odeme_sekli"]; ?></div></div>
-                            <div class="row font-size-14px pt-1"><div class="col-md-4"><strong>Kargo Firması:</strong></div><div class="col-md-8"><?= $row["kargo_firmasi"]; ?></div></div>
+                            <div class="row font-size-14px pt-1"><div class="col-md-4"><strong>Kargo Firması:</strong></div><div class="col-md-8">
+                                <?php 
+                                    switch ($row["kargo_firmasi"]) {
+                                        case 0: echo "Mağazadan Teslim Alma";
+                                            break;
+                                        case 1: echo "Özel Kargo";
+                                            break;
+                                        case 2: echo "Yurtiçi Kargo";
+                                            break;
+                                        default: echo "Bilinmeyen Kargo";
+                                            break;
+                                    }
+                                ?>
+                                </div>
+                            </div>
                             <div class="row font-size-14px pt-1"><div class="col-md-4"><strong>Kargo No:</strong></div><div class="col-md-8"></div></div>
                             <div class="row font-size-14px pt-1"><div class="col-md-4"><strong>Fatura Url:</strong></div><div class="col-md-8"><a href="#">Görüntülemek için tıklayınız...</a></div></div>
                             <?php } ?>
@@ -355,7 +369,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
         });
         $('#applicationForm').submit(function(e) {
             e.preventDefault();
-            
+
             var uye_id = $('#uye_id').val();
             var iade_nedeni = $('#iade_nedeni').val();
             var sip_no = $('#sip_no').val();
@@ -383,9 +397,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
             });
         });
     });
-
 </script>
-
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
