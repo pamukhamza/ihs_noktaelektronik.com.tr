@@ -408,9 +408,9 @@ if(isset($_SESSION['id'])) {
                                     <div class="input-group me-3" style="width: 130px;">
                                         <select class="form-select" id="output" aria-label="Miktar Seçiniz">
                                             <?php foreach ($miktarDizisi as $miktar): ?>
-                                                <?php if ($miktar <= $urun["stok"]): ?>
-                                                    <option value="<?php echo $miktar; ?>"><?php echo $miktar; ?></option>
-                                                <?php endif; ?>
+                                                <?php if($miktar <= $urun["stok"]){ ?>
+                                                    <option value="<?= $miktar; ?>"><?= $miktar; ?></option>
+                                                <?php } ?>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
