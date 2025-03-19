@@ -108,8 +108,8 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                     <?php
                                     $sepet = $database->fetchAll("
                                     SELECT s.id, su.*, nu.*, MIN(ns.foto) AS first_photo, nu.id AS urunid, su.id AS suId
-                                    FROM siparisler AS s
-                                    LEFT JOIN siparis_urunler AS su ON su.sip_id = s.id
+                                    FROM b2b_siparisler AS s
+                                    LEFT JOIN b2b_siparis_urunler AS su ON su.sip_id = s.id
                                     LEFT JOIN nokta_urunler AS nu ON nu.id = su.urun_id
                                     LEFT JOIN nokta_urunler_resimler AS ns ON nu.BLKODU = ns.urun_id
                                     WHERE s.uye_id = :session_id AND s.id = :sip_id
@@ -173,7 +173,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                         <div class="col-4">
                             <h5>Özet</h5>
                             <?php
-                            $kur = $database->fetch("SELECT dolar_satis, urun_id FROM siparis_urunler WHERE sip_id = :sip_id", ['sip_id' => $sip_id]);
+                            $kur = $database->fetch("SELECT dolar_satis, urun_id FROM b2b_siparis_urunler WHERE sip_id = :sip_id", ['sip_id' => $sip_id]);
 
                             $siparisler = $database->fetch("SELECT * FROM siparisler WHERE id = :sip_id", ['sip_id' => $sip_id]);
 
