@@ -112,7 +112,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                     FROM b2b_siparisler AS s
                                     LEFT JOIN b2b_siparis_urunler AS su ON su.sip_id = s.id
                                     LEFT JOIN nokta_urunler AS nu ON nu.id = su.urun_id
-                                    LEFT JOIN nokta_urunler_resimler AS ns ON nu.BLKODU = ns.urun_id
+                                    LEFT JOIN nokta_urunler_resimler AS ns ON nu.BLKODU = ns.UrunID
                                     WHERE s.uye_id = :session_id AND s.id = :sip_id
                                     GROUP BY s.id, su.urun_id;
                                     ", ['session_id' => $session_id, 'sip_id' => $sip_id]);
