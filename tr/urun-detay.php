@@ -403,14 +403,14 @@ if(isset($_SESSION['id'])) {
                                 <?php 
                                 } else {
                                     $miktarlar = $urun['miktar_seciniz'];
-                                    echo $miktarlar;
                                     $miktarDizisi = explode(",", $miktarlar);
                                     ?>
                                     <div class="input-group me-3" style="width: 130px;">
                                         <select class="form-select" id="output" aria-label="Miktar Seçiniz">
                                             <?php foreach ($miktarDizisi as $miktar): ?>
-                                                    <option value="<?= $miktar; ?>"><?= $miktar; ?></option>
-                                             
+                                                <?php if ($miktar <= $urun["stok"]): ?>
+                                                    <option value="<?php echo $miktar; ?>"><?php echo $miktar; ?></option>
+                                                <?php endif; ?>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
