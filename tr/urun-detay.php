@@ -410,9 +410,8 @@ if(isset($_SESSION['id'])) {
                                     <div class="input-group me-3" style="width: 130px;">
                                         <select class="form-select" id="output" aria-label="Miktar Seçiniz">
                                             <?php foreach ($miktarDizisi as $miktar): ?>
-                                                <?php if (is_numeric($miktar) && intval($miktar) <= intval($urun["stok"])): // Sayıya çevirerek kıyasla ?>
                                                     <option value="<?= intval($miktar); ?>"><?= intval($miktar); ?></option>
-                                                <?php endif; ?>
+                                             
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
