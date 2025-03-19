@@ -108,7 +108,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                 <tbody>
                                     <?php
                                     $sepet = $database->fetchAll("
-                                    SELECT s.id, su.*, nu.*, MIN(ns.foto) AS first_photo, nu.id AS urunid, su.id AS suId
+                                    SELECT s.id, su.*, nu.*, MIN(ns.KResim) AS first_photo, nu.id AS urunid, su.id AS suId
                                     FROM b2b_siparisler AS s
                                     LEFT JOIN b2b_siparis_urunler AS su ON su.sip_id = s.id
                                     LEFT JOIN nokta_urunler AS nu ON nu.id = su.urun_id
