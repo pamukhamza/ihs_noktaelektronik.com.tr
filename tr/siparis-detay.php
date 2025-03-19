@@ -112,7 +112,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                     FROM b2b_siparisler AS s
                                     LEFT JOIN b2b_siparis_urunler AS su ON su.sip_id = s.id
                                     LEFT JOIN nokta_urunler AS nu ON nu.id = su.urun_id
-                                    LEFT JOIN nokta_urunler_resimler AS ns ON nu.BLKODU = ns.UrunID
+                                    LEFT JOIN nokta_urunler_resimler AS ns ON nu.id = ns.UrunID
                                     WHERE s.uye_id = :session_id AND s.id = :sip_id
                                     GROUP BY s.id, su.urun_id;
                                     ", ['session_id' => $session_id, 'sip_id' => $sip_id]);
@@ -137,7 +137,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                         ?>
                                         <tr class="border">
                                             <td class="p-2 text-center border fs-10">
-                                                <a href="urun-detay?product_id=<?= $sep["seo_link"] ?>" class="btn btn-primary mb-2" style="font-size:12px; width:110px"><i class="fa-solid fa-box pe-1"></i>Ürüne Git</a>
+                                                <a href="urunler/<?= $sep["seo_link"] ?>" class="btn btn-primary mb-2" style="font-size:12px; width:110px"><i class="fa-solid fa-box pe-1"></i>Ürüne Git</a>
                                                 </br>
                                                 <?php
                                                 // 15 gün eklenmiş tarih, şu anki tarihten küçükse 15 gün geçmiştir
