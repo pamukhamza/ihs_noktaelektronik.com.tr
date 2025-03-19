@@ -50,8 +50,8 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                 $siparis = $database->fetchAll("
                                     SELECT s.*, sd.*, til.il_adi AS teslimat_il_adi, tilce.ilce_adi AS teslimat_ilce_adi,
                                     uil.il_adi AS uye_il_adi, uilce.ilce_adi AS uye_ilce_adi
-                                    FROM siparisler AS s
-                                    JOIN siparis_durum AS sd ON sd.id = s.durum
+                                    FROM b2b_siparisler AS s
+                                    JOIN b2b_siparis_durum AS sd ON sd.id = s.durum
                                     LEFT JOIN iller AS til ON til.il_id = s.teslimat_il
                                     LEFT JOIN ilceler AS tilce ON tilce.ilce_id = s.teslimat_ilce
                                     LEFT JOIN iller AS uil ON uil.il_id = s.uye_il
@@ -176,7 +176,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                             <?php
                             $kur = $database->fetch("SELECT dolar_satis, urun_id FROM b2b_siparis_urunler WHERE sip_id = :sip_id", ['sip_id' => $sip_id]);
 
-                            $siparisler = $database->fetch("SELECT * FROM siparisler WHERE id = :sip_id", ['sip_id' => $sip_id]);
+                            $siparisler = $database->fetch("SELECT * FROM b2b_siparisler WHERE id = :sip_id", ['sip_id' => $sip_id]);
 
                             $toplamFiyat = $siparisler["toplam"];
                             $toplamFiyat = str_replace(',', '.', $toplamFiyat);
