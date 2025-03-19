@@ -137,7 +137,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                         ?>
                                         <tr class="border">
                                             <td class="p-2 text-center border fs-10">
-                                                <a href="urun-detay?lang=<?= $user_language ?>&product_id=<?= $sep["seo_link"] ?>" class="btn btn-primary mb-2" style="font-size:12px; width:110px"><i class="fa-solid fa-box pe-1"></i>Ürüne Git</a>
+                                                <a href="urun-detay?product_id=<?= $sep["seo_link"] ?>" class="btn btn-primary mb-2" style="font-size:12px; width:110px"><i class="fa-solid fa-box pe-1"></i>Ürüne Git</a>
                                                 </br>
                                                 <?php
                                                 // 15 gün eklenmiş tarih, şu anki tarihten küçükse 15 gün geçmiştir
@@ -153,7 +153,7 @@ $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
                                                     <?php }
                                                 } ?>
                                             </td>
-                                        <td class="p-2 text-center border fs-10"><img src="assets/images/urunler/<?= $sep["first_photo"] ?>" width="75px" alt=""></td>
+                                        <td class="p-2 text-center border fs-10"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $sep["first_photo"] ?>" width="75px" alt=""></td>
                                         <td class="p-2 text-center border fs-10"><?= $sep["UrunKodu"] ?></td>
                                         <td class="p-2 text-center border fs-10"><?= $sep["UrunAdiTR"] ?></td>
                                         <td class="p-2 text-center border fs-10"><?= $sep["adet"] ?></td>
