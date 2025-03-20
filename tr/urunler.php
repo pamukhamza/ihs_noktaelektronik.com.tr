@@ -75,17 +75,28 @@ if (!empty($marka)) {
 
 if (!empty($ozellikler)) {
     $ozellikler_array = explode(',', $ozellikler);
-    $placeholders = implode(',', array_fill(0, count($ozellikler_array), '?'));
+    $params = [];
+    $placeholders = [];
 
-    // products_filter_rel tablosundan ilgili filter_value_id'leri kullanarak product_id'leri al
-    $product_ids =  $database->fetchAll("SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN ($placeholders)");
-   // $product_ids = $database->fetchAll($query, $ozellikler_array);
+    // Parametreleri adlandırılmış olarak oluştur
+    foreach ($ozellikler_array as $index => $ozellik_id) {
+        $param_name = ":ozellik_$index";
+        $placeholders[] = $param_name;
+        $params["ozellik_$index"] = $ozellik_id;
+    }
+
+    // SQL sorgusu oluştur
+    $query = "SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN (" . implode(',', $placeholders) . ")";
+    
+    // Verileri çek
+    $product_ids = $database->fetchAll($query, $params);
 
     if (!empty($product_ids)) {
         $product_id_array = array_column($product_ids, 'product_id');
         $sql .= " AND product_id IN (" . implode(',', array_map('intval', $product_id_array)) . ")";
     }
 }
+
 
 
 if (!empty($arama)) {
