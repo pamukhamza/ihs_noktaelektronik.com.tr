@@ -63,8 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     'aktivasyon_kodu' => '0',
     'aktif' => '0'
     ]);
-
-    echo "buraya geldi da";
     if ($success) {
         // Get the new user's ID
         $new_user_id = $db->lastInsertId();
