@@ -80,22 +80,28 @@ if (!empty($ozellikler)) {
 
     // Adlandırılmış parametreler oluştur
     foreach ($ozellikler_array as $index => $ozellik_id) {
-        $param_name = ":ozellik_$index";
+        $param_name = ":ozellik_$index"; // :ozellik_0, :ozellik_1, ...
         $placeholders[] = $param_name;
-        $params[$param_name] = $ozellik_id; // Burada key olarak doğrudan :ozellik_$index kullanılıyor
+        $params[$param_name] = (int) $ozellik_id; // Güvenlik için integer olarak al
     }
 
-    // SQL sorgusu oluştur
-    $query = "SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN (" . implode(',', $placeholders) . ")";
-    
-    // Verileri çek
-    $product_ids = $database->fetchAll($query, $params);
+    // Eğer parametreler boş değilse devam et
+    if (!empty($placeholders)) {
+        $query = "SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN (" . implode(',', $placeholders) . ")";
+        
+        // PDO ile veri çekme
+        $product_ids = $database->fetchAll($query, $params);
 
-    if (!empty($product_ids)) {
-        $product_id_array = array_column($product_ids, 'product_id');
-        $sql .= " AND product_id IN (" . implode(',', array_map('intval', $product_id_array)) . ")";
+        // Eğer ürün ID'leri bulunduysa, bunları ana SQL sorgusuna ekle
+        if (!empty($product_ids)) {
+            $product_id_array = array_column($product_ids, 'product_id');
+            if (!empty($product_id_array)) {
+                $sql .= " AND product_id IN (" . implode(',', array_map('intval', $product_id_array)) . ")";
+            }
+        }
     }
 }
+
 
 
 
