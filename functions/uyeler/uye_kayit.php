@@ -45,25 +45,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
     // Insert new user
     $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon_kodu, aktif, 
-            kayit_tarihi, son_giris, fiyat) VALUES (
-            :ad, :soyad, :email, :sifre, :tel, :firmaUnvani,:vergi_dairesi, :vergi_no, :ulke, :il, :ilce,:adres, :posta_kodu, :aktivasyon_kodu, :aktif,NOW(), NOW(), 4)", 
-        ['ad' => $_POST['ad'],
-        'soyad' => $_POST['soyad'],
-        'email' => $_POST['eposta'],
-        'sifre' => $hashed_password,
-        'tel' => $_POST['tel'],
-        'firmaUnvani' => $_POST['firma_ad'],
-        'vergi_dairesi' => $_POST['vergi_dairesi'],
-        'vergi_no' => $_POST['vergi_no'] ?? null,
-        'tc_no' => $_POST['tc_no'] ?? null,
-        'ulke' => $_POST['ulke'] ?? 'Türkiye',
-        'il' => $_POST['il'] ?? '',
-        'ilce' => $_POST['ilce'] ?? '',
-        'adres' => $_POST['adres'] ?? '',
-        'posta_kodu' => $_POST['posta_kodu'] ?? '',
-        'aktivasyon_kodu' => '0',
-        'aktif' => '0'
+    kayit_tarihi, son_giris, fiyat) VALUES (
+    :ad, :soyad, :email, :parola, :tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, NOW(), NOW(), 4)", 
+    ['ad' => $_POST['ad'],
+    'soyad' => $_POST['soyad'],
+    'email' => $_POST['eposta'],
+    'parola' => $hashed_password,  // <-- 'sifre' yerine 'parola' olmalı
+    'tel' => $_POST['tel'],
+    'firmaUnvani' => $_POST['firma_ad'],
+    'vergi_dairesi' => $_POST['vergi_dairesi'],
+    'vergi_no' => $_POST['vergi_no'] ?? null,
+    'ulke' => $_POST['ulke'] ?? 'Türkiye',
+    'il' => $_POST['il'] ?? '',
+    'ilce' => $_POST['ilce'] ?? '',
+    'adres' => $_POST['adres'] ?? '',
+    'posta_kodu' => $_POST['posta_kodu'] ?? '',
+    'aktivasyon_kodu' => '0',
+    'aktif' => '0'
     ]);
+
     echo "buraya geldi da";
     if ($success) {
         // Get the new user's ID
