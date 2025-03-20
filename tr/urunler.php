@@ -400,59 +400,46 @@ function getBreadcrumbs($kategori, $database) {
             </div>
             <!--Özellikler filterleme -->
             <?php
-            // Filtreleri ve kategorileri çek
-            $filtre_ids = array(); // Filtreler için boş bir dizi oluşturulur
-            $kategori_ids = array(); // Kategori ID'leri için boş bir dizi oluşturulur
-            foreach ($result as $rowff) {
-                if (!empty($rowff['filtre'])) {
-                    $filtre_ids = array_merge($filtre_ids, explode(',', $rowff['filtre'])); // Her üründeki filtreleri birleştir
-                }
-            }
-            $filtre_ids = array_unique($filtre_ids); // Tekrar eden değerleri kaldır
-
-            // Kategori ID'lerini almak için filtreleri kullan
-            $kategori_ids = array();
-            if (!empty($filtre_ids)) {
-                $filtre_ids_str = implode(',', array_map('intval', $filtre_ids));
-                $result_kategoriler = $database->fetchAll("SELECT DISTINCT kategori_id FROM filtreler WHERE id IN ($filtre_ids_str)");
-                foreach ($result_kategoriler as $row_kategori) {
-                    if (!empty($row_kategori['kategori_id'])) {
-                        $kategori_ids = array_merge($kategori_ids, explode(',', $row_kategori['kategori_id']));
-                    }
-                }
-                $kategori_ids = array_unique($kategori_ids);
-            }
-            // Kategoriler ve filtreler için hazırlık
-            $kategoriler = array();
-            foreach ($kategori_ids as $kategori_id) {
-                $row_kategori = $database->fetch("SELECT KategoriAdiTr FROM filtre_kategoriler WHERE id = $kategori_id");
-                if ($row_kategori) {
-                    $kategoriler[$kategori_id] = $row_kategori['KategoriAdiTr'];
-                }
-            }
-            // Her kategori için filtreleri listele
-            ?>
-            <div class="border mt-3 shadow-sm p-3" style="background-color: #ffffff; <?php if (empty($filtre_ids)) {echo "display: none;";} ?>">
-                <?php foreach ($kategoriler as $kategori_id => $kategori_adi): ?>
-                    <h5 class="border-bottom p-2"><?= htmlspecialchars($kategori_adi); ?></h5>
-                    <ul class="list-unstyled ps-1" style="overflow-y: scroll; max-height:280px">
-                        <?php
-                        // Her kategori için filtreleri al
-                        $result_filtreler = $database->fetchAll("SELECT id, filtre_adi FROM filtreler WHERE FIND_IN_SET($kategori_id, kategori_id) > 0 AND id IN (" . implode(',', array_map('intval', $filtre_ids)) . ")");
-                        $selected_filters = !empty($_GET['filter']) ? explode(',', $_GET['filter']) : array();
-                        foreach ($result_filtreler as $row_filtre) {
-                            $filtre_id = $row_filtre['id'];
-                            $filtre_adi = htmlspecialchars($row_filtre['filtre_adi']);
-                            $checked1 = in_array($filtre_id, $selected_filters) ? 'checked' : '';
-                            ?>
-                            <div class="form-check">
-                                <input class="form-check-input filter-checkbox" type="checkbox" id="filtre-<?= htmlspecialchars($filtre_id); ?>" name="filtre[]" value="<?= htmlspecialchars($filtre_id); ?>" <?= $checked1; ?>>
-                                <label class="form-check-label" for="filtre-<?= htmlspecialchars($filtre_id); ?>"><?= $filtre_adi; ?></label>
-                            </div>
-                        <?php } ?>
-                    </ul>
-                <?php endforeach; ?>
-            </div>
+            if (!empty($kategori)) {
+                // Kategoriye bağlı filtre başlıklarını çek
+                $filter_titles = $database->fetchAll("
+                    SELECT DISTINCT ft.id, ft.title 
+                    FROM category_filter_rel cfr
+                    JOIN filter_title ft ON cfr.filter_title_id = ft.id 
+                    WHERE cfr.category_id = :catid", ['catid' => $kategori_id]
+                );
+                
+                $selected_filters = !empty($_GET['filter']) ? explode(',', $_GET['filter']) : [];
+                
+                if (!empty($filter_titles)): ?>
+                    <div class="border mt-3 shadow-sm p-3" style="background-color: #ffffff;">
+                        <?php foreach ($filter_titles as $title): ?>
+                            <h5 class="border-bottom p-2"><?= htmlspecialchars($title['title']); ?></h5>
+                            <ul class="list-unstyled ps-1" style="overflow-y: scroll; max-height:280px">
+                                <?php
+                                // Filtre başlığına bağlı filtre değerlerini al
+                                $filter_values = $database->fetchAll("SELECT id, name FROM filter_value WHERE filter_title_id = :titid", ['titid' => $title['id']]);
+                
+                                foreach ($filter_values as $filter):
+                                    $checked = in_array($filter['id'], $selected_filters) ? 'checked' : '';
+                                    ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input filter-checkbox" type="checkbox" 
+                                                id="filtre-<?= htmlspecialchars($filter['id']); ?>" 
+                                                name="filtre[]" 
+                                                value="<?= htmlspecialchars($filter['id']); ?>" 
+                                                <?= $checked; ?>>
+                                        <label class="form-check-label" for="filtre-<?= htmlspecialchars($filter['id']); ?>">
+                                            <?= htmlspecialchars($filter['name']); ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; 
+            }?>
+          
         </div>
         <!-- Ürün listeleme Bölümü -->
         <div class="urunler-desktop">
