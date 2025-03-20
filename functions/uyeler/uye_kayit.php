@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $new_user_id = $db->lastInsertId();
         $adsoyad = $_POST['ad'] . " " . $_POST['soyad'];
 
-        $mail_icerik = uyeOnayMail($adsoyad, $_POST['eposta'], $aktivasyon_kodu);
+        $mail_icerik = uyeOnayMail($adsoyad, $_POST['eposta'], $new_user_id);
         mailGonder($_POST['eposta'], 'Nokta Elektronik B2B Üyelik Aktivasyonu', $mail_icerik, 'Nokta Elektronik B2B Üyelik Aktivasyonu');
         $response = [
             'status' => 'success',
