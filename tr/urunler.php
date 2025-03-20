@@ -75,7 +75,7 @@ if (!empty($marka)) {
 
 if (!empty($ozellikler)) {
     $ozellikler_array = explode(',', $ozellikler);
-    $params = [];
+    $params1 = [];
     $placeholders = [];
 
     // Adlandırılmış parametreler oluştur
@@ -83,14 +83,14 @@ if (!empty($ozellikler)) {
         $param_name = "ozellik_$index"; // :ozellik_0, :ozellik_1, ...
         $param_name1 = ":ozellik_$index"; // :ozellik_0, :ozellik_1, ...
         $placeholders[] = $param_name1;
-        $params[$param_name] = (int) $ozellik_id; // Güvenlik için integer olarak al
+        $params1[$param_name] = (int) $ozellik_id; // Güvenlik için integer olarak al
     }
 
     // Eğer parametreler boş değilse devam et
     if (!empty($placeholders)) {
         $query = "SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN (" . implode(',', $placeholders) . ")";
         // PDO ile veri çekme
-        $product_ids = $database->fetchAll($query, $params);
+        $product_ids = $database->fetchAll($query, $params1);
         // Eğer ürün ID'leri bulunduysa, bunları ana SQL sorgusuna ekle
         if (!empty($product_ids)) {
             $product_id_array = array_column($product_ids, 'product_id');
