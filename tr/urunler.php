@@ -78,8 +78,8 @@ if (!empty($ozellikler)) {
     $placeholders = implode(',', array_fill(0, count($ozellikler_array), '?'));
 
     // products_filter_rel tablosundan ilgili filter_value_id'leri kullanarak product_id'leri al
-    $query = "SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN ($placeholders)";
-    $product_ids = $database->fetchAll($query, $ozellikler_array);
+    $product_ids =  $database->fetchAll("SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN ($placeholders)");
+   // $product_ids = $database->fetchAll($query, $ozellikler_array);
 
     if (!empty($product_ids)) {
         $product_id_array = array_column($product_ids, 'product_id');
