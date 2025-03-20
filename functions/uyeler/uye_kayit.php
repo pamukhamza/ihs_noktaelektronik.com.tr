@@ -2,7 +2,8 @@
 include '../functions.php';
 include '../../mail/mail_gonder.php';
 require_once '../db.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 $db = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
