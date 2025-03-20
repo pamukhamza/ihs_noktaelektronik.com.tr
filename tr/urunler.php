@@ -1,6 +1,9 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
+
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 $currentPage = 'urunler';
 $template = new Template('Nokta - Ürünler', $currentPage);
 
@@ -409,7 +412,6 @@ function getBreadcrumbs($kategori, $database) {
                     WHERE cfr.category_id = :catid", 
                     ['catid' => $kategori_id]
                 );
-                echo 'merhaba';
                 $selected_filters = !empty($_GET['filter']) ? explode(',', $_GET['filter']) : [];
                 
                 if (!empty($filter_titles)): ?>
