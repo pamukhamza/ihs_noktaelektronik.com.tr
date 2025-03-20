@@ -1,7 +1,6 @@
 <?php
 include '../functions.php';
 include '../../mail/mail_gonder.php';
-require_once '../db.php';
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);   
 $db = new Database();
@@ -31,9 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Check if email already exists
-    $existing_user = $db->fetch("SELECT id FROM uyeler WHERE email = :email", [
-        'email' => $_POST['eposta']
-    ]);
+    $existing_user = $db->fetch("SELECT id FROM uyeler WHERE email = :email", ['email' => $_POST['eposta']]);
 
     if ($existing_user) {
         $response = [
@@ -48,20 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Hash password
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
-
+echo "buraya geldi haa";
     // Insert new user
-    $success = $db->insert("INSERT INTO uyeler (
-            ad, soyad, email, sifre, tel, firmaUnvani, 
-            vergi_dairesi, vergi_no, ulke, il, ilce, 
-            adres, posta_kodu, aktivasyon_kodu, aktif, 
-            kayit_tarihi, son_giris, fiyat
-        ) VALUES (
-            :ad, :soyad, :email, :sifre, :tel, :firmaUnvani,
-            :vergi_dairesi, :vergi_no, :ulke, :il, :ilce,
-            :adres, :posta_kodu, :aktivasyon_kodu, 0,
-            NOW(), NOW(), 4
-        )", [
-        'ad' => $_POST['ad'],
+    $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, sifre, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon_kodu, aktif, 
+            kayit_tarihi, son_giris, fiyat) VALUES (
+            :ad, :soyad, :email, :sifre, :tel, :firmaUnvani,:vergi_dairesi, :vergi_no, :ulke, :il, :ilce,:adres, :posta_kodu, :aktivasyon_kodu, 0,NOW(), NOW(), 4)", 
+        ['ad' => $_POST['ad'],
         'soyad' => $_POST['soyad'],
         'email' => $_POST['eposta'],
         'sifre' => $hashed_password,
@@ -77,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         'posta_kodu' => $_POST['posta_kodu'] ?? '',
         'aktivasyon_kodu' => $aktivasyon_kodu
     ]);
-
+    echo "buraya geldi da";
     if ($success) {
         // Get the new user's ID
         $new_user_id = $db->lastInsertId();
