@@ -80,8 +80,9 @@ if (!empty($ozellikler)) {
 
     // Adlandırılmış parametreler oluştur
     foreach ($ozellikler_array as $index => $ozellik_id) {
-        $param_name = ":ozellik_$index"; // :ozellik_0, :ozellik_1, ...
-        $placeholders[] = $param_name;
+        $param_name = "ozellik_$index"; // :ozellik_0, :ozellik_1, ...
+        $param_name1 = ":ozellik_$index"; // :ozellik_0, :ozellik_1, ...
+        $placeholders[] = $param_name1;
         $params[$param_name] = (int) $ozellik_id; // Güvenlik için integer olarak al
     }
 
