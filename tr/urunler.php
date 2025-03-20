@@ -413,9 +413,6 @@ function getBreadcrumbs($kategori, $database) {
                     ['catid' => $kategori_id]
                 );
                 $selected_filters = !empty($_GET['filter']) ? explode(',', $_GET['filter']) : [];
-                echo "<pre>";
-print_r($filter_titles);
-echo "</pre>";
 
                 if ($filter_titles): ?>
                     <div class="border mt-3 shadow-sm p-3" style="background-color: #ffffff;">
