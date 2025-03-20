@@ -414,7 +414,7 @@ function getBreadcrumbs($kategori, $database) {
                 );
                 $selected_filters = !empty($_GET['filter']) ? explode(',', $_GET['filter']) : [];
                 
-                if (!empty($filter_titles)): ?>
+                if ($filter_titles): ?>
                     <div class="border mt-3 shadow-sm p-3" style="background-color: #ffffff;">
                         <?php foreach ($filter_titles as $title): ?>
                             <h5 class="border-bottom p-2"><?= htmlspecialchars($title['title']); ?></h5>
