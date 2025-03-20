@@ -405,10 +405,11 @@ function getBreadcrumbs($kategori, $database) {
                 $filter_titles = $database->fetchAll("
                     SELECT DISTINCT ft.id, ft.title 
                     FROM category_filter_rel cfr
-                    JOIN filter_title ft ON cfr.filter_title_id = ft.id 
-                    WHERE cfr.category_id = :catid", ['catid' => $kategori_id]
+                    JOIN filter_title ft ON cfr.filter_title_id = ft.id
+                    WHERE cfr.category_id = :catid", 
+                    ['catid' => $kategori_id]
                 );
-                
+                echo 'merhaba';
                 $selected_filters = !empty($_GET['filter']) ? explode(',', $_GET['filter']) : [];
                 
                 if (!empty($filter_titles)): ?>
