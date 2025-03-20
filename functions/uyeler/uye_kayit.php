@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Hash password
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
     // Insert new user
-    $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon_kodu, aktif, 
+    $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
             kayit_tarihi, son_giris, fiyat) VALUES (
             :ad, :soyad, :email, :sifre, :tel, :firmaUnvani,:vergi_dairesi, :vergi_no, :ulke, :il, :ilce,:adres, :posta_kodu, 0, 0,NOW(), NOW(), 4)", 
         ['ad' => $_POST['ad'],
