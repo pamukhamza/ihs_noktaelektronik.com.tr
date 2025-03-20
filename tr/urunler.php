@@ -75,13 +75,18 @@ if (!empty($marka)) {
 
 if (!empty($ozellikler)) {
     $ozellikler_array = explode(',', $ozellikler);
-    $ozellik_conditions = [];
-    foreach ($ozellikler_array as $ozellik_id) {
-        $ozellik_conditions[] = "FIND_IN_SET(:ozellik_$ozellik_id, filtre)";
-        $params["ozellik_$ozellik_id"] = $ozellik_id;
+    $placeholders = implode(',', array_fill(0, count($ozellikler_array), '?'));
+
+    // products_filter_rel tablosundan ilgili filter_value_id'leri kullanarak product_id'leri al
+    $query = "SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN ($placeholders)";
+    $product_ids = $database->fetchAll($query, $ozellikler_array);
+
+    if (!empty($product_ids)) {
+        $product_id_array = array_column($product_ids, 'product_id');
+        $sql .= " AND product_id IN (" . implode(',', array_map('intval', $product_id_array)) . ")";
     }
-    $sql .= " AND (" . implode(' OR ', $ozellik_conditions) . ")";
 }
+
 
 if (!empty($arama)) {
     $sql .= " AND (UrunKodu LIKE :arama OR UrunAdiTR LIKE :arama OR m.title LIKE :arama)";
