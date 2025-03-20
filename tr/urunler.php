@@ -89,10 +89,10 @@ if (!empty($ozellikler)) {
     // Eğer parametreler boş değilse devam et
     if (!empty($placeholders)) {
         $query = "SELECT DISTINCT product_id FROM products_filter_rel WHERE filter_value_id IN (" . implode(',', $placeholders) . ")";
-        
+        echo 'geldi1';
         // PDO ile veri çekme
         $product_ids = $database->fetchAll($query, $params);
-
+        echo 'geldi2';
         // Eğer ürün ID'leri bulunduysa, bunları ana SQL sorgusuna ekle
         if (!empty($product_ids)) {
             $product_id_array = array_column($product_ids, 'product_id');
