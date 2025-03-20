@@ -99,10 +99,8 @@ if (!empty($ozellikler)) {
             }
         }
     }
+    echo $sql;
 }
-
-
-
 
 if (!empty($arama)) {
     $sql .= " AND (UrunKodu LIKE :arama OR UrunAdiTR LIKE :arama OR m.title LIKE :arama)";
