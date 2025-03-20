@@ -99,7 +99,6 @@ if (!empty($ozellikler)) {
             }
         }
     }
-    echo $sql;
 }
 
 if (!empty($arama)) {
