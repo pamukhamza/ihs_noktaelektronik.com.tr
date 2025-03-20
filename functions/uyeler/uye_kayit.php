@@ -44,9 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Hash password
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
     // Insert new user
-    $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
+    $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon_kodu, aktif, 
             kayit_tarihi, son_giris, fiyat) VALUES (
-            :ad, :soyad, :email, :sifre, :tel, :firmaUnvani,:vergi_dairesi, :vergi_no, :ulke, :il, :ilce,:adres, :posta_kodu, 0, 0,NOW(), NOW(), 4)", 
+            :ad, :soyad, :email, :sifre, :tel, :firmaUnvani,:vergi_dairesi, :vergi_no, :ulke, :il, :ilce,:adres, :posta_kodu, :aktivasyon_kodu, :aktif,NOW(), NOW(), 4)", 
         ['ad' => $_POST['ad'],
         'soyad' => $_POST['soyad'],
         'email' => $_POST['eposta'],
@@ -60,7 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         'il' => $_POST['il'] ?? '',
         'ilce' => $_POST['ilce'] ?? '',
         'adres' => $_POST['adres'] ?? '',
-        'posta_kodu' => $_POST['posta_kodu'] ?? ''
+        'posta_kodu' => $_POST['posta_kodu'] ?? '',
+        'aktivasyon_kodu' => '0',
+        'aktif' => '0'
     ]);
     echo "buraya geldi da";
     if ($success) {
