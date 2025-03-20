@@ -78,11 +78,11 @@ if (!empty($ozellikler)) {
     $params = [];
     $placeholders = [];
 
-    // Parametreleri adlandırılmış olarak oluştur
+    // Adlandırılmış parametreler oluştur
     foreach ($ozellikler_array as $index => $ozellik_id) {
         $param_name = ":ozellik_$index";
         $placeholders[] = $param_name;
-        $params["ozellik_$index"] = $ozellik_id;
+        $params[$param_name] = $ozellik_id; // Burada key olarak doğrudan :ozellik_$index kullanılıyor
     }
 
     // SQL sorgusu oluştur
