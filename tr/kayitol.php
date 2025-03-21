@@ -257,6 +257,7 @@ $(document).ready(function() {
                 });
             },
             error: function(response) {
+            console.log(response);
                 Swal.fire({
                     icon: 'error',
                     title: 'Hata!',
