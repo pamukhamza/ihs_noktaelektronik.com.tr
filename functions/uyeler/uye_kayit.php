@@ -1,7 +1,7 @@
 <?php
 include '../functions.php';
 include '../../mail/mail_gonder.php';
-require 'vendor/autoload.php';
+require '../../vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 $config = require '../../aws-config.php';
