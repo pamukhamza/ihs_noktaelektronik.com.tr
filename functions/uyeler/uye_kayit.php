@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     $vergi_file = !empty($_FILES['vergi_levhasi']['name']) ? $_FILES['vergi_levhasi']['name'] : null;
     if (!empty($vergi_file)) {
-        $file = uploadImageToS3($_FILES['vergi_levhasi'], 'uploads/vergi_levhalari/', $s3Client, $config['s3']['bucket']);
+        $file = uploadImageToS3($_FILES['vergi_levhasi']['tmp_name'], 'uploads/vergi_levhalari/', $s3Client, $config['s3']['bucket']);
         if ($file === false) {
             echo "File upload failed.";
             exit;
