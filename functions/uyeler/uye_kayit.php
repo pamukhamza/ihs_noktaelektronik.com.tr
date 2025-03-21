@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 include '../functions.php';
 include '../../mail/mail_gonder.php';
 require '../../vendor/autoload.php';
@@ -22,8 +24,7 @@ try {
 } catch (AwsException $e) {
     die('AWS S3 bağlantı hatası: ' . $e->getMessage());
 }
-ini_set('display_errors', 1);  // Hataları ekrana göster
-error_reporting(E_ALL);   
+
 $db = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
