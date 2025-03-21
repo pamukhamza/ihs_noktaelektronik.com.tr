@@ -65,20 +65,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     if (!empty($_FILES['vergi_levhasi']['name'])) {
         $file_extension = pathinfo($_FILES['vergi_levhasi']['name'], PATHINFO_EXTENSION); // Uzantıyı al
-        $file_name = pathinfo($_FILES['vergi_levhasi']['name'], PATHINFO_FILENAME); // Dosya adını al
-        $new_file_name = $file_name . '.' . $file_extension; // Dosya adını uzantıyla birleştir
-    
-        $file = uploadImageToS3($_FILES['vergi_levhasi']['tmp_name'], 'uploads/vergi_levhalari/' . $new_file_name, $s3Client, $config['s3']['bucket']);
+        $unique_name = uniqid('vergi_', true) . '.' . $file_extension; // Benzersiz dosya adı oluştur
+        
+        // Dosyayı S3'e yükle
+        $file = uploadImageToS3($_FILES['vergi_levhasi']['tmp_name'], 'uploads/vergi_levhalari/' . $unique_name, $s3Client, $config['s3']['bucket']);
     
         if ($file === false) {
             echo "File upload failed.";
             exit;
         }
     
-        $vergi_levhasi_url = $file; // S3'ten dönen URL
+        $vergi_levhasi_url = $unique_name; // Doğru dosya adını kaydet
     } else {
         $vergi_levhasi_url = null;
     }
+    
     
 
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
