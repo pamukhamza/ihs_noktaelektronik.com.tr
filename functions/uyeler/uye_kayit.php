@@ -1,12 +1,34 @@
 <?php
 include '../functions.php';
 include '../../mail/mail_gonder.php';
+require 'vendor/autoload.php';
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+$config = require '../../aws-config.php';
+
+if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($config['s3']['secret']) || !isset($config['s3']['bucket'])) {
+    die('Missing required S3 configuration values.');
+}
+
+try {
+    $s3Client = new S3Client([
+        'version' => 'latest',
+        'region'  => $config['s3']['region'],
+        'credentials' => [
+            'key'    => $config['s3']['key'],
+            'secret' => $config['s3']['secret'],
+        ]
+    ]);
+} catch (AwsException $e) {
+    die('AWS S3 bağlantı hatası: ' . $e->getMessage());
+}
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);   
 $db = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $response = array();
+    
     
     // Validate required fields
     $required_fields = ['ad', 'soyad', 'eposta', 'parola', 'tel', 'firma_ad', 'vergi_dairesi'];
@@ -40,28 +62,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode($response);
         exit;
     }
+    $vergi_file = !empty($_FILES['vergi_levhasi']['name']) ? $_FILES['vergi_levhasi']['name'] : null;
+    if (!empty($vergi_file)) {
+        $file = uploadImageToS3($_FILES['vergi_levhasi'], 'uploads/vergi_levhalari/', $s3Client, $config['s3']['bucket']);
+        if ($file === false) {
+            echo "File upload failed.";
+            exit;
+        }
+        $vergi_levhasi_url = $file;
+    }else{
+        $vergi_levhasi_url = null;
 
-    // Hash password
+    }
+
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
-    // Insert new user
+    // Kullanıcı ekleme işlemi sırasında S3'teki dosya yolunu da kaydet
     $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
-    kayit_tarihi, son_giris, fiyat) VALUES (
-    :ad, :soyad, :email, :parola, :tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, NOW(), NOW(), 4)", 
-    ['ad' => $_POST['ad'],
-    'soyad' => $_POST['soyad'],
-    'email' => $_POST['eposta'],
-    'parola' => $hashed_password,  // <-- 'sifre' yerine 'parola' olmalı
-    'tel' => $_POST['tel'],
-    'firmaUnvani' => $_POST['firma_ad'],
-    'vergi_dairesi' => $_POST['vergi_dairesi'],
-    'vergi_no' => $_POST['vergi_no'] ?? null,
-    'ulke' => $_POST['ulke'] ?? 'Türkiye',
-    'il' => $_POST['il'] ?? '',
-    'ilce' => $_POST['ilce'] ?? '',
-    'adres' => $_POST['adres'] ?? '',
-    'posta_kodu' => $_POST['posta_kodu'] ?? '',
-    'aktivasyon_kodu' => '0',
-    'aktif' => '0'
+    kayit_tarihi, son_giris, fiyat, vergi_levhasi) VALUES (
+    :ad, :soyad, :email, :parola, :tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, NOW(), NOW(), 4, :vergi_levhasi)", 
+    [
+        'ad' => $_POST['ad'],
+        'soyad' => $_POST['soyad'],
+        'email' => $_POST['eposta'],
+        'parola' => $hashed_password,
+        'tel' => $_POST['tel'],
+        'firmaUnvani' => $_POST['firma_ad'],
+        'vergi_dairesi' => $_POST['vergi_dairesi'],
+        'vergi_no' => $_POST['vergi_no'] ?? null,
+        'ulke' => $_POST['ulke'] ?? 'Türkiye',
+        'il' => $_POST['il'] ?? '',
+        'ilce' => $_POST['ilce'] ?? '',
+        'adres' => $_POST['adres'] ?? '',
+        'posta_kodu' => $_POST['posta_kodu'] ?? '',
+        'aktivasyon_kodu' => '0',
+        'aktif' => '0',
+        'vergi_levhasi' => $vergi_levhasi_url
     ]);
     if ($success) {
         // Get the new user's ID

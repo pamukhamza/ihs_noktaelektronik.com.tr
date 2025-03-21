@@ -249,21 +249,12 @@ $(document).ready(function() {
             contentType: false,
             dataType: 'json',
             success: function(response) {
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Başarılı!',
-                        text: response.message,
-                        confirmButtonText: 'Tamam'
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: response.message,
-                        confirmButtonText: 'Tamam'
-                    });
-                }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Başarılı!',
+                    text: response.message,
+                    confirmButtonText: 'Tamam'
+                });
             },
             error: function(response) {
                 Swal.fire({
