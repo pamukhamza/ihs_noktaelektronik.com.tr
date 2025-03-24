@@ -2,12 +2,11 @@
 require '../functions/admin_template.php';
 require '../functions/functions.php';
 
-$currentPage = 'bankabilgileri';
+$currentPage = 'distribution';
 $template = new Template('Nokta B2B - Banka Bilgileri', $currentPage);
 
 $template->head();
 $database = new Database();
-$bankalar = $database->fetchAll("SELECT hesap_adi, banka_adi, hesap, sube_adi, iban, kolay_adres, swift FROM nokta_banka_bilgileri WHERE aktif = 1");
 ?>
 <style>
       .bi {vertical-align: -.125em;fill: currentColor;}
@@ -36,32 +35,7 @@ $bankalar = $database->fetchAll("SELECT hesap_adi, banka_adi, hesap, sube_adi, i
                     <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/hakkimizda.png" alt="hakkimizda">
                 </div>
                 <div class="card mt-3">
-                        <table class="table rounded-3">
-                            <thead>
-                                <tr>
-                                    <th>Hesap Adı</th>
-                                    <th>Banka Adı</th>
-                                    <th>Hesap No</th>
-                                    <th>Şube Adı</th>
-                                    <th>IBAN</th>
-                                    <th>Kolay Adres</th>
-                                    <th>SWIFT</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($bankalar as $banka) : ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($banka['hesap_adi']) ?></td>
-                                        <td><?= htmlspecialchars($banka['banka_adi']) ?></td>
-                                        <td><?= htmlspecialchars($banka['hesap']) ?></td>
-                                        <td><?= htmlspecialchars($banka['sube_adi']) ?></td>
-                                        <td><?= htmlspecialchars($banka['iban']) ?></td>
-                                        <td><?= htmlspecialchars($banka['kolay_adres']) ?></td>
-                                        <td><?= htmlspecialchars($banka['swift']) ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                    
                 </div>
             </div> 
         </div> 
