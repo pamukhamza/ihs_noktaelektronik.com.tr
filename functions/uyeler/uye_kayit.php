@@ -61,15 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
     if (!empty($_FILES['vergi_levhasi']['name'])) {
-        // Uzantıyı küçük harfle al (PDF, Jpg gibi sorunları önler)
-        $file_extension = pathinfo($_FILES['vergi_levhasi']['name'], PATHINFO_EXTENSION);
-    
-        // Benzersiz bir dosya adı oluştur
-        $new_file_name = uniqid('vergi_', true) . '.' . $file_extension;
-    
-        // Dosyayı S3'e yükle
-        $file = uploadImageToS3($_FILES['vergi_levhasi']['tmp_name'], 'uploads/vergi_levhalari/' . $new_file_name, $s3Client, $config['s3']['bucket']);
-    
+        $file = uploadDenemeFileToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
         if ($file === false) {
             echo "File upload failed.";
             exit;
