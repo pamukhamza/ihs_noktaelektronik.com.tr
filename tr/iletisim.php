@@ -99,7 +99,7 @@ $categorizedAddresses = [
                                     <div class="card-body">
                                         <h5 class="card-title "><?= $address['title']; ?></h5>
                                         <a href="https://www.google.com/maps?q=<?= urlencode($address['addressMaps']); ?>" target="_blank" class="">
-                                            <p class="card-text">Adres: <?= $address['address']; ?></p>
+                                            <p class="card-text"> <i class="fa-solid fa-location-dot pe-1"></i>Adres: <?= $address['address']; ?></p>
                                         </a>
                                     </div>
                                 </div>
