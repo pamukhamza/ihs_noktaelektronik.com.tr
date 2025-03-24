@@ -33,7 +33,7 @@ $database = new Database();
             <?php $template->pageLeftMenu(); ?>
             <div class="float-end col-xs-12 col-sm-8 col-md-9 rounded-3">
                 <div class="card">
-                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/analiz.png" alt="hakkimizda">
+                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/hakkimizda.png" alt="hakkimizda">
                 </div>
                 <div class="card mt-3">
                     <div class="card-body">

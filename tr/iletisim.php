@@ -96,18 +96,11 @@ $categorizedAddresses = [
                         <?php foreach ($addresses as $address): ?>
                             <div class="col-md-4 mb-4">
                                 <div class="card shadow-sm">
-                                    <iframe 
-                                        src="https://www.google.com/maps?q=<?= urlencode($address['addressMaps']); ?>&output=embed" 
-                                        width="100%" 
-                                        height="200" 
-                                        style="border:0;" 
-                                        allowfullscreen="" 
-                                        loading="lazy">
-                                    </iframe>
                                     <div class="card-body">
                                         <h5 class="card-title "><?= $address['title']; ?></h5>
-                                        <p class="card-text">Adres: <?= $address['address']; ?></p>
-                                        <a href="https://www.google.com/maps?q=<?= urlencode($address['addressMaps']); ?>" target="_blank" class="btn btn-outline-primary">Haritada Gör</a>
+                                        <a href="https://www.google.com/maps?q=<?= urlencode($address['addressMaps']); ?>" target="_blank" class="btn btn-outline-primary">
+                                            <p class="card-text">Adres: <?= $address['address']; ?></p>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
