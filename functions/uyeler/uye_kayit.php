@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
     if (!empty($_FILES['vergi_levhasi']['name'])) {
-        $file = uploadDenemeFileToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+        $file = uploadDenemeFileToS3($_FILES['vergi_levhasi'], 'uploads/vergi_levhalari/', $s3Client, $config['s3']['bucket']);
         if ($file === false) {
             echo "File upload failed.";
             exit;
