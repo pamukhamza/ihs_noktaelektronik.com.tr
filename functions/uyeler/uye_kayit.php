@@ -12,18 +12,15 @@ if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($c
     die('Missing required S3 configuration values.');
 }
 
-try {
-    $s3Client = new S3Client([
-        'version' => 'latest',
-        'region'  => $config['s3']['region'],
-        'credentials' => [
-            'key'    => $config['s3']['key'],
-            'secret' => $config['s3']['secret'],
-        ]
-    ]);
-} catch (AwsException $e) {
-    die('AWS S3 bağlantı hatası: ' . $e->getMessage());
-}
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => $config['s3']['region'],
+    'credentials' => [
+        'key'    => $config['s3']['key'],
+        'secret' => $config['s3']['secret'],
+    ]
+]);
+
 
 $db = new Database();
 
@@ -65,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     if (!empty($_FILES['vergi_levhasi']['name'])) {
         // Uzantıyı küçük harfle al (PDF, Jpg gibi sorunları önler)
-        $file_extension = strtolower(pathinfo($_FILES['vergi_levhasi']['name'], PATHINFO_EXTENSION));
+        $file_extension = pathinfo($_FILES['vergi_levhasi']['name'], PATHINFO_EXTENSION);
     
         // Benzersiz bir dosya adı oluştur
         $new_file_name = uniqid('vergi_', true) . '.' . $file_extension;
