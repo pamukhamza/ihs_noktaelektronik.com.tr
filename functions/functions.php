@@ -50,20 +50,9 @@ if (isset($_POST["iletisim_form_btn"])) {
     $adsoyad = controlInput($_POST['adsoyad']);
     $mail = controlInput($_POST['mail']);
     $text = controlInput($_POST['text']);
-    $lang = controlInput($_POST['lang']);
     $now = date("Y-m-d H:i:s");
-    $query = $db->prepare("
-    INSERT  IGNORE INTO nokta_iletisim_form SET 
-                        ad_soyad         = :d1,
-                        eposta           = :d2,  
-                        aciklama         = :d3
-            ");
-    $insert = $query->execute(array(
-                        "d1"            => "{$adsoyad}",
-                        "d2"            => "{$mail}",
-                        "d3"            => "{$text}"
-    ));
-    header("Location: iletisim?lang=$lang&s=20");
+
+    header("Location: ../tr/iletisim?s=20");
     $mail_icerik = iletisimFormMail($adsoyad, $mail, $now, $text);
     mailGonder('b2b@noktaelektronik.com.tr', 'İletişim formu mesaj', $mail_icerik, 'Nokta Elektronik');
 }
