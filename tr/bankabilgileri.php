@@ -36,7 +36,6 @@ $bankalar = $database->fetchAll("SELECT hesap_adi, banka_adi, hesap, sube_adi, i
                     <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/hakkimizda.png" alt="hakkimizda">
                 </div>
                 <div class="card mt-3">
-                    <div class="card-body">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -63,7 +62,6 @@ $bankalar = $database->fetchAll("SELECT hesap_adi, banka_adi, hesap, sube_adi, i
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                    </div>  
                 </div>
             </div> 
         </div> 
