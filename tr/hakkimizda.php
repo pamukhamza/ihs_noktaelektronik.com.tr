@@ -35,7 +35,7 @@ $database = new Database();
                 <div class="card">
                     <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/analiz.png" alt="hakkimizda">
                 </div>
-                <div class="card">
+                <div class="card mt-3">
                     <div class="card-body">
                         <p><b>Hakkımızda</b><br/><br/>
                             Nokta Elektronik ve Bilişim Sistemleri, 20 yılı aşkın deneyimiyle elektronik ve bilişim sektöründe öncü bir kuruluş olarak tanınmaktadır. Geniş ürün yelpazesi ve güçlü üretim altyapısıyla sektördeki dinamiklerini sürekli olarak yenileyen firmamız, global pazarda dünya çapında lider markaların distribütörlüğünü üstlenmektedir. Türkiye’nin yanı sıra Ortadoğu, Türki Cumhuriyetler ve Balkan ülkelerinde proje yönetimi, ürün tedariği ve teknik destek alanlarında hizmet vermekteyiz. İstanbul merkezli firmamız, İstanbul ve Ankara’daki Proje ve Satış Ofisleri ile müşteri ihtiyaçlarına etkin çözümler sunmaktadır. Ayrıca, İzmir'de bulunan üretim tesisimizde Ar-Ge faaliyetleri gerçekleştirerek, proje odaklı yenilikçi çözümler geliştirmekteyiz.
