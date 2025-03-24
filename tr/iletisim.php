@@ -87,7 +87,7 @@ $categorizedAddresses = [
         <?php $template->pageLeftMenu(); ?>
         <div class="float-end col-xs-12 col-sm-8 col-md-9">
             <div class="rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative rounded-0">
-                <img src="assets/images/k2vc0b.png" alt="" width="100%" height="auto">
+                <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/iletisim.png" alt="" width="100%" height="auto">
             </div>
             <div class="">
                 <?php foreach ($categorizedAddresses as $category => $addresses): ?>
