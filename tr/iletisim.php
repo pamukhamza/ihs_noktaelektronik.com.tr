@@ -110,7 +110,7 @@ $categorizedAddresses = [
             </div>
             <div class="row row-cols-1 row-cols-md-2 g-6 mt-5 shadow-sm" style="background-color: #ffffff;">
                 <div class="col border ps-5 pe-5 pb-4 pt-4 ">
-                    <form action="functions/function.php" method="post">
+                    <form action="functions/functions.php" method="post">
                         <h4 class="pt-2 pb-2">İletişim Formu</h4>
                         <div class="form-floating mb-3">
                             <input type="text" value="tr" name="lang" hidden>
