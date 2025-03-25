@@ -2,9 +2,7 @@
 require '../functions/admin_template.php';
 require '../functions/functions.php';
 ini_set('display_errors', 1);  // Hataları ekrana göster
-error_reporting(E_ALL);   
-$currentPage = 'distribution';
-$template = new Template('Nokta B2B - Banka Bilgileri', $currentPage);
+$template = new Template('Nokta B2B - Distribütör', $currentPage);
 
 $template->head();
 $database = new Database();
@@ -25,7 +23,7 @@ $database = new Database();
                     <span class="visually-hidden">Anasayfa</span>
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Hakkımızda</li>
+            <li class="breadcrumb-item active" aria-current="page">Distribütör</li>
         </ol>
     </nav>
     <section class="container mb-3">
