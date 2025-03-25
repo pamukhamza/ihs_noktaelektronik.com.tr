@@ -1,7 +1,8 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
 $currentPage = 'distribution';
 $template = new Template('Nokta B2B - Banka Bilgileri', $currentPage);
 
@@ -34,7 +35,7 @@ $database = new Database();
                 <div class="card mt-3">
                     <div class="row">
                         <?php 
-                            $dist = $database->fetchAll("SELECT * FROM nokta_urun_markalar WHERE 'distribution' = '1' ORDER BY order_by ASC ");
+                            $dist = $database->fetchAll("SELECT title, hover_img, aciklama FROM nokta_urun_markalar WHERE 'distribution' = 1 AND is_active = 1 ORDER BY order_by ASC ");
                             foreach( $dist as $row ) {
                         ?>
                             <div class="col-md-12 mb-3">
