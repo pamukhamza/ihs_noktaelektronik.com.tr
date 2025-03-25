@@ -32,12 +32,13 @@ $database = new Database();
         <div class="row">
             <?php $template->pageLeftMenu(); ?>
             <div class="float-end col-xs-12 col-sm-8 col-md-9 rounded-3">
-                <div class="card mt-3">
+                
                     <div class="row">
                         <?php 
                             $d = $database->fetchAll("SELECT title, hover_img, aciklama FROM nokta_urun_markalar WHERE `distribution` = 1  ORDER BY order_by ASC ");
                             foreach($d as $k => $row) {
                         ?>
+                        <div class="card mb-3">
                             <div class="col-md-12 mb-3">
                                 <div class="d-flex align-items-center border p-2 rounded">
                                     <!-- Sol Taraf: Resim -->
@@ -50,8 +51,8 @@ $database = new Database();
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         <?php } ?>
-                    </div>
                 </div>
             </div> 
         </div> 
