@@ -20,8 +20,8 @@ $database = new Database();
         <ol class="breadcrumb ">
             <li class="breadcrumb-item">
                 <a class="link-body-emphasis" href="index">
-                <svg class="bi" width="15" height="15"><use xlink:href="#house-door-fill"></use></svg>
-                <span class="visually-hidden">Anasayfa</span>
+                    <svg class="bi" width="15" height="15"><use xlink:href="#house-door-fill"></use></svg>
+                    <span class="visually-hidden">Anasayfa</span>
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Hakkımızda</li>
@@ -31,11 +31,26 @@ $database = new Database();
         <div class="row">
             <?php $template->pageLeftMenu(); ?>
             <div class="float-end col-xs-12 col-sm-8 col-md-9 rounded-3">
-                <div class="card">
-                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/site/hakkimizda.png" alt="hakkimizda">
-                </div>
                 <div class="card mt-3">
-                    
+                    <div class="row">
+                        <?php 
+                            $dist = $database->fetchAll("SELECT * FROM nokta_urun_markalar WHERE 'distribution' = '1' ORDER BY order_by ASC ");
+                            foreach( $d as $k => $row ) {
+                        ?>
+                            <div class="col-md-12 mb-3">
+                                <div class="d-flex align-items-center border p-2 rounded">
+                                    <!-- Sol Taraf: Resim -->
+                                    <div class="col-3">
+                                        <img src="<?= htmlspecialchars($row['hover_img']) ?>" class="img-fluid rounded" alt="Marka Görseli">
+                                    </div>
+                                    <!-- Sağ Taraf: Açıklama -->
+                                    <div class="col-9 ps-3">
+                                        <p class="mb-0"><?= nl2br(htmlspecialchars($row['aciklama'])) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div> 
         </div> 
