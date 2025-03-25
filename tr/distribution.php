@@ -35,13 +35,13 @@ $database = new Database();
                     <div class="row">
                         <?php 
                             $dist = $database->fetchAll("SELECT * FROM nokta_urun_markalar WHERE 'distribution' = '1' ORDER BY order_by ASC ");
-                            foreach( $d as $k => $row ) {
+                            foreach( $dist as $row ) {
                         ?>
                             <div class="col-md-12 mb-3">
                                 <div class="d-flex align-items-center border p-2 rounded">
                                     <!-- Sol Taraf: Resim -->
                                     <div class="col-3">
-                                        <img src="<?= htmlspecialchars($row['hover_img']) ?>" class="img-fluid rounded" alt="Marka Görseli">
+                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/brands/<?= $row['hover_img']; ?>" class="img-fluid rounded" alt="Marka Görseli">
                                     </div>
                                     <!-- Sağ Taraf: Açıklama -->
                                     <div class="col-9 ps-3">
