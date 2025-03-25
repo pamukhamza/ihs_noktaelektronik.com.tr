@@ -35,7 +35,7 @@ $database = new Database();
                 <div class="card mt-3">
                     <div class="row">
                         <?php 
-                            $d = $database->fetchAll("SELECT title, hover_img, aciklama FROM nokta_urun_markalar WHERE 'distribution' = 1 AND is_active = 1 ORDER BY order_by ASC ");
+                            $d = $database->fetchAll("SELECT title, hover_img, aciklama FROM nokta_urun_markalar WHERE 'distribution' = 1  ORDER BY order_by ASC ");
                             foreach($d as $k => $row) {
                         ?>
                             <div class="col-md-12 mb-3">
