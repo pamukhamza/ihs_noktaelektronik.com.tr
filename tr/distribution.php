@@ -38,8 +38,7 @@ $database = new Database();
                             $d = $database->fetchAll("SELECT title, hover_img, aciklama FROM nokta_urun_markalar WHERE `distribution` = 1  ORDER BY order_by ASC ");
                             foreach($d as $k => $row) {
                         ?>
-                        <div class="card mb-3">
-                            <div class="col-md-12 mb-3">
+                        <div class="card mb-3 col-md-12">
                                 <div class="d-flex align-items-center border p-2 rounded">
                                     <!-- Sol Taraf: Resim -->
                                     <div class="col-3">
@@ -49,7 +48,6 @@ $database = new Database();
                                     <div class="col-9 ps-3">
                                         <p class="mb-0"><?= nl2br(htmlspecialchars($row['aciklama'])) ?></p>
                                     </div>
-                                </div>
                             </div>
                         </div>
                         <?php } ?>
