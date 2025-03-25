@@ -1,7 +1,7 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-ini_set('display_errors', 1);  // Hataları ekrana göster
+$currentPage = 'distribution';
 $template = new Template('Nokta B2B - Distribütör', $currentPage);
 
 $template->head();
