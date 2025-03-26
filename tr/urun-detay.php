@@ -99,17 +99,17 @@ if(isset($_SESSION['id'])) {
             </a>
         </li>
         <?php
-        foreach ($breadcrumbs as $index => $breadcrumb) {
-            echo '<li class="breadcrumb-item active">';
-            $shortName = strlen($breadcrumb['name']) > 28 ? substr($breadcrumb['name'], 0, 27) . '...' : $breadcrumb['name'];
+            foreach ($breadcrumbs as $index => $breadcrumb) {
+                echo '<li class="breadcrumb-item active">';
+                $shortName = strlen($breadcrumb['name']) > 28 ? substr($breadcrumb['name'], 0, 27) . '...' : $breadcrumb['name'];
 
-            if ($index < count($breadcrumbs) - 1) {
-                echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="tr/urunler?cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
-            } else {
-                echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="tr/urunler?cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
+                if ($index < count($breadcrumbs) - 1) {
+                    echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="tr/urunler?cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
+                } else {
+                    echo '<a class="text-decoration-none" style="color:black; font-size:14px" href="tr/urunler?cat=' . $breadcrumb['id'] . '&brand=&filter=&search=" title="' . $breadcrumb['name'] . '">' . $shortName . '</a>';
+                }
+                echo '</li>';
             }
-            echo '</li>';
-        }
         ?>
         <li class="breadcrumb-item text-info-emphasis active" style="font-size:14px" aria-current="page"><?= $urun['UrunKodu'] ?> </li>
     </ol>

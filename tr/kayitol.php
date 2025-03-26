@@ -116,10 +116,7 @@ $database = new Database();
                     </div>
                 </div>
             </div>
-
-            <div>
-
-            </div>
+            <div></div>
         </div>
     </div>
 </div>

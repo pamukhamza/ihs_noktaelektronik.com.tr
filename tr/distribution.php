@@ -29,25 +29,22 @@ $database = new Database();
     <section class="container mb-3">
         <div class="row">
             <?php $template->pageLeftMenu(); ?>
-            <div class="float-end col-xs-12 col-sm-8 col-md-9 rounded-3">
-                
-                        <?php 
-                            $d = $database->fetchAll("SELECT title, hover_img, aciklama FROM nokta_urun_markalar WHERE `distribution` = 1  ORDER BY order_by ASC ");
-                            foreach($d as $k => $row) {
-                        ?>
+            <div class="float-end col-xs-12 col-sm-8 col-md-9 rounded-3">     
+                <?php $d = $database->fetchAll("SELECT title, hover_img, aciklama FROM nokta_urun_markalar WHERE `distribution` = 1  ORDER BY order_by ASC ");
+                    foreach($d as $k => $row) { ?>
                         <div class="card mb-3 ">
-                                <div class="d-flex align-items-center border p-2 rounded">
-                                    <!-- Sol Taraf: Resim -->
-                                    <div class="col-3">
-                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/brands/<?= $row['hover_img']; ?>" class="img-fluid rounded" alt="Marka Görseli">
-                                    </div>
-                                    <!-- Sağ Taraf: Açıklama -->
-                                    <div class="col-9 ps-3">
-                                        <p class="mb-0"><?= nl2br(htmlspecialchars($row['aciklama'])) ?></p>
-                                    </div>
+                            <div class="d-flex align-items-center border p-2 rounded">
+                                <!-- Sol Taraf: Resim -->
+                                <div class="col-3">
+                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/brands/<?= $row['hover_img']; ?>" class="img-fluid rounded" alt="Marka Görseli">
+                                </div>
+                                <!-- Sağ Taraf: Açıklama -->
+                                <div class="col-9 ps-3">
+                                    <p class="mb-0"><?= nl2br(htmlspecialchars($row['aciklama'])) ?></p>
+                                </div>
                             </div>
-                        </div>
-                        <?php } ?>
+                        </div> <?php 
+                    } ?>
             </div> 
         </div> 
     </section>
