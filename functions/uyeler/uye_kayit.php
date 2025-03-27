@@ -75,10 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $satis_temsilcisi = 86732;
 
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
+    $degistirmetarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
     // Kullanıcı ekleme işlemi sırasında S3'teki dosya yolunu da kaydet
     $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, sabit_tel, firmaUnvani, vergi_dairesi, vergi_no, tc_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
     kayit_tarihi, son_giris, fiyat, vergi_levhasi, uye_tipi, muhasebe_kodu) VALUES (
-    :ad, :soyad, :email, :parola, :tel, :sabit_tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :tc_no,:ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, NOW(), NOW(), 4, :vergi_levhasi, :uye_tipi, :muhasebe_kodu)", 
+    :ad, :soyad, :email, :parola, :tel, :sabit_tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :tc_no,:ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, :degistirmetarihi, :degistirmetarihi1, 4, :vergi_levhasi, :uye_tipi, :muhasebe_kodu)", 
     [
         'ad' => $_POST['ad'],
         'soyad' => $_POST['soyad'],
@@ -96,6 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         'adres' => $_POST['adres'] ?? '',
         'posta_kodu' => $_POST['posta_kodu'] ?? '',
         'aktivasyon_kodu' => '0',
+        'degistirmetarihi' => $degistirmetarihi,
+        'degistirmetarihi1' => $degistirmetarihi,
         'aktif' => '0',
         'vergi_levhasi' => $vergi_levhasi_url,
         'uye_tipi' => $uyetipi,
@@ -106,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Get the new user's ID
         $new_user_id = $db->lastInsertId();
         $adsoyad = $_POST['ad'] . " " . $_POST['soyad'];
-
+        
         $mail_icerik = uyeOnayMail($adsoyad, $_POST['eposta'], $new_user_id);
         mailGonder($_POST['eposta'], 'Nokta Elektronik B2B Üyelik Aktivasyonu', $mail_icerik, 'Nokta Elektronik B2B Üyelik Aktivasyonu');
         $response = [
@@ -139,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'aktif' => '0',
             'cari_kodu' => $cari_kodu,
             'uye_tipi' => $uyetipi,
-            'degistirme_tarihi' => date('Y-m-d H:i:s'),
+            'degistirme_tarihi' => $degistirmetarihi,
             'PAZ_BLCRKODU' => $satis_temsilcisi
         ];
         uyeXmlOlustur($param);
