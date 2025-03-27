@@ -75,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $satis_temsilcisi = 86732;
 
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
+    $currentDateTime = date("d.m.Y H:i:s");
     $degistirmetarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
     // Kullanıcı ekleme işlemi sırasında S3'teki dosya yolunu da kaydet
     $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, sabit_tel, firmaUnvani, vergi_dairesi, vergi_no, tc_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
