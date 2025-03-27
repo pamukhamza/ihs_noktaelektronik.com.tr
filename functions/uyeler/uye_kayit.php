@@ -139,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'aktif' => '0',
             'cari_kodu' => $cari_kodu,
             'uye_tipi' => $uyetipi,
-            'degistirme_tarihi' => NOW(),
+            'degistirme_tarihi' => date('Y-m-d H:i:s'),
             'PAZ_BLCRKODU' => $satis_temsilcisi
         ];
         uyeXmlOlustur($param);
