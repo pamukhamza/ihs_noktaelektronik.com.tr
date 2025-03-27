@@ -76,18 +76,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
     // Kullanıcı ekleme işlemi sırasında S3'teki dosya yolunu da kaydet
-    $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, firmaUnvani, vergi_dairesi, vergi_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
+    $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, sabit_tel, firmaUnvani, vergi_dairesi, vergi_no, tc_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
     kayit_tarihi, son_giris, fiyat, vergi_levhasi, uye_tipi, muhasebe_kodu) VALUES (
-    :ad, :soyad, :email, :parola, :tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, NOW(), NOW(), 4, :vergi_levhasi, :uye_tipi, :muhasebe_kodu)", 
+    :ad, :soyad, :email, :parola, :tel, :sabit_tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :tc_no,:ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, NOW(), NOW(), 4, :vergi_levhasi, :uye_tipi, :muhasebe_kodu)", 
     [
         'ad' => $_POST['ad'],
         'soyad' => $_POST['soyad'],
         'email' => $_POST['eposta'],
         'parola' => $hashed_password,
         'tel' => $_POST['tel'],
+        'sabit_tel' => $_POST['sabit_tel'],
         'firmaUnvani' => $_POST['firma_ad'],
         'vergi_dairesi' => $_POST['vergi_dairesi'],
         'vergi_no' => $_POST['vergi_no'] ?? null,
+        'tc_no' => $_POST['tc_no'] ?? null,
         'ulke' => $_POST['ulke'] ?? 'Türkiye',
         'il' => $_POST['il'] ?? '',
         'ilce' => $_POST['ilce'] ?? '',
@@ -112,24 +114,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'message' => 'Kayıt başarılı. Lütfen e-posta adresinize gönderilen aktivasyon linkini kullanın.'
         ];
 
+        $iller = $db->fetch("SELECT * FROM iller WHERE il_id = :id", ['id' => $_POST['il']]);
+        $il_adi = $iller['il_adi'];
+
+        $ilceler = $db->fetch("SELECT * FROM ilceler WHERE ilce_id = :ilce_id AND il_id = :id", ['ilce_id' => $_POST['ilce'], 'id' => $_POST['il']]);
+        $ilce_adi = $ilceler['ilce_adi'];
         $param = [
             'ad' => $_POST['ad'],
             'soyad' => $_POST['soyad'],
             'email' => $_POST['eposta'],
             'parola' => $hashed_password,
             'tel' => $_POST['tel'],
-            'firmaUnvani' => $_POST['firma_ad'],
+            'sabit_tel' => $_POST['sabit_tel'],
+            'firma_unvani' => $_POST['firma_ad'],
             'vergi_dairesi' => $_POST['vergi_dairesi'],
             'vergi_no' => $_POST['vergi_no'] ?? null,
+            'tc_no' => $_POST['tc_no'] ?? null,
             'ulke' => $_POST['ulke'] ?? 'Türkiye',
-            'il' => $_POST['il'] ?? '',
-            'ilce' => $_POST['ilce'] ?? '',
+            'il_adi' => $_POST['il_adi'] ?? '',
+            'ilce_adi' => $_POST['ilce_adi'] ?? '',
             'adres' => $_POST['adres'] ?? '',
             'posta_kodu' => $_POST['posta_kodu'] ?? '',
             'aktivasyon_kodu' => '0',
             'aktif' => '0',
             'cari_kodu' => $cari_kodu,
             'uye_tipi' => $uyetipi,
+            'degistirme_tarihi' => NOW(),
             'PAZ_BLCRKODU' => $satis_temsilcisi
         ];
         uyeXmlOlustur($param);

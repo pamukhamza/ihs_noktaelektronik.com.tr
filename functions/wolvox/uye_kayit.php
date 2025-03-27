@@ -49,6 +49,6 @@ function uyeXmlOlustur($params) {
         $cari->appendChild($el);
     }
 
-    $xmlFileName = $params['dosya_ad'] . $params['cari_kodu'] . '.xml';
+    $xmlFileName = 'carieklekurumsal_' . $params['cari_kodu'] . '.xml';
     $xmlDoc->save('../../assets/cari/' . $xmlFileName);
 }
