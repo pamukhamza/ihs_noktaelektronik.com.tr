@@ -124,7 +124,7 @@ $database = new Database();
         console.warn('Kullanıcı oturumu bulunamadı.');
     <?php endif; ?>
 
-    </script>
+    </script><!--
     <script>
         $(document).ready(function() {
             $(document).on('click', function(event) {
@@ -149,5 +149,4 @@ $database = new Database();
                 });
             });
         });
-    </script>
-    <?php
+    </script>-->
