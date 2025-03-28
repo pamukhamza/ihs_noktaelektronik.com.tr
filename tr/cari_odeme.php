@@ -1,7 +1,8 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);  
 $currentPage = 'cari_odeme';
 $template = new Template('Nokta - Ödeme', $currentPage);
 
@@ -204,6 +205,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
                     method: 'POST',
                     data: { bin: bin },
                     success: function(response) {
+                        console.log(response);
                         var data = response.split(',');
                         var kartOrg = data[2].trim();
                         var kamp = data[1].trim();

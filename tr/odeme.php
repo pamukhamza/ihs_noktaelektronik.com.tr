@@ -258,7 +258,7 @@ if(isset($_POST["devamEt"])) {
         if (odemeYapButton) {
             odemeYapButton.addEventListener('click', onayaGec);
         } else {
-            console.error('Düğme bulunamadı!');
+            //console.error('Düğme bulunamadı!');
         }
     });
 
@@ -286,6 +286,7 @@ if(isset($_POST["devamEt"])) {
         $('#paymentCard').on('input', function() {
             var bin = $(this).val().substr(0, 6);
             if (bin.length >= 6) {
+                
                 $.ajax({
                     url: 'functions/bank/binSorgula.php',
                     method: 'POST',
