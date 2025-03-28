@@ -199,6 +199,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
     $(document).ready(function() {
         $('#paymentCard').on('input', function() {
             var bin = $(this).val().substr(0, 6);
+            console.log(bin);
             if (bin.length >= 6) {
                 $.ajax({
                     url: 'functions/bank/binSorgula.php',
