@@ -26,7 +26,7 @@ $db = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $response = array();
-    
+     
     
     // Validate required fields
     $required_fields = ['ad', 'soyad', 'eposta', 'parola', 'tel', 'firma_ad', 'vergi_dairesi'];
