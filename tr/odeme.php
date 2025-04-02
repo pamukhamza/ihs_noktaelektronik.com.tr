@@ -18,7 +18,6 @@ if(isset($_POST["devamEt"])) {
     $toplam = controlInput($_POST['yanToplam']);
     $desi = controlInput($_POST['toplamDesiBirimi1']);
     $deliveryOption = controlInput($_POST['selectedDeliveryOption']);
-
 }
 ?>
 <body>

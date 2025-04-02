@@ -197,10 +197,10 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
         return parts.join(',');
     }
     $(document).ready(function() {
-        $('#paymentCard').on('input', function() {
+        $('#paymentCard').on('input', function() {/*
             var bin = $(this).val().substr(0, 6);
-            console.log(bin);
             if (bin.length >= 6) {
+                console.log(bin);
                 $.ajax({
                     url: 'functions/bank/binSorgula.php',
                     method: 'POST',
@@ -362,7 +362,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
                         });
                     }
                 });
-            }
+            }*/
         });
     });
 </script>
@@ -401,11 +401,6 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
             lang: 'lang',
             uye_id: 'hiddenuye_id',
             hesap: 'hesap',
-            pos: 'pos_1',
-            banka_id: 'id_1',
-            taksit: 'taksit_1',
-            sonuc: 'sonuc_1',
-            vade: 'vade_1',
             card: 'paymentCard',
             cardName: 'paymentCardName',
             expMonth: 'paymentCardExpiryMonth',
@@ -416,6 +411,11 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
         const values = Object.fromEntries(
             Object.entries(elements).map(([key, id]) => [key, document.getElementById(id).value])
         );
+        values.pos = document.getElementById('pos_1')?.value || '4';
+        values.banka_id = document.getElementById('id_1')?.value || '57';
+        values.taksit = document.getElementById('taksit_1')?.value || '1';
+        values.vade = document.getElementById('vade_1')?.value || '1';
+        values.sonuc = document.getElementById('sonuc_1')?.value || "<?= $fiyat ?>";
         values.sonuc = values.sonuc.replace('.', ',');
 
         const requiredFields = ['pos', 'taksit', 'sonuc', 'card', 'cardName', 'expMonth', 'expYear', 'cvv'];
