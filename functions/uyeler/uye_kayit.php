@@ -79,8 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $degistirmetarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
     // Kullanıcı ekleme işlemi sırasında S3'teki dosya yolunu da kaydet
     $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, sabit_tel, firmaUnvani, vergi_dairesi, vergi_no, tc_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
-    kayit_tarihi, son_giris, fiyat, vergi_levhasi, uye_tipi, muhasebe_kodu) VALUES (
-    :ad, :soyad, :email, :parola, :tel, :sabit_tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :tc_no,:ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, :degistirmetarihi, :degistirmetarihi1, 4, :vergi_levhasi, :uye_tipi, :muhasebe_kodu)", 
+    son_giris, fiyat, vergi_levhasi, uye_tipi, muhasebe_kodu, satis_temsilcisi) VALUES (
+    :ad, :soyad, :email, :parola, :tel, :sabit_tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :tc_no,:ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, :degistirmetarihi1, 3, :vergi_levhasi, :uye_tipi, :muhasebe_kodu, :satis_temsilcisi)", 
     [
         'ad' => $_POST['ad'],
         'soyad' => $_POST['soyad'],
@@ -98,12 +98,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         'adres' => $_POST['adres'] ?? '',
         'posta_kodu' => $_POST['posta_kodu'] ?? '',
         'aktivasyon_kodu' => '0',
-        'degistirmetarihi' => $degistirmetarihi,
         'degistirmetarihi1' => $degistirmetarihi,
         'aktif' => '0',
         'vergi_levhasi' => $vergi_levhasi_url,
         'uye_tipi' => $uyetipi,
-        'muhasebe_kodu' => $cari_kodu
+        'muhasebe_kodu' => $cari_kodu,
+        'satis_temsilcisi' => $satis_temsilcisi
     ]);
     
     if ($success) {
