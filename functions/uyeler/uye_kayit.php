@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirmetarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
-    $kayitTarihi = date("Y-m-d H:i:s");
+    $kayitTarihi = date("Y-m-d H:i:s", strtotime("+3 hours"));
     // Kullanıcı ekleme işlemi sırasında S3'teki dosya yolunu da kaydet
     $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, sabit_tel, firmaUnvani, vergi_dairesi, vergi_no, tc_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
     son_giris, kayit_tarihi, fiyat, vergi_levhasi, uye_tipi, muhasebe_kodu, satis_temsilcisi) VALUES (
@@ -150,6 +150,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ];
         uyeXmlOlustur($param);
 
+        $uye_adres_kaydet = $db->insert("INSERT INTO b2b_adresler (ad, il, ilce, uye_id, adres_turu, adres_basligi, ad, soyad, ulke, tc_no, vergi_no, vergi_dairesi, posta_kodu, aktif) 
+                                VALUES (:ad, :il, :ilce, :uye_id, :adres_turu, :adres_basligi, :ad, :soyad, :ulke, :tc_no, :vergi_no, :vergi_dairesi, :posta_kodu, 1)", 
+                                [
+                                    'ad' => $_POST['firma_ad'],
+                                    'il' => $_POST['il'],
+                                    'ilce' => $_POST['ilce'],
+                                    'uye_id' => $new_user_id,
+                                    'adres_turu' => "teslimat",
+                                    'adres_basligi' => $_POST['firma_ad'],
+                                    'ulke' => $_POST['ulke'] ?? 'Türkiye',
+                                    'tc_no' => $_POST['tc_no'] ?? null,
+                                    'vergi_no' => $_POST['vergi_no'] ?? null,
+                                    'vergi_dairesi' => $_POST['vergi_dairesi'] ?? null,
+                                    'posta_kodu' => $_POST['posta_kodu'] ?? ''
+                                ]);
     } else {
         $response = [
             'status' => 'error',
