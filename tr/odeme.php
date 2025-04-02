@@ -37,7 +37,6 @@ if(isset($_POST["devamEt"])) {
                     <div class="line">
                         <i class="bx bx-chevron-right" style="color: #3498db !important;"></i>
                     </div>
-                    
                     <div class="step active-step" >
                         <button type="button" class="step-trigger" style="color: #3498db !important;">
                             <span class="bs-stepper-icon"><i class="fas fa-credit-card"></i></span>
@@ -282,7 +281,7 @@ if(isset($_POST["devamEt"])) {
         return parts.join(',');
     }
     $(document).ready(function() {
-        $('#paymentCard').on('input', function() {
+        $('#paymentCard').on('input', function() {/*
             var bin = $(this).val().substr(0, 6);
             if (bin.length >= 6) {
                 
@@ -445,7 +444,7 @@ if(isset($_POST["devamEt"])) {
                         });
                     }
                 });
-            }
+            }*/
         });
     });
 </script>
@@ -499,11 +498,13 @@ if(isset($_POST["devamEt"])) {
         var tip = document.getElementById('tip1').value;
         var lang = document.getElementById('lang').value;
         var uye_id = document.getElementById('hiddenuye_id').value;
-        var pos = document.getElementById('pos_1').value;
-        var banka_id = document.getElementById('id_1').value;
-        var taksit = document.getElementById('taksit_1').value;
-        var sonuc = document.getElementById('sonuc_1').value;
-        var vade = document.getElementById('vade_1').value;
+
+        var pos = document.getElementById('pos_1').value || '4';
+        var banka_id = document.getElementById('id_1').value || '57';
+        var taksit = document.getElementById('taksit_1').value || '1';
+        var sonuc = document.getElementById('sonuc_1').value || "<?php echo formatNumber($toplam); ?>";
+        var vade = document.getElementById('vade_1').value || '1';
+        
         sonuc = sonuc.replace('.', ',');
         var paymentCard = document.getElementById('paymentCard').value;
         var paymentCardName = document.getElementById('paymentCardName').value;
