@@ -151,8 +151,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         uyeXmlOlustur($param);
 
         try {
-            $db->insert("INSERT INTO b2b_adresler (ad, il, ilce, uye_id, adres_turu, adres_basligi, ad, soyad, ulke, tc_no, vergi_no, vergi_dairesi, posta_kodu, aktif) 
-                        VALUES (:ad, :il, :ilce, :uye_id, :adres_turu, :adres_basligi, :ad, :soyad, :ulke, :tc_no, :vergi_no, :vergi_dairesi, :posta_kodu, 1)", 
+            $db->insert("INSERT INTO b2b_adresler (ad, il, ilce, uye_id, adres_turu, adres_basligi, ulke, tc_no, vergi_no, vergi_dairesi, posta_kodu, aktif) 
+                        VALUES (:ad, :il, :ilce, :uye_id, :adres_turu, :adres_basligi, :ulke, :tc_no, :vergi_no, :vergi_dairesi, :posta_kodu, 1)", 
             [
                 'ad' => $_POST['firma_ad'],
                 'il' => $_POST['il'],
