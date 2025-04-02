@@ -77,10 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirmetarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
+    $kayitTarihi = date("Y-m-d H:i:s");
     // Kullanıcı ekleme işlemi sırasında S3'teki dosya yolunu da kaydet
     $success = $db->insert("INSERT INTO uyeler (ad, soyad, email, parola, tel, sabit_tel, firmaUnvani, vergi_dairesi, vergi_no, tc_no, ulke, il, ilce, adres, posta_kodu, aktivasyon, aktif, 
-    son_giris, fiyat, vergi_levhasi, uye_tipi, muhasebe_kodu, satis_temsilcisi) VALUES (
-    :ad, :soyad, :email, :parola, :tel, :sabit_tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :tc_no,:ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, :degistirmetarihi1, 3, :vergi_levhasi, :uye_tipi, :muhasebe_kodu, :satis_temsilcisi)", 
+    son_giris, kayit_tarihi, fiyat, vergi_levhasi, uye_tipi, muhasebe_kodu, satis_temsilcisi) VALUES (
+    :ad, :soyad, :email, :parola, :tel, :sabit_tel, :firmaUnvani, :vergi_dairesi, :vergi_no, :tc_no,:ulke, :il, :ilce, :adres, :posta_kodu, :aktivasyon_kodu, :aktif, :degistirmetarihi1, :kayit_tarihi, 3, :vergi_levhasi, :uye_tipi, :muhasebe_kodu, :satis_temsilcisi)", 
     [
         'ad' => $_POST['ad'],
         'soyad' => $_POST['soyad'],
@@ -99,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         'posta_kodu' => $_POST['posta_kodu'] ?? '',
         'aktivasyon_kodu' => '0',
         'degistirmetarihi1' => $degistirmetarihi,
+        'kayit_tarihi' => $kayitTarihi,
         'aktif' => '0',
         'vergi_levhasi' => $vergi_levhasi_url,
         'uye_tipi' => $uyetipi,
