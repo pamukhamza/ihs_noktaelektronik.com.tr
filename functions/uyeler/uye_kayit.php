@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         VALUES (:ad, :soyad, :firma_adi, :adres, :telefon, :il, :ilce, :uye_id, :adres_turu, :adres_basligi, :ulke, :tc_no, :vergi_no, :vergi_dairesi, :posta_kodu, 1)", 
             [
                 'ad' => $_POST['ad'],
-                'ad' => $_POST['soyad'],
+                'soyad' => $_POST['soyad'],
                 'firma_adi' => $_POST['firma_ad'],
                 'adres' => $_POST['adres'],
                 'telefon' => $_POST['tel'],
