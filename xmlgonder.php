@@ -745,12 +745,12 @@ function cariGonder() {
         if ($file === '.' || $file === '..') {
             continue;
         }
-        $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.com.tr/assets/cari/$file");
+        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.com.tr/assets/cari/$file");
         $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
         echo "$newDate: Yeni Cari $file gönderildi. <br>";
     }
     echo json_encode($jsonResult);
-    // Faturalar klasöründeki dosyaları sil
+    // klasördeki dosyaları sil
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
