@@ -747,14 +747,27 @@ function cariGonder() {
             continue;
         }
 
-        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari/$file");
-        $jsonResult[$file] = $xmlData;
-        echo "$newDate: Yeni Cari $file bulundu.<br>";
-    }
+        // cURL ile dosya içeriğini çek
+        $url = "https://denemeb2b.noktaelektronik.net/assets/cari/$file";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    // Eğer sadece veriler isteniyorsa, dosyaları silme!
-    if (isset($_POST['xml_cari_gonder'])) {
-        echo json_encode($jsonResult);
+        // SSL doğrulamasını kapat (güvenlik açısından dikkatli ol!)
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+        $xmlData = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            echo "$newDate: $file dosyası okunamadı. Hata: " . curl_error($ch) . "<br>";
+            $jsonResult[$file] = false;
+        } else {
+            echo "$newDate: Yeni Cari $file bulundu.<br>";
+            $jsonResult[$file] = $xmlData;
+        }
+
+        curl_close($ch);
     }
 
     // Eğer açıkça silme istenmişse, dosyaları sil
