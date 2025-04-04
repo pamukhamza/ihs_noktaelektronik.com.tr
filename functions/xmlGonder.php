@@ -747,7 +747,7 @@ function cariGonder() {
             continue;
         }
 
-        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.com.tr/assets/cari/$file");
+        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari/$file");
         $jsonResult[$file] = $xmlData;
         echo "$newDate: Yeni Cari $file bulundu.<br>";
     }
