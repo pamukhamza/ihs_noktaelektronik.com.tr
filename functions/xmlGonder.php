@@ -734,34 +734,43 @@ function odemeGonder() {
     }
 }
 function cariGonder() {
-    echo "geldi";
     global $newDate;
     $files = scandir("../assets/cari/");
     if ($files === false) {
         echo "$newDate: XML dosyaları bulunamadı <br>";
         return;
     }
+
     $jsonResult = array();
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
         }
+
         $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.com.tr/assets/cari/$file");
-        $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
-        echo "$newDate: Yeni Cari $file gönderildi. <br>";
+        $jsonResult[$file] = $xmlData;
+        echo "$newDate: Yeni Cari $file bulundu.<br>";
     }
-    echo json_encode($jsonResult);
-    // klasördeki dosyaları sil
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $filePath = "../assets/cari/$file";
-        if (is_file($filePath)) {
-            unlink($filePath); // Dosyayı sil
+
+    // Eğer sadece veriler isteniyorsa, dosyaları silme!
+    if (isset($_POST['xml_cari_gonder'])) {
+        echo json_encode($jsonResult);
+    }
+
+    // Eğer açıkça silme istenmişse, dosyaları sil
+    if (isset($_POST['xml_cari_gonder_sil'])) {
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+            $filePath = "../assets/cari/$file";
+            if (is_file($filePath)) {
+                unlink($filePath);
+            }
         }
     }
 }
+
 function cariBLKODU($gelenveri){
     preg_match('/MBLKODU=(\d+)/', $gelenveri, $matches);
     if (isset($matches[1])) {
