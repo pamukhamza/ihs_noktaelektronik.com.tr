@@ -147,30 +147,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'PAZ_BLCRKODU' => $satis_temsilcisi
         ];
         uyeXmlOlustur($param);
-        try {
-            $db->insert("INSERT INTO b2b_adresler (ad, soyad, firma_adi, adres, telefon, il, ilce, uye_id, adres_turu, adres_basligi, ulke, tc_no, vergi_no, vergi_dairesi, posta_kodu, aktif) 
-                        VALUES (:ad, :soyad, :firma_adi, :adres, :telefon, :il, :ilce, :uye_id, :adres_turu, :adres_basligi, :ulke, :tc_no, :vergi_no, :vergi_dairesi, :posta_kodu, 1)", 
-            [
-                'ad' => $_POST['ad'],
-                'soyad' => $_POST['soyad'],
-                'firma_adi' => $_POST['firma_ad'],
-                'adres' => $_POST['adres'],
-                'telefon' => $_POST['tel'],
-                'il' => $_POST['il'],
-                'ilce' => $_POST['ilce'],
-                'uye_id' => $new_user_id,
-                'adres_turu' => "teslimat",
-                'adres_basligi' => "Teslimat Adresim",
-                'ulke' => $_POST['ulke'] ?? 'Türkiye',
-                'tc_no' => $_POST['tc_no'] ?? null,
-                'vergi_no' => $_POST['vergi_no'] ?? null,
-                'vergi_dairesi' => $_POST['vergi_dairesi'] ?? null,
-                'posta_kodu' => $_POST['posta_kodu'] ?? ''
-            ]);
-            echo "Kayıt başarıyla eklendi.";
-        } catch (Exception $e) {
-            echo "Hata: " . $e->getMessage();
-        }
+        $db->insert("INSERT INTO b2b_adresler (ad, soyad, firma_adi, adres, telefon, il, ilce, uye_id, adres_turu, adres_basligi, ulke, tc_no, vergi_no, vergi_dairesi, posta_kodu, aktif) 
+                    VALUES (:ad, :soyad, :firma_adi, :adres, :telefon, :il, :ilce, :uye_id, :adres_turu, :adres_basligi, :ulke, :tc_no, :vergi_no, :vergi_dairesi, :posta_kodu, 1)", 
+        [
+            'ad' => $_POST['ad'],
+            'soyad' => $_POST['soyad'],
+            'firma_adi' => $_POST['firma_ad'],
+            'adres' => $_POST['adres'],
+            'telefon' => $_POST['tel'],
+            'il' => $_POST['il'],
+            'ilce' => $_POST['ilce'],
+            'uye_id' => $new_user_id,
+            'adres_turu' => "teslimat",
+            'adres_basligi' => "Teslimat Adresim",
+            'ulke' => $_POST['ulke'] ?? 'Türkiye',
+            'tc_no' => $_POST['tc_no'] ?? null,
+            'vergi_no' => $_POST['vergi_no'] ?? null,
+            'vergi_dairesi' => $_POST['vergi_dairesi'] ?? null,
+            'posta_kodu' => $_POST['posta_kodu'] ?? ''
+        ]);
     } else {
         $response = [
             'status' => 'error',
