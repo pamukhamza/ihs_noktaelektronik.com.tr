@@ -733,6 +733,7 @@ function odemeGonder() {
     }
 }
 function cariGonder() {
+    echo "geldi";
     global $newDate;
     $files = scandir("../assets/cari/");
     if ($files === false) {
