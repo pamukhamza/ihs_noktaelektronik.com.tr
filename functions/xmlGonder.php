@@ -735,13 +735,18 @@ function odemeGonder() {
 }
 function cariGonder() {
     global $newDate;
+    
+    // Dosyaların bulunduğu dizini kontrol et
     $files = scandir("../assets/cari/");
     if ($files === false) {
         echo "$newDate: XML dosyaları bulunamadı <br>";
         return;
     }
 
+    // JSON sonucu depolayacak dizi
     $jsonResult = array();
+
+    // Dosya döngüsü
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
@@ -753,16 +758,19 @@ function cariGonder() {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        // SSL doğrulamasını kapat (güvenlik açısından dikkatli ol!)
+        // SSL doğrulamasını kapat (güvenlik açısından dikkatli ol! - üretim ortamlarında devre dışı bırakmamalısınız)
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
+        // Dosya içeriğini al
         $xmlData = curl_exec($ch);
 
         if (curl_errno($ch)) {
+            // cURL hatasını yakala
             echo "$newDate: $file dosyası okunamadı. Hata: " . curl_error($ch) . "<br>";
             $jsonResult[$file] = false;
         } else {
+            // Başarılıysa, dosyayı ekle
             echo "$newDate: Yeni Cari $file bulundu.<br>";
             $jsonResult[$file] = $xmlData;
         }
@@ -770,7 +778,12 @@ function cariGonder() {
         curl_close($ch);
     }
 
-    // Eğer açıkça silme istenmişse, dosyaları sil
+    // Eğer 'xml_cari_gonder' parametresi ile verileri göndereceksek, JSON formatında cevap döndür
+    if (isset($_POST['xml_cari_gonder'])) {
+        echo json_encode($jsonResult);
+    }
+
+    // Eğer 'xml_cari_gonder_sil' parametresi varsa, dosyaları sil
     if (isset($_POST['xml_cari_gonder_sil'])) {
         foreach ($files as $file) {
             if ($file === '.' || $file === '..') {
@@ -778,11 +791,13 @@ function cariGonder() {
             }
             $filePath = "../assets/cari/$file";
             if (is_file($filePath)) {
-                unlink($filePath);
+                unlink($filePath);  // Dosyayı sil
+                echo "$newDate: $file dosyası silindi.<br>";
             }
         }
     }
 }
+
 
 function cariBLKODU($gelenveri){
     preg_match('/MBLKODU=(\d+)/', $gelenveri, $matches);
