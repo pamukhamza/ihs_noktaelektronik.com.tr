@@ -1,8 +1,8 @@
 <?php
-define("DB_SERVER", "127.0.0.1");
-define("DB_USERNAME", "noktaelektronik");
+define("DB_SERVER", "noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com");
+define("DB_USERNAME", "noktanetdb");
 define("DB_PASSWORD", "Dell28736.!");
-define("DB_NAME", "noktaelektronik_nokta");
+define("DB_NAME", "nokta");
 $newDate = date('Y-m-d H:i:s', strtotime('+3 hours'));
 // mb_convert_encoding() kullanarak Türkçe karakterleri düzgün şekilde dönüştürmek
 function duzenleString($str) {
@@ -47,9 +47,9 @@ function connectToDatabase() {
     return $mysqli;
 }
 function connectToDatabasePDO() {
-    $host = 'localhost'; // Veritabanı sunucusu
-    $dbname = 'noktaelektronik_nokta'; // Veritabanı adı
-    $username = 'noktaelektronik'; // Veritabanı kullanıcı adı
+    $host = 'noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com'; // Veritabanı sunucusu
+    $dbname = 'noktanetdb'; // Veritabanı adı
+    $username = 'nokta'; // Veritabanı kullanıcı adı
     $password = 'Dell28736.!'; // Veritabanı şifresi
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
