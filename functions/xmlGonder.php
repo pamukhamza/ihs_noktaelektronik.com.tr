@@ -770,9 +770,22 @@ function cariGonder() {
             echo "$newDate: $file dosyası okunamadı. Hata: " . curl_error($ch) . "<br>";
             $jsonResult[$file] = false;
         } else {
-            // Başarılıysa, dosyayı ekle
+            // Başarılıysa, XML verisini işleyelim
             echo "$newDate: Yeni Cari $file bulundu.<br>";
-            $jsonResult[$file] = $xmlData;
+
+            // XML verisini parse et
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_string($xmlData);
+            if ($xml === false) {
+                echo "$newDate: XML verisi işlenemedi. Hata:<br>";
+                foreach(libxml_get_errors() as $error) {
+                    echo $error->message . "<br>";
+                }
+                $jsonResult[$file] = false;
+            } else {
+                // XML verisini JSON formatında döndürelim
+                $jsonResult[$file] = json_encode($xml);
+            }
         }
 
         curl_close($ch);
@@ -797,6 +810,7 @@ function cariGonder() {
         }
     }
 }
+
 
 
 function cariBLKODU($gelenveri){
