@@ -928,7 +928,7 @@ function cariGonderUpdate($xmlData) {
         if ($file === '.' || $file === '..') {
             continue;
         }
-        $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.net/assets/cari_guncelle/$file");
+        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari_guncelle/$file");
         $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
         echo "$newDate: Güncellenen Cari $file gönderildi. <br>";
     }
