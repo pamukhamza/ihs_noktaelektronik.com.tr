@@ -1,4 +1,5 @@
 <?php
+echo "geldin kanka";
 define("DB_SERVER", "noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com");
 define("DB_USERNAME", "noktanetdb");
 define("DB_PASSWORD", "Dell28736.!");
