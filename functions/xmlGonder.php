@@ -742,8 +742,13 @@ function cariGonder() {
         if ($file === '.' || $file === '..') {
             continue;
         }
-        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari/$file");
-        $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
+        $xmlData = @file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari/$file");
+        if (!empty($xmlData)) {
+            $jsonResult[$file] = $xmlData;
+        } else {
+            echo "Geçersiz veya boş XML verisi: $file";
+        }
+        
     }
     echo json_encode($jsonResult);
     // Faturalar klasöründeki dosyaları sil
