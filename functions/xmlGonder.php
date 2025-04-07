@@ -757,13 +757,25 @@ function cariGonder() {
         $xmlData = curl_exec($ch);
     
         // Hata kontrolü
-        if(curl_errno($ch)) {
-            echo "cURL Hatası: " . curl_error($ch);
+        if (curl_errno($ch)) {
+            echo "cURL Hatası: " . curl_error($ch) . "<br>";
         }
-        
-        // Yanıtı kontrol et
+    
+        // Veriyi kontrol et ve XML'i işle
         if (!empty($xmlData)) {
-            $jsonResult[$file] = $xmlData;
+            // XML verisini yüklemeye çalış
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_string($xmlData);
+    
+            if ($xml === false) {
+                echo "XML hatası: $file <br>";
+                foreach(libxml_get_errors() as $error) {
+                    echo $error->message . "<br>";
+                }
+            } else {
+                // Geçerli XML ise, JSON formatına dönüştür
+                $jsonResult[$file] = json_encode($xml);
+            }
         } else {
             echo "Geçersiz veya boş XML verisi: $file<br>";
         }
@@ -786,6 +798,7 @@ function cariGonder() {
             //unlink($filePath); // Dosyayı sil
         }
     }
+    
     
 }
 
