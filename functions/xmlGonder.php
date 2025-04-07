@@ -754,6 +754,7 @@ function cariGonder() {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $fileUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $xmlData = curl_exec($ch);
     
         // Hata kontrolü
