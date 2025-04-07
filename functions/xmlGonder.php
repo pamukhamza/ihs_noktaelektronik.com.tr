@@ -737,33 +737,56 @@ function cariGonder() {
         echo "$newDate: XML dosyaları bulunamadı <br>";
         return;
     }
+    
     $jsonResult = array();
     print_r($files);
     echo "<br>";
+    
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
         }
-        $xmlData = @file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari/$file");
+    
+        // Dosya yolunu belirleme
+        $fileUrl = "https://denemeb2b.noktaelektronik.net/assets/cari/$file";
+        
+        // cURL başlatıyoruz
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $fileUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $xmlData = curl_exec($ch);
+    
+        // Hata kontrolü
+        if(curl_errno($ch)) {
+            echo "cURL Hatası: " . curl_error($ch);
+        }
+        
+        // Yanıtı kontrol et
         if (!empty($xmlData)) {
             $jsonResult[$file] = $xmlData;
         } else {
-            echo "Geçersiz veya boş XML verisi: $file";
+            echo "Geçersiz veya boş XML verisi: $file<br>";
         }
-        
+    
+        // cURL bağlantısını kapat
+        curl_close($ch);
     }
+    
+    // JSON çıktısı
     echo json_encode($jsonResult);
-    // Faturalar klasöründeki dosyaları sil
+    
+    // Dosya silme işlemi
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
         }
         $filePath = "../assets/cari/$file";
         if (is_file($filePath)) {
-            echo "dosya silme işlemi yapıldı";
+            echo "dosya silme işlemi yapıldı: $file<br>";
             //unlink($filePath); // Dosyayı sil
         }
     }
+    
 }
 
 
