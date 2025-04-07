@@ -738,6 +738,8 @@ function cariGonder() {
         return;
     }
     $jsonResult = array();
+    print_r($files);
+    echo "<br>";
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
