@@ -1,5 +1,4 @@
 <?php
-echo "<br>xmlgonder.php icerisindesin  <br>";
 define("DB_SERVER", "noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com");
 define("DB_USERNAME", "noktanetdb");
 define("DB_PASSWORD", "Dell28736.!");
@@ -794,7 +793,7 @@ function cariGonder() {
         }
         $filePath = "../assets/cari/$file";
         if (is_file($filePath)) {
-            echo "dosya silme işlemi yapıldı: $file<br>";
+            //echo "dosya silme işlemi yapıldı: $file<br>";
             //unlink($filePath); // Dosyayı sil
         }
     }
