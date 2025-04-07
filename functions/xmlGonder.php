@@ -732,7 +732,7 @@ function odemeGonder() {
 }
 function cariGonder() {
     global $newDate;
-    $files = scandir("assets/cari/");
+    $files = scandir("../assets/cari/");
     if ($files === false) {
         echo "$newDate: XML dosyaları bulunamadı <br>";
         return;
@@ -751,7 +751,7 @@ function cariGonder() {
         if ($file === '.' || $file === '..') {
             continue;
         }
-        $filePath = "assets/cari/$file";
+        $filePath = "../assets/cari/$file";
         if (is_file($filePath)) {
             echo "dosya silme işlemi yapıldı";
             //unlink($filePath); // Dosyayı sil
