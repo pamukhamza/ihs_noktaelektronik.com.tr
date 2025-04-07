@@ -731,76 +731,29 @@ function odemeGonder() {
 }
 function cariGonder() {
     global $newDate;
-
-    // Dosya dizinini tanımla
-    $localPath = "../assets/cari/";
-    $remoteUrl = "https://denemeb2b.noktaelektronik.net/assets/cari/";
-
-    // Dosyaları tara
-    $files = scandir($localPath);
+    $files = scandir("assets/cari/");
     if ($files === false) {
         echo "$newDate: XML dosyaları bulunamadı <br>";
         return;
     }
-
     $jsonResult = array();
-
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
         }
-
-        $url = $remoteUrl . $file;
-
-        // cURL ile dosya içeriğini al
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Güvenlik için prod ortamda açılmalı
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
-        $xmlData = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            echo "$newDate: $file dosyası okunamadı. Hata: " . curl_error($ch) . "<br>";
-            $jsonResult[$file] = false;
-        } else {
-            echo "$newDate: Yeni Cari $file bulundu.<br>";
-
-            // XML verisini kontrol et
-            libxml_use_internal_errors(true);
-            $xml = simplexml_load_string($xmlData);
-
-            if ($xml === false) {
-                echo "$newDate: XML verisi işlenemedi. Hatalar:<br>";
-                foreach (libxml_get_errors() as $error) {
-                    echo $error->message . "<br>";
-                }
-                $jsonResult[$file] = false;
-            } else {
-                $jsonResult[$file] = json_encode($xml);
-            }
+        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari/$file");
+        $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
+    }
+    echo json_encode($jsonResult);
+    // Faturalar klasöründeki dosyaları sil
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') {
+            continue;
         }
-
-        curl_close($ch);
-    }
-
-    // JSON çıktıyı döndür
-    if (isset($_POST['xml_cari_gonder'])) {
-        echo json_encode($jsonResult);
-    }
-
-    // Dosyaları silme işlemi
-    if (isset($_POST['xml_cari_gonder_sil'])) {
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..') {
-                continue;
-            }
-            $filePath = $localPath . $file;
-            if (is_file($filePath)) {
-                unlink($filePath);
-                echo "$newDate: $file dosyası silindi.<br>";
-            }
+        $filePath = "assets/cari/$file";
+        if (is_file($filePath)) {
+            echo "dosya silme işlemi yapıldı";
+            //unlink($filePath); // Dosyayı sil
         }
     }
 }
