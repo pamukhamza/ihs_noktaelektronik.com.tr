@@ -1,5 +1,4 @@
 <?php
-echo "geldin kanka";
 define("DB_SERVER", "noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com");
 define("DB_USERNAME", "noktanetdb");
 define("DB_PASSWORD", "Dell28736.!");
@@ -229,10 +228,8 @@ function stokMiktar($xmlData) {
         // Execute the update query
         $stmt = $pdo->prepare($updateQuery);
         $stmt->execute();
-        // Log success message
         echo "$newDate: Stok Miktar Tarama Tamamlandı. <br>";
     } catch (Exception $e) {
-        // Log error message
         echo "Error: " . $e->getMessage();
     }
 }
@@ -676,7 +673,6 @@ function getAccountBalanceList($xmlData) {
     $mysqli->close();
     echo "$newDate: Hesap Bakiye Taraması Tamamlandı. <br>";
 }
-
 function faturalariGonder() {
     global $newDate;
     $files = scandir("../assets/faturalar/");
@@ -735,55 +731,53 @@ function odemeGonder() {
 }
 function cariGonder() {
     global $newDate;
-    
-    // Dosyaların bulunduğu dizini kontrol et
-    $files = scandir("../assets/cari/");
+
+    // Dosya dizinini tanımla
+    $localPath = "../assets/cari/";
+    $remoteUrl = "https://denemeb2b.noktaelektronik.net/assets/cari/";
+
+    // Dosyaları tara
+    $files = scandir($localPath);
     if ($files === false) {
         echo "$newDate: XML dosyaları bulunamadı <br>";
         return;
     }
 
-    // JSON sonucu depolayacak dizi
     $jsonResult = array();
 
-    // Dosya döngüsü
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
             continue;
         }
 
-        // cURL ile dosya içeriğini çek
-        $url = "https://denemeb2b.noktaelektronik.net/assets/cari/$file";
+        $url = $remoteUrl . $file;
+
+        // cURL ile dosya içeriğini al
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        // SSL doğrulamasını kapat (güvenlik açısından dikkatli ol! - üretim ortamlarında devre dışı bırakmamalısınız)
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Güvenlik için prod ortamda açılmalı
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-        // Dosya içeriğini al
         $xmlData = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            // cURL hatasını yakala
             echo "$newDate: $file dosyası okunamadı. Hata: " . curl_error($ch) . "<br>";
             $jsonResult[$file] = false;
         } else {
-            // Başarılıysa, XML verisini işleyelim
             echo "$newDate: Yeni Cari $file bulundu.<br>";
 
-            // XML verisini parse et
+            // XML verisini kontrol et
             libxml_use_internal_errors(true);
             $xml = simplexml_load_string($xmlData);
+
             if ($xml === false) {
-                echo "$newDate: XML verisi işlenemedi. Hata:<br>";
-                foreach(libxml_get_errors() as $error) {
+                echo "$newDate: XML verisi işlenemedi. Hatalar:<br>";
+                foreach (libxml_get_errors() as $error) {
                     echo $error->message . "<br>";
                 }
                 $jsonResult[$file] = false;
             } else {
-                // XML verisini JSON formatında döndürelim
                 $jsonResult[$file] = json_encode($xml);
             }
         }
@@ -791,25 +785,26 @@ function cariGonder() {
         curl_close($ch);
     }
 
-    // Eğer 'xml_cari_gonder' parametresi ile verileri göndereceksek, JSON formatında cevap döndür
+    // JSON çıktıyı döndür
     if (isset($_POST['xml_cari_gonder'])) {
         echo json_encode($jsonResult);
     }
 
-    // Eğer 'xml_cari_gonder_sil' parametresi varsa, dosyaları sil
+    // Dosyaları silme işlemi
     if (isset($_POST['xml_cari_gonder_sil'])) {
         foreach ($files as $file) {
             if ($file === '.' || $file === '..') {
                 continue;
             }
-            $filePath = "../assets/cari/$file";
+            $filePath = $localPath . $file;
             if (is_file($filePath)) {
-                unlink($filePath);  // Dosyayı sil
+                unlink($filePath);
                 echo "$newDate: $file dosyası silindi.<br>";
             }
         }
     }
 }
+
 
 
 
