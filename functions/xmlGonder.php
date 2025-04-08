@@ -759,7 +759,7 @@ function cariGonder() {
             } else {
                 $xmlArray[$file] = $xml; // İstersen json_encode($xml) de yapabilirsin
 
-            print_r($xmlArray[$file]); // XML içeriğini yazdır
+            print($xmlArray[$file]); // XML içeriğini yazdır
                 echo "$file başarıyla işlendi.<br>";
             }
         }
