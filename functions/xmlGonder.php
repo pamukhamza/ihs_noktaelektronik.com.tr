@@ -481,7 +481,7 @@ function odemeGonder() {
         if ($file === '.' || $file === '..') {
             continue;
         }
-        $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.net/assets/carihareket/$file");
+        $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.net/assets/pos/$file");
         $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
         echo "<br>$newDate: Yeni Cari Hareket $file gönderildi.";
     }
