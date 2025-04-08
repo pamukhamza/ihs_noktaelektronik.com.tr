@@ -1,8 +1,8 @@
 <?php
 define("DB_SERVER", "noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com");
-define("DB_USERNAME", "noktanetdb");
+define("DB_USERNAME", "nokta");
 define("DB_PASSWORD", "Dell28736.!");
-define("DB_NAME", "nokta");
+define("DB_NAME", "noktanetdb");
 $newDate = date('Y-m-d H:i:s', strtotime('+3 hours'));
 // mb_convert_encoding() kullanarak Türkçe karakterleri düzgün şekilde dönüştürmek
 function duzenleString($str) {
