@@ -768,6 +768,7 @@ function cariGonder() {
 }
 
 function cariBLKODU($newBlkodu, $cariKodu) {
+    echo"BLKODU ALANINA GİRİŞ YAPTIN";
     $mysqli = connectToDatabase();
 
     // Önce ilgili kaydı sorgula
