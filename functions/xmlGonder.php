@@ -483,7 +483,7 @@ function odemeGonder() {
         }
         $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.net/assets/carihareket/$file");
         $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
-        echo "$newDate: Yeni Cari Hareket $file gönderildi. <br>";
+        echo "<br>$newDate: Yeni Cari Hareket $file gönderildi.";
     }
     echo json_encode($jsonResult);
     // Faturalar klasöründeki dosyaları sil
