@@ -739,33 +739,16 @@ function cariGonder() {
         return;
     }
 
-    $jsonResult = array();
+    $xmlArray = array(); // Buraya XML içerikleri gelecek
 
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') continue;
 
-        $fileUrl = "https://denemeb2b.noktaelektronik.net/assets/cari/$file";
+        $filePath = $folderPath . $file;
 
-        // cURL işlemi
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $fileUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        $xmlData = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            echo "cURL Hatası ($file): " . curl_error($ch) . "<br>";
-            curl_close($ch);
-            continue;
-        }
-
-        curl_close($ch);
-
-        // XML verisini kontrol et
-        if (!empty($xmlData)) {
+        if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'xml') {
             libxml_use_internal_errors(true);
-            $xml = simplexml_load_string($xmlData);
+            $xml = simplexml_load_file($filePath);
 
             if ($xml === false) {
                 echo "XML hatası: $file <br>";
@@ -774,23 +757,15 @@ function cariGonder() {
                 }
                 libxml_clear_errors();
             } else {
-                // JSON'a çevir
-                $jsonResult[$file] = json_encode($xml, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+                $xmlArray[$file] = $xml; // İstersen json_encode($xml) de yapabilirsin
                 echo "$file başarıyla işlendi.<br>";
             }
-        } else {
-            echo "Geçersiz veya boş XML verisi: $file<br>";
         }
     }
 
-    // JSON çıktısını göstermek istersen:
-    // echo "<pre>" . print_r($jsonResult, true) . "</pre>";
-
-    // JSON çıktısını başka bir dosyaya kaydetmek istersen:
-    $outputFile = $folderPath . "cari_json_result.json";
-    file_put_contents($outputFile, json_encode($jsonResult, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-    echo "<br>JSON çıktısı '$outputFile' dosyasına kaydedildi.<br>";
+    return $xmlArray;
 }
+
 
 
 
