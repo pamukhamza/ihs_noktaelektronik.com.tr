@@ -735,11 +735,11 @@ function cariGonder() {
     $files = scandir($folderPath);
 
     if ($files === false) {
-        echo "$newDate: XML dosyaları bulunamadı <br>";
+        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
         return;
     }
 
-    $xmlArray = array(); // Buraya XML içerikleri gelecek
+    $xmlArray = array();
 
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') continue;
@@ -751,19 +751,20 @@ function cariGonder() {
             $xml = simplexml_load_file($filePath);
 
             if ($xml === false) {
-                echo "XML hatası: $file <br>";
+                $hatalar = [];
                 foreach (libxml_get_errors() as $error) {
-                    echo htmlspecialchars($error->message) . "<br>";
+                    $hatalar[] = htmlspecialchars($error->message);
                 }
                 libxml_clear_errors();
+                $xmlArray[$file] = ["hata" => $hatalar];
             } else {
-                $xmlArray[$file] = $xml; // İstersen json_encode($xml) de yapabilirsin
-                echo "$file başarıyla işlendi.<br>";
+                $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
             }
         }
     }
 
-    return $xmlArray;
+    header('Content-Type: application/json');
+    echo json_encode($xmlArray);
 }
 
 
