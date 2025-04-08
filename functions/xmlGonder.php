@@ -758,8 +758,6 @@ function cariGonder() {
                 libxml_clear_errors();
             } else {
                 $xmlArray[$file] = $xml; // İstersen json_encode($xml) de yapabilirsin
-
-            print_f($xmlArray[$file]); // XML içeriğini yazdır
                 echo "$file başarıyla işlendi.<br>";
             }
         }
