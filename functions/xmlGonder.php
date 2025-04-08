@@ -768,36 +768,82 @@ function cariGonder() {
 }
 
 function cariBLKODU($newBlkodu, $cariKodu) {
-    echo"BLKODU ALANINA GİRİŞ YAPTIN";
-    $mysqli = connectToDatabase();
+    echo "BLKODU ALANINA GİRİŞ YAPTIN<br>";
 
-    // Önce ilgili kaydı sorgula
+    $mysqli = connectToDatabase();
+    if (!$mysqli) {
+        echo "Veritabanına bağlanılamadı.<br>";
+        return;
+    }
+
+    echo "Veritabanı bağlantısı başarılı.<br>";
+
+    // Sorgu hazırlama
     $selectQuery = "SELECT id, BLKODU FROM uyeler WHERE muhasebe_kodu = ? LIMIT 1";
     $stmt = $mysqli->prepare($selectQuery);
-    $stmt->bind_param("s", $cariKodu);
-    $stmt->execute();
+    if (!$stmt) {
+        echo "Sorgu hazırlanamadı: " . $mysqli->error . "<br>";
+        return;
+    }
+
+    echo "Sorgu hazırlandı.<br>";
+
+    // Parametre bağlama
+    if (!$stmt->bind_param("s", $cariKodu)) {
+        echo "Parametre bağlama hatası: " . $stmt->error . "<br>";
+        return;
+    }
+
+    echo "Parametre bağlandı.<br>";
+
+    // Sorguyu çalıştır
+    if (!$stmt->execute()) {
+        echo "Sorgu çalıştırılamadı: " . $stmt->error . "<br>";
+        return;
+    }
+
+    echo "Sorgu başarıyla çalıştırıldı.<br>";
+
     $result = $stmt->get_result();
+    if (!$result) {
+        echo "Sonuç alınamadı: " . $stmt->error . "<br>";
+        return;
+    }
 
     if ($row = $result->fetch_assoc()) {
-        // Eğer BLKODU boşsa, güncelle
+        echo "Kayıt bulundu: ID = " . $row['id'] . ", BLKODU = " . $row['BLKODU'] . "<br>";
+
         if (empty($row['BLKODU'])) {
             $updateQuery = "UPDATE uyeler SET BLKODU = ? WHERE id = ?";
             $updateStmt = $mysqli->prepare($updateQuery);
-            $updateStmt->bind_param("si", $newBlkodu, $row['id']);
-            $updateStmt->execute();
-            $updateStmt->close();
+            if (!$updateStmt) {
+                echo "Güncelleme sorgusu hazırlanamadı: " . $mysqli->error . "<br>";
+                return;
+            }
 
-            echo "BLKODU başarıyla güncellendi.";
+            if (!$updateStmt->bind_param("si", $newBlkodu, $row['id'])) {
+                echo "Güncelleme parametre bağlama hatası: " . $updateStmt->error . "<br>";
+                return;
+            }
+
+            if (!$updateStmt->execute()) {
+                echo "Güncelleme sorgusu çalıştırılamadı: " . $updateStmt->error . "<br>";
+            } else {
+                echo "BLKODU başarıyla güncellendi.<br>";
+            }
+
+            $updateStmt->close();
         } else {
-            echo "BLKODU zaten mevcut, güncellenmedi.";
+            echo "BLKODU zaten mevcut, güncellenmedi.<br>";
         }
     } else {
-        echo "muhasebe_kodu ile eşleşen kayıt bulunamadı.";
+        echo "muhasebe_kodu ile eşleşen kayıt bulunamadı.<br>";
     }
 
     $stmt->close();
     $mysqli->close();
 }
+
 
 
 function cariGonderUpdate($xmlData) {
