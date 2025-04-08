@@ -471,31 +471,44 @@ function faturalariGonder() {
 }
 function odemeGonder() {
     global $newDate;
-    $files = scandir("../assets/pos/");
+    $folderPath = "../assets/pos/";
+    $files = scandir($folderPath);
+
     if ($files === false) {
-        echo "$newDate: XML dosyaları bulunamadı <br>";
+        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
         return;
     }
-    $jsonResult = array();
+
+    $xmlArray = array();
+
     foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
+        if ($file === '.' || $file === '..') continue;
+
+        $filePath = $folderPath . $file;
+
+        if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'xml') {
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_file($filePath);
+
+            if ($xml === false) {
+                $hatalar = [];
+                foreach (libxml_get_errors() as $error) {
+                    $hatalar[] = htmlspecialchars($error->message);
+                }
+                libxml_clear_errors();
+                $xmlArray[$file] = ["hata" => $hatalar];
+            } else {
+                $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
+                $filePath = "../assets/pos/$file";
+                if (is_file($filePath)) {
+                    unlink($filePath); // Dosyayı sil
+                }
+            }
         }
-        $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.net/assets/pos/$file");
-        $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
-        echo "<br>$newDate: Yeni Cari Hareket $file gönderildi.";
     }
-    echo json_encode($jsonResult);
-    // Faturalar klasöründeki dosyaları sil
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $filePath = "../assets/pos/$file";
-        if (is_file($filePath)) {
-           // unlink($filePath); // Dosyayı sil
-        }
-    }
+
+    header('Content-Type: application/json');
+    echo json_encode($xmlArray);
 }
 
 function cariGonder() {
