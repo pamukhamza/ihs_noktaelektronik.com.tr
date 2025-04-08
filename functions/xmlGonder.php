@@ -767,26 +767,38 @@ function cariGonder() {
     echo json_encode($xmlArray);
 }
 
+function cariBLKODU($newBlkodu, $cariKodu) {
+    $mysqli = connectToDatabase();
 
+    // Önce ilgili kaydı sorgula
+    $selectQuery = "SELECT id, BLKODU FROM uyeler WHERE muhasebe_kodu = ? LIMIT 1";
+    $stmt = $mysqli->prepare($selectQuery);
+    $stmt->bind_param("s", $cariKodu);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    if ($row = $result->fetch_assoc()) {
+        // Eğer BLKODU boşsa, güncelle
+        if (empty($row['BLKODU'])) {
+            $updateQuery = "UPDATE uyeler SET BLKODU = ? WHERE id = ?";
+            $updateStmt = $mysqli->prepare($updateQuery);
+            $updateStmt->bind_param("si", $newBlkodu, $row['id']);
+            $updateStmt->execute();
+            $updateStmt->close();
 
-
-
-function cariBLKODU($gelenveri){
-    preg_match('/MBLKODU=(\d+)/', $gelenveri, $matches);
-    if (isset($matches[1])) {
-        $blkodu = $matches[1];
-        $mysqli = connectToDatabase();
-        $updateQuery = "UPDATE uyeler SET BLKODU = ? WHERE id = (SELECT MAX(id) FROM uyeler)";
-        $stmt = $mysqli->prepare($updateQuery);
-        $stmt->bind_param("i", $blkodu);
-        $stmt->execute();
-        $stmt->close();
-        $mysqli->close();
+            echo "BLKODU başarıyla güncellendi.";
+        } else {
+            echo "BLKODU zaten mevcut, güncellenmedi.";
+        }
     } else {
-        echo "MBLKODU bulunamadı.";
+        echo "muhasebe_kodu ile eşleşen kayıt bulunamadı.";
     }
+
+    $stmt->close();
+    $mysqli->close();
 }
+
+
 function cariGonderUpdate($xmlData) {
     global $newDate;
     $mysqli = connectToDatabase();
@@ -966,7 +978,10 @@ $xml_data_account_balance_list = isset($_POST['xml_data_cari_bakiye_liste']) ? $
 $xml_siparis_gonder = isset($_POST['xml_siparis_gonder']) ? $_POST['xml_siparis_gonder'] : '';
 $xml_odeme_sorgula = isset($_POST['xml_odeme_sorgula']) ? $_POST['xml_odeme_sorgula'] : '';
 $xml_cari_gonder = isset($_POST['xml_cari_gonder']) ? $_POST['xml_cari_gonder'] : '';
+
 $xml_cari_blkodu = isset($_POST['xml_cari_blkodu']) ? $_POST['xml_cari_blkodu'] : '';
+$xml_cari_kodu   = isset($_POST['xml_cari_kodu']) ? $_POST['xml_cari_kodu'] : '';
+
 $xml_cari_gonder_guncelle = isset($_POST['xml_cari_gonder_guncelle']) ? $_POST['xml_cari_gonder_guncelle'] : '';
 
 if (!empty($xml_data_stock_inventory)) {
@@ -983,7 +998,9 @@ elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_dat
 elseif (!empty($xml_siparis_gonder)) { faturalariGonder(); }
 elseif (!empty($xml_odeme_sorgula)) { odemeGonder(); }
 elseif (!empty($xml_cari_gonder)) { cariGonder(); }
-elseif (!empty($xml_cari_blkodu)) { cariBLKODU($xml_cari_blkodu); }
+
+
+if (!empty($xml_cari_blkodu) && !empty($xml_cari_kodu)) {cariBLKODU($xml_cari_blkodu, $xml_cari_kodu);}
 elseif (!empty($xml_cari_gonder_guncelle)) { cariGonderUpdate($xml_cari_gonder_guncelle); }
 elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
 ?>
