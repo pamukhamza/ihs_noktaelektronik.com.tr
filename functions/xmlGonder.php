@@ -94,7 +94,6 @@ function odemeGonder() {
     header('Content-Type: application/json');
     echo json_encode($xmlArray);
 }
-
 function cariGonder() {
     global $newDate;
     $folderPath = "../assets/cari/";
@@ -199,5 +198,4 @@ if (!empty($xml_siparis_gonder)) { faturalariGonder(); }
 elseif (!empty($xml_odeme_sorgula)) { odemeGonder(); }
 elseif (!empty($xml_cari_gonder)) { cariGonder(); }
 elseif (!empty($xml_cari_blkodu) && !empty($xml_cari_kodu)) {cariBLKODU($xml_cari_blkodu, $xml_cari_kodu);}
-
 ?>
