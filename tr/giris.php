@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                                 Sorularınız için bize aşağıdaki mail adresinden ulaşabilirsiniz.
                                 <span style="color:black;font-weight: bold">destek@noktaelektronik.com.tr</span><br>
                             </div>
-                            <a href="tr/teknik-destek" target="_blank" class="btn btn-block btn-general btn-primary py-4 mt-5 w-100">Teknik Destek Sayfası</a>
+                            <a href="tr/tdp" target="_blank" class="btn btn-block btn-general btn-primary py-4 mt-5 w-100">Teknik Destek Sayfası</a>
                         </div>
                     </div>
                 </div>
