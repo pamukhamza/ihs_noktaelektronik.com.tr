@@ -103,12 +103,9 @@ function ebultenKaydet() {
     }
 }
 if (isset($_POST['takip_kodu'])) {
+    global $db;
     $takip_kodu = controlInput($_POST['takip_kodu']);
-
-    $q = $db->prepare("SELECT * FROM nokta_teknik_destek WHERE takip_kodu = :takip_kodu");
-    $q->execute(['takip_kodu' => $takip_kodu]);
-    $results = $q->fetchAll();
-
+    $results = $db->fetchAll("SELECT * FROM nokta_teknik_destek WHERE takip_kodu = :takip_kodu", ['takip_kodu' => $takip_kodu]);
 
     if ($results) {
 
@@ -126,20 +123,12 @@ if (isset($_POST['takip_kodu'])) {
             echo '<thead><tr><th>Ürün Kodu</th><th>Durumu</th><th>Yapılan İşlemler</th></tr></thead>';
             echo '<tbody>';
 
-            $q = $db->prepare("SELECT * FROM teknik_destek_urunler WHERE tdp_id = :tdp_id");
-            $q->execute(['tdp_id' => $tdp_id]);
-            $results = $q->fetchAll();
+            $q = $db->fetchAll("SELECT * FROM teknik_destek_urunler WHERE tdp_id = :tdp_id", ['tdp_id' => $tdp_id]);
 
-            // Iterate through each product code
-            foreach ($results as $key => $result) {
-                // Fetch the status
-                $stmt = $db->prepare("SELECT durum FROM nokta_teknik_durum WHERE id = :id");
-                $stmt->execute(['id' => $result["urun_durumu"]]);
-                $durum = $stmt->fetch(PDO::FETCH_ASSOC);
+            foreach ($q as $key => $result) {
+                $durum = $db->fetch("SELECT durum FROM nokta_teknik_durum WHERE id = :id", ['id' => $result["urun_durumu"]]);
 
-                // Display the row
                 if ($durum) {
-                    // Display the row
                     echo '<tr>';
                     echo '<td>' . $result["urun_kodu"] . '</td>';
                     echo '<td>' . $durum['durum'] . '</td>';
@@ -154,7 +143,6 @@ if (isset($_POST['takip_kodu'])) {
                     }
                     echo '</tr>';
                 } else {
-                    // Handle the case where $durum is empty or false
                     echo '<tr>';
                     echo '<td>' . $result["urun_kodu"] . '</td>';
                     echo '<td>Bilinmiyor</td>'; // or any default value you want to show
@@ -163,7 +151,6 @@ if (isset($_POST['takip_kodu'])) {
             }
 
             echo '</div>';
-
             echo '</tbody>';
             echo '</table>';
         }

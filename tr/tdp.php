@@ -284,7 +284,6 @@ $database = new Database();
      });
 </script>
 <script>
-    // JavaScript to show/hide kargo_firmasi based on gonderim_sekli value
     document.addEventListener("DOMContentLoaded", function() {
         var gonderimSekliSelect = document.getElementById("gonderim_sekli");
         var kargoFirmasiDiv = document.getElementById("kargo_firmasi_div");
@@ -320,17 +319,14 @@ $database = new Database();
             var newRow = $('#input-row-template').clone().removeAttr('id').removeAttr('style');
             $('#input-rows-container').append(newRow);
         }
-
         // İlk satır ekleme olayı dinleyicisi
         $(document).on('click', '.add-row-btn', function() {
             addInputRow();
         });
-
         // Satır silme olayı dinleyicisi
         $(document).on('click', '.remove-row-btn', function() {
             $(this).closest('.row').remove();
         });
-
         $('#applicationForm').submit(function(e) {
             e.preventDefault();
 

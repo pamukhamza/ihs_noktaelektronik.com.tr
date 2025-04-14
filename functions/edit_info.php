@@ -180,7 +180,7 @@ function ebultenKaydet() {
     }
 }
 function editAriza() {
-    $db = new Database(); // Database sınıfı örneği
+    $db = new Database();
     $id = isset($_POST['id']) && $_POST['id'] !== '' ? controlInput($_POST['id']) : null;
     $musteri = controlInput($_POST['musteri']);
     $tel = controlInput($_POST['tel']);
@@ -246,7 +246,6 @@ function editAriza() {
                 VALUES (:uye_id, :takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
         } else {
             $params['teslim_alan'] = $teslim_alan;
-
             $query = "INSERT INTO nokta_teknik_destek 
                 (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, teslim_alan, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
                 VALUES (:takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :teslim_alan, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
@@ -275,7 +274,6 @@ function editAriza() {
 
             $db->insert($urun_query, $urun_params);
         }
-
         echo $takip_kodu;
 
         // Mail gönder
