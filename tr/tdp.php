@@ -109,8 +109,8 @@ $database = new Database();
                         <div class="row g-3">
                             <div class="col-sm-12">
                                 <label for="musteri" class="form-label">Müşteri(Firma Bilgisi)</label>
-                                <input type="text" class="form-control" id="musteri_id" hidden value="<?php if($_SESSION('id')){ echo $_SESSION['id'];} ?>">
-                                <input type="text" class="form-control" id="musteri"  required>
+                                <input type="text" class="form-control" id="musteri_id" hidden value="<?php if($_SESSION['id']){ echo $_SESSION['id'];} ?>">
+                                <input type="text" class="form-control" id="musteri" value="<?php if($_SESSION['id']){ echo $_SESSION['firma'];} ?>" required>
                                 <div class="invalid-feedback">Geçerli ad giriniz!</div>
                             </div>
                             <div class="col-sm-6">
