@@ -1,6 +1,7 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
+sessionControl()
 ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);   
 $currentPage = 'bilgiler';
