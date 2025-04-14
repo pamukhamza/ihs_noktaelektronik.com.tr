@@ -60,6 +60,7 @@ $database = new Database();
                         </thead>
                         <tbody>
                         <?php
+                        if($_SESSİON['id']){
                             $uye_id = $_SESSION['id'];
 
                             $c = $database->fetchAll("SELECT * FROM nokta_teknik_destek WHERE uye_id = $uye_id AND SILINDI = 0");
@@ -71,7 +72,7 @@ $database = new Database();
                                     <td class="text-center border-right"><?= $row['yapilan_islemler']; ?></td>
                                     <td class="text-center border-right"><?= $row['tarih']; ?></td>
                                 </tr>
-                        <?php } ?>
+                        <?php }} ?>
                         </tbody>
                     </table>
                 </div>
@@ -234,17 +235,17 @@ $database = new Database();
                 <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-sm-12">
-                                <?php
-                                    $text_to_display = $user_language == 'en' ? 'sablon_yazi' : 'sablon_baslik';
-                                    $q = $db->prepare("SELECT * FROM nokta_sablonlar WHERE id = 5 "); $q -> execute(  );
-                                    if ( $d = $q->fetchAll() ){foreach( $d as $k => $row ) { 
-                                ?>
-                                    <p><?= $row["$text_to_display"]; ?></p>
-                                <?php }} ?>
+                                    <p>1. Servis süresi en fazla 30 iş günüdür ve 90 gün takibi yapılmayan ürünler için şirketimiz hiçbir sorumluluk kabul etmez.
+                                        <br>2. Garanti süreleri, Fatura düzenleme tarihinden itibaren başlar. Bunun dışında belirtilen Üretici Garantisi ancak üreticinin tespit ettiği koşullar çerçevesinde geçerlidir. Nokta Elektronik bu koşulları aynen müşteriye yansıtır.
+                                        <br>3. Kurulum sırasında oluşan fiziksel ve elektriksel hatalar veya müşteriden kaynaklanan diğer donanım arızalarından dolayı servise gelmiş ürün garanti dışıdır ve servis ücreti alınır.
+                                        <br>4. Teknik servis ücreti cari hesaba dahil olmayıp peşin olarak tahsil edilir.
+                                        <br>5. Garanti harici tamir edilen ürünler teslimden itibaren 3 ay garantilidir.
+                                        <br>6. Nokta Elektronik arızalı ürün servise geldiği anda, eğer kullanıcı hatasını tanımlayabiliyorsa, bunu belirtir ancak ürün daha sonraki test aşamaların da garanti dışı tutulabilir. İstenildiğinde Nokta Elektronik bu tür arızalar için Teknik Rapor verir.
+                                        <br>7. Bu formu imzalayarak teslim eden şirket ve birey bu koşulları kabul eder. Bu ürünler firmamızın stoğundan çıktığı andan itibaren her türlü risk müşteriye aittir.</p>
                             </div>
                         </div>
                         <hr class="my-4">
-                        <button class="w-100 btn btn-primary btn-lg sozOnay" style="background-color:#f29720; border-color:#f29720"><?= translate("sozlesmeyi_okudum_onayliyorum", $lang, $user_language); ?></button>
+                        <button class="w-100 btn btn-primary btn-lg sozOnay" style="background-color:#f29720; border-color:#f29720">sozlesmeyi_okudum_onayliyorum</button>
                 </div>
             </div>
         </div>
