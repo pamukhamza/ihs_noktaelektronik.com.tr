@@ -462,7 +462,7 @@ $database = new Database();
             var takip_kodu = $("#takip_kodu").val();
             $.ajax({
                 type: "POST",
-                url: "function.php",
+                url: "functions/functions.php",
                 data: { takip_kodu: takip_kodu},
                 success: function(response) {
                     $("#bilgi").html(response);
