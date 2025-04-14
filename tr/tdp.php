@@ -368,7 +368,7 @@ $database = new Database();
 
             $.ajax({
                 type: 'POST',
-                url: 'php/edit_info.php',
+                url: 'functions/edit_info.php',
                 data: formData,
                 processData: false,
                 contentType: false,
