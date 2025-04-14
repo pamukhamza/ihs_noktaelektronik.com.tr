@@ -1,6 +1,7 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
+sessionControl();
 
 $currentPage = 'sepet';
 $template = new Template('Nokta - Sepetim', $currentPage);

@@ -2,6 +2,7 @@
 require '../functions/admin_template.php';
 require '../functions/functions.php';
 
+sessionControl();
 $currentPage = 'cari-islem-gecmisi';
 $template = new Template('Nokta B2B - Cari İşlem Geçmişi', $currentPage);
 

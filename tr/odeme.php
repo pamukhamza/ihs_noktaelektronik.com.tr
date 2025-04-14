@@ -2,6 +2,7 @@
 
 require '../functions/admin_template.php';
 require '../functions/functions.php';
+sessionControl();
 
 $currentPage = 'odeme';
 $template = new Template('Nokta Elektronik - Ödeme', $currentPage);

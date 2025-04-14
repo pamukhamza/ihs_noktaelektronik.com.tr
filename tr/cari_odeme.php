@@ -1,8 +1,7 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-ini_set('display_errors', 1);  // Hataları ekrana göster
-error_reporting(E_ALL);  
+sessionControl();
 $currentPage = 'cari_odeme';
 $template = new Template('Nokta - Ödeme', $currentPage);
 

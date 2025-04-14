@@ -1,6 +1,7 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
+sessionControl();
 
 $currentPage = 'kuponlarim';
 $template = new Template('Nokta B2B - Kuponlarım', $currentPage);
