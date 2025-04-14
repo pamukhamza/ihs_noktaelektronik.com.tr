@@ -224,18 +224,18 @@ function editAriza() {
         }
 
         $params = [
-            ':takip_kodu' => $takip_kodu,
-            ':fatura_no' => $fatura_no,
-            ':musteri' => $musteri,
-            ':tel' => $tel,
-            ':mail' => $email,
-            ':adres' => $adres,
-            ':aciklama' => $aciklama,
-            ':teslim_eden' => $ad_soyad,
-            ':SILINDI' => $SILINDI,
-            ':gonderim_sekli' => $gonderim_sekli,
-            ':kargo_firmasi' => $kargo_firmasi,
-            ':tekniker' => $tekniker
+            'takip_kodu' => $takip_kodu,
+            'fatura_no' => $fatura_no,
+            'musteri' => $musteri,
+            'tel' => $tel,
+            'mail' => $email,
+            'adres' => $adres,
+            'aciklama' => $aciklama,
+            'teslim_eden' => $ad_soyad,
+            'SILINDI' => $SILINDI,
+            'gonderim_sekli' => $gonderim_sekli,
+            'kargo_firmasi' => $kargo_firmasi,
+            'tekniker' => $tekniker
         ];
 
         if (!is_null($id)) {
@@ -245,7 +245,7 @@ function editAriza() {
                 (uye_id, takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
                 VALUES (:uye_id, :takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
         } else {
-            $params[':teslim_alan'] = $teslim_alan;
+            $params['teslim_alan'] = $teslim_alan;
 
             $query = "INSERT INTO nokta_teknik_destek 
                 (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, teslim_alan, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
@@ -261,12 +261,12 @@ function editAriza() {
             $adet = isset($adet_array[$index]) ? $adet_array[$index] : '';
 
             $urun_params = [
-                ':tdp_id' => $lastInsertId,
-                ':urun_kodu' => $urun_kodu,
-                ':seri_no' => $seri_no,
-                ':adet' => $adet,
-                ':urun_durumu' => "1",
-                ':SILINDI' => $SILINDI
+                'tdp_id' => $lastInsertId,
+                'urun_kodu' => $urun_kodu,
+                'seri_no' => $seri_no,
+                'adet' => $adet,
+                'urun_durumu' => "1",
+                'SILINDI' => $SILINDI
             ];
 
             $urun_query = "INSERT INTO teknik_destek_urunler 
