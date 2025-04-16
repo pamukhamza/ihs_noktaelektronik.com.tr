@@ -27,7 +27,7 @@ if(isset($_POST["cariOdeme"])){
 		"lang" => $_POST["lang"],
 	];
 	$verimizB64 = base64_encode(json_encode($verimiz));
-	$gidesun = "https://denemeb2b.noktaelektronik.net/functions/siparis/kuveyt_sip_olustur.php?cariveri=" .$verimizB64;
+	$gidesun = "https://noktaelektronik.com.tr/functions/siparis/kuveyt_sip_olustur.php?cariveri=" .$verimizB64;
 	$Name=$_POST["cardName"];
 	$CardNumber=$_POST["cardNumber"]; // 16 haneli olarak
 	$CardExpireDateMonth=$_POST["expMonth"]; // iki hane olarak kartın ay bilgisi
@@ -38,7 +38,7 @@ if(isset($_POST["cariOdeme"])){
 	$CustomerId = "93981545";// Bankadaki müsteri numarası
 	$MerchantId = "61899"; //Sanal pos mağaza numarası, başvuru onayıyla işyerine gönderilir.
 	$OkUrl = $gidesun; //Basarili sonuç alinirsa, yönledirelecek sayfa
-	$FailUrl = "https://denemeb2b.noktaelektronik.net/tr/cariodeme";//Basarisiz sonuç alinirsa, yönledirelecek sayfa
+	$FailUrl = "https://noktaelektronik.com.tr/tr/cariodeme";//Basarisiz sonuç alinirsa, yönledirelecek sayfa
 	$UserName="kadirbabur"; // https://kurumsal.kuveytturk.com.tr adresinde Kullanıcı İşlemleri - Kullanıcı Ekle alanında işyeri tarafından olusturulan api rolünde kullanici adı
 	$Password="Dell28736.!";// api rolünde kullanici adının sifresi
 	$HashedPassword = base64_encode(sha1($Password,"ISO-8859-9")); //md5($Password);
@@ -126,7 +126,7 @@ else {
 	$stmt->execute(array(':uye_id' => $_POST["uye_id"], ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $_POST["toplam"], ':basarili' => $basarili));
 
 	$verimizB64 = base64_encode(json_encode($verimiz));
-	$gidesun = "https://denemeb2b.noktaelektronik.net/functions/siparis/kuveyt_sip_olustur.php?veri=" .$verimizB64;
+	$gidesun = "https://noktaelektronik.com.tr/functions/siparis/kuveyt_sip_olustur.php?veri=" .$verimizB64;
 		$Name=$_POST["cardName"];
 		$CardNumber=$_POST["cardNumber"]; // 16 haneli olarak
 		$CardExpireDateMonth=$_POST["expMonth"]; // iki hane olarak kartın ay bilgisi
@@ -137,7 +137,7 @@ else {
         $CustomerId = "93981545";// Bankadaki müsteri numarası
         $MerchantId = "61899"; //Sanal pos mağaza numarası, başvuru onayıyla işyerine gönderilir. 
         $OkUrl = $gidesun; //Basarili sonuç alinirsa, yönledirelecek sayfa
-		$FailUrl = "https://denemeb2b.noktaelektronik.net/tr/sepet";//Basarisiz sonuç alinirsa, yönledirelecek sayfa
+		$FailUrl = "https://noktaelektronik.com.tr/tr/sepet";//Basarisiz sonuç alinirsa, yönledirelecek sayfa
         $UserName="kadirbabur"; // https://kurumsal.kuveytturk.com.tr adresinde Kullanıcı İşlemleri - Kullanıcı Ekle alanında işyeri tarafından olusturulan api rolünde kullanici adı
 		$Password="Dell28736.!";// api rolünde kullanici adının sifresi
 		$HashedPassword = base64_encode(sha1($Password,"ISO-8859-9")); //md5($Password);	
