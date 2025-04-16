@@ -2,7 +2,7 @@
 require_once "db.php";
 $db = new Database();
 function sessionControl() {
-    if (!isset($_SESSION['id'])) {
+    if (!isset($_SESSION["user_session"]['id'])) {
         header("Location: giris.php");
         exit(); // Yönlendirmeden sonra kodun çalışmaması için
     }
