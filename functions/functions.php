@@ -2,11 +2,12 @@
 require_once "db.php";
 $db = new Database();
 function sessionControl() {
-    if (!isset($_SESSION["user_session"]['id'])) {
+    if (!isset($_SESSION["user_session"]) || !isset($_SESSION["user_session"]["id"])) {
         header("Location: giris.php");
-        exit(); // Yönlendirmeden sonra kodun çalışmaması için
+        exit();
     }
 }
+
 // uploadImageToS3 fonksiyonunu dosya yolu ile yükleme için düzenleyin
 function uploadImageToS3($file_path, $upload_path, $s3Client, $bucket) {
     try {
