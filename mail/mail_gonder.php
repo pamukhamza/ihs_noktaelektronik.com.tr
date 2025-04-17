@@ -18,7 +18,7 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
         $mail->SMTPSecure = 'ssl'; // Enable TLS encryption, `ssl` also accepted
         $mail->Port = 465; // TCP port to connect to veya 587
         $mail->CharSet = 'UTF-8';
-        $mail->Encoding = 'base64';
+        $mail->Encoding = 'base64'; 
         //Recipients
         $mail->setFrom('noktab2b@noktaelektronik.net', $mailbaslik);
         $mail->addAddress($alici); // Add a recipient

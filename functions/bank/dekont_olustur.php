@@ -49,7 +49,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         $pdf->SetFont('dejavusans', '', 12);
 
         // Add company logo
-        $logo_path = 'https://noktaelektronik.com.tr/assets/logo_new.png';
+        $logo_path = __DIR__ . '/../../assets/logo_new.png';
         if (file_exists($logo_path)) {
             $pdf->Image($logo_path, 10, 20, 40);
         }
