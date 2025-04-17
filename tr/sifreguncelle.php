@@ -103,11 +103,7 @@ error_reporting(0);
                     if (response.includes("successfully")) {
                         $('#passwordForm')[0].reset();
                     }
-                },
-
-                error: function() {
-                    alert("An error occurred during the AJAX request.");
-                },
+                }
                 complete: function() {
                     // İşlem tamamlanınca butonu tekrar aktif et
                     submitButton.prop('disabled', false).text('Gönder');
