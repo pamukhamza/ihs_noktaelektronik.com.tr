@@ -277,8 +277,8 @@ function editAriza() {
         echo $takip_kodu;
 
         // Mail gönder
-        //$mail_icerik = arizaKayitMail($musteri, $takip_kodu);
-        //mailGonder($email, 'Arıza Kaydınız Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+        $mail_icerik = arizaKayitMail($musteri, $takip_kodu);
+        mailGonder($email, 'Arıza Kaydınız Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
     } else {
         http_response_code(400);
         exit();
