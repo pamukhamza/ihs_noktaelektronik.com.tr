@@ -1372,16 +1372,17 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                     updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, 0);
                 }
             }
-            
+
             header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-            $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
-            mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
             $pos_id = 4;
             $basarili = 1;
             $sonucStr = "Sipariş ödeme işlemi başarılı: " . $xmlResponse->Response . ' Kod= ' . $xmlResponse->ProcReturnCode;
             $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)";
             $db->insert($stmt, ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $siparisOdeme, 'tutar' => $yantoplam1, 'basarili' => $basarili]);
-        }
+   
+            $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
+            mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+       }
         else {
             $pos_id = 4;
             $basarili = 0;
