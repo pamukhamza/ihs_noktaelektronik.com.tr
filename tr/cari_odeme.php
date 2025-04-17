@@ -1,12 +1,12 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 $currentPage = 'cari_odeme';
 $template = new Template('Nokta - Ödeme', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 
 if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
     $toplam = controlInput($_POST['fiyat']);
