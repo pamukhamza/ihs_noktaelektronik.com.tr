@@ -1,6 +1,5 @@
 <?php
 require '../functions/admin_template.php';
-require '../functions/functions.php';
 
 $currentPage = 'tdp';
 $template = new Template('Nokta - Teknik Destek Programı', $currentPage);
@@ -151,27 +150,26 @@ $database = new Database();
                             </div>
                             <small style="color: red">Birden fazla ürün girmek için + işaretine tıklayınız !</small>
                             <div id="input-rows-container">
-                                    <div class="row mb-2">
-                                        <div class="col-sm-4">
-                                            <label for="urun_kodu" class="form-label">Ürün Kodu*</label>
-                                            <input type="text" class="form-control urun_kodu" required>
-                                            <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <label for="seri_no" class="form-label">Seri Numarası</label>
-                                            <input type="text" class="form-control seri_no">
-                                            <div class="invalid-feedback">Geçerli Seri Numarası giriniz!</div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <label for="adet" class="form-label">Adet*</label>
-                                            <input type="text" class="form-control adet" required>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <button type="button" class="btn mt-4 add-row-btn"><i class="fa-solid fa-circle-plus fa-lg"></i></button>
-                                        </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4">
+                                        <label for="urun_kodu" class="form-label">Ürün Kodu*</label>
+                                        <input type="text" class="form-control urun_kodu" required>
+                                        <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="seri_no" class="form-label">Seri Numarası</label>
+                                        <input type="text" class="form-control seri_no">
+                                        <div class="invalid-feedback">Geçerli Seri Numarası giriniz!</div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="adet" class="form-label">Adet*</label>
+                                        <input type="text" class="form-control adet" required>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn mt-4 add-row-btn"><i class="fa-solid fa-circle-plus fa-lg"></i></button>
                                     </div>
                                 </div>
-
+                            </div>
                             <div class="col-sm-6">
                                 <label for="fatura_no" class="form-label">Fatura No</label>
                                 <input type="text" class="form-control" id="fatura_no" >
@@ -233,19 +231,20 @@ $database = new Database();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-sm-12">
-                                    <p>1. Servis süresi en fazla 30 iş günüdür ve 90 gün takibi yapılmayan ürünler için şirketimiz hiçbir sorumluluk kabul etmez.
-                                        <br>2. Garanti süreleri, Fatura düzenleme tarihinden itibaren başlar. Bunun dışında belirtilen Üretici Garantisi ancak üreticinin tespit ettiği koşullar çerçevesinde geçerlidir. Nokta Elektronik bu koşulları aynen müşteriye yansıtır.
-                                        <br>3. Kurulum sırasında oluşan fiziksel ve elektriksel hatalar veya müşteriden kaynaklanan diğer donanım arızalarından dolayı servise gelmiş ürün garanti dışıdır ve servis ücreti alınır.
-                                        <br>4. Teknik servis ücreti cari hesaba dahil olmayıp peşin olarak tahsil edilir.
-                                        <br>5. Garanti harici tamir edilen ürünler teslimden itibaren 3 ay garantilidir.
-                                        <br>6. Nokta Elektronik arızalı ürün servise geldiği anda, eğer kullanıcı hatasını tanımlayabiliyorsa, bunu belirtir ancak ürün daha sonraki test aşamaların da garanti dışı tutulabilir. İstenildiğinde Nokta Elektronik bu tür arızalar için Teknik Rapor verir.
-                                        <br>7. Bu formu imzalayarak teslim eden şirket ve birey bu koşulları kabul eder. Bu ürünler firmamızın stoğundan çıktığı andan itibaren her türlü risk müşteriye aittir.</p>
-                            </div>
+                    <div class="row g-3">
+                        <div class="col-sm-12">
+                            <p>1. Servis süresi en fazla 30 iş günüdür ve 90 gün takibi yapılmayan ürünler için şirketimiz hiçbir sorumluluk kabul etmez.
+                                <br>2. Garanti süreleri, Fatura düzenleme tarihinden itibaren başlar. Bunun dışında belirtilen Üretici Garantisi ancak üreticinin tespit ettiği koşullar çerçevesinde geçerlidir. Nokta Elektronik bu koşulları aynen müşteriye yansıtır.
+                                <br>3. Kurulum sırasında oluşan fiziksel ve elektriksel hatalar veya müşteriden kaynaklanan diğer donanım arızalarından dolayı servise gelmiş ürün garanti dışıdır ve servis ücreti alınır.
+                                <br>4. Teknik servis ücreti cari hesaba dahil olmayıp peşin olarak tahsil edilir.
+                                <br>5. Garanti harici tamir edilen ürünler teslimden itibaren 3 ay garantilidir.
+                                <br>6. Nokta Elektronik arızalı ürün servise geldiği anda, eğer kullanıcı hatasını tanımlayabiliyorsa, bunu belirtir ancak ürün daha sonraki test aşamaların da garanti dışı tutulabilir. İstenildiğinde Nokta Elektronik bu tür arızalar için Teknik Rapor verir.
+                                <br>7. Bu formu imzalayarak teslim eden şirket ve birey bu koşulları kabul eder. Bu ürünler firmamızın stoğundan çıktığı andan itibaren her türlü risk müşteriye aittir.
+                            </p>
                         </div>
-                        <hr class="my-4">
-                        <button class="w-100 btn btn-primary btn-lg sozOnay" style="background-color:#f29720; border-color:#f29720">sozlesmeyi_okudum_onayliyorum</button>
+                    </div>
+                    <hr class="my-4">
+                    <button class="w-100 btn btn-primary btn-lg sozOnay" style="background-color:#f29720; border-color:#f29720">sozlesmeyi_okudum_onayliyorum</button>
                 </div>
             </div>
         </div>
