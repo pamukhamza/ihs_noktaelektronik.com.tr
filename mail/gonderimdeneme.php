@@ -17,7 +17,14 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
         $mail->Username = 'noktab2b@noktaelektronik.net';
         $mail->Password = 'Nktbb2023*';
         $mail->SMTPSecure = 'tls'; // veya 'tls'
-        $mail->Port = 587;
+        $mail->Port = 587; // TLS için 587, SSL için 465
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
         $mail->CharSet = 'UTF-8';
         $mail->Encoding = 'base64';
 
