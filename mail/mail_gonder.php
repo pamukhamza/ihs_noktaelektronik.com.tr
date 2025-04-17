@@ -11,16 +11,16 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
         //Server settings
         $mail->SMTPDebug = 0; // Enable verbose debug output (set to 2 for maximum detail)
         $mail->isSMTP(); // Set mailer to use SMTP
-        $mail->Host = 'mail.noktaelektronik.com.tr'; // Specify main and backup SMTP servers
+        $mail->Host = 'mail.noktaelektronik.net'; // Specify main and backup SMTP servers
         $mail->SMTPAuth = true; // Enable SMTP authentication
-        $mail->Username = 'b2b@noktaelektronik.com.tr'; // SMTP username
-        $mail->Password = 'Dell28736.!'; // SMTP password
+        $mail->Username = 'noktab2b@noktaelektronik.net'; // SMTP username
+        $mail->Password = 'Nktbb2023*'; // SMTP password
         $mail->SMTPSecure = 'ssl'; // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 465; // TCP port to connect to
+        $mail->Port = 465; // TCP port to connect to veya 587
         $mail->CharSet = 'UTF-8';
         $mail->Encoding = 'base64';
         //Recipients
-        $mail->setFrom('b2b@noktaelektronik.com.tr', $mailbaslik);
+        $mail->setFrom('noktab2b@noktaelektronik.net', $mailbaslik);
         $mail->addAddress($alici); // Add a recipient
         if($konu == "Cari Ödeme Bildirimi"){
             $mail->addBCC("muhasebe@noktaelektronik.net");
