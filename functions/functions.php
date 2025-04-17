@@ -2,7 +2,7 @@
 require_once "db.php";
 $db = new Database();
 function sessionControl() {
-    if (!isset($_SESSION["user_session"]) || !isset($_SESSION["user_session"]["id"])) {
+    if (!isset($_SESSION["id"])) {
         header("Location: giris.php");
         exit();
     }
