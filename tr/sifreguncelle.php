@@ -69,29 +69,36 @@ $code = $_GET['code'] ?? '';
             var yeni_parola = $('#yeni_parola').val();
 
             $.ajax({
-                type: "POST",
-                url: "functions/functions.php",
-                data: {
-                    code: code,
-                    yeni_parola: yeni_parola,
-                    sifre_kaydet: 'sifre_kaydet'
-                },
-                dataType: 'json',
-                success: function (response) {
-                    if (response.status === 'success') {
-                        $('#password-match-message').html('<div style="color:green;">' + response.message + '</div>');
-                        $('#passwordForm')[0].reset();
-                    } else {
-                        $('#password-match-message').html('<div style="color:red;">' + response.message + '</div>');
-                    }
-                },
-                error: function () {
-                    $('#password-match-message').html('<div style="color:red;">Bir hata oluştu. Lütfen tekrar deneyin.</div>');
-                },
-                complete: function () {
-                    submitButton.prop('disabled', false).text('Gönder');
-                }
-            });
+    type: "POST",
+    url: "functions/functions.php",
+    data: {
+        code: code,
+        yeni_parola: yeni_parola,
+        sifre_kaydet: 'sifre_kaydet'
+    },
+    // dataType: 'json', // bunu geçici kapat
+    success: function (response) {
+        try {
+            var json = JSON.parse(response);
+            if (json.status === 'success') {
+                $('#password-match-message').html('<div style="color:green;">' + json.message + '</div>');
+                $('#passwordForm')[0].reset();
+            } else {
+                $('#password-match-message').html('<div style="color:red;">' + json.message + '</div>');
+            }
+        } catch (e) {
+            $('#password-match-message').html('<div style="color:red;">Sunucudan beklenmeyen yanıt geldi.</div>');
+            console.log("Sunucu yanıtı:", response);
+        }
+    },
+    error: function (xhr, status, error) {
+        $('#password-match-message').html('<div style="color:red;">Bir hata oluştu. Lütfen tekrar deneyin.</div>');
+        console.error("Ajax error:", error);
+    },
+    complete: function () {
+        submitButton.prop('disabled', false).text('Gönder');
+    }
+});
         });
 
         $('#yeni_parola, #yeni_parola_tekrar').on('input', function () {
