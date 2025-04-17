@@ -16,8 +16,8 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
         $mail->SMTPAuth = true;
         $mail->Username = 'noktab2b@noktaelektronik.net';
         $mail->Password = 'Nktbb2023*';
-        $mail->SMTPSecure = 'ssl'; // veya 'tls'
-        $mail->Port = 465; // TLS için 587, SSL için 465
+        $mail->SMTPSecure = 'tls'; // veya 'tls'
+        $mail->Port = 587; // TLS için 587, SSL için 465
         $mail->SMTPOptions = array(
             'ssl' => array(
                 'verify_peer' => false,
