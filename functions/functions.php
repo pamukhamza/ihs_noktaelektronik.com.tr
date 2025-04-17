@@ -386,7 +386,7 @@ if (isset($_POST['sifre_unuttum'])) {
 if (isset($_POST['sifre_kaydet'])) {
     $yeni_parola = controlInput($_POST['yeni_parola']);
     $code = controlInput($_POST['code']);
-
+    header('Content-Type: text/plain; charset=utf-8');
     $row = $db->fetch("SELECT * FROM b2b_sifre_degistirme WHERE kod = :code" , ['code' => $code]);
     if ($row) {
         $uye_id = $row['uye_id'];
@@ -398,9 +398,11 @@ if (isset($_POST['sifre_kaydet'])) {
         $db->update("UPDATE uyeler SET parola = :parola, DEGISTIRME_TARIHI = :tarih WHERE id = :id", ['parola' => $hashed_new_password, 'tarih' => $new_date, 'id' => $uye_id]);
         $db->delete("DELETE FROM b2b_sifre_degistirme WHERE kod = :code",  ['code' => $code]);
         echo "Şifre Güncellendi";
+        exit;
     } else {
         echo "Tekrar şifre yenileme talebinde bulununuz.";
     }
+    
 }
 
 

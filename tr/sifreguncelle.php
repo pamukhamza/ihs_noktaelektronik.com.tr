@@ -104,6 +104,7 @@ error_reporting(0);
                         $('#passwordForm')[0].reset();
                     }
                 },
+
                 error: function() {
                     alert("An error occurred during the AJAX request.");
                 },
