@@ -7,9 +7,6 @@ $template = new Template('Nokta - İletişim', $currentPage);
 
 $template->head();
 $database = new Database();
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
 
 $categorizedAddresses = [
     'Satış-Mağazaları' => [

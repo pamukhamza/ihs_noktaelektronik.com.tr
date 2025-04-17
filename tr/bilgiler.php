@@ -1,11 +1,11 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 $currentPage = 'bilgiler';
 $template = new Template('Nokta B2B - Bilgiler', $currentPage);
 $template->head();
 $database = new Database();
+sessionControl();
 
 $session_id = $_SESSION['id'];
 ?>
