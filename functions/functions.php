@@ -384,10 +384,17 @@ if (isset($_POST['sifre_unuttum'])) {
     }
 }
 if (isset($_POST['sifre_kaydet'])) {
+    header('Content-Type: text/html; charset=utf-8');
     $yeni_parola = controlInput($_POST['yeni_parola']);
     $code = controlInput($_POST['code']);
-    header('Content-Type: text/plain; charset=utf-8');
-    $row = $db->fetch("SELECT * FROM b2b_sifre_degistirme WHERE kod = :code" , ['code' => $code]);
+
+    if (empty($yeni_parola) || empty($code)) {
+        echo "Lütfen tüm alanları doldurun.";
+        exit;
+    }
+
+    $row = $db->fetch("SELECT * FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
+
     if ($row) {
         $uye_id = $row['uye_id'];
         $hashed_new_password = md5($yeni_parola);
@@ -395,15 +402,22 @@ if (isset($_POST['sifre_kaydet'])) {
         $currentDateTime = date("Y-m-d H:i:s");
         $new_date = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
 
-        $db->update("UPDATE uyeler SET parola = :parola, DEGISTIRME_TARIHI = :tarih WHERE id = :id", ['parola' => $hashed_new_password, 'tarih' => $new_date, 'id' => $uye_id]);
-        $db->delete("DELETE FROM b2b_sifre_degistirme WHERE kod = :code",  ['code' => $code]);
-        echo "Şifre Güncellendi";
-        exit;
+        $db->update("UPDATE uyeler SET parola = :parola, DEGISTIRME_TARIHI = :tarih WHERE id = :id", [
+            'parola' => $hashed_new_password,
+            'tarih' => $new_date,
+            'id' => $uye_id
+        ]);
+
+        $db->delete("DELETE FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
+
+        echo "Şifreniz başarıyla güncellendi. Giriş yapabilirsiniz.";
     } else {
-        echo "Tekrar şifre yenileme talebinde bulununuz.";
+        echo "Geçersiz bağlantı. Lütfen tekrar şifre yenileme talebinde bulunun.";
     }
-    
+
+    exit;
 }
+
 
 
 
