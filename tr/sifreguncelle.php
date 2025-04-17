@@ -58,61 +58,52 @@ $code = $_GET['code'] ?? '';
 <script src="assets/js/jquery-3.7.0.min.js"></script>
 
 <script>
-$(document).ready(function () {
-    // Şifre eşleşme kontrolü
-    $('#yeni_parola, #yeni_parola_tekrar').on('input', function () {
-        var pass1 = $('#yeni_parola').val();
-        var pass2 = $('#yeni_parola_tekrar').val();
-        var msg = $('#password-match-message');
+    $(document).ready(function () {
+        $('#passwordForm').submit(function (event) {
+            event.preventDefault();
 
-        if (pass1 === '' && pass2 === '') {
-            msg.text('').css('color', 'transparent');
-        } else if (pass1 === pass2) {
-            msg.text('Şifreler Eşleşiyor').css('color', 'green');
-        } else {
-            msg.text('Şifreler Eşleşmiyor!').css('color', 'red');
-        }
-    });
+            var submitButton = $('button[name="sifre_guncelle"]');
+            submitButton.prop('disabled', true).text('Gönderiliyor...');
 
-    // AJAX gönderimi
-    $('#passwordForm').submit(function (e) {
-        e.preventDefault();
+            var code = $('#code').val();
+            var yeni_parola = $('#yeni_parola').val();
 
-        var pass1 = $('#yeni_parola').val();
-        var pass2 = $('#yeni_parola_tekrar').val();
-        var code = $('#code').val();
-        var msgBox = $('#response-message');
-        var button = $('button[name="sifre_guncelle"]');
-
-        if (pass1 !== pass2) {
-            msgBox.text('Şifreler aynı değil!').css('color', 'red');
-            return;
-        }
-
-        button.prop('disabled', true).text('Gönderiliyor...');
-
-        $.ajax({
-            type: 'POST',
-            url: 'functions/functions.php',
-            data: {
-                code: code,
-                yeni_parola: pass1,
-                sifre_kaydet: 'sifre_kaydet'
-            },
-            success: function (response) {
-                msgBox.html(response).css('color', response.includes('başarıyla') ? 'green' : 'red');
-                if (response.includes('başarıyla')) {
-                    $('#passwordForm')[0].reset();
-                    $('#password-match-message').text('');
+            $.ajax({
+                type: "POST",
+                url: "functions/functions.php",
+                data: {
+                    code: code,
+                    yeni_parola: yeni_parola,
+                    sifre_kaydet: 'sifre_kaydet'
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 'success') {
+                        $('#password-match-message').html('<div style="color:green;">' + response.message + '</div>');
+                        $('#passwordForm')[0].reset();
+                    } else {
+                        $('#password-match-message').html('<div style="color:red;">' + response.message + '</div>');
+                    }
+                },
+                error: function () {
+                    $('#password-match-message').html('<div style="color:red;">Bir hata oluştu. Lütfen tekrar deneyin.</div>');
+                },
+                complete: function () {
+                    submitButton.prop('disabled', false).text('Gönder');
                 }
-            },
-            error: function () {
-                msgBox.text('Bir hata oluştu. Lütfen tekrar deneyin.').css('color', 'red');
-            },
-            complete: function () {
-                button.prop('disabled', false).text('Gönder');
+            });
+        });
+
+        $('#yeni_parola, #yeni_parola_tekrar').on('input', function () {
+            var parola = $('#yeni_parola').val();
+            var parola_tekrar = $('#yeni_parola_tekrar').val();
+
+            if (parola !== parola_tekrar) {
+                $('#password-match-message').html('<div style="color:red;">Şifreler uyuşmuyor.</div>');
+            } else {
+                $('#password-match-message').html('');
             }
         });
     });
-});
 </script>
+

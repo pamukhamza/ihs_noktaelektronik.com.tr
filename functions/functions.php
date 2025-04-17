@@ -384,14 +384,9 @@ if (isset($_POST['sifre_unuttum'])) {
     }
 }
 if (isset($_POST['sifre_kaydet'])) {
-    header('Content-Type: text/html; charset=utf-8');
+    header('Content-Type: application/json; charset=utf-8');
     $yeni_parola = controlInput($_POST['yeni_parola']);
     $code = controlInput($_POST['code']);
-
-    if (empty($yeni_parola) || empty($code)) {
-        echo "Lütfen tüm alanları doldurun.";
-        exit;
-    }
 
     $row = $db->fetch("SELECT * FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
 
@@ -410,15 +405,19 @@ if (isset($_POST['sifre_kaydet'])) {
 
         $db->delete("DELETE FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
 
-        echo "Şifreniz başarıyla güncellendi. Giriş yapabilirsiniz.";
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Şifre başarıyla güncellendi.'
+        ]);
+        exit;
     } else {
-        echo "Geçersiz bağlantı. Lütfen tekrar şifre yenileme talebinde bulunun.";
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Kod geçersiz. Lütfen tekrar şifre yenileme talebinde bulunun.'
+        ]);
+        exit;
     }
-
-    exit;
 }
-
-
 
 
 
