@@ -1,5 +1,6 @@
 <?php
 require '../functions/admin_template.php';
+require '../functions/db.php';
 
 $currentPage = 'tdp';
 $template = new Template('Nokta - Teknik Destek Programı', $currentPage);
