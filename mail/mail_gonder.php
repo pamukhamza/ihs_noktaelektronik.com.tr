@@ -7,38 +7,44 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     include 'PHPMailer.php';
     include 'SMTP.php';
     $mail = new PHPMailer(true);
-
-        //Server settings
-        $mail->SMTPDebug = 0; // Enable verbose debug output (set to 2 for maximum detail)
-        $mail->isSMTP(); // Set mailer to use SMTP
-        $mail->Host = 'mail.noktaelektronik.net'; // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true; // Enable SMTP authentication
-        $mail->Username = 'noktab2b@noktaelektronik.net'; // SMTP username
-        $mail->Password = 'Nktbb2023*'; // SMTP password
-        $mail->SMTPSecure = 'ssl'; // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 465; // TCP port to connect to veya 587
-        $mail->CharSet = 'UTF-8';
-        $mail->Encoding = 'base64'; 
-        //Recipients
-        $mail->setFrom('noktab2b@noktaelektronik.net', $mailbaslik);
-        $mail->addAddress($alici); // Add a recipient
-        if($konu == "Cari Ödeme Bildirimi"){
-            $mail->addBCC("muhasebe@noktaelektronik.net");
-        }
-        if($konu != "Arızalı Cihaz Durumu!"){
-            $mail->addBCC("h.pamuk@noktaelektronik.net");
-            $mail->addBCC("kadir@noktaelektronik.net");
-        }
-        //Content
-        $mail->Subject = $konu;
-        $mail->Body = "$mesaj_icerik";
-        // Set email format to HTML
-        $mail->isHTML(true);
-        // Try to send the email
-        try {
-            $mail->send();
-        } catch (Exception $e) {
-        }
+    //Server settings
+    $mail->SMTPDebug = 0; // Enable verbose debug output (set to 2 for maximum detail)
+    $mail->isSMTP(); // Set mailer to use SMTP
+    $mail->Host = 'mail.noktaelektronik.net';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'nokta\noktab2b';
+    $mail->Password = 'Nktbb2023*';
+    $mail->SMTPSecure = 'tls'; // veya 'tls'
+    $mail->Port = 587; // TLS için 587, SSL için 465
+    $mail->SMTPOptions = array(
+        'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+        )
+    );
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+    //Recipients
+    $mail->setFrom('noktab2b@noktaelektronik.net', $mailbaslik);
+    $mail->addAddress($alici); // Add a recipient
+    if($konu == "Cari Ödeme Bildirimi"){
+        $mail->addBCC("muhasebe@noktaelektronik.net");
+    }
+    if($konu != "Arızalı Cihaz Durumu!"){
+        $mail->addBCC("h.pamuk@noktaelektronik.net");
+        $mail->addBCC("kadir@noktaelektronik.net");
+    }
+    //Content
+    $mail->Subject = $konu;
+    $mail->Body = "$mesaj_icerik";
+    // Set email format to HTML
+    $mail->isHTML(true);
+    // Try to send the email
+    try {
+        $mail->send();
+    } catch (Exception $e) {
+    }
 }
 function siparisAlindi($uye, $sip_id, $siparis_no){
     ob_start();
