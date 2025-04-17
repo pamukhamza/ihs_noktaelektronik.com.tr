@@ -12,7 +12,7 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     $mail->isSMTP(); // Set mailer to use SMTP
     $mail->Host = 'mail.noktaelektronik.net';
     $mail->SMTPAuth = true;
-    $mail->Username = 'nokta\noktab2b';
+    $mail->Username = 'nokta\b2b';
     $mail->Password = 'Nktbb2023*';
     $mail->SMTPSecure = 'tls'; // veya 'tls'
     $mail->Port = 587; // TLS için 587, SSL için 465
@@ -26,7 +26,7 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
     //Recipients
-    $mail->setFrom('noktab2b@noktaelektronik.net', $mailbaslik);
+    $mail->setFrom('b2b@noktaelektronik.net', $mailbaslik);
     $mail->addAddress($alici); // Add a recipient
     if($konu == "Cari Ödeme Bildirimi"){
         $mail->addBCC("muhasebe@noktaelektronik.net");
