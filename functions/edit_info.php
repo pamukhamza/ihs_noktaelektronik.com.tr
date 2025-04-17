@@ -275,13 +275,10 @@ function editAriza() {
             $db->insert($urun_query, $urun_params);
         }
         echo $takip_kodu;
-// Tarayıcıya cevabı gönder ve bağlantıyı kapat
-if (function_exists('fastcgi_finish_request')) {
-    fastcgi_finish_request();
-}
+
         // Mail gönder
-        $mail_icerik = arizaKayitMail($musteri, $takip_kodu);
-        mailGonder($email, 'Arıza Kaydınız Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+        //$mail_icerik = arizaKayitMail($musteri, $takip_kodu);
+        //mailGonder($email, 'Arıza Kaydınız Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
     } else {
         http_response_code(400);
         exit();
