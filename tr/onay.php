@@ -1,12 +1,12 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 $currentPage = 'onay';
 $template = new Template('Nokta Elektronik - Onay', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 date_default_timezone_set('Europe/Istanbul');
 
 if (isset($_GET["siparis-numarasi"])){

@@ -1,13 +1,13 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 
 $currentPage = 'siparişler';
 $template = new Template('Nokta B2B - Siparişler', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 ?>
 <body>
     <?php $template->header(); ?>

@@ -2,12 +2,12 @@
 require '../functions/admin_template.php';
 require '../functions/functions.php';
 
-sessionControl();
 $currentPage = 'cari-islem-gecmisi';
 $template = new Template('Nokta B2B - Cari İşlem Geçmişi', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 $BLKODU_S = $_SESSION['BLKODU'];
 ?>
 <style>

@@ -1,12 +1,12 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 $currentPage = 'siparis-detay';
 $template = new Template('Nokta Elektronik - Sipariş Detayı', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 
 $sip_id = filter_var($_GET['s_id'], FILTER_VALIDATE_INT);
 

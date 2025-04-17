@@ -1,13 +1,13 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 
 $currentPage = 'cariodeme';
 $template = new Template('Nokta B2B - Cari Ödeme İşlemler', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 
 $uye_id = $_SESSION["id"];
 $BLKODU = $_SESSION['BLKODU'];

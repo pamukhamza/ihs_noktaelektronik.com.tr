@@ -1,13 +1,13 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 
 $currentPage = 'dekontlar';
 $template = new Template('Nokta B2B - Dekontlar', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 
 $uye_id = $_SESSION["id"];
 ?>

@@ -1,13 +1,13 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 
 $currentPage = 'sepet';
 $template = new Template('Nokta - Sepetim', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 $uye_id = $_SESSION["id"];
 echo '<div style="display: none">';
 foreach ($_POST as $key => $value) {

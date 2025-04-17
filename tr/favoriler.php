@@ -1,13 +1,13 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 
 $currentPage = 'favoriler';
 $template = new Template('Nokta - Favoriler', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 ?>
 <style>
     .bi {vertical-align: -.125em;fill: currentColor;}

@@ -2,13 +2,13 @@
 
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-sessionControl();
 
 $currentPage = 'odeme';
 $template = new Template('Nokta Elektronik - Ödeme', $currentPage);
 
 $template->head();
 $database = new Database();
+sessionControl();
 
 if(isset($_POST["devamEt"])) {
     $promosyon_kodu = isset($_POST['promosyonKodu']) ? $_POST['promosyonKodu'] : "";
