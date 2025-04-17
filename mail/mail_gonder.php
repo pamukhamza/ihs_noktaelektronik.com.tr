@@ -1232,7 +1232,7 @@ function sifreDegistimeMail($uye, $kod){
         </tr>
         <tr>
             <td style="width: 100%;  line-height: 30px; max-width: 750px;  min-width: 350px; font-size: 18px;">
-                <a href="https://www.noktaelektronik.com.tr/sifreguncelle.php?lang=tr&code=<?= $kod ?>" style="text-decoration-line: none; color: rgb(0, 0, 255); white-space: nowrap;">Şifre sıfırlama linki</a>
+                <a href="https://www.noktaelektronik.com.tr/tr/sifreguncelle.php?code=<?= $kod ?>" style="text-decoration-line: none; color: rgb(0, 0, 255); white-space: nowrap;">Şifre sıfırlama linki</a>
             </td>
         </tr>
         </tbody>
