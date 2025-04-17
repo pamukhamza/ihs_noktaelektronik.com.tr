@@ -328,10 +328,6 @@ $database = new Database();
             $(this).closest('.row').remove();
         });
         $('#applicationForm').submit(function(e) {
-            
-            var btn = $(this).find('button[type="submit"]');
-            btn.prop('disabled', true);
-            btn.text('Gönderiliyor...'); // Opsiyonel
             e.preventDefault();
 
             var urun_kodu_array = [];
