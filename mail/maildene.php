@@ -1,5 +1,4 @@
 <?php
-require_once '../functions/db.php';
 include "mail_gonder.php";
 
 $uye = "hasan";
@@ -8,8 +7,8 @@ $siparis_no = "123";
 
 $mail = "hmzpmk34@gmail.com";
 
-$mail_icerik = siparisAlindi($uye, $sip_id, $siparis_no);
-mailGonder($mail, 'Siparis Deneme', $mail_icerik, 'Nokta');
+$mail_icerik = teklifAlindiMail($uye);
+mailGonder($mail, 'DENEME', $mail_icerik, 'Nokta');
 
 
 ?>
