@@ -374,9 +374,10 @@ if (isset($_POST['sifre_unuttum'])) {
 
         if ($insertResult) {
             // Send reset email
+            echo 'success';  // Return success message
             $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
             mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
-            echo 'success';  // Return success message
+            
         } else {
             echo 'db_error';  // Return an error if inserting into the database fails
         }
