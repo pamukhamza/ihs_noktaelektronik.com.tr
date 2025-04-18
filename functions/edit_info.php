@@ -238,18 +238,12 @@ function editAriza() {
             'tekniker' => $tekniker
         ];
 
-        if (!is_null($id)) {
-            $params['uye_id'] = $id;
 
-            $query = "INSERT INTO nokta_teknik_destek 
-                (uye_id, takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
-                VALUES (:uye_id, :takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
-        } else {
             $params['teslim_alan'] = $teslim_alan;
             $query = "INSERT INTO nokta_teknik_destek 
                 (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, teslim_alan, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
                 VALUES (:takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :teslim_alan, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
-        }
+
 
         $db->insert($query, $params);
         $lastInsertId = $db->lastInsertId();
