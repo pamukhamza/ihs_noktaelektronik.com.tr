@@ -1,6 +1,4 @@
 <?php
-require_once '../functions/db.php';
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){

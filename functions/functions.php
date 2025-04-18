@@ -419,7 +419,4 @@ if (isset($_POST['sifre_kaydet'])) {
         exit;
     }
 }
-
-
-
 ?>
