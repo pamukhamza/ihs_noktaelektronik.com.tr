@@ -571,9 +571,9 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 dekontOlustur($uye_id, $inserted_id, $firmaUnvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
                 posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz, $banka_tanimi);
 
+                header("Location: ../../tr/onay?cari_odeme=");
                 $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
                 mailGonder($uye_mail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
-                header("Location: ../../tr/onay?cari_odeme=");
                 exit();
 
             } else {
