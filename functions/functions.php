@@ -419,4 +419,34 @@ if (isset($_POST['sifre_kaydet'])) {
         exit;
     }
 }
+if (isset($_POST['sifre_guncelle'])) {
+    $eski_parola = md5(controlInput($_POST['eski_parola']));
+    $yeni_parola = controlInput($_POST['yeni_parola']);
+    $yeni_parola_tekrar = controlInput($_POST['yeni_parola_tekrar']);
+    $user_id = controlInput($_POST['user_id']);
+
+    if ($yeni_parola != $yeni_parola_tekrar) {
+        echo "Girilen şifreler eşleşmiyor";
+        exit();
+    }
+
+    $row = $db->fetch("SELECT parola FROM uyeler WHERE id = :id" , ['id' => $user_id]);
+    if ($row) {
+        $stored_md5_password = $row['parola'];
+
+        if ($eski_parola == $stored_md5_password) {
+            $yeni_parola = md5($yeni_parola);
+            $currentDateTime = date("Y-m-d H:i:s");
+            $new_date = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
+
+            $update_query = "UPDATE uyeler SET parola = :parola, DEGISTIRME_TARIHI = :tarih WHERE id = :id";
+            $stmt = $db->update($update_query, ['parola' => $yeni_parola, 'tarih' => $new_date, 'id' => $user_id]);
+            echo "Şifre Güncellendi";
+        } else {
+            echo "Eski Şifre Hatalı";
+        }
+    } else {
+        echo "Kullanıcı bulunamadı.";
+    }
+}
 ?>

@@ -1,6 +1,6 @@
 <?php
-require '../functions/admin_template.php';
-require '../functions/functions.php';
+require_once '../functions/admin_template.php';
+require_once '../functions/functions.php';
 $currentPage = 'bilgiler';
 $template = new Template('Nokta B2B - Bilgiler', $currentPage);
 $template->head();
