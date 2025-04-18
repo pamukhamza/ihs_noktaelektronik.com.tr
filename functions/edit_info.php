@@ -239,7 +239,7 @@ function editAriza() {
         ];
 
         if (!is_null($id)) {
-            $params[':uye_id'] = $id;
+            $params['uye_id'] = $id;
 
             $query = "INSERT INTO nokta_teknik_destek 
                 (uye_id, takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
