@@ -42,7 +42,10 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     // Try to send the email
     try {
         $mail->send();
+        error_log("Mail başarıyla gönderildi - Alıcı: " . $alici);
     } catch (Exception $e) {
+        error_log("Mail gönderimi başarısız - Hata: " . $e->getMessage());
+        throw $e; // Hatayı yukarı ilet
     }
 }
 function siparisAlindi($uye, $sip_id, $siparis_no){
@@ -694,23 +697,24 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
                         <div>Image not found</div>
                     <?php endif; ?>
                 </td>
+
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["UrunAdiTR"] ?></td>
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["UrunKodu"] ?></td>
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["adet"] ?></td>
                 <td style="border: 1px solid #ccc; text-align: center;">
                     <?php
                     if(!empty($urun["DSF1"] || !empty($urun["DSF2"]) || !empty($urun["DSF3"]) || !empty($urun["DSF4"]) )){
-                        $birim_fiyat = $urun["birim_fiyat"] * $urun["dolar_satis"];
-                        $toplam_birim_fiyat = $urun["birim_fiyat"] * $urun["dolar_satis"] * $urun["adet"];
-                        $formatted_birim_fiyat = number_format($birim_fiyat, 2, ',', '.');
-                        $formatted_toplam_birim_fiyatDvz = number_format($toplam_birim_fiyat, 2, ',', '.');
-                        echo $formatted_birim_fiyat . "₺ + KDV";
+                    $birim_fiyat = $urun["birim_fiyat"] * $urun["dolar_satis"];
+                    $toplam_birim_fiyat = $urun["birim_fiyat"] * $urun["dolar_satis"] * $urun["adet"];
+                    $formatted_birim_fiyat = number_format($birim_fiyat, 2, ',', '.');
+                    $formatted_toplam_birim_fiyatDvz = number_format($toplam_birim_fiyat, 2, ',', '.');
+                    echo $formatted_birim_fiyat . "₺ + KDV";
                     }else{
-                        $birim_fiyat = $urun["birim_fiyat"];
-                        $toplam_birim_fiyat = $urun["birim_fiyat"] * $urun["adet"];
-                        $formatted_birim_fiyat = number_format($birim_fiyat, 2, ',', '.');
-                        $formatted_toplam_birim_fiyatTL = number_format($toplam_birim_fiyat, 2, ',', '.');
-                        echo $formatted_birim_fiyat . "₺ + KDV";
+                    $birim_fiyat = $urun["birim_fiyat"];
+                    $toplam_birim_fiyat = $urun["birim_fiyat"] * $urun["adet"];
+                    $formatted_birim_fiyat = number_format($birim_fiyat, 2, ',', '.');
+                    $formatted_toplam_birim_fiyatTL = number_format($toplam_birim_fiyat, 2, ',', '.');
+                    echo $formatted_birim_fiyat . "₺ + KDV";
                     }
                     ?>
                 </td>
@@ -780,8 +784,7 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
         </tr>
         </tbody>
     </table>
-    <p>&nbsp;
-    <table style="margin-top: 16px; width: 100%; max-width: 750px;" width="750">
+    <table style="margin-top: 30px; width: 100%; max-width: 750px;" width="750">
         <tbody>
         <tr>
             <td align="center" style="background-color: rgb(70, 70, 70);" valign="top">&nbsp;
@@ -802,15 +805,15 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td align="center" valign="top"><a href="https://twitter.com/NEBSIS" style="display: block; max-width: 30px; text-decoration: none; color:#f1f1f1;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/25_x.png" width="30" style="display: block; width: 30px; " /></a></td>
-                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
-                                                <td align="center" valign="top"><a href="https://www.facebook.com/nebsis" style="display: block; max-width: 30px; text-decoration: none; color:#f1f1f1;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/02_facebook.png" width="30" style="display: block; width: 30px; " /></a></td>
-                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
-                                                <td align="center" valign="top"><a href="https://www.youtube.com/c/NoktaElektronikLTD" style="display: block; max-width: 30px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/03_youtube.png" width="30" style="display: block; width: 30px;" /></a></td>
-                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
-                                                <td align="center" valign="top"><a href="https://www.instagram.com/noktaelektronik/" style="display: block; max-width: 30px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/10_instagram.png" width="30" style="display: block; width: 30px;" /></a></td>
-                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
-                                                <td align="center" valign="top"><a href="https://www.linkedin.com/in/nokta-elektronik-57107b128/" style="display: block; max-width: 30px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/07_linkedin.png" width="30" style="display: block; width: 30px;" /></a></td>
+                                                <td align="center" valign="top"><a href="https://twitter.com/NEBSIS" style="display: block; max-width: 20px; text-decoration: none; color:#f1f1f1;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/25_x.png" width="30" style="display: block; width: 20px; " /></a></td>
+                                                <td style="width: 10px; max-width: 10px; min-width: 10px;" width="10">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.facebook.com/nebsis" style="display: block; max-width: 20px; text-decoration: none; color:#f1f1f1;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/02_facebook.png" width="30" style="display: block; width: 20px; " /></a></td>
+                                                <td style="width: 10px; max-width: 10px; min-width: 10px;" width="10">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.youtube.com/c/NoktaElektronikLTD" style="display: block; max-width: 20px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/03_youtube.png" width="30" style="display: block; width: 20px;" /></a></td>
+                                                <td style="width: 10px; max-width: 10px; min-width: 10px;" width="10">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.instagram.com/noktaelektronik/" style="display: block; max-width: 20px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/10_instagram.png" width="30" style="display: block; width: 20px;" /></a></td>
+                                                <td style="width: 10px; max-width: 10px; min-width: 10px;" width="10">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.linkedin.com/in/nokta-elektronik-57107b128/" style="display: block; max-width: 20px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/07_linkedin.png" width="30" style="display: block; width: 20px;" /></a></td>
                                             </tr>
                                             <tr>
                                                 <td>&nbsp;</td>
@@ -829,7 +832,6 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
         </tr>
         </tbody>
     </table>
-    </p>
 
     <?php
     $content = ob_get_contents(); // Tamponlanan içeriği al

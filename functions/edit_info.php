@@ -276,25 +276,13 @@ function editAriza() {
         }
         echo $takip_kodu;
 
-        // Mail gönderimini arka planda çalıştır
+        // Mail gönderimi
         $mail_icerik = arizaKayitMail($musteri, $takip_kodu);
-        
-        // Hata ayıklama için log dosyasına yaz
-        error_log("Mail gönderimi başlatılıyor: " . $email);
-        
-        // Mail gönderimini arka planda çalıştır
-        $cmd = "php -f " . dirname(__FILE__) . "/../../mail_worker.php " . 
-               escapeshellarg($email) . " " . 
-               escapeshellarg('Arıza Kaydınız Alınmıştır!') . " " . 
-               escapeshellarg($mail_icerik) . " " . 
-               escapeshellarg('Nokta Elektronik') . " > NUL 2>&1 &";
-        
-        error_log("Çalıştırılacak komut: " . $cmd);
-        $result = exec($cmd, $output, $return_var);
-        error_log("Komut çalıştırma sonucu: " . $return_var);
-        
-        if ($return_var !== 0) {
-            error_log("Mail gönderimi başlatılamadı. Hata kodu: " . $return_var);
+        try {
+            mailGonder($email, 'Arıza Kaydınız Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+            error_log("Mail başarıyla gönderildi - Alıcı: " . $email);
+        } catch (Exception $e) {
+            error_log("Mail gönderimi başarısız - Hata: " . $e->getMessage());
         }
     } else {
         http_response_code(400);
