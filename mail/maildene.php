@@ -1,4 +1,5 @@
 <?php
+require_once '../functions/db.php';
 include "mail_gonder.php";
 
 $uye = "hasan";
