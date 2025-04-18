@@ -125,8 +125,16 @@ function teklif() {
         $insertQuery = "INSERT INTO b2b_teklif (urun_id, mail, aciklama) VALUES (:urun_id, :mail, :aciklama)";
         $database->insert($insertQuery, ['urun_id' => $urun_id,'mail' => $mail,'aciklama' => $teklif_aciklama]);
     }
+    
+    // Mail gönderme işlemini arka planda başlat
     $mail_icerik = teklifAlindiMail($firmaAdi);
-    mailGonder($mail, 'Teklif Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+    $command = "php " . dirname(__FILE__) . "/mail_worker.php " . 
+              escapeshellarg($mail) . " " . 
+              escapeshellarg('Teklif Talebiniz Alınmıştır!') . " " . 
+              escapeshellarg($mail_icerik) . " " . 
+              escapeshellarg('Nokta Elektronik') . " > NUL 2>&1 &";
+    
+    exec($command);
     exit;
 }
 function sepeteUrunEkle() {
