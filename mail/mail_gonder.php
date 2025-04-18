@@ -162,36 +162,96 @@ function generateEmailTemplate($content, $title = '') {
     return ob_get_clean();
 }
 
-function cariOdemeMail($uye, $fiyat, $taksit) {
+function cariOdemeMail($uye,$fiyat,$taksit){
     ob_start();
     ?>
+    <table style=" margin-left: auto; margin-right: auto;  height:auto; width: 100%; min-width: 350px; max-width: 750px; font-family: &quot;Source Sans Pro&quot;, Arial, Tahoma, Geneva, sans-serif;">
+    </table>
+
+    <table style="max-width: 750px; width: 100%; background-color: rgb(72,4,102);">
+        <tbody>
+        <tr>
+            <td align="center" style="padding-top: 20px; padding-bottom: 20px; width: 100%; max-width: 750px; background-color: rgb(72,4,102);"><a href="www.noktaelektronik.com.tr" style="text-decoration: none; align-items: center; width:250px;" target="_blank"><img src="https://www.noktaelektronik.com.tr/assets/images/nokta-logo-beyaz.png" width="30%" /></a></td>
+        </tr>
+        </tbody>
+    </table>
+
     <table style="margin-top: 10px; width: 100%; max-width: 750px;">
         <tbody>
+        <tr>
+            <td align="center" style="width: 100%; height: 35px; line-height: 35px; max-width: 750px;"><img src="https://ci5.googleusercontent.com/proxy/F8CvHq6tqRXdMWR2SJ6TZ4mgz1ToO4x4hjadwMx9DJPdylF_gApmvzsh_p2z5APOkhEb3iMwfDSaxatv3BSgr8mp9XaMJZSvPcjR96Bz1r4g1hU144Gej1sWUA=s0-d-e1-ft#https://images.hepsiburada.net/banners/0/imageUrl2089_20200917121500.png" width="48" /></td>
+        </tr>
+        <tr>
+            <td align="center" style="width: 100%; height: 35px; line-height: 35px; max-width: 750px; text-align: center; min-width: 350px; margin-top: 25px; font-size: 30px;"><strong>Cari Ödeme Bildirimi</strong></td>
+        </tr>
         <tr style="margin-top: 20px;">
-            <td align="center" style="margin-top: 20px; width: 100%; height: 30px; line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;">
-                <span style="font-size:20px;">Sayın<strong> <?= $uye ?> </strong>,</span>
-            </td>
+            <td align="center" style="margin-top: 20px; width: 100%; height: 30px; line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;"><span style="font-size:20px;">Sayın<strong> <?= $uye ?> </strong>,</span></td>
         </tr>
         <tr>
-            <td align="center" style="width: 100%; line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;">
-                <span style="font-size:20px;">Ödemeniz için teşekkür ederiz.<br /></span>
-            </td>
+            <td align="center" style="width: 100%;  line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;"><span style="font-size:20px;">Ödemeniz için teşekkür ederiz.<br />
         </tr>
         <tr>
-            <td align="center" style="width: 100%; line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;">
-                <span style="font-size:20px;">Ödenen Tutar: <?= $fiyat ?> <br/></span>
-            </td>
+            <td align="center" style="width: 100%;  line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;"><span style="font-size:20px;">Ödenen Tutar: <?= $fiyat ?> <br/>
         </tr>
         <tr>
-            <td align="center" style="width: 100%; line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;">
-                <span style="font-size:20px;">Taksit: <?= $taksit ?> <br /></span>
+            <td align="center" style="width: 100%;  line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;"><span style="font-size:20px;">Taksit: <?= $taksit ?> <br />
+        </tr>
+        </tbody>
+    </table>
+    <table style="margin-top: 20px; width: 100%; max-width: 750px;" width="750">
+        <tbody>
+        <tr>
+            <td align="center" style="background-color: rgb(70, 70, 70);" valign="top">&nbsp;
+                <table border="0" cellpadding="0" cellspacing="0" style="width: 100% !important; min-width: 100%; max-width: 100%;" width="100%">
+                    <tbody>
+                    <tr>
+                        <td align="center" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td align="center" valign="top">
+                                        <div style="height: 34px; line-height: 34px; font-size: 14px;">&nbsp;</div>
+                                        <span style="font-size:12px;"><span style="font-family:tahoma,geneva,sans-serif;"><font color="#f1f1f1" style="font-size: 17px; line-height: 16px;"><span style="line-height: 16px;"><a href="mailto:destek@noktaelektronik.com.tr" style="text-decoration: none; color: #f1f1f1;">destek@noktaelektronik.com.tr</a> &nbsp; &nbsp;|&nbsp; <a href="tel:08503330208" style="text-decoration: none; color: #f1f1f1;">0850 333 02 08</a> &nbsp; |&nbsp; &nbsp;<a href="https://noktaelektronik.com.tr/" style="text-decoration: none; color: #f1f1f1;">www.noktaelektronik.com.tr</a></span> </font></span></span>
+
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" valign="top"><a href="https://twitter.com/NEBSIS" style="display: block; max-width: 30px; text-decoration: none; color:#f1f1f1;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/25_x.png" width="30" style="display: block; width: 30px; " /></a></td>
+                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.facebook.com/nebsis" style="display: block; max-width: 30px; text-decoration: none; color:#f1f1f1;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/02_facebook.png" width="30" style="display: block; width: 30px; " /></a></td>
+                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.youtube.com/c/NoktaElektronikLTD" style="display: block; max-width: 30px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/03_youtube.png" width="30" style="display: block; width: 30px;" /></a></td>
+                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.instagram.com/noktaelektronik/" style="display: block; max-width: 30px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/10_instagram.png" width="30" style="display: block; width: 30px;" /></a></td>
+                                                <td style="width: 20px; max-width: 20px; min-width: 20px;" width="20">&nbsp;</td>
+                                                <td align="center" valign="top"><a href="https://www.linkedin.com/in/nokta-elektronik-57107b128/" style="display: block; max-width: 30px; text-decoration: none; color:#ffffff;" target="_blank"><img alt="img" src="https://www.noktaelektronik.com.tr/assets/images/icons/07_linkedin.png" width="30" style="display: block; width: 30px;" /></a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </td>
         </tr>
         </tbody>
     </table>
+
     <?php
-    $content = ob_get_clean();
-    return generateEmailTemplate($content, 'Cari Ödeme Bildirimi');
+    $content = ob_get_contents(); // Tamponlanan içeriği al
+    ob_end_clean(); // Tamponlamayı temizle ve kapat
+
+    return $content;
 }
 
 function uyeOnayMail($uye, $uye_mail, $aktivasyon) {
