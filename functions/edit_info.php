@@ -275,15 +275,6 @@ function editAriza() {
             $db->insert($urun_query, $urun_params);
         }
         echo $takip_kodu;
-
-        // Mail gönderimi
-        $mail_icerik = arizaKayitMail($musteri, $takip_kodu);
-        try {
-            mailGonder($email, 'Arıza Kaydınız Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
-            error_log("Mail başarıyla gönderildi - Alıcı: " . $email);
-        } catch (Exception $e) {
-            error_log("Mail gönderimi başarısız - Hata: " . $e->getMessage());
-        }
     } else {
         http_response_code(400);
         exit();

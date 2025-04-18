@@ -348,7 +348,6 @@ $database = new Database();
             formData.append('urun_kodu', urun_kodu_array.join(','));
             formData.append('seri_no', seri_no_array.join(','));
             formData.append('adet', adet_array.join(','));
-            // Diğer form verilerini ekleyin
             formData.append('id', $('#musteri_id').val());
             formData.append('musteri', $('#musteri').val());
             formData.append('tel', $('#tel').val());
@@ -408,7 +407,6 @@ $database = new Database();
                                 text-align: center;
                                 margin-bottom: 20px;
                             }
-
                         </style>
                     </head>
                     <body>
@@ -423,7 +421,6 @@ $database = new Database();
                         <p><strong>Telefon:</strong> ${tel}</p>
                         <p><strong>Email:</strong> ${email}</p>
                         <p><strong>Açıklama:</strong> ${aciklama}</p>
-
                     </body>
                     </html>
                 `;
