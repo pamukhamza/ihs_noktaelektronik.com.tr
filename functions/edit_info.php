@@ -238,12 +238,18 @@ function editAriza() {
             'tekniker' => $tekniker
         ];
 
+        if (!is_null($id)) {
+            $params[':uye_id'] = $id;
 
+            $query = "INSERT INTO nokta_teknik_destek 
+                (uye_id, takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
+                VALUES (:uye_id, :takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
+        } else {
             $params['teslim_alan'] = $teslim_alan;
             $query = "INSERT INTO nokta_teknik_destek 
                 (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, teslim_alan, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
                 VALUES (:takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :teslim_alan, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
-
+        }
 
         $db->insert($query, $params);
         $lastInsertId = $db->lastInsertId();
@@ -510,6 +516,7 @@ if(isset($_POST["ozelbanner1"])) {
     }
     header("Location:../admin/siteduzenleme/adminOzelBanner");
 }
+
 function editBannerVideo() {
     $bId = $_POST['id'];
     $bLink = $_POST['bannerLink'];
@@ -538,6 +545,7 @@ function editBannerVideo() {
         $stmt->execute([$bLink, $image, $aktif]);
     }
 }
+
 function uyeAdresDuzenle() {
     $adresId = controlInput($_POST['adresId']);
     $adres_basligi = controlInput($_POST['adres_basligi']);
@@ -563,6 +571,7 @@ function uyeAdresDuzenle() {
             $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
         }
 }
+
 function sepetAdres() {
     global $db;
     $adresId = $_POST['id'];
@@ -618,6 +627,7 @@ function adresSec() {
     $updateOthersQuery->bindParam(':sessionId', $sessionId, PDO::PARAM_INT);
     $updateOthersQuery->execute();
 }
+
 function iade() {
     global $db;
 
@@ -685,55 +695,55 @@ function loglar(){
 }
 
 if (isset($_POST['type'])) {
-    $type = $_POST['type'];
-    if ($type === 'ariza') {
-        editAriza();
+  $type = $_POST['type'];
+  if ($type === 'ariza') {
+    editAriza();
+      exit;
+  }elseif ($type === 'bannerVideo') {
+      editBannerVideo();
+    exit;
+  }
+  elseif ($type === 'favori') {
+    editFavori();
+    exit;
+  }
+  elseif ($type === 'sepeteFavoriEkle') {
+    sepeteFavoriEkle();
+    exit;
+  }
+  elseif ($type === 'adresGuncelle') {
+    uyeAdresDuzenle();
+    exit;
+  }
+  elseif ($type === 'adresEkle') {
+      uyeAdresEkle();
+      exit;
+  }
+  elseif ($type === 'sepeteUrunEkle') {
+    sepeteUrunEkle();
+    exit;
+  }
+  elseif ($type === 'sepetAdres') {
+    sepetAdres();
+    exit;
+  }elseif ($type === 'adresSec') {
+    adresSec();
+    exit;
+  }elseif ($type === 'iade') {
+      iade();
+      exit;
+  }elseif ($type === 'teklif') {
+      teklif();
+      exit;
+  }elseif ($type === 'loglar') {
+      loglar();
+      exit;
+  }elseif ($type === 'adresAktif') {
+        adresAktif();
         exit;
-    }elseif ($type === 'bannerVideo') {
-        editBannerVideo();
-        exit;
-    }
-    elseif ($type === 'favori') {
-        editFavori();
-        exit;
-    }
-    elseif ($type === 'sepeteFavoriEkle') {
-        sepeteFavoriEkle();
-        exit;
-    }
-    elseif ($type === 'adresGuncelle') {
-        uyeAdresDuzenle();
-        exit;
-    }
-    elseif ($type === 'adresEkle') {
-        uyeAdresEkle();
-        exit;
-    }
-    elseif ($type === 'sepeteUrunEkle') {
-        sepeteUrunEkle();
-        exit;
-    }
-    elseif ($type === 'sepetAdres') {
-        sepetAdres();
-        exit;
-    }elseif ($type === 'adresSec') {
-        adresSec();
-        exit;
-    }elseif ($type === 'iade') {
-        iade();
-        exit;
-    }elseif ($type === 'teklif') {
-        teklif();
-        exit;
-    }elseif ($type === 'loglar') {
-        loglar();
-        exit;
-    }elseif ($type === 'adresAktif') {
-            adresAktif();
-            exit;
-    }elseif ($type === 'ebulten_kaydet') {
-            ebultenKaydet();
-        exit;
-    }
+  }elseif ($type === 'ebulten_kaydet') {
+        ebultenKaydet();
+    exit;
 }
-?>
+}
+  ?>
