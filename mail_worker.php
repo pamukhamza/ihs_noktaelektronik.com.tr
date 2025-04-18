@@ -4,6 +4,7 @@ error_log("Mail worker başlatıldı");
 
 // Dosya yollarını doğru şekilde ayarla
 $root_path = dirname(__FILE__);
+require_once $root_path . '/functions/db.php';
 require_once $root_path . '/functions/functions.php';
 require_once $root_path . '/mail/mail_gonder.php';
 
