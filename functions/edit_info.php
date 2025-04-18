@@ -278,7 +278,7 @@ function editAriza() {
 
         // Mail gönderimini arka planda çalıştır
         $mail_icerik = arizaKayitMail($musteri, $takip_kodu);
-        $cmd = "php -f ../../mail_worker.php " . 
+        $cmd = "php -f ../mail_worker.php " . 
                escapeshellarg($email) . " " . 
                escapeshellarg('Arıza Kaydınız Alınmıştır!') . " " . 
                escapeshellarg($mail_icerik) . " " . 

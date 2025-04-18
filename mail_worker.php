@@ -1,5 +1,6 @@
 <?php
 require_once 'functions/functions.php';
+require_once 'mail/mail_gonder.php';
 
 // Komut satırından gelen parametreleri al
 $to = $argv[1];
