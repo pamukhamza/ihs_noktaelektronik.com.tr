@@ -1,6 +1,7 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
+require '../functions/logger.php';
 
 $currentPage = 'tdp';
 $template = new Template('Nokta - Teknik Destek Programı', $currentPage);
@@ -8,8 +9,12 @@ $template = new Template('Nokta - Teknik Destek Programı', $currentPage);
 $template->head();
 $database = new Database();
 
-// Güvenlik kontrolleri
-$uye_id = isset($_SESSION['id']) ? (int)$_SESSION['id'] : null;
+try {
+    $uye_id = isset($_SESSION['id']) ? (int)$_SESSION['id'] : null;
+    Logger::info("Sayfa yüklendi", ['user_id' => $uye_id]);
+} catch (Exception $e) {
+    Logger::error("Sayfa yüklenirken hata oluştu", ['error' => $e->getMessage()]);
+}
 
 ?>
 <style>
@@ -64,9 +69,11 @@ $uye_id = isset($_SESSION['id']) ? (int)$_SESSION['id'] : null;
                         </thead>
                         <tbody>
                         <?php
-                        if($uye_id !== null){
-                            $c = $database->fetchAll("SELECT * FROM nokta_teknik_destek WHERE uye_id = :uye_id AND SILINDI = 0", ['uye_id' => $uye_id]);
-                            foreach($c as $k => $row) {
+                        try {
+                            if($uye_id !== null){
+                                $c = $database->fetchAll("SELECT * FROM nokta_teknik_destek WHERE uye_id = :uye_id AND SILINDI = 0", ['uye_id' => $uye_id]);
+                                Logger::info("Kullanıcı kayıtları getirildi", ['user_id' => $uye_id, 'record_count' => count($c)]);
+                                foreach($c as $k => $row) {
                         ?>
                                 <tr>
                                     <td class="text-center border-right"><?= htmlspecialchars($row['takip_kodu']); ?></td>
@@ -75,9 +82,14 @@ $uye_id = isset($_SESSION['id']) ? (int)$_SESSION['id'] : null;
                                     <td class="text-center border-right"><?= htmlspecialchars($row['tarih']); ?></td>
                                 </tr>
                         <?php 
+                                }
+                            } else {
+                                Logger::info("Giriş yapılmamış kullanıcı kayıt görüntüleme denemesi");
+                                echo '<tr><td colspan="4" class="text-center">Görüntülenecek kayıt bulunmamaktadır.</td></tr>';
                             }
-                        } else {
-                            echo '<tr><td colspan="4" class="text-center">Görüntülenecek kayıt bulunmamaktadır.</td></tr>';
+                        } catch (Exception $e) {
+                            Logger::error("Kayıtlar getirilirken hata oluştu", ['error' => $e->getMessage()]);
+                            echo '<tr><td colspan="4" class="text-center text-danger">Kayıtlar getirilirken bir hata oluştu.</td></tr>';
                         }
                         ?>
                         </tbody>
@@ -484,6 +496,7 @@ $(document).ready(function() {
         if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
+            Logger::warning("Form validasyon hatası");
         }
         form.classList.add('was-validated');
     });
@@ -491,7 +504,11 @@ $(document).ready(function() {
     // AJAX istekleri için hata yönetimi
     $.ajaxSetup({
         error: function(xhr, status, error) {
-            console.error('AJAX Error:', status, error);
+            Logger::error("AJAX hatası", {
+                'status': status,
+                'error': error,
+                'response': xhr.responseText
+            });
             alert('Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.');
         }
     });
@@ -517,14 +534,16 @@ $(document).ready(function() {
                 try {
                     const data = JSON.parse(response);
                     if (data.success) {
+                        Logger::info("Form başarıyla gönderildi", {'takip_kodu': data.takip_kodu});
                         showSuccessModal(data.takip_kodu);
-                        // Formu temizle
                         form.reset();
                         form.classList.remove('was-validated');
                     } else {
+                        Logger::warning("Form gönderimi başarısız", {'message': data.message});
                         showErrorModal(data.message);
                     }
                 } catch (e) {
+                    Logger::error("Form yanıtı işlenirken hata", {'error': e.message, 'response': response});
                     showErrorModal('Beklenmeyen bir hata oluştu');
                 }
             }
