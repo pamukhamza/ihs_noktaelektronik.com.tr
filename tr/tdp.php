@@ -389,71 +389,19 @@ try {
                 success: function(gelen) {
                     $('#basvuruModal').modal('hide');
 
-                    // Modal içeriğini ayarlayın
-                    $('#modalTitle').text("Başvurunuz Alınmıştır!");
-                    $('#modalBody').html('Arıza Takip Kodunuz: ' + gelen);
-                    $('#successModal').modal('show');
-
-                    $('#yazdirButton').off('click').on('click', function() {
-                        var urun_kodu = urun_kodu_array.join(', ');
-                        var seri_no = seri_no_array.join(', ');
-                        var adet = adet_array.join(', ');
-                        var musteri = $('#musteri').val();
-                        var tel = $('#tel').val();
-                        var email = $('#email').val();
-                        var aciklama = $('#aciklama').val();
-
-                        var printContent = `
-                    <html>
-                    <head>
-                        <title>Yazdır</title>
-                        <style>
-                            body {
-                                font-family: Arial, sans-serif;
-                                margin: 20px;
-                            }
-                            h3 {
-                                color: #333;
-                            }
-                            p {
-                                font-size: 14px;
-                                line-height: 1.6;
-                            }
-                            strong {
-                                color: #555;
-                            }
-                            .header {
-                                text-align: center;
-                                margin-bottom: 20px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="header">
-                            <h3>Başvuru Bilgileri</h3>
-                        </div>
-                        <p><strong>Takip Kodu:</strong> ${gelen}</p>
-                        <p><strong>Ürün Kodu:</strong> ${urun_kodu}</p>
-                        <p><strong>Seri No:</strong> ${seri_no}</p>
-                        <p><strong>Adet:</strong> ${adet}</p>
-                        <p><strong>Müşteri:</strong> ${musteri}</p>
-                        <p><strong>Telefon:</strong> ${tel}</p>
-                        <p><strong>Email:</strong> ${email}</p>
-                        <p><strong>Açıklama:</strong> ${aciklama}</p>
-                    </body>
-                    </html>
-                `;
-
-                        var newWindow = window.open('', '', 'width=600,height=400');
-                        newWindow.document.write(printContent);
-                        newWindow.document.close();
-                        newWindow.onload = function() {
-                            newWindow.print();
-                            newWindow.onafterprint = function() {
-                                newWindow.close();
-                            };
-                        };
-                    });
+                    try {
+                        const response = JSON.parse(gelen);
+                        if (response.success) {
+                            // Modal içeriğini ayarlayın
+                            $('#modalTitle').text("Başvurunuz Alınmıştır!");
+                            $('#modalBody').html('Arıza Takip Kodunuz: ' + response.takip_kodu);
+                            $('#successModal').modal('show');
+                        } else {
+                            alert(response.message || "Bir hata oluştu");
+                        }
+                    } catch (e) {
+                        alert("Beklenmeyen bir hata oluştu");
+                    }
                 },
                 error: function(response) {
                     if (response.status === 400) {
