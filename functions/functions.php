@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: https://www.noktaelektronik.com.tr");
 // Hata raporlamayı aktif et
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
