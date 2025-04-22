@@ -364,8 +364,7 @@ if (isset($_POST['sifre_unuttum'])) {
 
         if (!$mail) {
             logActivity("Invalid email attempt: " . $_POST['mail'], 'ERROR');
-            echo 'invalid_email';
-            exit();
+            die('invalid_email');  // die() kullanarak çıktıyı temiz tutuyoruz
         }
 
         // Fetch user data
@@ -373,8 +372,7 @@ if (isset($_POST['sifre_unuttum'])) {
 
         if (!$userData) {
             logActivity("Password reset attempt for non-existent email: $mail", 'WARNING');
-            echo 'error';
-            exit();
+            die('error');
         }
 
         $uye_id = $userData['id'];
@@ -406,18 +404,18 @@ if (isset($_POST['sifre_unuttum'])) {
                 mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
                 logActivity("Password reset email sent to: $mail", 'INFO');
                 
-                echo 'success';
+                die('success');  // die() kullanarak çıktıyı temiz tutuyoruz
             } else {
                 logActivity("Failed to insert password reset code for user: $mail", 'ERROR');
-                echo 'db_error';
+                die('db_error');
             }
         } catch (Exception $e) {
             logActivity("Database error during password reset: " . $e->getMessage(), 'ERROR');
-            echo 'db_error';
+            die('db_error');
         }
     } catch (Exception $e) {
         logActivity("General error during password reset: " . $e->getMessage(), 'ERROR');
-        echo 'error';
+        die('error');
     }
 }
 if (isset($_POST['sifre_kaydet'])) {
