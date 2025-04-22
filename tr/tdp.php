@@ -9,12 +9,8 @@ $template->head();
 $database = new Database();
 
 // Güvenlik kontrolleri
-if (!isset($_SESSION['id'])) {
-    header('Location: login.php');
-    exit;
-}
-
 $uye_id = isset($_SESSION['id']) ? (int)$_SESSION['id'] : null;
+
 ?>
 <style>
       .bi {vertical-align: -.125em;fill: currentColor;}
