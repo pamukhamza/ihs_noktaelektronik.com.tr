@@ -184,8 +184,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                 },
                 dataType: 'text',
                 success: function(response) {
-                    console.log('Response:', response);
-                    if(response.trim() == 'success'){
+                    // Debug için response'u detaylı incele
+                    console.log('Raw Response:', response);
+                    console.log('Response Length:', response.length);
+                    console.log('Response Type:', typeof response);
+                    
+                    // Response'u temizle
+                    response = response.trim();
+                    
+                    if(response === 'success'){
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -193,21 +200,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                             showConfirmButton: false,
                             timer: 5000
                         });
-                    } else if(response.trim() == 'error'){
+                    } else if(response === 'error'){
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
                             title: 'E-posta adresi sistemde kayıtlı değil!',
                             showConfirmButton: true
                         });
-                    } else if(response.trim() == 'invalid_email'){
+                    } else if(response === 'invalid_email'){
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
                             title: 'Geçersiz e-posta adresi!',
                             showConfirmButton: true
                         });
-                    } else if(response.trim() == 'db_error'){
+                    } else if(response === 'db_error'){
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
@@ -215,11 +222,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                             showConfirmButton: true
                         });
                     } else {
-                        console.error('Unexpected response:', response);
+                        console.error('Unexpected Response:', {
+                            raw: response,
+                            length: response.length,
+                            type: typeof response,
+                            charCodes: Array.from(response).map(c => c.charCodeAt(0))
+                        });
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
-                            title: 'Beklenmeyen bir hata oluştu. Lütfen konsolu kontrol edin.',
+                            title: 'Beklenmeyen bir yanıt alındı. Lütfen konsolu kontrol edin.',
                             showConfirmButton: true
                         });
                     }
@@ -229,7 +241,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                     console.error('AJAX Error:', {
                         status: status,
                         error: error,
-                        response: xhr.responseText
+                        response: xhr.responseText,
+                        responseLength: xhr.responseText.length
                     });
                     $('input[type="submit"]').prop('disabled', false);
                     Swal.fire({
