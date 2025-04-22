@@ -169,7 +169,7 @@ try {
                                     </div>
                                 </div>
                             </div>
-                            <small style="color: red">Birden fazla ürün girmek için + işaretine tıklayınız !</small>
+                            <small>Birden fazla ürün girmek için + işaretine tıklayınız !</small>
                             <div id="input-rows-container">
                                 <div class="row mb-2">
                                     <div class="col-sm-4">
