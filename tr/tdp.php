@@ -126,7 +126,7 @@ try {
                 </div>
                 <div class="modal-body">
                     <form id="applicationForm" class="needs-validation" novalidate>
-                        <small>Lütfen zorunlu alanları doldurunuz!</small>
+                        <small>Lütfen kırmızı renkli zorunlu alanları doldurunuz!</small>
                         <div class="row g-3">
                             <div class="col-sm-12">
                                 <label for="musteri" class="form-label zorunlu">Müşteri(Firma Bilgisi)</label>
