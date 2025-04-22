@@ -7,6 +7,14 @@ $template = new Template('Nokta - Teknik Destek Programı', $currentPage);
 
 $template->head();
 $database = new Database();
+
+// Güvenlik kontrolleri
+if (!isset($_SESSION['id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$uye_id = isset($_SESSION['id']) ? (int)$_SESSION['id'] : null;
 ?>
 <style>
       .bi {vertical-align: -.125em;fill: currentColor;}
@@ -60,19 +68,22 @@ $database = new Database();
                         </thead>
                         <tbody>
                         <?php
-                        if($_SESSİON['id']){
-                            $uye_id = $_SESSION['id'];
-
-                            $c = $database->fetchAll("SELECT * FROM nokta_teknik_destek WHERE uye_id = $uye_id AND SILINDI = 0");
-                            foreach( $c as $k => $row ) {
+                        if($uye_id !== null){
+                            $c = $database->fetchAll("SELECT * FROM nokta_teknik_destek WHERE uye_id = :uye_id AND SILINDI = 0", ['uye_id' => $uye_id]);
+                            foreach($c as $k => $row) {
                         ?>
                                 <tr>
-                                    <td class="text-center border-right"><?= $row['takip_kodu']; ?></td>
-                                    <td class="text-center border-right"><?= $row['urun_kodu']; ?></td>
-                                    <td class="text-center border-right"><?= $row['yapilan_islemler']; ?></td>
-                                    <td class="text-center border-right"><?= $row['tarih']; ?></td>
+                                    <td class="text-center border-right"><?= htmlspecialchars($row['takip_kodu']); ?></td>
+                                    <td class="text-center border-right"><?= htmlspecialchars($row['urun_kodu']); ?></td>
+                                    <td class="text-center border-right"><?= htmlspecialchars($row['yapilan_islemler']); ?></td>
+                                    <td class="text-center border-right"><?= htmlspecialchars($row['tarih']); ?></td>
                                 </tr>
-                        <?php }} ?>
+                        <?php 
+                            }
+                        } else {
+                            echo '<tr><td colspan="4" class="text-center">Görüntülenecek kayıt bulunmamaktadır.</td></tr>';
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>
@@ -109,8 +120,8 @@ $database = new Database();
                         <div class="row g-3">
                             <div class="col-sm-12">
                                 <label for="musteri" class="form-label">Müşteri(Firma Bilgisi)</label>
-                                <input type="text" class="form-control" id="musteri_id" hidden value="<?php if($_SESSION['id']){ echo $_SESSION['id'];} ?>">
-                                <input type="text" class="form-control" id="musteri" value="<?php if($_SESSION['id']){ echo $_SESSION['firma'];} ?>" required>
+                                <input type="text" class="form-control" id="musteri_id" hidden value="<?= $uye_id ?? '' ?>">
+                                <input type="text" class="form-control" id="musteri" value="<?= isset($_SESSION['firma']) ? htmlspecialchars($_SESSION['firma']) : '' ?>" required>
                                 <div class="invalid-feedback">Geçerli ad giriniz!</div>
                             </div>
                             <div class="col-sm-6">
@@ -467,4 +478,73 @@ $database = new Database();
             });
         });
     });
+</script>
+
+<script>
+$(document).ready(function() {
+    // Form validasyonu
+    const form = document.getElementById('applicationForm');
+    form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    });
+
+    // AJAX istekleri için hata yönetimi
+    $.ajaxSetup({
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            alert('Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.');
+        }
+    });
+
+    // Form gönderimi
+    $('#applicationForm').submit(function(e) {
+        e.preventDefault();
+        
+        if (!this.checkValidity()) {
+            return;
+        }
+
+        var formData = new FormData(this);
+        formData.append('type', 'ariza');
+
+        $.ajax({
+            type: 'POST',
+            url: 'functions/edit_info.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    const data = JSON.parse(response);
+                    if (data.success) {
+                        showSuccessModal(data.takip_kodu);
+                        // Formu temizle
+                        form.reset();
+                        form.classList.remove('was-validated');
+                    } else {
+                        showErrorModal(data.message);
+                    }
+                } catch (e) {
+                    showErrorModal('Beklenmeyen bir hata oluştu');
+                }
+            }
+        });
+    });
+
+    function showSuccessModal(takipKodu) {
+        $('#modalTitle').text("Başvurunuz Alınmıştır!");
+        $('#modalBody').html('Arıza Takip Kodunuz: ' + takipKodu);
+        $('#successModal').modal('show');
+    }
+
+    function showErrorModal(message) {
+        $('#modalTitle').text("Hata!");
+        $('#modalBody').html(message);
+        $('#successModal').modal('show');
+    }
+});
 </script>
