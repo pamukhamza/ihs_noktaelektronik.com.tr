@@ -344,45 +344,80 @@ function updateUserPage($userId, $pageName, $ipAddress) {
     $stmt = $db->insert("REPLACE INTO user_pages (user_id, page_name, ip_address, satis_temsilcisi) VALUES (:user_id, :page_name, :ip_address, :st)" ,
      ['user_id' => $userId, 'page_name' => $pageName, 'ip_address' => $ipAddress, 'st' => $satis_temsilcisi]);
 }
+
+// Logging function
+function logActivity($message, $type = 'INFO') {
+    $logFile = __DIR__ . '/../logs/app.log';
+    $timestamp = date('Y-m-d H:i:s');
+    $logMessage = "[$timestamp] [$type] $message" . PHP_EOL;
+    file_put_contents($logFile, $logMessage, FILE_APPEND);
+}
+
 if (isset($_POST['sifre_unuttum'])) {
-    // Validate email input
-    $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
+    try {
+        // Validate email input
+        $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
 
-    if (!$mail) {
-        echo 'invalid_email';  // Return an error if email is not valid
-        exit();
-    }
-    include '../mail/mail_gonder.php';
+        if (!$mail) {
+            logActivity("Invalid email attempt: " . $_POST['mail'], 'ERROR');
+            echo 'invalid_email';
+            exit();
+        }
 
-    // Fetch user data
-    $userData = $db->fetch("SELECT * FROM uyeler WHERE email = :email", ['email' => $mail]);
+        // Fetch user data
+        $userData = $db->fetch("SELECT id, ad, soyad FROM uyeler WHERE email = :email", ['email' => $mail]);
 
-    // Check if user exists
-    if ($userData) {
-        // Proceed with password reset logic
+        if (!$userData) {
+            logActivity("Password reset attempt for non-existent email: $mail", 'WARNING');
+            echo 'error';
+            exit();
+        }
+
         $uye_id = $userData['id'];
-        $ad = $userData['ad'];
-        $soyad = $userData['soyad'];
-        $adsoyad = $ad . ' ' . $soyad;
+        $adsoyad = $userData['ad'] . ' ' . $userData['soyad'];
         
         // Generate a unique code for password reset
         $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
 
-        // Insert the reset code into the database
-        $db->delete("DELETE FROM b2b_sifre_degistirme WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
-        $insertResult = $db->insert("INSERT INTO b2b_sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", ['uye_id' => $uye_id, 'kod' => $uniqKod]);
+        // Start transaction for atomic operations
+        $db->beginTransaction();
 
-        if ($insertResult) {
-            // Send reset email
-            echo 'success';  // Return success message
-            $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
-            mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
-            
-        } else {
-            echo 'db_error';  // Return an error if inserting into the database fails
+        try {
+            // Delete old reset codes and insert new one in a single transaction
+            $db->delete("DELETE FROM b2b_sifre_degistirme WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
+            $insertResult = $db->insert("INSERT INTO b2b_sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", 
+                ['uye_id' => $uye_id, 'kod' => $uniqKod]);
+
+            if ($insertResult) {
+                $db->commit();
+                logActivity("Password reset code generated for user: $mail", 'INFO');
+                
+                // Send email asynchronously
+                include '../mail/mail_gonder.php';
+                $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
+                
+                // Use a non-blocking approach for email sending
+                if (function_exists('fastcgi_finish_request')) {
+                    fastcgi_finish_request();
+                }
+                
+                mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
+                logActivity("Password reset email sent to: $mail", 'INFO');
+                
+                echo 'success';
+            } else {
+                $db->rollBack();
+                logActivity("Failed to insert password reset code for user: $mail", 'ERROR');
+                echo 'db_error';
+            }
+        } catch (Exception $e) {
+            $db->rollBack();
+            logActivity("Database error during password reset: " . $e->getMessage(), 'ERROR');
+            echo 'db_error';
         }
-    } else {
-        echo 'error';  // User not found in database
+    } catch (Exception $e) {
+        logActivity("General error during password reset: " . $e->getMessage(), 'ERROR');
+        echo 'error';
     }
 }
 if (isset($_POST['sifre_kaydet'])) {
