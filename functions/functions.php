@@ -2,7 +2,6 @@
 // Hata raporlamayı aktif et
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
 require_once "db.php";
 $db = new Database();
 function sessionControl() {
@@ -11,7 +10,6 @@ function sessionControl() {
         exit();
     }
 }
-
 // uploadImageToS3 fonksiyonunu dosya yolu ile yükleme için düzenleyin
 function uploadImageToS3($file_path, $upload_path, $s3Client, $bucket) {
     try {
@@ -348,7 +346,6 @@ function updateUserPage($userId, $pageName, $ipAddress) {
     $stmt = $db->insert("REPLACE INTO user_pages (user_id, page_name, ip_address, satis_temsilcisi) VALUES (:user_id, :page_name, :ip_address, :st)" ,
      ['user_id' => $userId, 'page_name' => $pageName, 'ip_address' => $ipAddress, 'st' => $satis_temsilcisi]);
 }
-
 // Logging function
 function logActivity($message, $type = 'INFO') {
     $logFile = __DIR__ . '/../logs/app.log';
@@ -356,7 +353,6 @@ function logActivity($message, $type = 'INFO') {
     $logMessage = "[$timestamp] [$type] $message" . PHP_EOL;
     file_put_contents($logFile, $logMessage, FILE_APPEND);
 }
-
 // Response fonksiyonu
 function sendResponse($message) {
     // Önceki çıktıları temizle
@@ -370,7 +366,6 @@ function sendResponse($message) {
     echo $message;
     exit;
 }
-
 if (isset($_POST['sifre_unuttum'])) {
     $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
     
@@ -410,15 +405,12 @@ if (isset($_POST['sifre_kaydet'])) {
     if ($yeni_parola !== $yeni_parola_tekrar) {
         die(json_encode(['status' => 'error', 'message' => 'Şifreler eşleşmiyor.']));
     }
-
     // Şifre uzunluğu kontrolü
     if (strlen($yeni_parola) < 6) {
         die(json_encode(['status' => 'error', 'message' => 'Şifre en az 6 karakter olmalıdır.']));
     }
-
     // Kodu kontrol et
     $row = $db->fetch("SELECT uye_id FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
-    
     if (!$row) {
         die(json_encode(['status' => 'error', 'message' => 'Geçersiz veya süresi dolmuş kod.']));
     }
