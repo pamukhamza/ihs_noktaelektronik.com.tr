@@ -383,17 +383,15 @@ if (isset($_POST['sifre_unuttum'])) {
         // Generate a unique code for password reset
         $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
 
-        // Start transaction for atomic operations
-        $db->beginTransaction();
-
         try {
-            // Delete old reset codes and insert new one in a single transaction
+            // Delete old reset codes
             $db->delete("DELETE FROM b2b_sifre_degistirme WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
+            
+            // Insert new reset code
             $insertResult = $db->insert("INSERT INTO b2b_sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", 
                 ['uye_id' => $uye_id, 'kod' => $uniqKod]);
 
             if ($insertResult) {
-                $db->commit();
                 logActivity("Password reset code generated for user: $mail", 'INFO');
                 
                 // Send email asynchronously
@@ -410,12 +408,10 @@ if (isset($_POST['sifre_unuttum'])) {
                 
                 echo 'success';
             } else {
-                $db->rollBack();
                 logActivity("Failed to insert password reset code for user: $mail", 'ERROR');
                 echo 'db_error';
             }
         } catch (Exception $e) {
-            $db->rollBack();
             logActivity("Database error during password reset: " . $e->getMessage(), 'ERROR');
             echo 'db_error';
         }
