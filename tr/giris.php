@@ -182,18 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                     mail: mail,
                     sifre_unuttum: 'sifre_unuttum'
                 },
-                dataType: 'text',
-                beforeSend: function() {
-                    console.log('Sending request...');
-                },
                 success: function(response) {
-                    console.log('Raw Response:', response);
-                    console.log('Response Length:', response.length);
-                    console.log('Response Type:', typeof response);
-                    
-                    // Response'u temizle
-                    response = response.trim();
-                    
                     if(response === 'success'){
                         Swal.fire({
                             position: 'center',
@@ -223,41 +212,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                             title: 'Veritabanı hatası oluştu. Lütfen tekrar deneyin.',
                             showConfirmButton: true
                         });
-                    } else {
-                        console.error('Unexpected Response:', {
-                            raw: response,
-                            length: response.length,
-                            type: typeof response,
-                            charCodes: Array.from(response).map(c => c.charCodeAt(0))
-                        });
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Beklenmeyen bir yanıt alındı: ' + response,
-                            showConfirmButton: true
-                        });
                     }
                     $('input[type="submit"]').prop('disabled', false);
                 },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error:', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText,
-                        responseLength: xhr.responseText.length,
-                        statusText: xhr.statusText,
-                        readyState: xhr.readyState
-                    });
+                error: function() {
                     $('input[type="submit"]').prop('disabled', false);
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Bir hata oluştu: ' + error,
+                        title: 'Bir hata oluştu. Lütfen tekrar deneyin.',
                         showConfirmButton: true
                     });
-                },
-                complete: function(xhr, status) {
-                    console.log('Request completed with status:', status);
                 }
             });
         });

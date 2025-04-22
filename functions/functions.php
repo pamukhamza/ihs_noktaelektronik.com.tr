@@ -360,77 +360,45 @@ function logActivity($message, $type = 'INFO') {
 // Response fonksiyonu
 function sendResponse($message) {
     // Önceki çıktıları temizle
-    if (ob_get_level()) ob_end_clean();
-    // Yeni çıktı tamponlaması başlat
-    ob_start();
+    while (ob_get_level()) ob_end_clean();
+    
+    // Header'ları ayarla
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Cache-Control: no-cache, must-revalidate');
+    
     // Response'u gönder
     echo $message;
-    // Tamponu temizle ve çık
-    ob_end_flush();
     exit;
 }
 
 if (isset($_POST['sifre_unuttum'])) {
-    try {
-        logActivity("Password reset request started for: " . $_POST['mail'], 'INFO');
-        
-        // Validate email input
-        $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
+    $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
+    
+    if (!$mail) {
+        die('invalid_email');
+    }
 
-        if (!$mail) {
-            logActivity("Invalid email attempt: " . $_POST['mail'], 'ERROR');
-            sendResponse('invalid_email');
-        }
+    $userData = $db->fetch("SELECT id, ad, soyad FROM uyeler WHERE email = :email", ['email' => $mail]);
+    
+    if (!$userData) {
+        die('error');
+    }
 
-        // Fetch user data
-        $userData = $db->fetch("SELECT id, ad, soyad FROM uyeler WHERE email = :email", ['email' => $mail]);
+    $uye_id = $userData['id'];
+    $adsoyad = $userData['ad'] . ' ' . $userData['soyad'];
+    $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
 
-        if (!$userData) {
-            logActivity("Password reset attempt for non-existent email: $mail", 'WARNING');
-            sendResponse('error');
-        }
+    $db->delete("DELETE FROM b2b_sifre_degistirme WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
+    $insertResult = $db->insert("INSERT INTO b2b_sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", 
+        ['uye_id' => $uye_id, 'kod' => $uniqKod]);
 
-        $uye_id = $userData['id'];
-        $adsoyad = $userData['ad'] . ' ' . $userData['soyad'];
-        
-        // Generate a unique code for password reset
-        $uniqKod = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 20);
-
-        try {
-            // Delete old reset codes
-            $db->delete("DELETE FROM b2b_sifre_degistirme WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
-            
-            // Insert new reset code
-            $insertResult = $db->insert("INSERT INTO b2b_sifre_degistirme (uye_id, kod) VALUES (:uye_id, :kod)", 
-                ['uye_id' => $uye_id, 'kod' => $uniqKod]);
-
-            if ($insertResult) {
-                logActivity("Password reset code generated for user: $mail", 'INFO');
-                
-                // Send email asynchronously
-                include __DIR__ . '/../mail/mail_gonder.php';
-                $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
-                
-                // Use a non-blocking approach for email sending
-                if (function_exists('fastcgi_finish_request')) {
-                    fastcgi_finish_request();
-                }
-                
-                mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
-                logActivity("Password reset email sent to: $mail", 'INFO');
-                
-                sendResponse('success');
-            } else {
-                logActivity("Failed to insert password reset code for user: $mail", 'ERROR');
-                sendResponse('db_error');
-            }
-        } catch (Exception $e) {
-            logActivity("Database error during password reset: " . $e->getMessage(), 'ERROR');
-            sendResponse('db_error');
-        }
-    } catch (Exception $e) {
-        logActivity("General error during password reset: " . $e->getMessage(), 'ERROR');
-        sendResponse('error');
+    if ($insertResult) {
+        include __DIR__ . '/../mail/mail_gonder.php';
+        $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
+        mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
+        die('success');
+    } else {
+        die('db_error');
     }
 }
 if (isset($_POST['sifre_kaydet'])) {
