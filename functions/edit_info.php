@@ -3,6 +3,8 @@ ini_set('display_errors', 1);  // Hataları ekrana göster
 error_reporting(E_ALL);  
 require_once 'db.php';
 require_once '../mail/mail_gonder.php';
+require_once 'logger.php';
+
 function controlInput($data) {
     // Veri temizleme işlemi
     $data = trim($data);               // Baş ve son boşlukları temizler
@@ -189,102 +191,134 @@ function ebultenKaydet() {
 }
 function editAriza() {
     $db = new Database();
-    $id = isset($_POST['id']) && $_POST['id'] !== '' ? controlInput($_POST['id']) : null;
-    $musteri = controlInput($_POST['musteri']);
-    $tel = controlInput($_POST['tel']);
-    $email = controlInput($_POST['email']);
-    $adres = controlInput($_POST['adres']);
-    $urun_kodu_raw = controlInput($_POST['urun_kodu']);
-    $seri_no_raw = controlInput($_POST['seri_no']);
-    $adet_raw = controlInput($_POST['adet']);
-    $aciklama = controlInput($_POST['aciklama']);
-    $ad_soyad = controlInput($_POST['ad_soyad']);
-    $fatura_no = controlInput($_POST['fatura_no']);
-    $teslim_alan = !empty($_POST['teslim_alan']) ? controlInput($_POST['teslim_alan']) : null;
-    $kargo_firmasi = controlInput($_POST['kargo_firmasi']);
-    $gonderim_sekli = controlInput($_POST['gonderim_sekli']);
-    $onay = controlInput($_POST['onay']);
+    
+    try {
+        $id = isset($_POST['id']) && $_POST['id'] !== '' ? controlInput($_POST['id']) : null;
+        $musteri = controlInput($_POST['musteri']);
+        $tel = controlInput($_POST['tel']);
+        $email = controlInput($_POST['email']);
+        $adres = controlInput($_POST['adres']);
+        $urun_kodu_raw = controlInput($_POST['urun_kodu']);
+        $seri_no_raw = controlInput($_POST['seri_no']);
+        $adet_raw = controlInput($_POST['adet']);
+        $aciklama = controlInput($_POST['aciklama']);
+        $ad_soyad = controlInput($_POST['ad_soyad']);
+        $fatura_no = controlInput($_POST['fatura_no']);
+        $teslim_alan = !empty($_POST['teslim_alan']) ? controlInput($_POST['teslim_alan']) : null;
+        $kargo_firmasi = controlInput($_POST['kargo_firmasi']);
+        $gonderim_sekli = controlInput($_POST['gonderim_sekli']);
+        $onay = controlInput($_POST['onay']);
 
-    $durum = '1';
-    $gunceltarih = date("ymd");
-    $takip_kodu = 'NEB' . $gunceltarih . random_int(1000, 9999);
-    $SILINDI = 0;
-    $tekniker = 0;
-
-    if (empty($urun_kodu_raw)) {
-        http_response_code(400);
-        exit();
-    }
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        http_response_code(500);
-        exit();
-    }
-
-    $urun_kodu_array = explode(',', $urun_kodu_raw);
-    $seri_no_array = explode(',', $seri_no_raw);
-    $adet_array = explode(',', $adet_raw);
-
-    if (!empty($musteri) && !empty($tel) && !empty($email) && !empty($adres) && !empty($ad_soyad) && !empty($aciklama) && ($onay == '1') && !empty($gonderim_sekli)) {
-        if ($gonderim_sekli == '1' && empty($kargo_firmasi)) {
-            http_response_code(400);
-            return;
-        }
-
-        $params = [
-            'takip_kodu' => $takip_kodu,
-            'fatura_no' => $fatura_no,
+        Logger::info("Arıza kaydı oluşturma başladı", [
+            'user_id' => $id,
             'musteri' => $musteri,
-            'tel' => $tel,
-            'mail' => $email,
-            'adres' => $adres,
-            'aciklama' => $aciklama,
-            'teslim_eden' => $ad_soyad,
-            'SILINDI' => $SILINDI,
-            'gonderim_sekli' => $gonderim_sekli,
-            'kargo_firmasi' => $kargo_firmasi,
-            'tekniker' => $tekniker
-        ];
+            'email' => $email
+        ]);
 
-        if (!is_null($id)) {
-            $params['uye_id'] = $id;
+        $durum = '1';
+        $gunceltarih = date("ymd");
+        $takip_kodu = 'NEB' . $gunceltarih . random_int(1000, 9999);
+        $SILINDI = 0;
+        $tekniker = 0;
 
-            $query = "INSERT INTO nokta_teknik_destek 
-                (uye_id, takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
-                VALUES (:uye_id, :takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
-        } else {
-            $params['teslim_alan'] = $teslim_alan;
-            $query = "INSERT INTO nokta_teknik_destek 
-                (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, teslim_alan, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
-                VALUES (:takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :teslim_alan, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
+        if (empty($urun_kodu_raw)) {
+            Logger::warning("Ürün kodu boş", ['post_data' => $_POST]);
+            http_response_code(400);
+            exit();
         }
 
-        $db->insert($query, $params);
-        $lastInsertId = $db->lastInsertId();
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            Logger::warning("Geçersiz email formatı", ['email' => $email]);
+            http_response_code(500);
+            exit();
+        }
 
-        // Ürünleri teknik_destek_urunler tablosuna ekle
-        foreach ($urun_kodu_array as $index => $urun_kodu) {
-            $seri_no = isset($seri_no_array[$index]) ? $seri_no_array[$index] : '';
-            $adet = isset($adet_array[$index]) ? $adet_array[$index] : '';
+        $urun_kodu_array = explode(',', $urun_kodu_raw);
+        $seri_no_array = explode(',', $seri_no_raw);
+        $adet_array = explode(',', $adet_raw);
 
-            $urun_params = [
-                'tdp_id' => $lastInsertId,
-                'urun_kodu' => $urun_kodu,
-                'seri_no' => $seri_no,
-                'adet' => $adet,
-                'urun_durumu' => "1",
-                'SILINDI' => $SILINDI
+        if (!empty($musteri) && !empty($tel) && !empty($email) && !empty($adres) && !empty($ad_soyad) && !empty($aciklama) && ($onay == '1') && !empty($gonderim_sekli)) {
+            if ($gonderim_sekli == '1' && empty($kargo_firmasi)) {
+                Logger::warning("Kargo firması seçilmemiş", ['gonderim_sekli' => $gonderim_sekli]);
+                http_response_code(400);
+                return;
+            }
+
+            $params = [
+                'takip_kodu' => $takip_kodu,
+                'fatura_no' => $fatura_no,
+                'musteri' => $musteri,
+                'tel' => $tel,
+                'mail' => $email,
+                'adres' => $adres,
+                'aciklama' => $aciklama,
+                'teslim_eden' => $ad_soyad,
+                'SILINDI' => $SILINDI,
+                'gonderim_sekli' => $gonderim_sekli,
+                'kargo_firmasi' => $kargo_firmasi,
+                'tekniker' => $tekniker
             ];
 
-            $urun_query = "INSERT INTO teknik_destek_urunler 
-                (tdp_id, urun_kodu, seri_no, adet, urun_durumu, SILINDI) 
-                VALUES (:tdp_id, :urun_kodu, :seri_no, :adet, :urun_durumu, :SILINDI)";
+            if (!is_null($id)) {
+                $params['uye_id'] = $id;
+                Logger::info("Üye ID ile kayıt oluşturuluyor", ['uye_id' => $id]);
 
-            $db->insert($urun_query, $urun_params);
+                $query = "INSERT INTO nokta_teknik_destek 
+                    (uye_id, takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
+                    VALUES (:uye_id, :takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
+            } else {
+                $params['teslim_alan'] = $teslim_alan;
+                Logger::info("Misafir kullanıcı kaydı oluşturuluyor");
+
+                $query = "INSERT INTO nokta_teknik_destek 
+                    (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, teslim_alan, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
+                    VALUES (:takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :teslim_alan, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
+            }
+
+            $db->insert($query, $params);
+            $lastInsertId = $db->lastInsertId();
+            Logger::info("Ana kayıt oluşturuldu", ['takip_kodu' => $takip_kodu, 'last_id' => $lastInsertId]);
+
+            // Ürünleri teknik_destek_urunler tablosuna ekle
+            foreach ($urun_kodu_array as $index => $urun_kodu) {
+                $seri_no = isset($seri_no_array[$index]) ? $seri_no_array[$index] : '';
+                $adet = isset($adet_array[$index]) ? $adet_array[$index] : '';
+
+                $urun_params = [
+                    'tdp_id' => $lastInsertId,
+                    'urun_kodu' => $urun_kodu,
+                    'seri_no' => $seri_no,
+                    'adet' => $adet,
+                    'urun_durumu' => "1",
+                    'SILINDI' => $SILINDI
+                ];
+
+                $urun_query = "INSERT INTO teknik_destek_urunler 
+                    (tdp_id, urun_kodu, seri_no, adet, urun_durumu, SILINDI) 
+                    VALUES (:tdp_id, :urun_kodu, :seri_no, :adet, :urun_durumu, :SILINDI)";
+
+                $db->insert($urun_query, $urun_params);
+                Logger::info("Ürün kaydı oluşturuldu", [
+                    'tdp_id' => $lastInsertId,
+                    'urun_kodu' => $urun_kodu,
+                    'seri_no' => $seri_no,
+                    'adet' => $adet
+                ]);
+            }
+
+            Logger::info("Arıza kaydı başarıyla tamamlandı", ['takip_kodu' => $takip_kodu]);
+            echo $takip_kodu;
+        } else {
+            Logger::warning("Eksik veya hatalı form verisi", ['post_data' => $_POST]);
+            http_response_code(400);
+            exit();
         }
-        echo $takip_kodu;
-    } else {
-        http_response_code(400);
+    } catch (Exception $e) {
+        Logger::error("Arıza kaydı oluşturulurken hata", [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        http_response_code(500);
         exit();
     }
 }
