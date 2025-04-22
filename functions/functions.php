@@ -1,4 +1,8 @@
 <?php
+// Hata raporlamayı aktif et
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once "db.php";
 $db = new Database();
 function sessionControl() {
@@ -393,7 +397,7 @@ if (isset($_POST['sifre_unuttum'])) {
                 logActivity("Password reset code generated for user: $mail", 'INFO');
                 
                 // Send email asynchronously
-                include '../mail/mail_gonder.php';
+                include __DIR__ . '/../mail/mail_gonder.php';
                 $mail_icerik = sifreDegistimeMail($adsoyad, $uniqKod);
                 
                 // Use a non-blocking approach for email sending
