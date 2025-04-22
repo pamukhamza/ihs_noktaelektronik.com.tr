@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
             $('input[type="submit"]').prop('disabled', true);
             $.ajax({
                 type: "POST",
-                url: "../functions/functions.php",
+                url: "functions/functions.php",
                 data: {
                     mail: mail,
                     sifre_unuttum: 'sifre_unuttum'
