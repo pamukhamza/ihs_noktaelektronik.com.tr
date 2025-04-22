@@ -357,18 +357,29 @@ function logActivity($message, $type = 'INFO') {
     file_put_contents($logFile, $logMessage, FILE_APPEND);
 }
 
+// Response fonksiyonu
+function sendResponse($message) {
+    // Önceki çıktıları temizle
+    if (ob_get_level()) ob_end_clean();
+    // Yeni çıktı tamponlaması başlat
+    ob_start();
+    // Response'u gönder
+    echo $message;
+    // Tamponu temizle ve çık
+    ob_end_flush();
+    exit;
+}
+
 if (isset($_POST['sifre_unuttum'])) {
     try {
-        // Çıktı tamponlamasını başlat
-        ob_start();
+        logActivity("Password reset request started for: " . $_POST['mail'], 'INFO');
         
         // Validate email input
         $mail = filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL);
 
         if (!$mail) {
             logActivity("Invalid email attempt: " . $_POST['mail'], 'ERROR');
-            ob_end_clean(); // Tamponu temizle
-            die('invalid_email');
+            sendResponse('invalid_email');
         }
 
         // Fetch user data
@@ -376,8 +387,7 @@ if (isset($_POST['sifre_unuttum'])) {
 
         if (!$userData) {
             logActivity("Password reset attempt for non-existent email: $mail", 'WARNING');
-            ob_end_clean(); // Tamponu temizle
-            die('error');
+            sendResponse('error');
         }
 
         $uye_id = $userData['id'];
@@ -409,22 +419,18 @@ if (isset($_POST['sifre_unuttum'])) {
                 mailGonder($mail, 'Şifre Sıfırlama!', $mail_icerik, 'Şifre Sıfırlama!');
                 logActivity("Password reset email sent to: $mail", 'INFO');
                 
-                ob_end_clean(); // Tamponu temizle
-                die('success');
+                sendResponse('success');
             } else {
                 logActivity("Failed to insert password reset code for user: $mail", 'ERROR');
-                ob_end_clean(); // Tamponu temizle
-                die('db_error');
+                sendResponse('db_error');
             }
         } catch (Exception $e) {
             logActivity("Database error during password reset: " . $e->getMessage(), 'ERROR');
-            ob_end_clean(); // Tamponu temizle
-            die('db_error');
+            sendResponse('db_error');
         }
     } catch (Exception $e) {
         logActivity("General error during password reset: " . $e->getMessage(), 'ERROR');
-        ob_end_clean(); // Tamponu temizle
-        die('error');
+        sendResponse('error');
     }
 }
 if (isset($_POST['sifre_kaydet'])) {

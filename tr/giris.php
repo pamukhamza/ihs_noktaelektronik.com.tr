@@ -183,8 +183,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                     sifre_unuttum: 'sifre_unuttum'
                 },
                 dataType: 'text',
+                beforeSend: function() {
+                    console.log('Sending request...');
+                },
                 success: function(response) {
-                    // Debug için response'u detaylı incele
                     console.log('Raw Response:', response);
                     console.log('Response Length:', response.length);
                     console.log('Response Type:', typeof response);
@@ -231,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
-                            title: 'Beklenmeyen bir yanıt alındı. Lütfen konsolu kontrol edin.',
+                            title: 'Beklenmeyen bir yanıt alındı: ' + response,
                             showConfirmButton: true
                         });
                     }
@@ -242,15 +244,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
                         status: status,
                         error: error,
                         response: xhr.responseText,
-                        responseLength: xhr.responseText.length
+                        responseLength: xhr.responseText.length,
+                        statusText: xhr.statusText,
+                        readyState: xhr.readyState
                     });
                     $('input[type="submit"]').prop('disabled', false);
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Bir hata oluştu. Lütfen konsolu kontrol edin.',
+                        title: 'Bir hata oluştu: ' + error,
                         showConfirmButton: true
                     });
+                },
+                complete: function(xhr, status) {
+                    console.log('Request completed with status:', status);
                 }
             });
         });
