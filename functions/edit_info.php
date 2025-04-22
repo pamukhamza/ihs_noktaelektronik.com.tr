@@ -224,12 +224,21 @@ function editAriza() {
         if (empty($urun_kodu_raw)) {
             Logger::warning("Ürün kodu boş", ['post_data' => $_POST]);
             http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Ürün kodu boş bırakılamaz']);
             exit();
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             Logger::warning("Geçersiz email formatı", ['email' => $email]);
             http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Geçersiz e-posta adresi']);
+            exit();
+        }
+
+        if ($gonderim_sekli == '1' && empty($kargo_firmasi)) {
+            Logger::warning("Kargo firması seçilmemiş", ['gonderim_sekli' => $gonderim_sekli]);
+            http_response_code(600);
+            echo json_encode(['success' => false, 'message' => 'Kargo firması seçilmedi']);
             exit();
         }
 
@@ -238,12 +247,6 @@ function editAriza() {
         $adet_array = explode(',', $adet_raw);
 
         if (!empty($musteri) && !empty($tel) && !empty($email) && !empty($adres) && !empty($ad_soyad) && !empty($aciklama) && ($onay == '1') && !empty($gonderim_sekli)) {
-            if ($gonderim_sekli == '1' && empty($kargo_firmasi)) {
-                Logger::warning("Kargo firması seçilmemiş", ['gonderim_sekli' => $gonderim_sekli]);
-                http_response_code(400);
-                return;
-            }
-
             $params = [
                 'takip_kodu' => $takip_kodu,
                 'fatura_no' => $fatura_no,
@@ -324,10 +327,11 @@ function editAriza() {
                 ]);
             }
             
-            echo $takip_kodu;
+            echo json_encode(['success' => true, 'takip_kodu' => $takip_kodu]);
         } else {
             Logger::warning("Eksik veya hatalı form verisi", ['post_data' => $_POST]);
             http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Lütfen tüm zorunlu alanları doldurunuz']);
             exit();
         }
     } catch (Exception $e) {
