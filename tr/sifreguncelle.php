@@ -105,7 +105,7 @@ $(document).ready(function() {
         
         $.ajax({
             type: 'POST',
-            url: '../functions/functions.php',
+            url: 'functions/functions.php',
             data: {
                 code: $('#code').val(),
                 yeni_parola: $('#yeni_parola').val(),
