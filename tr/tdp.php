@@ -19,6 +19,7 @@ try {
 ?>
 <style>
       .bi {vertical-align: -.125em;fill: currentColor;}
+      .zorunlu{color:red}
 </style>
 <body>
     <?php $template->header(); ?>
@@ -127,30 +128,30 @@ try {
                     <form id="applicationForm" class="needs-validation" novalidate>
                         <div class="row g-3">
                             <div class="col-sm-12">
-                                <label for="musteri" class="form-label">Müşteri(Firma Bilgisi)</label>
+                                <label for="musteri" class="form-label zorunlu">Müşteri(Firma Bilgisi)</label>
                                 <input type="text" class="form-control" id="musteri_id" hidden value="<?= $uye_id ?? '' ?>">
                                 <input type="text" class="form-control" id="musteri" value="<?= isset($_SESSION['firma']) ? htmlspecialchars($_SESSION['firma']) : '' ?>" required>
                                 <div class="invalid-feedback">Geçerli ad giriniz!</div>
                             </div>
                             <div class="col-sm-6">
-                                <label for="tel" class="form-label">Telefon*</label>
+                                <label for="tel" class="form-label zorunlu">Telefon*</label>
                                 <input type="tel" class="form-control" id="tel" placeholder="0(xxx)xxx xx xx" required>
                                 <div class="invalid-feedback">Geçerli Telefon giriniz!</div>
                             </div>
                             <div class="col-sm-6">
-                                <label for="email" class="form-label">E-Posta*</label>
+                                <label for="email" class="form-label zorunlu">E-Posta*</label>
                                 <input type="email" class="form-control" id="email" placeholder="mail@example.com" required>
                                 <div class="invalid-feedback">Geçerli e-posta giriniz!</div>
                             </div>
                             <div class="col-sm-12">
-                                <label for="adres" class="form-label">Adres*</label>
+                                <label for="adres" class="form-label zorunlu">Adres*</label>
                                 <input type="text" class="form-control" id="adres" required>
                                 <div class="invalid-feedback">Geçerli Adres giriniz!</div>
                             </div>
                             <div id="input-row-template" style="display: none;">
                                 <div class="row mb-2">
                                     <div class="col-sm-4">
-                                        <label for="urun_kodu" class="form-label">Ürün Kodu*</label>
+                                        <label for="urun_kodu" class="form-label zorunlu">Ürün Kodu*</label>
                                         <input type="text" class="form-control urun_kodu" required>
                                         <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
                                     </div>
@@ -160,7 +161,7 @@ try {
                                         <div class="invalid-feedback">Geçerli Seri Numarası giriniz!</div>
                                     </div>
                                     <div class="col-sm-2">
-                                        <label for="adet" class="form-label">Adet*</label>
+                                        <label for="adet" class="form-label zorunlu">Adet*</label>
                                         <input type="text" class="form-control adet" required>
                                     </div>
                                     <div class="col-sm-2">
@@ -172,7 +173,7 @@ try {
                             <div id="input-rows-container">
                                 <div class="row mb-2">
                                     <div class="col-sm-4">
-                                        <label for="urun_kodu" class="form-label">Ürün Kodu*</label>
+                                        <label for="urun_kodu" class="form-label zorunlu">Ürün Kodu*</label>
                                         <input type="text" class="form-control urun_kodu" required>
                                         <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
                                     </div>
@@ -182,7 +183,7 @@ try {
                                         <div class="invalid-feedback">Geçerli Seri Numarası giriniz!</div>
                                     </div>
                                     <div class="col-sm-2">
-                                        <label for="adet" class="form-label">Adet*</label>
+                                        <label for="adet" class="form-label zorunlu">Adet*</label>
                                         <input type="text" class="form-control adet" required>
                                     </div>
                                     <div class="col-sm-2">
@@ -196,25 +197,25 @@ try {
                                 <div class="invalid-feedback">Geçerli fatura numarası giriniz!</div>
                             </div>
                             <div class="col-sm-6">
-                                <label for="ad_soyad" class="form-label">Formu Dolduran Bilgileri*</label>
+                                <label for="ad_soyad" class="form-label zorunlu">Formu Dolduran Bilgileri*</label>
                                 <input type="text" class="form-control" id="ad_soyad" required placeholder="Ad / Soyad...">
                                 <div class="invalid-feedback">Geçerli bilgi giriniz!</div>
                             </div>
                             <div class="col-sm-12">
-                                <label for="aciklama" class="form-label">Açıklama*</label>
+                                <label for="aciklama" class="form-label zorunlu">Açıklama*</label>
                                 <textarea name="aciklama" id="aciklama"  class="form-control" required></textarea>
                                 <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
                             </div>
                             <div class="row mb-2 mt-2">
                                 <div class="col-6">
-                                    <label for="gonderim_sekli" class="form-label">Gönderim Şekli*</label>
+                                    <label for="gonderim_sekli" class="form-label zorunlu">Gönderim Şekli*</label>
                                     <select class="form-control" id="gonderim_sekli" name="gonderim_sekli" required>
                                         <option value="1">Kargo ile Gönderim</option>
                                         <option value="2">Elden Teslim</option>
                                     </select>
                                 </div>
                                 <div class="col-6" id="kargo_firmasi_div">
-                                    <label for="kargo_firmasi" class="form-label">Kargo Firması*</label>
+                                    <label for="kargo_firmasi" class="form-label zorunlu">Kargo Firması*</label>
                                     <select class="form-control" id="kargo_firmasi" name="kargo_firmasi" required>
                                         <option value="">Kargo Firması Seçiniz</option>
                                         <option value="Yurtiçi Kargo">Yurtiçi Kargo</option>
