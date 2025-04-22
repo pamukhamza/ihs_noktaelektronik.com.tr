@@ -402,38 +402,42 @@ if (isset($_POST['sifre_unuttum'])) {
     }
 }
 if (isset($_POST['sifre_kaydet'])) {
-    header('Content-Type: application/json; charset=utf-8');
-    $yeni_parola = controlInput($_POST['yeni_parola']);
     $code = controlInput($_POST['code']);
+    $yeni_parola = controlInput($_POST['yeni_parola']);
+    $yeni_parola_tekrar = controlInput($_POST['yeni_parola_tekrar']);
 
-    $row = $db->fetch("SELECT * FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
+    // Şifrelerin eşleşip eşleşmediğini kontrol et
+    if ($yeni_parola !== $yeni_parola_tekrar) {
+        die(json_encode(['status' => 'error', 'message' => 'Şifreler eşleşmiyor.']));
+    }
 
-    if ($row) {
-        $uye_id = $row['uye_id'];
-        $hashed_new_password = md5($yeni_parola);
+    // Şifre uzunluğu kontrolü
+    if (strlen($yeni_parola) < 6) {
+        die(json_encode(['status' => 'error', 'message' => 'Şifre en az 6 karakter olmalıdır.']));
+    }
 
-        $currentDateTime = date("Y-m-d H:i:s");
-        $new_date = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
+    // Kodu kontrol et
+    $row = $db->fetch("SELECT uye_id FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
+    
+    if (!$row) {
+        die(json_encode(['status' => 'error', 'message' => 'Geçersiz veya süresi dolmuş kod.']));
+    }
 
-        $db->update("UPDATE uyeler SET parola = :parola, DEGISTIRME_TARIHI = :tarih WHERE id = :id", [
-            'parola' => $hashed_new_password,
-            'tarih' => $new_date,
-            'id' => $uye_id
-        ]);
+    $uye_id = $row['uye_id'];
+    $hashed_new_password = md5($yeni_parola);
 
+    // Şifreyi güncelle
+    $updateResult = $db->update("UPDATE uyeler SET parola = :parola, DEGISTIRME_TARIHI = NOW() WHERE id = :id", [
+        'parola' => $hashed_new_password,
+        'id' => $uye_id
+    ]);
+
+    if ($updateResult) {
+        // Kullanılmış kodu sil
         $db->delete("DELETE FROM b2b_sifre_degistirme WHERE kod = :code", ['code' => $code]);
-
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Şifre başarıyla güncellendi.'
-        ]);
-        exit;
+        die(json_encode(['status' => 'success', 'message' => 'Şifreniz başarıyla güncellendi.']));
     } else {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Kod geçersiz. Lütfen tekrar şifre yenileme talebinde bulunun.'
-        ]);
-        exit;
+        die(json_encode(['status' => 'error', 'message' => 'Şifre güncellenirken bir hata oluştu.']));
     }
 }
 if (isset($_POST['sifre_guncelle'])) {
