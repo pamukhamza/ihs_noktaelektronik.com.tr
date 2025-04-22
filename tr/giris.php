@@ -177,37 +177,59 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["girisyap"])) {
             $('input[type="submit"]').prop('disabled', true);
             $.ajax({
                 type: "POST",
-                url: "functions/functions.php",
+                url: "../functions/functions.php",
                 data: {
                     mail: mail,
                     sifre_unuttum: 'sifre_unuttum'
                 },
                 success: function(response) {
+                    console.log('Response:', response);
                     if(response == 'success'){
-                        Swal.fire(
-                            {position: 'center',
-                                icon:'success',
-                                title: 'Şifre güncelleme linki e-posta adresinize gönderilmiştir.',
-                                showConfirmButton: false,
-                                timer:5000
-                            }
-                        );
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Şifre güncelleme linki e-posta adresinize gönderilmiştir.',
+                            showConfirmButton: false,
+                            timer: 5000
+                        });
                     } else if(response == 'error'){
                         Swal.fire({
                             position: 'center',
-                            icon:'error',
+                            icon: 'error',
                             title: 'E-posta adresi sistemde kayıtlı değil!',
+                            showConfirmButton: true
+                        });
+                    } else if(response == 'invalid_email'){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Geçersiz e-posta adresi!',
+                            showConfirmButton: true
+                        });
+                    } else if(response == 'db_error'){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Veritabanı hatası oluştu. Lütfen tekrar deneyin.',
+                            showConfirmButton: true
+                        });
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Beklenmeyen bir hata oluştu: ' + response,
                             showConfirmButton: true
                         });
                     }
                     $('input[type="submit"]').prop('disabled', false);
                 },
-                error: function() {
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
                     $('input[type="submit"]').prop('disabled', false);
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+                        title: 'Bir hata oluştu: ' + error,
                         showConfirmButton: true
                     });
                 }
