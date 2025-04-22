@@ -307,6 +307,23 @@ function editAriza() {
             }
 
             Logger::info("Arıza kaydı başarıyla tamamlandı", ['takip_kodu' => $takip_kodu]);
+            
+            // Mail gönderme işlemi
+            try {
+                $mail_icerik = arizaKayitMail($musteri, $takip_kodu);
+                mailGonder($email, 'Arıza Kaydınız Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+                Logger::info("Arıza kaydı maili gönderildi", [
+                    'email' => $email,
+                    'takip_kodu' => $takip_kodu
+                ]);
+            } catch (Exception $e) {
+                Logger::error("Arıza kaydı maili gönderilirken hata", [
+                    'error' => $e->getMessage(),
+                    'email' => $email,
+                    'takip_kodu' => $takip_kodu
+                ]);
+            }
+            
             echo $takip_kodu;
         } else {
             Logger::warning("Eksik veya hatalı form verisi", ['post_data' => $_POST]);
