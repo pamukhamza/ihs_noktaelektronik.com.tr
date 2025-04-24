@@ -351,6 +351,46 @@ try {
         $('#applicationForm').submit(function(e) {
             e.preventDefault();
 
+// Zorunlu alanları al
+var requiredFields = [
+    '#musteri', '#tel', '#email', '#adres',
+    '#fatura_no', '#aciklama', '#ad_soyad'
+];
+
+var allFilled = true;
+
+requiredFields.forEach(function(selector) {
+    var value = $(selector).val().trim();
+    if (value === '') {
+        allFilled = false;
+    }
+});
+
+// Gönderim şekli 1 ise kargo firması zorunlu
+var gonderimSekli = $('#gonderim_sekli').val();
+var kargoFirmasi = $('#kargo_firmasi').val().trim();
+if (gonderimSekli === "1" && kargoFirmasi === "") {
+    allFilled = false;
+}
+
+// E-posta kontrolü
+var email = $('#email').val().trim();
+var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var validEmail = emailRegex.test(email);
+
+if (!allFilled) {
+    alert("Lütfen tüm zorunlu alanları doldurunuz.");
+    return;
+}
+
+if (!validEmail) {
+    alert("Lütfen geçerli bir e-posta adresi giriniz.");
+    return;
+}
+
+// Her şey tamamsa AJAX gönderimi
+$('#basvuruModal').modal('hide');
+
             var urun_kodu_array = [];
             var seri_no_array = [];
             var adet_array = [];
