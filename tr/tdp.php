@@ -384,7 +384,7 @@ try {
 
             // Her şey tamamsa AJAX gönderimi
             $('#basvuruModal').modal('hide');
-                Swal.fire({
+            Swal.fire({
                 title: 'İşlem yapılıyor...',
                 text: 'Lütfen bekleyiniz',
                 allowOutsideClick: false,
@@ -432,20 +432,10 @@ try {
                 contentType: false,
                 success: function(gelen) {
                     Swal.close();
-
-                    try {
-                        const response = JSON.parse(gelen);
-                        if (response.success) {
-                            // Modal içeriğini ayarlayın
-                            $('#modalTitle').text("Başvurunuz Alınmıştır!");
-                            $('#modalBody').html('Arıza Takip Kodunuz: ' + response.takip_kodu);
-                            $('#successModal').modal('show');
-                        } else {
-                            alert(response.message || "Bir hata oluştu");
-                        }
-                    } catch (e) {
-                        alert("Beklenmeyen bir hata oluştu");
-                    }
+                    const response = JSON.parse(gelen);
+                    $('#modalTitle').text("Başvurunuz Alınmıştır!");
+                    $('#modalBody').html('Arıza Takip Kodunuz: ' + response.takip_kodu);
+                    $('#successModal').modal('show');
                 },
                 error: function(response) {
                     if (response.status === 400) {
