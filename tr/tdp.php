@@ -351,46 +351,48 @@ try {
         $('#applicationForm').submit(function(e) {
             e.preventDefault();
 
-// Zorunlu alanları al
-var requiredFields = [
-    '#musteri', '#tel', '#email', '#adres',
-    '#ad_soyad', '#aciklama'
-];
+            // Zorunlu alanları al
+            var requiredFields = [ '#musteri', '#tel', '#email', '#adres', '#ad_soyad', '#aciklama' ];
 
-var allFilled = true;
+            var allFilled = true;
+            requiredFields.forEach(function(selector) {
+                var value = $(selector).val().trim();
+                if (value === '') {allFilled = false;}
+            });
 
-requiredFields.forEach(function(selector) {
-    var value = $(selector).val().trim();
-    if (value === '') {
-        allFilled = false;
-    }
-});
+            // Gönderim şekli 1 ise kargo firması zorunlu
+            var gonderimSekli = $('#gonderim_sekli').val();
+            var kargoFirmasi = $('#kargo_firmasi').val().trim();
+            if (gonderimSekli === "1" && kargoFirmasi === "") {
+                allFilled = false;
+            }
 
-// Gönderim şekli 1 ise kargo firması zorunlu
-var gonderimSekli = $('#gonderim_sekli').val();
-var kargoFirmasi = $('#kargo_firmasi').val().trim();
-if (gonderimSekli === "1" && kargoFirmasi === "") {
-    allFilled = false;
-}
+            // E-posta kontrolü
+            var email = $('#email').val().trim();
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            var validEmail = emailRegex.test(email);
 
-// E-posta kontrolü
-var email = $('#email').val().trim();
-var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-var validEmail = emailRegex.test(email);
+            if (!allFilled) {
+                alert("Lütfen tüm zorunlu alanları doldurunuz.");
+                return;
+            }
 
-if (!allFilled) {
-    alert("Lütfen tüm zorunlu alanları doldurunuz.");
-    return;
-}
+            if (!validEmail) {
+                alert("Lütfen geçerli bir e-posta adresi giriniz.");
+                return;
+            }
 
-if (!validEmail) {
-    alert("Lütfen geçerli bir e-posta adresi giriniz.");
-    return;
-}
-
-// Her şey tamamsa AJAX gönderimi
-$('#basvuruModal').modal('hide');
-
+            // Her şey tamamsa AJAX gönderimi
+            $('#basvuruModal').modal('hide');
+                Swal.fire({
+                title: 'İşlem yapılıyor...',
+                text: 'Lütfen bekleyiniz',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
             var urun_kodu_array = [];
             var seri_no_array = [];
             var adet_array = [];
@@ -429,7 +431,7 @@ $('#basvuruModal').modal('hide');
                 processData: false,
                 contentType: false,
                 success: function(gelen) {
-                    $('#basvuruModal').modal('hide');
+                    Swal.close();
 
                     try {
                         const response = JSON.parse(gelen);
