@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $cari_kodu = "WEB" . uniqid(6);
     $satis_temsilcisi = 86732;
 
-    $hashed_password = password_hash($_POST['parola'], PASSWORD_DEFAULT);
+    $hashed_password = md5($_POST['parola'], PASSWORD_DEFAULT);
     $currentDateTime = date("d.m.Y H:i:s");
     $degistirmetarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
     $kayitTarihi = date("Y-m-d H:i:s", strtotime("+3 hours"));

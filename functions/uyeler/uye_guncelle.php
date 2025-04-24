@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo json_encode($response);
             exit;
         }
-        $update_data['sifre'] = password_hash($_POST['yeni_sifre'], PASSWORD_DEFAULT);
+        $update_data['sifre'] = md5($_POST['yeni_sifre'], PASSWORD_DEFAULT);
     }
 
     // Build the update query
