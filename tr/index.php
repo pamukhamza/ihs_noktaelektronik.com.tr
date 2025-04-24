@@ -712,18 +712,23 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('.teklifOnaybtn').click(function() {
+    $(document).ready(function () {
+        $('.teklifOnaybtn').click(function () {
             $('#teklifOnayModal').modal('show');
         });
-        $('#applicationForm').submit(function(e) {
+
+        $('#applicationForm').submit(function (e) {
             e.preventDefault();
 
+            // Butonu seç ve durumu güncelle
+            var btn = $('#teklifOnayBtn');
+            btn.prop('disabled', true).text('Gönderiliyor...');
 
             var uye_id = $('#uye_id').val();
             var teklif_nedeni = $('#teklif_nedeni').val();
             var urun_no = $('#urun_no').val();
             var email = $('#email').val();
+
             $.ajax({
                 type: 'POST',
                 url: 'functions/edit_info.php',
@@ -734,20 +739,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     urun_no: urun_no,
                     type: 'teklif'
                 },
-                success: function() {
+                success: function () {
                     $('#teklifOnayModal').modal('hide');
                     Swal.fire({
                         title: "Teklifiniz Alınmıştır!",
                         icon: "success",
                         showConfirmButton: false
                     });
+
+                    // Buton durumunu sıfırla
+                    btn.prop('disabled', false).text('Devam Et');
                 },
-                error: function(response) {
-                    // Hata durumunda yapılacak işlemler
+                error: function (response) {
+                    // Hata durumunda buton tekrar aktif hale gelsin
+                    btn.prop('disabled', false).text('Devam Et');
+
+                    Swal.fire({
+                        title: "Hata oluştu!",
+                        text: "Lütfen tekrar deneyin.",
+                        icon: "error"
+                    });
                 }
             });
         });
     });
+
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
