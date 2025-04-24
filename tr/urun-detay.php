@@ -963,6 +963,8 @@ if(isset($_SESSION['id'])) {
             e.preventDefault();
 
 
+            var btn = $('#teklifOnayBtn');
+            btn.prop('disabled', true).text('Gönderiliyor...');
             var uye_id = $('#uye_id').val();
             var teklif_nedeni = $('#teklif_nedeni').val();
             var urun_no = $('#urun_no').val();
@@ -985,9 +987,17 @@ if(isset($_SESSION['id'])) {
                         icon: "success",
                         showConfirmButton: false
                     });
+                    // Buton durumunu sıfırla
+                    btn.prop('disabled', false).text('Devam Et');
                 },
                 error: function(response) {
-                    // Hata durumunda yapılacak işlemler
+                    // Hata durumunda buton tekrar aktif hale gelsin
+                    btn.prop('disabled', false).text('Devam Et');
+                    Swal.fire({
+                        title: "Hata oluştu!",
+                        text: "Lütfen tekrar deneyin.",
+                        icon: "error"
+                    });
                 }
             });
         });
