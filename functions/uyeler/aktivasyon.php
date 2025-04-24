@@ -2,7 +2,7 @@
 require_once '../db.php';
 $db = new Database();
 
-$success = $db->update("UPDATE uyeler SET aktif = 1 WHERE aktivasyon_kodu = :kod", [
+$success = $db->update("UPDATE uyeler SET aktif = 1 WHERE aktivasyon = :kod", [
     'kod' => $_GET['kod']
 ]);
 
