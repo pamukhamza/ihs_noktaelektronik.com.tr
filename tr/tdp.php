@@ -354,7 +354,7 @@ try {
 // Zorunlu alanları al
 var requiredFields = [
     '#musteri', '#tel', '#email', '#adres',
-    '#ad_soyad', '#aciklama', '.urun_kodu', '.adet'
+    '#ad_soyad', '#aciklama'
 ];
 
 var allFilled = true;
