@@ -122,7 +122,7 @@ $(document).ready(function() {
                             text: result.message,
                             confirmButtonText: 'Tamam'
                         }).then(() => {
-                            window.location.href = 'giris.php';
+                            window.location.href = 'tr/giris.php';
                         });
                     } else {
                         Swal.fire({

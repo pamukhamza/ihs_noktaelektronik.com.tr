@@ -426,6 +426,8 @@ try {
     $(document).ready(function() {
         $("#ara").click(function() {
             var takip_kodu = $("#takip_kodu").val();
+            var originalText = $("#ara").text();
+            $("#ara").text("Sorgulanıyor...").prop("disabled", true);
             $.ajax({
                 type: "POST",
                 url: "functions/functions.php",
