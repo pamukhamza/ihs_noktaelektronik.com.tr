@@ -131,13 +131,7 @@ function teklif() {
     
     // Mail gönderme işlemini arka planda başlat
     $mail_icerik = teklifAlindiMail($firmaAdi);
-    $command = "php " . dirname(__FILE__) . "/mail_worker.php " . 
-              escapeshellarg($mail) . " " . 
-              escapeshellarg('Teklif Talebiniz Alınmıştır!') . " " . 
-              escapeshellarg($mail_icerik) . " " . 
-              escapeshellarg('Nokta Elektronik') . " > NUL 2>&1 &";
-    
-    exec($command);
+    mailGonder($mail, 'Teklif Talebiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
     exit;
 }
 function sepeteUrunEkle() {

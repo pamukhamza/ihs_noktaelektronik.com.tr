@@ -726,7 +726,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var email = $('#email').val();
             $.ajax({
                 type: 'POST',
-                url: 'php/edit_info.php',
+                url: 'functions/edit_info.php',
                 data: {
                     uye_id: uye_id,
                     email: email,
