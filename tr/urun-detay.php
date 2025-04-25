@@ -717,7 +717,7 @@ if(isset($_SESSION['id'])) {
                                     ?>
 
                                     <li class="splide__slide d-flex justify-content-center mb-4 mt-2">
-                                        <div class="card border-0 p-0 col-lg-3 col-md-3 col-sm-6 col-xs-12 urun-effect" style="width: 15rem;">
+                                        <div class="card border-1 p-0 col-lg-3 col-md-3 col-sm-6 col-xs-12 urun-effect" style="width: 15rem;">
                                             <a href="tr/urunler/<?= htmlspecialchars($row['seo_link']) ?>">
                                                 <div class="rounded-3 w-100 d-flex align-items-center" style="height: 245px;">
                                                     <img src="<?= htmlspecialchars($resim_yolu) ?>" class="card-img-top img-fluid" alt="<?= htmlspecialchars($row['UrunAdiTR']) ?>">
