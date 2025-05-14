@@ -41,7 +41,7 @@ $bugun = date('Y-m-d');
                     <div class="col-xs-12 col-sm-12 col-md-12 ">
                         <article class="blog-post border rounded-3 px-3 " style="background-color: #EFF4F7;">
                             <h5 class="link-body-emphasis my-4">Cari Ödeme</h5>
-                            <form method="post" action="tr/cari_odeme">
+                            <form method="post" action="tr/cari_odeme_test">
                                 <div class="p-1">
                                     <?php
 

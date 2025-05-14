@@ -51,9 +51,9 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
                                                     <div class="input-group input-group-merge">
                                                         <input id="paymentCard" name="paymentCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" aria-describedby="paymentCard2" autocomplete="off" required autofocus MAXLENGTH="16" />
                                                         <span class="input-group-text cursor-pointer p-1" id="paymentCard2">
-                                                                    <span class="card-type" id="card-img">
-                                                                    </span>
-                                                                </span>
+                                                            <span class="card-type" id="card-img">
+                                                            </span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
@@ -410,7 +410,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
         const values = Object.fromEntries(
             Object.entries(elements).map(([key, id]) => [key, document.getElementById(id).value])
         );
-        values.pos = document.getElementById('pos_1')?.value || '4';
+        values.pos = document.getElementById('pos_1')?.value || '3';
         values.banka_id = document.getElementById('id_1')?.value || '125';
         values.taksit = document.getElementById('taksit_1')?.value || '1';
         values.vade = document.getElementById('vade_1')?.value || '1';
