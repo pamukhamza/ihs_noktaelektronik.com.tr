@@ -160,7 +160,7 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
     $yanSepetKdv = $decodedVeri["yanSepetKdv"];
     $yanIndirim = $decodedVeri["yanIndirim"];
     $yanKargo = $decodedVeri["yanKargo"];
-    $promosyon_kodu = $_POST["promosyonKodu"];
+    $promosyon_kodu = $_POST["promosyonKodu"] ?? '';
     $siparisOdeme = "siparis";
     $desi = $decodedVeri["desi"];
     $deliveryOption = $decodedVeri["deliveryOption"];
