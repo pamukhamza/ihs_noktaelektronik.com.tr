@@ -6,8 +6,8 @@ require_once '../wolvox/pos_olustur.php';
 
 $db = new Database();
 
-error_reporting(0); // HATA YAZDIRMA
-ini_set('display_errors', 0); // HATA YAZDIRMA
+error_reporting(1); // HATA YAZDIRMA
+ini_set('display_errors', 1); // HATA YAZDIRMA
 
 // Get currency rates
 $dolarKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
