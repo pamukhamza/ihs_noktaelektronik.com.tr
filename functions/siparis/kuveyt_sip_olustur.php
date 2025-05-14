@@ -3,6 +3,7 @@ require_once '../db.php';
 require_once '../functions.php';
 require_once '../bank/dekont_olustur.php';
 require_once '../wolvox/pos_olustur.php';
+require_once '../../mail/mail_gonder.php';
 
 $db = new Database();
 
