@@ -125,8 +125,8 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
             $basarili = 1;
             $sonucStr = "Ödeme işlemi başarılı: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
             
-            $success = $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)", [
-                'uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $cariOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
+            $success = $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)",
+                ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $cariOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
 
             $inserted_id = $db->lastInsertId();
 

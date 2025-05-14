@@ -2,6 +2,7 @@
 session_start();
 session_regenerate_id(true);
 include('../../db.php');
+$database = new Database();
 if(isset($_POST["cariOdeme"])){
 	$odemetaksit = $_POST['odemetaksit'];
 	if ($odemetaksit == 1 || $odemetaksit == 0) {
@@ -14,7 +15,7 @@ if(isset($_POST["cariOdeme"])){
 	$basarili = 0;
 	$sonucStr = 'Cari ödeme sayfasına giriş yapıldı!';
 	$stmt = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
-	$db->insert($stmt, ['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili]);
+	$database->insert($stmt, ['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili]);
 
 	$verimiz = [
 		"cardHolder" => $_POST["cardName"],
@@ -122,8 +123,8 @@ else {
 	$pos_id = 3;
 	$basarili = 0;
 	$sonucStr = 'Sipariş ödeme sayfasına giriş yapıldı!';
-	$stmt = $db->prepare("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
-	$stmt->execute(array(':uye_id' => $_POST["uye_id"], ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $_POST["toplam"], ':basarili' => $basarili));
+	$stmt = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+	$database->insert($stmt, ['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili]);
 
 	$verimizB64 = base64_encode(json_encode($verimiz));
 	$gidesun = "https://noktaelektronik.com.tr/functions/siparis/kuveyt_sip_olustur.php?veri=" .$verimizB64;
