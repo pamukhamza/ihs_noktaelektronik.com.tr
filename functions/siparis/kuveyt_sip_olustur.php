@@ -153,7 +153,6 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
         echo 'Caught exception: ',  $e->getMessage(), "\n";
     }
 }
-
 if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessage == "Kart doğrulandı.") {
     $veri = base64_decode($_GET['veri']);
     $decodedVeri = json_decode($veri, true);

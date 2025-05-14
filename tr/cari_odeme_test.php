@@ -411,7 +411,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
             Object.entries(elements).map(([key, id]) => [key, document.getElementById(id).value])
         );
         values.pos = document.getElementById('pos_1')?.value || '3';
-        values.banka_id = document.getElementById('id_1')?.value || '125';
+        values.banka_id = document.getElementById('id_1')?.value || '8';
         values.taksit = document.getElementById('taksit_1')?.value || '1';
         values.vade = document.getElementById('vade_1')?.value || '1';
         values.sonuc = document.getElementById('sonuc_1')?.value || "<?= $fiyat ?>";
