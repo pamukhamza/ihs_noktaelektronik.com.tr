@@ -500,11 +500,16 @@ if(isset($_POST["devamEt"])) {
         var lang = document.getElementById('lang').value;
         var uye_id = document.getElementById('hiddenuye_id').value;
 
-        var pos = document.getElementById('pos_1').value || '4';
+        var pos = document.getElementById('pos_1').value || '3';
         var banka_id = document.getElementById('id_1').value || '125';
         var taksit = document.getElementById('taksit_1').value || '1';
         var sonuc = document.getElementById('sonuc_1').value || "<?php echo formatNumber($toplam); ?>";
         var vade = document.getElementById('vade_1').value || '1';
+        
+        //turkiye finans
+        //var pos = document.getElementById('pos_1').value || '4';
+        //var banka_id = document.getElementById('id_1').value || '125';
+
         
         sonuc = sonuc.replace('.', ',');
         var paymentCard = document.getElementById('paymentCard').value;
