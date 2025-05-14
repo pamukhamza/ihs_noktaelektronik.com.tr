@@ -378,8 +378,8 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                     ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $siparisOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
 
                 // Send confirmation email
-                $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
-                mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+                //$mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
+                //mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
 
                 header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
             } else {
