@@ -17,7 +17,7 @@ if(isset($_POST["cariOdeme"])){
 	$pos_id = 3;
 	$basarili = 0;
 	$sonucStr = 'Cari ödeme sayfasına giriş yapıldı!';
-	$stmt = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+	$stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
 	$database->insert($stmt, ['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili]);
 
 	$verimiz = [
@@ -126,7 +126,7 @@ else {
 	$pos_id = 3;
 	$basarili = 0;
 	$sonucStr = 'Sipariş ödeme sayfasına giriş yapıldı!';
-	$stmt = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+	$stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
 	$database->insert($stmt, ['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili]);
 
 	$verimizB64 = base64_encode(json_encode($verimiz));
