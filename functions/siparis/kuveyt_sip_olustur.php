@@ -207,193 +207,404 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
     try {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSLVERSION, 6);
-        //curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_MAX_TLSv1_2); // alternatif
-        //curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_0 | CURL_SSLVERSION_TLSv1_1 | CURL_SSLVERSION_TLSv1_2); // php 5.5.19+ destekler
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/xml', 'Content-length: '. strlen($xml)) );
-        curl_setopt($ch, CURLOPT_POST, true); //POST Metodu kullanarak verileri g�nder
-        curl_setopt($ch, CURLOPT_HEADER, false); //Serverdan gelen Header bilgilerini �nemseme.
-        curl_setopt($ch, CURLOPT_URL,'https://sanalpos.kuveytturk.com.tr/ServiceGateWay/Home/ThreeDModelProvisionGate'); //Baglanacagi URL
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/xml', 'Content-length: '. strlen($xml)));
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_URL,'https://sanalpos.kuveytturk.com.tr/ServiceGateWay/Home/ThreeDModelProvisionGate');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //Transfer sonu�larini al.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $data = curl_exec($ch);
         $xml = simplexml_load_string($data);
 
+        if ($xml->ResponseCode == "00") {
+            $banka = $db->fetch("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = :banka_id", ['banka_id' => $banka_id]);
+            $ticariProgram = $banka["ticari_program"];
 
-                if ($xml->ResponseCode == "00") {
-                    $banka = $db->fetch("SELECT * FROM b2b_banka_taksit_eslesme WHERE id = :banka_id", ['banka_id' => $banka_id]);
-                    $ticariProgram = $banka["ticari_program"];
+            $banka_pos = $db->fetch("SELECT * FROM b2b_banka_pos_listesi WHERE id = :id", ['id' => $ticariProgram]);
+            $blbnhskodu = $banka_pos["BLBNHSKODU"];
+            $banka_adi = $banka_pos["BANKA_ADI"];
+            $banka_tanimi = $banka_pos["TANIMI"];
 
-                    $banka_pos = $db->fetch("SELECT * FROM b2b_banka_pos_listesi WHERE id = :id", ['id' => $ticariProgram]);
-                    $blbnhskodu = $banka_pos["BLBNHSKODU"];
-                    $banka_adi = $banka_pos["BANKA_ADI"];
-                    $banka_tanimi = $banka_pos["TANIMI"];
+            // Get delivery address
+            $teslimat = $db->fetch("SELECT * FROM b2b_adresler WHERE uye_id = :uye_id AND aktif = '1'", ['uye_id' => $uye_id]);
+            $teslimat_ad = $teslimat['ad'];
+            $teslimat_soyad = $teslimat['soyad'];
+            $teslimat_firmaadi = $teslimat['firma_adi'];
+            $teslimat_adres = $teslimat['adres'];
+            $teslimat_telefon = $teslimat['telefon'];
+            $teslimat_ulke = $teslimat['ulke'];
+            $teslimat_il = $teslimat['il'];
+            $teslimat_ilce = $teslimat['ilce'];
+            $teslimat_tcno = $teslimat['tc_no'];
+            $teslimat_vergino = $teslimat['vergi_no'];
+            $teslimat_vergidairesi = $teslimat['vergi_dairesi'];
+            $teslimat_postakodu = $teslimat['posta_kodu'];
 
-                    $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $uye_id]);
-                    $uyecarikod = $uye['BLKODU'];
+            // Get user billing details
+            $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $uye_id]);
+            $uyecarikod = $uye['BLKODU'];
+            $uye_gor_fiyat = $uye['fiyat'];
+            $uye_ad = $uye['ad'];
+            $uye_soyad = $uye['soyad'];
+            $uyeAdSoyad = $uye_ad . ' ' . $uye_soyad;
+            $uye_email = $uye['email'];
+            $uye_tel = $uye['tel'];
+            $uye_ulke = $uye['ulke'];
+            $uye_adres = $uye['adres'];
+            $uye_postakodu = $uye['posta_kodu'];
+            $uye_tcno = $uye['tc_no'];
+            $uye_firmaadi = $uye['firmaUnvani'];
+            $uye_vergidairesi = $uye['vergi_dairesi'];
+            $uye_vergino = $uye['vergi_no'];
+            $uye_il = $uye['il'];
+            $uye_ilce = $uye['ilce'];
+            $uye_muhasebekodu = $uye['muhasebe_kodu'];
 
-                    $doviz_kur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
-                    $dov_al = str_replace('.', ',', $doviz_kur["alis"]);
-                    $dov_sat = str_replace('.', ',', $doviz_kur["satis"]);
+            $currentDateTime = date("d.m.Y H:i:s");
+            $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
 
-                    $currentDateTime = date("d.m.Y H:i:s");
-                    $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
+            // Insert order into database
+            $success = $db->insert("INSERT INTO b2b_siparisler 
+                (siparis_no, uye_id, durum, odeme_sekli, teslimat_ad, teslimat_soyad, teslimat_firmaadi, teslimat_adres, 
+                teslimat_telefon, teslimat_ulke, teslimat_il, teslimat_ilce, teslimat_tcno, teslimat_vergino, 
+                teslimat_vergidairesi, teslimat_postakodu, uye_ad, uye_soyad, uye_email, uye_tel, uye_ulke, uye_adres, 
+                uye_postakodu, uye_tcno, uye_firmaadi, uye_vergidairesi, uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, 
+                sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) 
+                VALUES (:siparisNumarasi, :uye_id, '1', :tip, :teslimat_ad, :teslimat_soyad, :teslimat_firmaadi, :teslimat_adres,
+                :teslimat_telefon, :teslimat_ulke, :teslimat_il, :teslimat_ilce, :teslimat_tcno, :teslimat_vergino,
+                :teslimat_vergidairesi, :teslimat_postakodu, :uye_ad, :uye_soyad, :uye_email, :uye_tel, :uye_ulke, :uye_adres,
+                :uye_postakodu, :uye_tcno, :uye_firmaadi, :uye_vergidairesi, :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu,
+                :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW())", 
+                ['siparisNumarasi' => $siparisNumarasi,'uye_id' => $uye_id,'tip' => $tip,'teslimat_ad' => $teslimat_ad,'teslimat_soyad' => $teslimat_soyad,'teslimat_firmaadi' => $teslimat_firmaadi,
+                'teslimat_adres' => $teslimat_adres,'teslimat_telefon' => $teslimat_telefon,'teslimat_ulke' => $teslimat_ulke,'teslimat_il' => $teslimat_il,
+                'teslimat_ilce' => $teslimat_ilce,'teslimat_tcno' => $teslimat_tcno,'teslimat_vergino' => $teslimat_vergino,'teslimat_vergidairesi' => $teslimat_vergidairesi,
+                'teslimat_postakodu' => $teslimat_postakodu,'uye_ad' => $uye_ad,'uye_soyad' => $uye_soyad,'uye_email' => $uye_email,'uye_tel' => $uye_tel,'uye_ulke' => $uye_ulke,
+                'uye_adres' => $uye_adres,'uye_postakodu' => $uye_postakodu,'uye_tcno' => $uye_tcno,'uye_firmaadi' => $uye_firmaadi,'uye_vergidairesi' => $uye_vergidairesi,
+                'uye_vergino' => $uye_vergino,'uye_il' => $uye_il,'uye_ilce' => $uye_ilce,'uye_muhasebekodu' => $uye_muhasebekodu,'yanSepetToplami' => $yanSepetToplami,
+                'yanSepetKdv' => $yanSepetKdv,'yanIndirim' => $yanIndirim,'yanKargo' => $yanKargo,'deliveryOption' => $deliveryOption,'yantoplam' => $yantoplam,'desi' => $desi]);
 
-                    posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, 'TL',$banka_tanimi);
+            if ($success) {
+                $siparisId = $db->lastInsertId();
 
-                    // Get delivery address
-                    $teslimat = $db->fetch("SELECT * FROM b2b_adresler WHERE uye_id = :uye_id AND aktif = '1'", ['uye_id' => $uye_id]);
-                    $teslimat_ad = $teslimat['ad'];
-                    $teslimat_soyad = $teslimat['soyad'];
-                    $teslimat_firmaadi = $teslimat['firma_adi'];
-                    $teslimat_adres = $teslimat['adres'];
-                    $teslimat_telefon = $teslimat['telefon'];
-                    $teslimat_ulke = $teslimat['ulke'];
-                    $teslimat_il = $teslimat['il'];
-                    $teslimat_ilce = $teslimat['ilce'];
-                    $teslimat_tcno = $teslimat['tc_no'];
-                    $teslimat_vergino = $teslimat['vergi_no'];
-                    $teslimat_vergidairesi = $teslimat['vergi_dairesi'];
-                    $teslimat_postakodu = $teslimat['posta_kodu'];
+                // Get cart items
+                $urunler = $db->fetchAll("SELECT * FROM b2b_uye_sepet WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
 
-                    // Get user billing details
-                    $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $uye_id]);
-                    $uyecarikod = $uye['BLKODU'];
-                    $uye_gor_fiyat = $uye['fiyat'];
-                    $uye_ad = $uye['ad'];
-                    $uye_soyad = $uye['soyad'];
-                    $uyeAdSoyad = $uye_ad . ' ' . $uye_soyad;
-                    $uye_email = $uye['email'];
-                    $uye_tel = $uye['tel'];
-                    $uye_ulke = $uye['ulke'];
-                    $uye_adres = $uye['adres'];
-                    $uye_postakodu = $uye['posta_kodu'];
-                    $uye_tcno = $uye['tc_no'];
-                    $uye_firmaadi = $uye['firmaUnvani'];
-                    $uye_vergidairesi = $uye['vergi_dairesi'];
-                    $uye_vergino = $uye['vergi_no'];
-                    $uye_il = $uye['il'];
-                    $uye_ilce = $uye['ilce'];
-                    $uye_muhasebekodu = $uye['muhasebe_kodu'];
+                foreach ($urunler as $row) {
+                    $urun_id = $row['urun_id'];
+                    $miktar = $row['adet'];
+                    
+                    $urun = $db->fetch("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
+                    
+                    $urun_blkodu = $urun["BLKODU"];
+                    $uyenin_fiyati = ($urun["DSF".$uye_gor_fiyat] == NULL || $urun["DSF".$uye_gor_fiyat] == '') 
+                        ? $urun["KSF".$uye_gor_fiyat] : $urun["DSF".$uye_gor_fiyat];
+                    $uyenin_fiyati = number_format((float)$uyenin_fiyati, 2, '.', '');
 
-                    // Insert order into database
-                    $success = $db->insert("INSERT INTO b2b_siparisler 
-                        (siparis_no, uye_id, durum, odeme_sekli, teslimat_ad, teslimat_soyad, teslimat_firmaadi, teslimat_adres, 
-                        teslimat_telefon, teslimat_ulke, teslimat_il, teslimat_ilce, teslimat_tcno, teslimat_vergino, 
-                        teslimat_vergidairesi, teslimat_postakodu, uye_ad, uye_soyad, uye_email, uye_tel, uye_ulke, uye_adres, 
-                        uye_postakodu, uye_tcno, uye_firmaadi, uye_vergidairesi, uye_vergino, uye_il, uye_ilce, uye_muhasebekodu, 
-                        sepet_toplami, sepet_kdv, indirim, kargo_ucreti, kargo_firmasi, toplam, desi, tarih) 
-                        VALUES (:siparisNumarasi, :uye_id, '1', :tip, :teslimat_ad, :teslimat_soyad, :teslimat_firmaadi, :teslimat_adres,
-                        :teslimat_telefon, :teslimat_ulke, :teslimat_il, :teslimat_ilce, :teslimat_tcno, :teslimat_vergino,
-                        :teslimat_vergidairesi, :teslimat_postakodu, :uye_ad, :uye_soyad, :uye_email, :uye_tel, :uye_ulke, :uye_adres,
-                        :uye_postakodu, :uye_tcno, :uye_firmaadi, :uye_vergidairesi, :uye_vergino, :uye_il, :uye_ilce, :uye_muhasebekodu,
-                        :yanSepetToplami, :yanSepetKdv, :yanIndirim, :yanKargo, :deliveryOption, :yantoplam, :desi, NOW())", 
-                        ['siparisNumarasi' => $siparisNumarasi,'uye_id' => $uye_id,'tip' => $tip,'teslimat_ad' => $teslimat_ad,'teslimat_soyad' => $teslimat_soyad,'teslimat_firmaadi' => $teslimat_firmaadi,
-                        'teslimat_adres' => $teslimat_adres,'teslimat_telefon' => $teslimat_telefon,'teslimat_ulke' => $teslimat_ulke,'teslimat_il' => $teslimat_il,
-                        'teslimat_ilce' => $teslimat_ilce,'teslimat_tcno' => $teslimat_tcno,'teslimat_vergino' => $teslimat_vergino,'teslimat_vergidairesi' => $teslimat_vergidairesi,
-                        'teslimat_postakodu' => $teslimat_postakodu,'uye_ad' => $uye_ad,'uye_soyad' => $uye_soyad,'uye_email' => $uye_email,'uye_tel' => $uye_tel,'uye_ulke' => $uye_ulke,
-                        'uye_adres' => $uye_adres,'uye_postakodu' => $uye_postakodu,'uye_tcno' => $uye_tcno,'uye_firmaadi' => $uye_firmaadi,'uye_vergidairesi' => $uye_vergidairesi,
-                        'uye_vergino' => $uye_vergino,'uye_il' => $uye_il,'uye_ilce' => $uye_ilce,'uye_muhasebekodu' => $uye_muhasebekodu,'yanSepetToplami' => $yanSepetToplami,
-                        'yanSepetKdv' => $yanSepetKdv,'yanIndirim' => $yanIndirim,'yanKargo' => $yanKargo,'deliveryOption' => $deliveryOption,'yantoplam' => $yantoplam,'desi' => $desi]);
+                    $doviz_satis_fiyati = ($urun['DOVIZ_BIRIMI'] == '$') ? $satis_dolar : $satis_euro;
 
-                    if ($success) {
-                        $siparisId = $db->lastInsertId();
+                    // Insert order products
+                    $success = $db->insert("INSERT INTO b2b_siparis_urunler 
+                        (sip_id, urun_id, urun_blkodu, adet, birim_fiyat, toplam_fiyat, doviz_birimi, doviz_kuru) 
+                        VALUES (:sip_id, :urun_id, :urun_blkodu, :adet, :birim_fiyat, :toplam_fiyat, :doviz_birimi, :doviz_kuru)", [
+                        'sip_id' => $siparisId,'urun_id' => $urun_id,'urun_blkodu' => $urun_blkodu,'adet' => $miktar,
+                        'birim_fiyat' => $uyenin_fiyati,'toplam_fiyat' => $uyenin_fiyati * $miktar,'doviz_birimi' => $urun['DOVIZ_BIRIMI'],'doviz_kuru' => $doviz_satis_fiyati]);
 
-                        // Get cart items
-                        $urunler = $db->fetchAll("SELECT * FROM b2b_uye_sepet WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
-
-                        foreach ($urunler as $row) {
-                            $urun_id = $row['urun_id'];
-                            $miktar = $row['adet'];
-                            
-                            $urun = $db->fetch("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
-                            
-                            $urun_blkodu = $urun["BLKODU"];
-                            $uyenin_fiyati = ($urun["DSF".$uye_gor_fiyat] == NULL || $urun["DSF".$uye_gor_fiyati] == '') 
-                                ? $urun["KSF".$uye_gor_fiyat] : $urun["DSF".$uye_gor_fiyat];
-                            $uyenin_fiyati = number_format((float)$uyenin_fiyati, 2, '.', '');
-
-                            $doviz_satis_fiyati = ($urun['DOVIZ_BIRIMI'] == '$') ? $satis_dolar : $satis_euro;
-
-                            // Insert order products
-                            $success = $db->insert("INSERT INTO b2b_siparis_urunler 
-                                (sip_id, urun_id, urun_blkodu, adet, birim_fiyat, toplam_fiyat, doviz_birimi, doviz_kuru) 
-                                VALUES (:sip_id, :urun_id, :urun_blkodu, :adet, :birim_fiyat, :toplam_fiyat, :doviz_birimi, :doviz_kuru)", [
-                                'sip_id' => $siparisId,'urun_id' => $urun_id,'urun_blkodu' => $urun_blkodu,'adet' => $miktar,
-                                'birim_fiyat' => $uyenin_fiyati,'toplam_fiyat' => $uyenin_fiyati * $miktar,'doviz_birimi' => $urun['DOVIZ_BIRIMI'],'doviz_kuru' => $doviz_satis_fiyati]);
-                            if (!$success) {
-                                echo "Ürün eklerken hata oluştu: Veritabanı işlemi başarısız.";
-                                error_log("Product insertion failed for user ID: " . $uye_id . " - Order number: " . $siparisNumarasi);
-                                break;
-                            }
-                            // Delete from cart after successful order
-                            $db->delete("DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['uye_id' => $uye_id, 'urun_id' => $urun_id]);
-
-                            // Ürünün cok_satan değerini kontrol et ve arttır
-                            $cok_satan = $urun['cok_satan'];
-                            if ($cok_satan === null || $cok_satan === '') { 
-                                $cok_satan = 0;
-                            }
-                            $cok_satan++;
-
-                            // cok_satan değerini güncelle
-                            $db->update("UPDATE nokta_urunler SET cok_satan = :cok_satan WHERE id = :id", ['cok_satan' => $cok_satan,'id' => $urun_id]);
-                        }
-                        // Update promotion code usage if exists
-                        if (!empty($promosyon_kodu)) {
-                            $promosyon = $db->fetch("SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :kod", ['kod' => $promosyon_kodu]);
-
-                            if ($promosyon) {
-                                $maxKullanim = $promosyon['max_kullanim'];
-                                $promosyonKullanildi = $promosyon['kullanildi'];
-                                $promosyon_kullanim_sayisi = $promosyon['kullanim_sayisi'];
-                                $promosyon_kullanim_sayisi += 1;
-
-                                if ($promosyonKullanildi == 1) {
-                                    echo "Promosyon kullanildi";
-                                    exit;
-                                } elseif ($promosyon_kullanim_sayisi > $maxKullanim) {
-                                    echo "Promosyon kullanim maksimumu geçti";
-                                    exit;
-                                } elseif ($promosyon_kullanim_sayisi == $maxKullanim) {
-                                    $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, kullanildi = 1, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
-                                                ['kullanim_sayisi' => $promosyon_kullanim_sayisi,'uye_id' => $uye_id,'kod' => $promosyon_kodu]);
-                                } else {
-                                    $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
-                                                ['kullanim_sayisi' => $promosyon_kullanim_sayisi,'uye_id' => $uye_id,'kod' => $promosyon_kodu]);
-                                }
-                            }
-                        }
-                        
-                            // Send order confirmation email
-                        $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
-                        mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
-
-                        // Record payment success
-                        $pos_id = 3;
-                        $basarili = 1;
-                        $sonucStr = "Sipariş ödeme işlemi başarılı: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
-                        
-                        $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)", 
-                            ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $siparisOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
-                        header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-                    } else {
-                        echo "Sipariş oluşturma hatası: Veritabanı işlemi başarısız.";
-                        error_log("Order creation failed for user ID: " . $uye_id . " - Order number: " . $siparisNumarasi);
+                    if (!$success) {
+                        echo "Ürün eklerken hata oluştu: Veritabanı işlemi başarısız.";
+                        error_log("Product insertion failed for user ID: " . $uye_id . " - Order number: " . $siparisNumarasi);
+                        break;
                     }
-                } else {
-                    $pos_id = 3;
-                    $basarili = 0;
-                    $sonucStr = "Sipariş ödeme işlemi başarısız: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
-                    $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)", 
-                                ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $siparisOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
-                    header("Location: ../../tr/sepet?code=".$xml->ResponseCode."&message=".$xml->ResponseMessage);
+
+                    // Delete from cart after successful order
+                    $db->delete("DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['uye_id' => $uye_id, 'urun_id' => $urun_id]);
+
+                    // Update cok_satan value
+                    $cok_satan = $urun['cok_satan'];
+                    if ($cok_satan === null || $cok_satan === '') { 
+                        $cok_satan = 0;
+                    }
+                    $cok_satan++;
+                    $db->update("UPDATE nokta_urunler SET cok_satan = :cok_satan WHERE id = :id", ['cok_satan' => $cok_satan,'id' => $urun_id]);
                 }
+
+                // Create XML document
+                $xmlDoc = new DOMDocument('1.0', 'UTF-8');
+                $xmlDoc->formatOutput = true;
+
+                // Create base XML structure
+                $root = createOrderXML($xmlDoc, $uyecarikod, $siparisNumarasi, $degistirme_tarihi);
+
+                // Add products to XML
+                addProductsToXML($xmlDoc, $root, $db, $siparisId, $uye_gor_fiyat, $yanIndirim, $yanKargo, $yantoplam, $satis_dolar, $satis_euro, $alis_dolar, $alis_euro);
+
+                // Add currency information
+                addCurrencyToXML($xmlDoc, $root, $alis_dolar, $satis_dolar, $alis_euro, $satis_euro);
+
+                // Save XML file
+                $xmlFileName = 'fatura_' . $siparisNumarasi . '.xml';
+                $xmlDoc->save('../../assets/faturalar/' . $xmlFileName);
+
+                // Update promotion code usage if exists
+                if (!empty($promosyon_kodu)) {
+                    $promosyon = $db->fetch("SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :kod", ['kod' => $promosyon_kodu]);
+
+                    if ($promosyon) {
+                        $maxKullanim = $promosyon['max_kullanim'];
+                        $promosyonKullanildi = $promosyon['kullanildi'];
+                        $promosyon_kullanim_sayisi = $promosyon['kullanim_sayisi'];
+                        $promosyon_kullanim_sayisi += 1;
+
+                        if ($promosyonKullanildi == 1) {
+                            echo "Promosyon kullanildi";
+                            exit;
+                        } elseif ($promosyon_kullanim_sayisi > $maxKullanim) {
+                            echo "Promosyon kullanim maksimumu geçti";
+                            exit;
+                        } elseif ($promosyon_kullanim_sayisi == $maxKullanim) {
+                            updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, 1);
+                        } else {
+                            updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, 0);
+                        }
+                    }
+                }
+
+                // Record payment success
+                $pos_id = 3;
+                $basarili = 1;
+                $sonucStr = "Sipariş ödeme işlemi başarılı: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
+                
+                $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)", 
+                    ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $siparisOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
+
+                // Send confirmation email
+                $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
+                mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+
+                header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
+            } else {
+                echo "Sipariş oluşturma hatası: Veritabanı işlemi başarısız.";
+                error_log("Order creation failed for user ID: " . $uye_id . " - Order number: " . $siparisNumarasi);
+            }
+        } else {
+            $pos_id = 3;
+            $basarili = 0;
+            $sonucStr = "Sipariş ödeme işlemi başarısız: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
+            $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)", 
+                        ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $siparisOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
+            header("Location: ../../tr/sepet?code=".$xml->ResponseCode."&message=".$xml->ResponseMessage);
+        }
         curl_close($ch);
     }
     catch (Exception $e) {
         echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+}
+
+// Sipariş işleme fonksiyonları
+function updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, $kullanildi) {
+    $uyeIdResult = $db->fetch("SELECT uye_id FROM b2b_promosyon WHERE promosyon_kodu = :kod", ['kod' => $promosyon_kodu]);
+    if ($uyeIdResult) {
+        if (empty($uyeIdResult['uye_id'])) {
+            $newUyeId = $uye_id;
+        } else {
+            $newUyeId = $uyeIdResult['uye_id'] . ',' . $uye_id;
+        }
+        $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, kullanildi = :kullanildi, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
+                    ['kullanim_sayisi' => $promosyon_kullanim_sayisi, 'kullanildi' => $kullanildi, 'uye_id' => $uye_id, 'kod' => $promosyon_kodu]);
+    }
+}
+
+function createOrderXML($xmlDoc, $uyecarikod, $siparisNumarasi, $degistirme_tarihi) {
+    $root = $xmlDoc->createElement('WFT');
+    $xmlDoc->appendChild($root);
+    
+    // AYAR ALANI
+    $ayar = $xmlDoc->createElement('AYAR');
+    $root->appendChild($ayar);
+    $elements = [
+        'TRSVER' => 'ASWFT1.02.03',
+        'DBNAME' => 'WOLVOX',
+        'PERSUSER' => 'sa',
+        'SUBE_KODU' => '3402'
+    ];
+    foreach ($elements as $key => $value) {
+        $element = $xmlDoc->createElement($key);
+        $element->appendChild($xmlDoc->createCDATASection($value));
+        $ayar->appendChild($element);
+    }
+    
+    // FATURA ALANI
+    $fatura = $xmlDoc->createElement('FATURA');
+    $root->appendChild($fatura);
+    $elements = [
+        'FATURA_DURUMU' => '1',
+        'BLCRKODU' => $uyecarikod,
+        'KDV_DURUMU' => '0',
+        'KPBDVZ_CARI' => '1',
+        'DEGISTIRME_TARIHI' => $degistirme_tarihi,
+        'ISK_KUL_CARI' => '0',
+        'ISK_KUL_1' => '0',
+        'ISK_KUL_STOK' => '0',
+        'ISK_KUL_OZEL' => '1',
+        'ISK_KUL_ALT' => '0',
+        'ISK_ORAN_CARI' => '0',
+        'ISK_ORAN_1' => '5',
+        'ISK_TUTAR_CARI' => '0,00',
+        'ISK_TUTAR_1' => '0,00',
+        'ISK_TUTAR_STOK' => '0,00',
+        'ISK_TUTAR_OZEL' => '100,00',
+        'DOVIZ_KULLAN' => '0',
+        'DVZ_HSISLE_CARI' => '0',
+        'DVZ_HSISLE_STOK' => '0',
+        'IPTAL' => '0',
+        'ACIKLAMA' => $siparisNumarasi . ' numaralı internet siparişine ait faturadır.',
+        'PAZ_DURUMU' => '0',
+        'PAZ_PERS_BLKODU' => '0',
+        'PAZ_PERSONEL' => '',
+        'PAZ_URUN_ORANI' => '0',
+        'PAZ_URUN_TUTARI' => '0',
+        'PAZ_ISC_ORANI' => '0',
+        'PAZ_ISC_TUTARI' => '0'
+    ];
+    foreach ($elements as $key => $value) {
+        $element = $xmlDoc->createElement($key);
+        $element->appendChild($xmlDoc->createCDATASection($value));
+        $fatura->appendChild($element);
+    }
+    
+    return $root;
+}
+
+function addProductsToXML($xmlDoc, $root, $db, $siparisId, $uye_gor_fiyat, $yanIndirim, $yanKargo, $yantoplam, $satis_dolar, $satis_euro, $alis_dolar, $alis_euro) {
+    $faturaHareket = $xmlDoc->createElement('FATURAHAREKET');
+    $root->appendChild($faturaHareket);
+    
+    $uyeSiparisUrunleri = $db->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = :sip_id", ['sip_id' => $siparisId]);
+    foreach ($uyeSiparisUrunleri as $row) {
+        $urun_id = $row['urun_id'];
+        $urun_adet = $row['adet'];
+        $birim_fiyat = $row['birim_fiyat'];
+        
+        $noktaurun = $db->fetch("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
+        
+        // Döviz hesaplamaları
+        if($noktaurun['DSF' . $uye_gor_fiyat] == NULL || $noktaurun['DSF' . $uye_gor_fiyat] == '') {
+            $dovizimiz = 1;
+            $gonderFiyat = $birim_fiyat;
+            $aliskuru = '';
+            $satiskuru = '';
+        } else {
+            if ($noktaurun['DOVIZ_BIRIMI'] == '$') {
+                $dovizimiz = $satis_dolar;
+                $aliskuru = $alis_dolar;
+                $satiskuru = $satis_dolar;
+            } elseif ($noktaurun['DOVIZ_BIRIMI'] == '€') {
+                $dovizimiz = $satis_euro;
+                $aliskuru = $alis_euro;
+                $satiskuru = $satis_euro;
+            }
+            $gonderFiyat = $birim_fiyat;
+        }
+        
+        $tlFiyat = str_replace(',', '.', $gonderFiyat);
+        $tlFiyat = floatval($tlFiyat);
+        $fiyati = $tlFiyat * floatval($dovizimiz);
+        $birim_fiyat_tl = str_replace('.', ',', $fiyati);
+        
+        // İskonto hesaplaması
+        $formatted_UYGL_ISK_FIYATI = '';
+        if (!empty($yanIndirim) && $yanIndirim != 0) {
+            $ISK_KDVSZ_TTR = 5 * $yanIndirim / 6;
+            $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20;
+            
+            $spt_yn_tpl_kdvli = !empty($yanKargo) && $yanKargo != 0 
+                ? $yanIndirim + $yantoplam - $yanKargo 
+                : $yanIndirim + $yantoplam;
+                
+            $UYGL_ISK_FIYATI = $ISK_KDVSZ_TTR * ($ISK_SKNT_TPL / $spt_yn_tpl_kdvli);
+            $formatted_UYGL_ISK_FIYATI = number_format($UYGL_ISK_FIYATI, 4, ',', '');
+        }
+        
+        // Ürün hareketini XML'e ekle
+        $hareket = $xmlDoc->createElement('HAREKET');
+        $faturaHareket->appendChild($hareket);
+        
+        $elements = [
+            'BLSTKODU' => $noktaurun['BLKODU'],
+            'MIKTARI_2' => $urun_adet,
+            'BIRIMI_2' => $noktaurun['BIRIMI'],
+            'MIKTARI' => $urun_adet,
+            'BIRIMI' => $noktaurun['BIRIMI'],
+            'KDV_ORANI' => $noktaurun['kdv'],
+            'KPBDVZ' => $noktaurun['DOVIZ_KULLAN'],
+            'DVZ_FIYATI' => $gonderFiyat,
+            'ISK_OZEL' => $formatted_UYGL_ISK_FIYATI,
+            'KPB_FIYATI' => $birim_fiyat_tl,
+            'DEPO_ADI' => 'PERPA M01'
+        ];
+        
+        if (!empty($aliskuru) && !empty($satiskuru)) {
+            $elements['DOVIZ_ALIS'] = $aliskuru;
+            $elements['DOVIZ_SATIS'] = $satiskuru;
+        }
+        
+        foreach ($elements as $key => $value) {
+            $element = $xmlDoc->createElement($key);
+            $element->appendChild($xmlDoc->createCDATASection($value));
+            $hareket->appendChild($element);
+        }
+    }
+    
+    // Kargo ücreti ekleme
+    if ($yanKargo != '0' && $yanKargo != '0,00') {
+        $hareket = $xmlDoc->createElement('HAREKET');
+        $faturaHareket->appendChild($hareket);
+        
+        $elements = [
+            'BLSTKODU' => '-1',
+            'STOK_ADI' => 'Kargo Gönderim Ücreti',
+            'MIKTARI_2' => '1',
+            'BIRIMI_2' => 'ADET',
+            'MIKTARI' => '1',
+            'BIRIMI' => 'ADET',
+            'KDV_ORANI' => '20',
+            'MUH_KODU_GENEL' => '770 03 22',
+            'KPB_FIYATI' => str_replace('.', ',', $yanKargo)
+        ];
+        
+        foreach ($elements as $key => $value) {
+            $element = $xmlDoc->createElement($key);
+            $element->appendChild($xmlDoc->createCDATASection($value));
+            $hareket->appendChild($element);
+        }
+    }
+}
+
+function addCurrencyToXML($xmlDoc, $root, $alis_dolar, $satis_dolar, $alis_euro, $satis_euro) {
+    $faturaKur = $xmlDoc->createElement('FATURAKUR');
+    $root->appendChild($faturaKur);
+    
+    $currencies = [
+        ['symbol' => '$', 'alis' => $alis_dolar, 'satis' => $satis_dolar],
+        ['symbol' => '€', 'alis' => $alis_euro, 'satis' => $satis_euro]
+    ];
+    
+    foreach ($currencies as $currency) {
+        $kurhareket = $xmlDoc->createElement('HAREKET');
+        $faturaKur->appendChild($kurhareket);
+        
+        $elements = [
+            'DOVIZ_BIRIMI' => $currency['symbol'],
+            'DOVIZ_ALIS' => $currency['alis'],
+            'DOVIZ_SATIS' => $currency['satis']
+        ];
+        
+        foreach ($elements as $key => $value) {
+            $element = $xmlDoc->createElement($key);
+            $element->appendChild($xmlDoc->createCDATASection($value));
+            $kurhareket->appendChild($element);
+        }
     }
 }
 ?>
