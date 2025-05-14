@@ -1,7 +1,7 @@
 <?php
 require_once '../db.php';
 require_once '../functions.php';
-require_once '../dekont_olustur.php';
+require_once '../bank/dekont_olustur.php';
 require_once '../wolvox/pos_olustur.php';
 
 $db = new Database();
