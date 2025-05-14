@@ -316,6 +316,15 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                         break;
                     }
 
+                    // Log order products for tracking
+                    error_log("Sipariş Ürünleri - Sipariş No: " . $siparisNumarasi . 
+                             "\nÜrün ID: " . $urun_id . 
+                             "\nÜrün Kodu: " . $urun_blkodu . 
+                             "\nAdet: " . $miktar . 
+                             "\nBirim Fiyat: " . $uyenin_fiyati . 
+                             "\nToplam Fiyat: " . ($uyenin_fiyati * $miktar) . 
+                             "\nDöviz: " . $urun['DOVIZ_BIRIMI']);
+
                     // Delete from cart after successful order
                     $db->delete("DELETE FROM b2b_uye_sepet WHERE uye_id = :uye_id AND urun_id = :urun_id", ['uye_id' => $uye_id, 'urun_id' => $urun_id]);
 
@@ -327,6 +336,15 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                     $cok_satan++;
                     $db->update("UPDATE nokta_urunler SET cok_satan = :cok_satan WHERE id = :id", ['cok_satan' => $cok_satan,'id' => $urun_id]);
                 }
+
+                // Log final order summary
+                error_log("Sipariş Özeti - Sipariş No: " . $siparisNumarasi . 
+                         "\nMüşteri: " . $uyeAdSoyad . 
+                         "\nSepet Toplamı: " . $yanSepetToplami . 
+                         "\nKDV: " . $yanSepetKdv . 
+                         "\nİndirim: " . $yanIndirim . 
+                         "\nKargo: " . $yanKargo . 
+                         "\nGenel Toplam: " . $yantoplam);
 
                 // Create XML document
                 $xmlDoc = new DOMDocument('1.0', 'UTF-8');
