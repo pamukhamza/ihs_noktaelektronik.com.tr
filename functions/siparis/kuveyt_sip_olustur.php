@@ -1,23 +1,24 @@
 <?php
+ini_set('display_errors', 1);  // Hataları ekrana göster
+error_reporting(E_ALL);   
+
 require_once '../db.php';
 require_once '../functions.php';
 require_once '../bank/dekont_olustur.php';
 require_once '../wolvox/pos_olustur.php';
 require_once '../../mail/mail_gonder.php';
-
 $db = new Database();
 
-error_reporting(0); // HATA YAZDIRMA
-ini_set('display_errors', 0); // HATA YAZDIRMA
-
-// Get currency rates
 $dolarKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 2");
 $satis_dolar = $dolarKur['satis'];
+$satis_dolar = str_replace('.', ',', $satis_dolar);
 $alis_dolar = $dolarKur['alis'];
-
+$alis_dolar = str_replace('.', ',', $alis_dolar);
 $euroKur = $db->fetch("SELECT * FROM b2b_kurlar WHERE id = 3");
 $satis_euro = $euroKur['satis'];
+$satis_euro = str_replace('.', ',', $satis_euro);
 $alis_euro = $euroKur['alis'];
+$alis_euro = str_replace('.', ',', $alis_euro);
 
 function generateUniqueOrderNumber() {
     $prefix = 'WEB';
@@ -26,7 +27,6 @@ function generateUniqueOrderNumber() {
     $orderNumber = $prefix . $datePart . $randomPart;
     return $orderNumber;
 }
-
 $siparisNumarasi = generateUniqueOrderNumber();
 
 $AuthenticationResponse = $_POST["AuthenticationResponse"];
@@ -159,11 +159,11 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
     $yanSepetToplami = $decodedVeri["yanSepetToplami"];
     $yanSepetKdv = $decodedVeri["yanSepetKdv"];
     $yanIndirim = $decodedVeri["yanIndirim"];
-    $deliveryOption = $decodedVeri["deliveryOption"];
-    $promosyon_kodu = $_POST["promosyonKodu"];
     $yanKargo = $decodedVeri["yanKargo"];
-    $desi = $decodedVeri["desi"];
+    $promosyon_kodu = $_POST["promosyonKodu"];
     $siparisOdeme = "siparis";
+    $desi = $decodedVeri["desi"];
+    $deliveryOption = $decodedVeri["deliveryOption"];
     $hesap = "0";
     $yantoplam = $decodedVeri["yantoplam"];
     $yantoplam1 = floatval($yantoplam);
@@ -341,43 +341,43 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                             $db->update("UPDATE nokta_urunler SET cok_satan = :cok_satan WHERE id = :id", ['cok_satan' => $cok_satan,'id' => $urun_id]);
                         }
                         // Update promotion code usage if exists
-                    if (!empty($promosyon_kodu)) {
-                        $promosyon = $db->fetch("SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :kod", ['kod' => $promosyon_kodu]);
+                        if (!empty($promosyon_kodu)) {
+                            $promosyon = $db->fetch("SELECT * FROM b2b_promosyon WHERE promosyon_kodu = :kod", ['kod' => $promosyon_kodu]);
 
-                        if ($promosyon) {
-                            $maxKullanim = $promosyon['max_kullanim'];
-                            $promosyonKullanildi = $promosyon['kullanildi'];
-                            $promosyon_kullanim_sayisi = $promosyon['kullanim_sayisi'];
-                            $promosyon_kullanim_sayisi += 1;
+                            if ($promosyon) {
+                                $maxKullanim = $promosyon['max_kullanim'];
+                                $promosyonKullanildi = $promosyon['kullanildi'];
+                                $promosyon_kullanim_sayisi = $promosyon['kullanim_sayisi'];
+                                $promosyon_kullanim_sayisi += 1;
 
-                            if ($promosyonKullanildi == 1) {
-                                echo "Promosyon kullanildi";
-                                exit;
-                            } elseif ($promosyon_kullanim_sayisi > $maxKullanim) {
-                                echo "Promosyon kullanim maksimumu geçti";
-                                exit;
-                            } elseif ($promosyon_kullanim_sayisi == $maxKullanim) {
-                                $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, kullanildi = 1, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
-                                            ['kullanim_sayisi' => $promosyon_kullanim_sayisi,'uye_id' => $uye_id,'kod' => $promosyon_kodu]);
-                            } else {
-                                $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
-                                            ['kullanim_sayisi' => $promosyon_kullanim_sayisi,'uye_id' => $uye_id,'kod' => $promosyon_kodu]);
+                                if ($promosyonKullanildi == 1) {
+                                    echo "Promosyon kullanildi";
+                                    exit;
+                                } elseif ($promosyon_kullanim_sayisi > $maxKullanim) {
+                                    echo "Promosyon kullanim maksimumu geçti";
+                                    exit;
+                                } elseif ($promosyon_kullanim_sayisi == $maxKullanim) {
+                                    $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, kullanildi = 1, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
+                                                ['kullanim_sayisi' => $promosyon_kullanim_sayisi,'uye_id' => $uye_id,'kod' => $promosyon_kodu]);
+                                } else {
+                                    $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
+                                                ['kullanim_sayisi' => $promosyon_kullanim_sayisi,'uye_id' => $uye_id,'kod' => $promosyon_kodu]);
+                                }
                             }
                         }
-                    }
-                    header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-                    
-                        // Send order confirmation email
-                    $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
-                    mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+                        
+                            // Send order confirmation email
+                        $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
+                        mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
 
                         // Record payment success
-                    $pos_id = 3;
-                    $basarili = 1;
-                    $sonucStr = "Sipariş ödeme işlemi başarılı: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
+                        $pos_id = 3;
+                        $basarili = 1;
+                        $sonucStr = "Sipariş ödeme işlemi başarılı: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
                         
                         $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)", 
                             ['uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'islem_turu' => $siparisOdeme,'tutar' => $yantoplam1,'basarili' => $basarili]);
+                        header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
                     } else {
                         echo "Sipariş oluşturma hatası: Veritabanı işlemi başarısız.";
                         error_log("Order creation failed for user ID: " . $uye_id . " - Order number: " . $siparisNumarasi);
