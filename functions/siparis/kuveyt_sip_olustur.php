@@ -425,6 +425,8 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                 if($noktaurun['DSF' . $uye_gor_fiyat] == NULL || $noktaurun['DSF' . $uye_gor_fiyat] == ''){
                     $dovizimiz = 1;
                     $gonderFiyat = $birim_fiyat;
+                        $aliskuru = 1;
+                        $satiskuru = 1;
                 }else{
                     if ($noktaurun['DOVIZ_BIRIMI'] == '$') {
                         $dovizimiz = $satis_dolar;
@@ -460,9 +462,9 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                 $elements = [
                     'BLSTKODU' => $noktaurun['BLKODU'],
                     'MIKTARI_2' => $urun_adet,
-                    'BIRIMI_2' => $noktaurun['BIRIMI'],
+                    'BIRIMI_2' => 'Adet',
                     'MIKTARI' => $urun_adet,
-                    'BIRIMI' => $noktaurun['BIRIMI'],
+                    'BIRIMI' => 'Adet',
                     'KDV_ORANI' => $noktaurun['kdv'],
                     'KPBDVZ' => $noktaurun['DOVIZ_KULLAN'],
                     'DVZ_FIYATI' => $gonderFiyat,
@@ -593,213 +595,6 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
     }
     catch (Exception $e) {
         echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
-}
-
-// Sipariş işleme fonksiyonları
-function updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, $kullanildi) {
-    $uyeIdResult = $db->fetch("SELECT uye_id FROM b2b_promosyon WHERE promosyon_kodu = :kod", ['kod' => $promosyon_kodu]);
-    if ($uyeIdResult) {
-        if (empty($uyeIdResult['uye_id'])) {
-            $newUyeId = $uye_id;
-        } else {
-            $newUyeId = $uyeIdResult['uye_id'] . ',' . $uye_id;
-        }
-        $db->update("UPDATE b2b_promosyon SET kullanim_sayisi = :kullanim_sayisi, kullanildi = :kullanildi, uye_id = CONCAT(uye_id, :uye_id, ',') WHERE promosyon_kodu = :kod", 
-                    ['kullanim_sayisi' => $promosyon_kullanim_sayisi, 'kullanildi' => $kullanildi, 'uye_id' => $uye_id, 'kod' => $promosyon_kodu]);
-    }
-}
-
-function createOrderXML($xmlDoc, $uyecarikod, $siparisNumarasi, $degistirme_tarihi) {
-    $root = $xmlDoc->createElement('WFT');
-    $xmlDoc->appendChild($root);
-    
-    // AYAR ALANI
-    $ayar = $xmlDoc->createElement('AYAR');
-    $root->appendChild($ayar);
-    $elements = [
-        'TRSVER' => 'ASWFT1.02.03',
-        'DBNAME' => 'WOLVOX',
-        'PERSUSER' => 'sa',
-        'SUBE_KODU' => '3402'
-    ];
-    foreach ($elements as $key => $value) {
-        $element = $xmlDoc->createElement($key);
-        $element->appendChild($xmlDoc->createCDATASection($value));
-        $ayar->appendChild($element);
-    }
-    
-    // FATURA ALANI
-    $fatura = $xmlDoc->createElement('FATURA');
-    $root->appendChild($fatura);
-    $elements = [
-        'FATURA_DURUMU' => '1',
-        'BLCRKODU' => $uyecarikod,
-        'KDV_DURUMU' => '0',
-        'KPBDVZ_CARI' => '1',
-        'DEGISTIRME_TARIHI' => $degistirme_tarihi,
-        'ISK_KUL_CARI' => '0',
-        'ISK_KUL_1' => '0',
-        'ISK_KUL_STOK' => '0',
-        'ISK_KUL_OZEL' => '1',
-        'ISK_KUL_ALT' => '0',
-        'ISK_ORAN_CARI' => '0',
-        'ISK_ORAN_1' => '5',
-        'ISK_TUTAR_CARI' => '0,00',
-        'ISK_TUTAR_1' => '0,00',
-        'ISK_TUTAR_STOK' => '0,00',
-        'ISK_TUTAR_OZEL' => '100,00',
-        'DOVIZ_KULLAN' => '0',
-        'DVZ_HSISLE_CARI' => '0',
-        'DVZ_HSISLE_STOK' => '0',
-        'IPTAL' => '0',
-        'ACIKLAMA' => $siparisNumarasi . ' numaralı internet siparişine ait faturadır.',
-        'PAZ_DURUMU' => '0',
-        'PAZ_PERS_BLKODU' => '0',
-        'PAZ_PERSONEL' => '',
-        'PAZ_URUN_ORANI' => '0',
-        'PAZ_URUN_TUTARI' => '0',
-        'PAZ_ISC_ORANI' => '0',
-        'PAZ_ISC_TUTARI' => '0'
-    ];
-    foreach ($elements as $key => $value) {
-        $element = $xmlDoc->createElement($key);
-        $element->appendChild($xmlDoc->createCDATASection($value));
-        $fatura->appendChild($element);
-    }
-    
-    return $root;
-}
-
-function addProductsToXML($xmlDoc, $root, $db, $siparisId, $uye_gor_fiyat, $yanIndirim, $yanKargo, $yantoplam, $satis_dolar, $satis_euro, $alis_dolar, $alis_euro) {
-    $faturaHareket = $xmlDoc->createElement('FATURAHAREKET');
-    $root->appendChild($faturaHareket);
-    
-    $uyeSiparisUrunleri = $db->fetchAll("SELECT * FROM b2b_siparis_urunler WHERE sip_id = :sip_id", ['sip_id' => $siparisId]);
-    foreach ($uyeSiparisUrunleri as $row) {
-        $urun_id = $row['urun_id'];
-        $urun_adet = $row['adet'];
-        $birim_fiyat = $row['birim_fiyat'];
-        
-        $noktaurun = $db->fetch("SELECT * FROM nokta_urunler WHERE id = :urun_id", ['urun_id' => $urun_id]);
-        
-        // Döviz hesaplamaları
-        if($noktaurun['DSF' . $uye_gor_fiyat] == NULL || $noktaurun['DSF' . $uye_gor_fiyat] == '') {
-            $dovizimiz = 1;
-            $gonderFiyat = $birim_fiyat;
-            $aliskuru = '';
-            $satiskuru = '';
-        } else {
-            if ($noktaurun['DOVIZ_BIRIMI'] == '$') {
-                $dovizimiz = $satis_dolar;
-                $aliskuru = $alis_dolar;
-                $satiskuru = $satis_dolar;
-            } elseif ($noktaurun['DOVIZ_BIRIMI'] == '€') {
-                $dovizimiz = $satis_euro;
-                $aliskuru = $alis_euro;
-                $satiskuru = $satis_euro;
-            }
-            $gonderFiyat = $birim_fiyat;
-        }
-        
-        $tlFiyat = str_replace(',', '.', $gonderFiyat);
-        $tlFiyat = floatval($tlFiyat);
-        $fiyati = $tlFiyat * floatval($dovizimiz);
-        $birim_fiyat_tl = str_replace('.', ',', $fiyati);
-        
-        // İskonto hesaplaması
-        $formatted_UYGL_ISK_FIYATI = '';
-        if (!empty($yanIndirim) && $yanIndirim != 0) {
-            $ISK_KDVSZ_TTR = 5 * $yanIndirim / 6;
-            $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20;
-            
-            $spt_yn_tpl_kdvli = !empty($yanKargo) && $yanKargo != 0 
-                ? $yanIndirim + $yantoplam - $yanKargo 
-                : $yanIndirim + $yantoplam;
-                
-            $UYGL_ISK_FIYATI = $ISK_KDVSZ_TTR * ($ISK_SKNT_TPL / $spt_yn_tpl_kdvli);
-            $formatted_UYGL_ISK_FIYATI = number_format($UYGL_ISK_FIYATI, 4, ',', '');
-        }
-        
-        // Ürün hareketini XML'e ekle
-        $hareket = $xmlDoc->createElement('HAREKET');
-        $faturaHareket->appendChild($hareket);
-        
-        $elements = [
-            'BLSTKODU' => $noktaurun['BLKODU'],
-            'MIKTARI_2' => $urun_adet,
-            'BIRIMI_2' => $noktaurun['BIRIMI'],
-            'MIKTARI' => $urun_adet,
-            'BIRIMI' => $noktaurun['BIRIMI'],
-            'KDV_ORANI' => $noktaurun['kdv'],
-            'KPBDVZ' => $noktaurun['DOVIZ_KULLAN'],
-            'DVZ_FIYATI' => $gonderFiyat,
-            'ISK_OZEL' => $formatted_UYGL_ISK_FIYATI,
-            'KPB_FIYATI' => $birim_fiyat_tl,
-            'DEPO_ADI' => 'PERPA M01'
-        ];
-        
-        if (!empty($aliskuru) && !empty($satiskuru)) {
-            $elements['DOVIZ_ALIS'] = $aliskuru;
-            $elements['DOVIZ_SATIS'] = $satiskuru;
-        }
-        
-        foreach ($elements as $key => $value) {
-            $element = $xmlDoc->createElement($key);
-            $element->appendChild($xmlDoc->createCDATASection($value));
-            $hareket->appendChild($element);
-        }
-    }
-    
-    // Kargo ücreti ekleme
-    if ($yanKargo != '0' && $yanKargo != '0,00') {
-        $hareket = $xmlDoc->createElement('HAREKET');
-        $faturaHareket->appendChild($hareket);
-        
-        $elements = [
-            'BLSTKODU' => '-1',
-            'STOK_ADI' => 'Kargo Gönderim Ücreti',
-            'MIKTARI_2' => '1',
-            'BIRIMI_2' => 'ADET',
-            'MIKTARI' => '1',
-            'BIRIMI' => 'ADET',
-            'KDV_ORANI' => '20',
-            'MUH_KODU_GENEL' => '770 03 22',
-            'KPB_FIYATI' => str_replace('.', ',', $yanKargo)
-        ];
-        
-        foreach ($elements as $key => $value) {
-            $element = $xmlDoc->createElement($key);
-            $element->appendChild($xmlDoc->createCDATASection($value));
-            $hareket->appendChild($element);
-        }
-    }
-}
-
-function addCurrencyToXML($xmlDoc, $root, $alis_dolar, $satis_dolar, $alis_euro, $satis_euro) {
-    $faturaKur = $xmlDoc->createElement('FATURAKUR');
-    $root->appendChild($faturaKur);
-    
-    $currencies = [
-        ['symbol' => '$', 'alis' => $alis_dolar, 'satis' => $satis_dolar],
-        ['symbol' => '€', 'alis' => $alis_euro, 'satis' => $satis_euro]
-    ];
-    
-    foreach ($currencies as $currency) {
-        $kurhareket = $xmlDoc->createElement('HAREKET');
-        $faturaKur->appendChild($kurhareket);
-        
-        $elements = [
-            'DOVIZ_BIRIMI' => $currency['symbol'],
-            'DOVIZ_ALIS' => $currency['alis'],
-            'DOVIZ_SATIS' => $currency['satis']
-        ];
-        
-        foreach ($elements as $key => $value) {
-            $element = $xmlDoc->createElement($key);
-            $element->appendChild($xmlDoc->createCDATASection($value));
-            $kurhareket->appendChild($element);
-        }
     }
 }
 ?>
