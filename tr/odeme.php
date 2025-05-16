@@ -501,7 +501,7 @@ if(isset($_POST["devamEt"])) {
         var uye_id = document.getElementById('hiddenuye_id').value;
 
         var pos = document.getElementById('pos_1').value || '3';
-        var banka_id = document.getElementById('id_1').value || '125';
+        var banka_id = document.getElementById('id_1').value || '8';
         var taksit = document.getElementById('taksit_1').value || '1';
         var sonuc = document.getElementById('sonuc_1').value || "<?php echo formatNumber($toplam); ?>";
         var vade = document.getElementById('vade_1').value || '1';
