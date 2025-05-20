@@ -1,8 +1,8 @@
 <?php
 return [
     's3' => [
-        'key'    => 'AKIAWNHTHJK4LGVYEKUL',
-        'secret' => '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',
+        'key'    => 'AKIAWNHTHJK4CCK75KZP',
+        'secret' => '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',
         'bucket' => 'noktanet',
         'region' => 'eu-central-1',
     ],
