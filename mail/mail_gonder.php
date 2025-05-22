@@ -806,7 +806,7 @@ function arizaKayitMail($uye, $takip){
     <table style="margin-top: 10px; width: 100%; max-width: 750px;">
         <tbody>
         <tr>
-            <td style="width: 100%;  line-height: 30px; max-width: 750px;  min-width: 350px; font-size: 20px;">Takip Kodu: <?= $takip ?><br><a href="https://www.noktaelektronik.com.tr/tr/teknik-destek">Buraya tıklayarak</a> ürünlerinizin durumunu takip edebilirsiniz.</td>
+            <td style="width: 100%;  line-height: 30px; max-width: 750px;  min-width: 350px; font-size: 20px;">Takip Kodu: <?= $takip ?><br><a href="https://www.noktaelektronik.com.tr/tr/tdp">Buraya tıklayarak</a> ürünlerinizin durumunu takip edebilirsiniz.</td>
         </tr>
         </tbody>
     </table>
