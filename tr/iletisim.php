@@ -41,7 +41,7 @@ $categorizedAddresses = [
     'Arge-Üretim-Merkezi' => [
         [
             'title' => 'Arge Üretim Merkezi (İzmir)',
-            'address' => 'Tuna Mah. Sanat Cad. No. 17/220 Bornova / İzmir',
+            'address' => 'Egemenlik Mah. 6108/1 Sk. No.15/A Işıkkent - Bornova / İzmir',
             'addressMaps' => 'Nokta Elektronik İzmir Fabrika'
         ],
         [
