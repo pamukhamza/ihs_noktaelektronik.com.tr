@@ -467,7 +467,7 @@ function getBreadcrumbs($kategori, $database) {
                 <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <?php
-                        $d = $database->fetchAll("SELECT * FROM slider WHERE `site` = 'b2b' AND is_active = 1 ORDER BY order_by ASC");
+                        $d = $database->fetchAll("SELECT * FROM slider WHERE `site` = 'b2b-urun' AND is_active = 1 ORDER BY order_by ASC");
                         $first = true; // Define a fla
                         foreach ($d as $k => $row) {
                             // Add the active class to the first item only
