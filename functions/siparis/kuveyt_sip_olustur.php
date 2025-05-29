@@ -574,7 +574,7 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
             }
 
             header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
-            $pos_id = 4;
+            $pos_id = 3;
             $basarili = 1;
             $sonucStr = "Sipariş ödeme işlemi başarılı: " . $xmlResponse->Response . ' Kod= ' . $xmlResponse->ProcReturnCode;
             $stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili)";
