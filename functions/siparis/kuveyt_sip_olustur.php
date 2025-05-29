@@ -173,6 +173,8 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
     $tip = $decodedVeri["tip"];
     $lang = $decodedVeri["lang"];
 
+    echo "banka_id: " . $banka_id . "<br>";
+    exit();
     $MerchantOrderId = $xxml->VPosMessage->MerchantOrderId;
     $Amount = $xxml->VPosMessage->Amount;
     $MD = $xxml->MD;
