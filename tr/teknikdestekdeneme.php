@@ -505,7 +505,7 @@ try {
             }
 
             var formData = new FormData(this);
-            formData.append('type', 'ariza');
+            formData.append('type', 'ariza2');
 
             $.ajax({
                 type: 'POST',
