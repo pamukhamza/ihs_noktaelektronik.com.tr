@@ -353,7 +353,6 @@ function editAriza2() {
         $aciklama = controlInput($_POST['aciklama']);
         $ad_soyad = controlInput($_POST['ad_soyad']);
         $fatura_no = controlInput($_POST['fatura_no']);
-        $teslim_alan = !empty($_POST['teslim_alan']) ? controlInput($_POST['teslim_alan']) : null;
         $kargo_firmasi = controlInput($_POST['kargo_firmasi']);
         $gonderim_sekli = controlInput($_POST['gonderim_sekli']);
         $onay = controlInput($_POST['onay']);
@@ -419,12 +418,11 @@ function editAriza2() {
                     (uye_id, takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
                     VALUES (:uye_id, :takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
             } else {
-                $params['teslim_alan'] = $teslim_alan;
                 Logger::info("Misafir kullanıcı kaydı oluşturuluyor");
 
                 $query = "INSERT INTO nokta_teknik_destek 
-                    (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, teslim_alan, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
-                    VALUES (:takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :teslim_alan, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
+                    (takip_kodu, fatura_no, musteri, tel, mail, adres, aciklama, teslim_eden, SILINDI, gonderim_sekli, kargo_firmasi, tekniker) 
+                    VALUES (:takip_kodu, :fatura_no, :musteri, :tel, :mail, :adres, :aciklama, :teslim_eden, :SILINDI, :gonderim_sekli, :kargo_firmasi, :tekniker)";
             }
 
             $db->insert($query, $params);
@@ -492,7 +490,6 @@ function editAriza2() {
         exit();
     }
 }
-
 //////////////////////////////////////////////////
 //////////KULLANILANLAR YUKARIDA//////////////////
 //////////////////////////////////////////////////
@@ -724,7 +721,6 @@ if(isset($_POST["ozelbanner1"])) {
     }
     header("Location:../admin/siteduzenleme/adminOzelBanner");
 }
-
 function editBannerVideo() {
     $bId = $_POST['id'];
     $bLink = $_POST['bannerLink'];
@@ -753,7 +749,6 @@ function editBannerVideo() {
         $stmt->execute([$bLink, $image, $aktif]);
     }
 }
-
 function uyeAdresDuzenle() {
     $adresId = controlInput($_POST['adresId']);
     $adres_basligi = controlInput($_POST['adres_basligi']);
@@ -779,7 +774,6 @@ function uyeAdresDuzenle() {
             $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
         }
 }
-
 function sepetAdres() {
     global $db;
     $adresId = $_POST['id'];
@@ -835,7 +829,6 @@ function adresSec() {
     $updateOthersQuery->bindParam(':sessionId', $sessionId, PDO::PARAM_INT);
     $updateOthersQuery->execute();
 }
-
 function iade() {
     global $db;
 
