@@ -192,7 +192,7 @@ function editAriza() {
         $musteri = controlInput($_POST['musteri']);
         $tel = controlInput($_POST['tel']);
         $email = controlInput($_POST['email']);
-        $adres = controlInput($_POST['adres']);
+        $adres = controlInput($_POST['  ']);
         $urun_kodu_raw = controlInput($_POST['urun_kodu']);
         $seri_no_raw = controlInput($_POST['seri_no']);
         $adet_raw = controlInput($_POST['adet']);
@@ -342,7 +342,7 @@ function editAriza2() {
     $db = new Database();
     
     try {
-        $id = isset($_POST['id']) && $_POST['id'] !== '' ? controlInput($_POST['id']) : null;
+        $id = isset($_POST['musteri_id']) && $_POST['musteri_id'] !== '' ? controlInput($_POST['musteri_id']) : null;
         $musteri = controlInput($_POST['musteri']);
         $tel = controlInput($_POST['tel']);
         $email = controlInput($_POST['email']);
