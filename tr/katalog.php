@@ -62,9 +62,9 @@ $database = new Database();
                     foreach($result as $row){  
                 ?>
                         <div class="mt-4 mb-4 col-4 col-md-3 col-lg-2">
-                            <a href="assets/uploads/kataloglar/<?= $row['file']; ?>" class="d-grid gap-2 mt-2 text-decoration-none katalog-card">
+                            <a href="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/catalogs/<?= $row['file']; ?>" class="d-grid gap-2 mt-2 text-decoration-none katalog-card">
                                 <div class="card position-relative overflow-hidden">
-                                    <img src="assets/images/kataloglar/<?= $row['img']; ?>" class="card-img">
+                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/catalogs/<?= $row['img']; ?>" class="card-img">
                                     <div class="overlay"></div> <!-- Karartma katmanı -->
                                     <div class="download-icon">
                                         <div class="text-center" style="font-size: 12px;"><?= $row['title']; ?></div>
