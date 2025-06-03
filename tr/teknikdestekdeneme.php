@@ -411,7 +411,7 @@ try {
             formData.append('urun_kodu', urun_kodu_array.join(','));
             formData.append('seri_no', seri_no_array.join(','));
             formData.append('adet', adet_array.join(','));
-            formData.append('id', $('#musteri_id').val());
+            formData.append('musteri_id', $('#musteri_id').val());
             formData.append('musteri', $('#musteri').val());
             formData.append('tel', $('#tel').val());
             formData.append('email', $('#email').val());
