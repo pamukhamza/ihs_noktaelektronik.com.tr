@@ -514,21 +514,21 @@ try {
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    try {
-                        const data = JSON.parse(response);
-                        if (data.success) {
-                            Logger::info("Form başarıyla gönderildi", {'takip_kodu': data.takip_kodu});
-                            showSuccessModal(data);
-                            form.reset();
-                            form.classList.remove('was-validated');
-                        } else {
-                            Logger::warning("Form gönderimi başarısız", {'message': data.message});
-                            showErrorModal(data.message);
-                        }
-                    } catch (e) {
-                        Logger::error("Form yanıtı işlenirken hata", {'error': e.message, 'response': response});
-                        showErrorModal('Beklenmeyen bir hata oluştu');
-                    }
+                        try {
+        const data = JSON.parse(response);
+        if (data.success) {
+            Logger::info("Form başarıyla gönderildi", {'takip_kodu': data.takip_kodu});
+            showSuccessModal(data); // <-- sadece takip_kodu değil, tüm data gönder
+            form.reset();
+            form.classList.remove('was-validated');
+        } else {
+            Logger::warning("Form gönderimi başarısız", {'message': data.message});
+            showErrorModal(data.message);
+        }
+    } catch (e) {
+        Logger::error("Form yanıtı işlenirken hata", {'error': e.message, 'response': response});
+        showErrorModal('Beklenmeyen bir hata oluştu');
+    }
                 }
             });
         });
