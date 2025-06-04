@@ -192,7 +192,7 @@ function editAriza() {
         $musteri = controlInput($_POST['musteri']);
         $tel = controlInput($_POST['tel']);
         $email = controlInput($_POST['email']);
-        $adres = controlInput($_POST['  ']);
+        $adres = controlInput($_POST['adres']);
         $urun_kodu_raw = controlInput($_POST['urun_kodu']);
         $seri_no_raw = controlInput($_POST['seri_no']);
         $adet_raw = controlInput($_POST['adet']);
