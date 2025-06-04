@@ -518,7 +518,7 @@ try {
                         const data = JSON.parse(response);
                         if (data.success) {
                             Logger::info("Form başarıyla gönderildi", {'takip_kodu': data.takip_kodu});
-                            showSuccessModal(data.takip_kodu);
+                            showSuccessModal(data);
                             form.reset();
                             form.classList.remove('was-validated');
                         } else {
@@ -534,9 +534,35 @@ try {
         });
 
         function showSuccessModal(takipKodu) {
+             let html = `
+                <div class="alert alert-success text-center">
+                    <strong>Başvurunuz Alınmıştır!</strong>
+                </div>
+                <table class="table table-bordered">
+                    <tr><th>Takip Kodu</th><td>${data.takip_kodu}</td></tr>
+                    <tr><th>Müşteri</th><td>${data.musteri}</td></tr>
+                    <tr><th>Ad Soyad</th><td>${data.ad_soyad}</td></tr>
+                    <tr><th>Telefon</th><td>${data.tel}</td></tr>
+                    <tr><th>E-Posta</th><td>${data.email}</td></tr>
+                    <tr><th>Adres</th><td>${data.adres}</td></tr>
+                    <tr><th>Fatura No</th><td>${data.fatura_no}</td></tr>
+                    <tr><th>Açıklama</th><td>${data.aciklama}</td></tr>
+                </table>
+            `;
             $('#modalTitle').text("Başvurunuz Alınmıştır!");
-            $('#modalBody').html('Arıza Takip Kodunuz: ' + takipKodu);
+            $('#modalBody').html(html);
             $('#successModal').modal('show');
+            $('#yazdirButton').off('click').on('click', function() {
+                let printContents = $('#modalBody').html();
+                let win = window.open('', '', 'height=700,width=900');
+                win.document.write('<html><head><title>Başvuru Çıktısı</title>');
+                win.document.write('<link rel="stylesheet" href="bootstrap/bootstrap.min.css">');
+                win.document.write('</head><body>');
+                win.document.write(printContents);
+                win.document.write('</body></html>');
+                win.document.close();
+                win.print();
+            });
         }
 
         function showErrorModal(message) {

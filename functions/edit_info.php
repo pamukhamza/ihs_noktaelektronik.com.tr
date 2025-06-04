@@ -474,7 +474,7 @@ function editAriza2() {
                 ]);
             }
             
-            echo json_encode(['success' => true, 'takip_kodu' => $takip_kodu]);
+            echo json_encode(['success' => true, 'takip_kodu' => $takip_kodu, 'musteri' => $musteri, 'email' => $email, 'tel' => $tel, 'adres' => $adres, 'aciklama' => $aciklama, 'ad_soyad' => $ad_soyad, 'fatura_no' => $fatura_no, 'gonderim_sekli' => $gonderim_sekli, 'kargo_firmasi' => $kargo_firmasi]);
         } else {
             Logger::warning("Eksik veya hatalı form verisi", ['post_data' => $_POST]);
             http_response_code(400);
