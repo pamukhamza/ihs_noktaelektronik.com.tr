@@ -533,7 +533,7 @@ try {
             });
         });
 
-        function showSuccessModal(takipKodu) {
+        function showSuccessModal(data) {
              let html = `
                 <div class="alert alert-success text-center">
                     <strong>Başvurunuz Alınmıştır!</strong>
