@@ -85,7 +85,7 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
     <?php
     $db = new Database();
     $urunlar = $db->fetchAll("SELECT su.*, nu.*, 
-            (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto 
+            (SELECT nr.KResim FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto 
         FROM b2b_siparis_urunler AS su 
         LEFT JOIN nokta_urunler AS nu ON su.urun_id = nu.id
         WHERE su.sip_id = :sip_id" , ['sip_id' => $sip_id]);
