@@ -84,9 +84,11 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
     </table>
     <?php
     $db = new Database();
-    $urunlar = $db->fetchAll("SELECT su.*, nu.*, (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto FROM b2b_siparis_urunler AS su 
-         LEFT JOIN nokta_urunler AS nu ON su.urun_id = nu.id
-         WHERE su.sip_id = :sip_id" , ['sip_id' => $sip_id]);
+    $urunlar = $db->fetchAll("SELECT su.*, nu.*, 
+            (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto 
+        FROM b2b_siparis_urunler AS su 
+        LEFT JOIN nokta_urunler AS nu ON su.urun_id = nu.id
+        WHERE su.sip_id = :sip_id" , ['sip_id' => $sip_id]);
 
     ?>
     <table style="margin-top: 10px; width: 100%; max-width: 750px; border: 1px solid #ccc; border-collapse: collapse; background-color: #f9f9f9;">
@@ -153,7 +155,6 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                         <div>Image not found</div>
                     <?php endif; ?>
                 </td>
-
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["UrunAdiTR"] ?></td>
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["UrunKodu"] ?></td>
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["adet"] ?></td>
@@ -185,27 +186,27 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
 
                 </td>
             </tr>
-        <?php endforeach; ?>
-        <?php
+        <?php endforeach; 
         $siparisler = $db->fetch("SELECT * FROM b2b_siparisler WHERE id = :id " , ['id' => $sip_id]);
 
-      if($siparisler["indirim"] != '0.00'){ ?>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td style="border: 1px solid #ccc; text-align: center; font-weight: bold;">İndirim :</td>
-            <td style="border: 1px solid #ccc; text-align: center; font-weight: bold;">
-                <?php
-                $indirim = $siparisler["indirim"];
-                $indirim_float = (float) str_replace(',', '.', $indirim); // Replace ',' with '.' for correct float conversion
-                $formatted_indirim = number_format($indirim_float, 2, ',', '.');
-                ?>
-                <?= $formatted_indirim ?>₺
-            </td>
-        </tr>
-        <?php } if($siparisler["kargo_ucreti"] != '0.00'){ ?>
+        if($siparisler["indirim"] != '0.00'){ ?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="border: 1px solid #ccc; text-align: center; font-weight: bold;">İndirim :</td>
+                <td style="border: 1px solid #ccc; text-align: center; font-weight: bold;">
+                    <?php
+                    $indirim = $siparisler["indirim"];
+                    $indirim_float = (float) str_replace(',', '.', $indirim); // Replace ',' with '.' for correct float conversion
+                    $formatted_indirim = number_format($indirim_float, 2, ',', '.');
+                    ?>
+                    <?= $formatted_indirim ?>₺
+                </td>
+            </tr>
+        <?php } 
+        if($siparisler["kargo_ucreti"] != '0.00'){ ?>
             <tr>
                 <td></td>
                 <td></td>
@@ -230,11 +231,9 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                 <td style="border: 1px solid #ccc; text-align: center; font-weight: bold; color:white">KDV Dahil Toplam :</td>
                 <td style="border: 1px solid #ccc; text-align: center; font-weight: bold; color:white">
                     <?php
-                    $siparisler = $db->prepare("SELECT * FROM b2b_siparisler WHERE id = :id " , ['id' => $sip_id]);
-
-                    $toplam_fiyat = $siparisler["toplam"];
-                    $toplam_fiyat_float = (float) str_replace(',', '.', $toplam_fiyat);
-                    $formatted_fiyat = number_format($toplam_fiyat_float, 2, ',', '.');
+                        $toplam_fiyat = $siparisler["toplam"];
+                        $toplam_fiyat_float = (float) str_replace(',', '.', $toplam_fiyat);
+                        $formatted_fiyat = number_format($toplam_fiyat_float, 2, ',', '.');
                     ?>
                     <?= $formatted_fiyat ?>₺
                 </td>
