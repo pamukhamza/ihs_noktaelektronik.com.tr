@@ -105,38 +105,26 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
         <tbody>
         <?php foreach ($urunlar as $urun): ?>
             <tr>
-                <td style="border: 1px solid #ccc; width: 60px;">
+                <td style="border: 1px solid #ccc; width: 60px; padding: 4px; text-align: center;">
                     <?php
-                    // Resmi URL'den al
                     $imageUrl = "https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/" . $urun["foto"];
-
-                    // Resmi yükle
                     $imageData = @file_get_contents($imageUrl);
                     $base64Image = '';
 
                     if ($imageData !== false) {
-                        // Resmin türünü kontrol et
                         $imageInfo = getimagesizefromstring($imageData);
                         $imageType = $imageInfo['mime'] ?? '';
 
                         if ($imageType === 'image/jpeg') {
-                            // JPEG ise doğrudan base64 kodla
                             $base64Image = 'data:image/jpeg;base64,' . base64_encode($imageData);
                         } elseif ($imageType === 'image/webp') {
-                            // WebP ise JPEG formatına çevir
                             $image = @imagecreatefromstring($imageData);
-
                             if ($image !== false) {
-                                // JPEG formatında geçici bir dosya oluştur
                                 ob_start();
-                                imagejpeg($image, null, 75); // Kaliteyi 75 olarak ayarlayın
+                                imagejpeg($image, null, 75);
                                 $jpegData = ob_get_contents();
                                 ob_end_clean();
-
-                                // Base64 kodlama
                                 $base64Image = 'data:image/jpeg;base64,' . base64_encode($jpegData);
-
-                                // Belleği temizle
                                 imagedestroy($image);
                             } else {
                                 echo 'Resim oluşturulamadı.';
@@ -150,7 +138,9 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                     ?>
 
                     <?php if (!empty($base64Image)): ?>
-                        <div><img src="<?= $base64Image ?>" alt="Ürün Resmi" style="max-width: 60px; height: auto;"/></div>
+                        <div>
+                            <img src="<?= $base64Image ?>" alt="Ürün Resmi" style="max-width: 60px; height: auto;" />
+                        </div>
                     <?php else: ?>
                         <div>Image not found</div>
                     <?php endif; ?>
