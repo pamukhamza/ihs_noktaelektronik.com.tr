@@ -436,10 +436,11 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
             updateUyeId($db, $promosyon_kodu, $uye_id, $promosyon_kullanim_sayisi, 0);
         }
     }
-
-    header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
     $mail_icerik = siparisAlindi($uyeAdSoyad, $siparisId, $siparisNumarasi);
     mailGonder($uye_email, 'Siparişiniz Alınmıştır!', $mail_icerik, 'Nokta Elektronik');
+
+    header("Location: ../../tr/onay?siparis-numarasi=$siparisNumarasi");
+    exit;
 }
 
 if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
