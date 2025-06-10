@@ -717,7 +717,7 @@ if(isset($_GET['hata']) && $_GET['hata'] == 0) {
         });
         $.ajax({
             type: 'POST',
-            url: 'functions/functions.php',
+            url: 'functions/sepet/sepet_fonksiyonlar.php',
             data: {promosyon_kodu: promosyonKodu,
                 promosyonKontrol: 'promosyonKontrol',
                 indirim: indirim,
