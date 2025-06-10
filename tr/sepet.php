@@ -774,7 +774,7 @@ if(isset($_GET['hata']) && $_GET['hata'] == 0) {
     function validateQuantity(sepetId, adet, stok) {
         $.ajax({
             type: 'POST',
-            url: 'functions/functions.php',
+            url: 'functions/sepet/sepet_fonksiyonlar.php',
             data: {
                 'sepetId': sepetId,
                 'adet': adet,
