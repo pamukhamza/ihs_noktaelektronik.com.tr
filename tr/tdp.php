@@ -546,3 +546,115 @@ try {
         }
     });
 </script>
+
+<script>
+    $(document).ready(function() {
+        // Print button click handler
+        $('#yazdirButton').click(function() {
+            var takipKodu = $('#modalBody').text().split(': ')[1].trim();
+            
+            // Create a new window for printing
+            var printWindow = window.open('', '_blank');
+            
+            // Show loading message
+            printWindow.document.write('<html><head><title>Yazdırılıyor...</title>');
+            printWindow.document.write('<style>body { font-family: Arial, sans-serif; } .loading { text-align: center; margin-top: 50px; }</style>');
+            printWindow.document.write('</head><body><div class="loading">Yazdırma hazırlanıyor...</div></body></html>');
+            
+            // Fetch repair details
+            $.ajax({
+                url: 'functions/get_repair_details.php',
+                method: 'POST',
+                data: { takip_kodu: takipKodu },
+                success: function(response) {
+                    try {
+                        const data = JSON.parse(response);
+                        if (data.success) {
+                            // Create print-friendly HTML
+                            printWindow.document.write(`
+                                <html>
+                                <head>
+                                    <title>Onarım Detayları - ${data.repair.takip_kodu}</title>
+                                    <style>
+                                        body { font-family: Arial, sans-serif; margin: 20px; }
+                                        .header { text-align: center; margin-bottom: 30px; }
+                                        .section { margin-bottom: 20px; }
+                                        .section-title { font-weight: bold; margin-bottom: 10px; }
+                                        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                                        th { background-color: #f5f5f5; }
+                                        .footer { margin-top: 30px; text-align: center; font-size: 12px; }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class="header">
+                                        <h2>Onarım Detayları</h2>
+                                        <p>Takip Kodu: ${data.repair.takip_kodu}</p>
+                                        <p>Tarih: ${data.repair.tarih}</p>
+                                    </div>
+                                    
+                                    <div class="section">
+                                        <div class="section-title">Müşteri Bilgileri</div>
+                                        <p>Müşteri: ${data.repair.musteri}</p>
+                                        <p>Telefon: ${data.repair.tel}</p>
+                                        <p>E-posta: ${data.repair.mail}</p>
+                                        <p>Adres: ${data.repair.adres}</p>
+                                    </div>
+                                    
+                                    <div class="section">
+                                        <div class="section-title">Ürün Bilgileri</div>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Ürün Kodu</th>
+                                                    <th>Seri No</th>
+                                                    <th>Adet</th>
+                                                    <th>Durum</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${data.products.map(product => `
+                                                    <tr>
+                                                        <td>${product.urun_kodu}</td>
+                                                        <td>${product.seri_no || '-'}</td>
+                                                        <td>${product.adet}</td>
+                                                        <td>${product.durum}</td>
+                                                    </tr>
+                                                `).join('')}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="section">
+                                        <div class="section-title">Açıklama</div>
+                                        <p>${data.repair.aciklama}</p>
+                                    </div>
+                                    
+                                    <div class="footer">
+                                        <p>Bu belge ${new Date().toLocaleString('tr-TR')} tarihinde oluşturulmuştur.</p>
+                                    </div>
+                                </body>
+                                </html>
+                            `);
+                            
+                            // Print the window
+                            printWindow.document.close();
+                            printWindow.focus();
+                            setTimeout(() => {
+                                printWindow.print();
+                                printWindow.close();
+                            }, 500);
+                        } else {
+                            printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Onarım detayları alınamadı.</div>');
+                        }
+                    } catch (e) {
+                        printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Bir hata oluştu.</div>');
+                    }
+                },
+                error: function() {
+                    printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Sunucu hatası oluştu.</div>');
+                }
+            });
+        });
+    });
+</script>
