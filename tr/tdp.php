@@ -558,7 +558,7 @@ try {
             printWindow.document.write('<html><head><title>Yazdırılıyor...</title>');
             printWindow.document.write('<style>body { font-family: Arial, sans-serif; } .loading { text-align: center; margin-top: 50px; }</style>');
             printWindow.document.write('</head><body><div class="loading">Yazdırma hazırlanıyor...</div></body></html>');
-            
+            /*
             // Fetch repair details
             $.ajax({
                 url: 'functions/get_repair_details.php',
@@ -659,6 +659,7 @@ try {
                     </div>`);
                 }
             });
+            */
         });
     });
 </script>
