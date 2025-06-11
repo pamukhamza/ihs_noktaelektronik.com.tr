@@ -571,14 +571,14 @@ try {
                             <head>
                                 <title>Onarım Detayları - ${data.repair.takip_kodu}</title>
                                 <style>
-                                    body { font-family: Arial, sans-serif; margin: 20px; }
-                                    .header { text-align: center; margin-bottom: 30px; }
-                                    .section { margin-bottom: 20px; }
-                                    .section-title { font-weight: bold; margin-bottom: 10px; }
-                                    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-                                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                                    body { font-family: Arial, sans-serif; margin: 10px; }
+                                    .header { text-align: center; margin-bottom: 10px; }
+                                    .section { margin-bottom: 10px; }
+                                    .section-title { font-weight: bold; margin-bottom: 5px; }
+                                    table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+                                    th, td { border: 1px solid #ddd; padding: 5px; text-align: left; }
                                     th { background-color: #f5f5f5; }
-                                    .footer { margin-top: 30px; text-align: center; font-size: 12px; }
+                                    .footer { margin-top: 20px; text-align: center; font-size: 12px; }
                                 </style>
                             </head>
                             <body>
