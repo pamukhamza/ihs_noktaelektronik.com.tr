@@ -552,10 +552,8 @@ try {
         // Print button click handler
         $('#yazdirButton').click(function() {
             var takipKodu = $('#modalBody').text().split(': ')[1].trim();
-            
             // Create a new window for printing
             var printWindow = window.open('', '_blank');
-            
             // Show loading message
             printWindow.document.write('<html><head><title>Yazdırılıyor...</title>');
             printWindow.document.write('<style>body { font-family: Arial, sans-serif; } .loading { text-align: center; margin-top: 50px; }</style>');
@@ -645,20 +643,10 @@ try {
                                 printWindow.close();
                             }, 500);
                         } else {
-                            printWindow.document.write(`<div style="color: red; text-align: center; margin-top: 50px;">
-                                Onarım detayları alınamadı.<br>
-                                Hata: ${data.message}<br>
-                                ${data.debug ? `Detay: ${JSON.stringify(data.debug)}` : ''}
-                            </div>`);
+                            printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Onarım detayları alınamadı.</div>');
                         }
                     } catch (e) {
-                        console.error('Parse error:', e);
-                        console.error('Response:', response);
-                        printWindow.document.write(`<div style="color: red; text-align: center; margin-top: 50px;">
-                            Bir hata oluştu.<br>
-                            Hata detayı: ${e.message}<br>
-                            Yanıt: ${response}
-                        </div>`);
+                        printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Bir hata oluştu.</div>');
                     }
                 },
                 error: function(xhr, status, error) {
