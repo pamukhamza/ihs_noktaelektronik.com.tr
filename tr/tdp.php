@@ -556,8 +556,6 @@ try {
             var printWindow = window.open('', '_blank');
             // Show loading message
             printWindow.document.write('<html><head><title>Yazdırılıyor...</title>');
-            printWindow.document.write('<style>body { font-family: Arial, sans-serif; } .loading { text-align: center; margin-top: 50px; }</style>');
-            printWindow.document.write('</head><body><div class="loading">Yazdırma hazırlanıyor... ' + takipKodu + '</div></body></html>');
             
             // Fetch repair details
             $.ajax({
