@@ -2,10 +2,18 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Prevent any output before JSON response
+ob_start();
+
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/logger.php';
 
+// Clear any previous output
+ob_clean();
+
+// Set headers
 header('Content-Type: application/json');
+header('Cache-Control: no-cache, must-revalidate');
 
 try {
     if (!isset($_POST['takip_kodu'])) {
@@ -35,6 +43,9 @@ try {
         'product_count' => count($products)
     ]);
 
+    // Clear any output buffer
+    ob_clean();
+    
     echo json_encode([
         'success' => true,
         'repair' => $repair,
@@ -42,6 +53,9 @@ try {
     ]);
 
 } catch (Exception $e) {
+    // Clear any output buffer
+    ob_clean();
+    
     Logger::error("Onarım detayları alınırken hata oluştu", [
         'error' => $e->getMessage(),
         'takip_kodu' => $takip_kodu ?? null
@@ -57,4 +71,7 @@ try {
             'line' => $e->getLine()
         ]
     ]);
-} 
+}
+
+// End output buffering and flush
+ob_end_flush(); 
