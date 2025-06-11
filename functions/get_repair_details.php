@@ -1,6 +1,9 @@
 <?php
-require_once 'functions.php';
-require_once 'logger.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/logger.php';
 
 header('Content-Type: application/json');
 
@@ -44,8 +47,14 @@ try {
         'takip_kodu' => $takip_kodu ?? null
     ]);
 
+    http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => $e->getMessage()
+        'message' => $e->getMessage(),
+        'debug' => [
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ]
     ]);
 } 

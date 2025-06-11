@@ -645,14 +645,30 @@ try {
                                 printWindow.close();
                             }, 500);
                         } else {
-                            printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Onarım detayları alınamadı.</div>');
+                            printWindow.document.write(`<div style="color: red; text-align: center; margin-top: 50px;">
+                                Onarım detayları alınamadı.<br>
+                                Hata: ${data.message}<br>
+                                ${data.debug ? `Detay: ${JSON.stringify(data.debug)}` : ''}
+                            </div>`);
                         }
                     } catch (e) {
-                        printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Bir hata oluştu.</div>');
+                        console.error('Parse error:', e);
+                        console.error('Response:', response);
+                        printWindow.document.write(`<div style="color: red; text-align: center; margin-top: 50px;">
+                            Bir hata oluştu.<br>
+                            Hata detayı: ${e.message}<br>
+                            Yanıt: ${response}
+                        </div>`);
                     }
                 },
-                error: function() {
-                    printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Sunucu hatası oluştu.</div>');
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', {xhr, status, error});
+                    printWindow.document.write(`<div style="color: red; text-align: center; margin-top: 50px;">
+                        Sunucu hatası oluştu.<br>
+                        Durum: ${status}<br>
+                        Hata: ${error}<br>
+                        Yanıt: ${xhr.responseText}
+                    </div>`);
                 }
             });
         });
