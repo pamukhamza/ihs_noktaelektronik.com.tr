@@ -645,15 +645,6 @@ try {
                     } else {
                         printWindow.document.write('<div style="color: red; text-align: center; margin-top: 50px;">Onarım detayları alınamadı.</div>');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX error:', {xhr, status, error});
-                    printWindow.document.write(`<div style="color: red; text-align: center; margin-top: 50px;">
-                        Sunucu hatası oluştu.<br>
-                        Durum: ${status}<br>
-                        Hata: ${error}<br>
-                        Yanıt: ${xhr.responseText}
-                    </div>`);
                 }
             });
             
