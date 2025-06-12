@@ -10,19 +10,19 @@ $database = new Database();
 
 // Base64 kontrolü ve veri çözümleme
 if (!isset($_GET['l']) || empty($_GET['l'])) {
-    header('Location: index');
+    header('Location: /');
     exit;
 }
 
 $decoded_data = base64_decode($_GET['l']);
 if ($decoded_data === false) {
-    header('Location: index');
+    header('Location: /');
     exit;
 }
 
 $borc = json_decode($decoded_data, true);
 if (!$borc || !isset($borc['cari_kodu'])) {
-    header('Location: index');
+    header('Location: /');
     exit;
 }
 
