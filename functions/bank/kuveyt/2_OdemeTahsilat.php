@@ -6,6 +6,13 @@ session_regenerate_id(true);
 include('../../db.php');
 $database = new Database();
 if(isset($_POST["cariOdeme"])){
+	$toplam = isset($_POST['toplam']) ? htmlspecialchars($_POST['toplam']) : 'Veri yok';
+    $odemetutar = isset($_POST['odemetutar']) ? htmlspecialchars($_POST['odemetutar']) : 'Veri yok';
+
+    // Ekrana yazdır
+    echo "<p>Toplam: $toplam</p>";
+    echo "<p>Ödeme Tutarı: $odemetutar</p>";
+	exit;
 	$odemetaksit = $_POST['odemetaksit'];
 	if ($odemetaksit == 1 || $odemetaksit == 0) {
 		$odemetaksit = 0;
