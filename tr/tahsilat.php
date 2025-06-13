@@ -105,9 +105,9 @@ $toplam = str_replace(['.', ','], ['', '.'], $duzenlifiyat); // PHP tarafında s
                                     <label for="expYear" class="form-label">Son Kullanma Yıl</label>
                                     <select class="form-select" id="expYear" name="expYear" required>
                                         <?php 
-                                        $currentYear = date('Y');
-                                        for($i = $currentYear; $i <= $currentYear + 10; $i++): 
-                                            $twoDigitYear = substr($i, -2); // sadece son 2 hanesi
+                                            $currentYear = date('Y');
+                                            for($i = $currentYear; $i <= $currentYear + 10; $i++): 
+                                                $twoDigitYear = substr($i, -2); // sadece son 2 hanesi
                                         ?>
                                             <option value="<?php echo $twoDigitYear; ?>"><?php echo $i; ?></option>
                                         <?php endfor; ?>

@@ -1,8 +1,21 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    foreach ($_POST as $key => $value) {
-        echo $key . ': ' . $value . '<br>';
-    }
+    $authResponseRaw = $_POST["AuthenticationResponse"] ?? '';
+    $authResponseDecoded = urldecode($authResponseRaw); // XML decode
+    $xml = simplexml_load_string($authResponseDecoded);
+
+    // Hata mesajını çıkar
+    $responseMessage = (string)$xml->ResponseMessage;
+    ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Ödeme Hatası',
+            html: `<?php echo addslashes($responseMessage); ?>`
+        });
+    </script>
+    <?php
 }
 require '../functions/admin_template.php';
 require '../functions/functions.php';
