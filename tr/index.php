@@ -822,3 +822,17 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Banner yüklenirken hata oluştu:', error));
     });
 </script>
+<?php
+if (isset($_GET['cari_odeme']) && $_GET['cari_odeme'] === 'success') {
+    ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Ödeme Başarılı',
+            text: 'Ödemeniz başarıyla alınmıştır.',
+            confirmButtonText: 'Tamam'
+        });
+    </script>
+    <?php
+}
+?>
