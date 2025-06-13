@@ -13,13 +13,11 @@ if (!isset($_GET['l']) || empty($_GET['l'])) {
     header('Location: /');
     exit;
 }
-
 $decoded_data = base64_decode($_GET['l']);
 if ($decoded_data === false) {
     header('Location: /');
     exit;
 }
-
 $borc = json_decode($decoded_data, true);
 if (!$borc || !isset($borc['cari_kodu'])) {
     header('Location: /');
@@ -33,6 +31,12 @@ $veri = [
     'borc_bakiye'    => $borc['borc_bakiye'],
     'bilgi_kodu'     => $borc['bilgi_kodu']
 ];
+$uye_id = $database->fetch("SELECT id FROM uyeler WHERE muhasebe_kodu = :cari_kodu", ['cari_kodu' => $borc['cari_kodu']]);
+$uye_ids = $uye_id['id'];
+$duzenlifiyat = number_format($veri['geciken_tutar'], 2, ',', '.');
+
+var toplamText = $duzenlifiyat;
+var toplam = parseFloat(toplamText.replace(/\./g, '').replace(',', '.')); // Noktaları kaldır ve virgülü noktaya çevir
 ?>
 <body>
     <?php $template->header(); ?>
@@ -44,8 +48,8 @@ $veri = [
         <ol class="breadcrumb ">
             <li class="breadcrumb-item">
                 <a class="link-body-emphasis" href="index">
-                <svg class="bi" width="15" height="15"><use xlink:href="#house-door-fill"></use></svg>
-                <span class="visually-hidden">Anasayfa</span>
+                    <svg class="bi" width="15" height="15"><use xlink:href="#house-door-fill"></use></svg>
+                    <span class="visually-hidden">Anasayfa</span>
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Vadesi Geçmiş Borç Ödeme</li>
@@ -60,12 +64,21 @@ $veri = [
                         <div class="alert alert-info mb-4">
                             <h4 class="alert-heading">Sayın <?php echo htmlspecialchars($veri['ticari_unvani']); ?></h4>
                             <p class="mb-0">Toplam Borcunuz: <strong><?php echo number_format($veri['borc_bakiye'], 2, ',', '.'); ?> TL</strong></p>
-                            <p class="mb-0">Vadesi Geçmiş Borcunuz: <strong><?php echo number_format($veri['geciken_tutar'], 2, ',', '.'); ?> TL</strong></p>
+                            <p class="mb-0">Vadesi Geçmiş Borcunuz: <strong><?php echo $duzenlifiyat; ?> TL</strong></p>
                         </div>
 
-                        <form id="paymentForm" method="POST" action="odeme_islemi.php">
+                        <form id="paymentForm" method="POST" action="funcitons/bank/kuveyt/2_OdemeTahsilat.php">
                             <input type="hidden" name="cari_kodu" value="<?php echo htmlspecialchars($veri['cari_kodu']); ?>">
                             <input type="hidden" name="bilgi_kodu" value="<?php echo htmlspecialchars($veri['bilgi_kodu']); ?>">
+                            <input type="hidden" name="cariOdeme" value="cariOdeme">
+                            <input type="hidden" name="odemetaksit" value="1">
+                            <input type="hidden" name="odemetutar" value="<?php echo $toplam; ?>">
+                            <input type="hidden" name="uye_id" value="$uye_ids">
+                            <input type="hidden" name="toplam" value="<?php echo $toplam; ?>">
+                            <input type="hidden" name="banka_id" value="8">
+                            <input type="hidden" name="hesap" value="TL">
+                            <input type="hidden" name="tip" value="Sanal Pos">
+                            <input type="hidden" name="lang" value="tr">
                             
                             <div class="row">
                                 <div class="col-md-12 mb-3">
@@ -76,20 +89,20 @@ $veri = [
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="cardHolder" class="form-label">Kart Sahibi</label>
-                                    <input type="text" class="form-control" id="cardHolder" name="cardHolder" placeholder="Ad Soyad" required>
+                                    <label for="cardName" class="form-label">Kart Sahibi</label>
+                                    <input type="text" class="form-control" id="cardName" name="cardName" placeholder="Ad Soyad" required>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <label for="expiryMonth" class="form-label">Son Kullanma Ay</label>
-                                    <select class="form-select" id="expiryMonth" name="expiryMonth" required>
+                                    <label for="expMonth" class="form-label">Son Kullanma Ay</label>
+                                    <select class="form-select" id="expMonth" name="expMonth" required>
                                         <?php for($i = 1; $i <= 12; $i++): ?>
                                             <option value="<?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>"><?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?></option>
                                         <?php endfor; ?>
                                     </select>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <label for="expiryYear" class="form-label">Son Kullanma Yıl</label>
-                                    <select class="form-select" id="expiryYear" name="expiryYear" required>
+                                    <label for="expYear" class="form-label">Son Kullanma Yıl</label>
+                                    <select class="form-select" id="expYear" name="expYear" required>
                                         <?php 
                                         $currentYear = date('Y');
                                         for($i = $currentYear; $i <= $currentYear + 10; $i++): 
@@ -102,8 +115,8 @@ $veri = [
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="cvv" class="form-label">CVV</label>
-                                    <input type="text" class="form-control" id="cvv" name="cvv" maxlength="3" placeholder="123" required>
+                                    <label for="cvCode" class="form-label">CVV</label>
+                                    <input type="text" class="form-control" id="cvCode" name="cvCode" maxlength="3" placeholder="123" required>
                                 </div>
                             </div>
 
