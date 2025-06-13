@@ -9,16 +9,14 @@ if(isset($_POST["cariOdeme"])){
 	$toplam = isset($_POST['toplam']) ? htmlspecialchars($_POST['toplam']) : 'Veri yok';
     $odemetutar = isset($_POST['odemetutar']) ? htmlspecialchars($_POST['odemetutar']) : 'Veri yok';
 
-    // Ekrana yazdır
-    echo "<p>Toplam: $toplam</p>";
-    echo "<p>Ödeme Tutarı: $odemetutar</p>";
-	exit;
+
 	$odemetaksit = $_POST['odemetaksit'];
 	if ($odemetaksit == 1 || $odemetaksit == 0) {
 		$odemetaksit = 0;
 	}
 	$odemetutar = $_POST['odemetutar'];
 	$odemetutar_float = str_replace(',', '', $odemetutar);
+	$odemetutar_float = str_replace('.', '', $odemetutar_float);
 
 	$pos_id = 3;
 	$basarili = 0;
