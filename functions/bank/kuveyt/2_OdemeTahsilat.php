@@ -17,16 +17,18 @@ if(isset($_POST["cariOdeme"])){
 	$odemetutar = $_POST['odemetutar'];
 	$odemetutar_float = str_replace(',', '', $odemetutar);
 	$odemetutar_float = str_replace('.', '', $odemetutar_float);
+	$cardNumber1 = $_POST['cardNumber'];
+	$cardNumber1 = str_replace(' ', '', $cardNumber1);
 
 	$pos_id = 3;
 	$basarili = 0;
 	$sonucStr = 'Tahsilat ödeme sayfasına giriş yapıldı!';
 	$stmt = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
 	$database->insert($stmt, ['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili]);
-
+	
 	$verimiz = [
 		"cardHolder" => $_POST["cardName"],
-		"cardNo" => $_POST["cardNumber"],
+		"cardNo" => $cardNumber1,
 		"yantoplam" => $_POST["toplam"],
 		"banka_id" => $_POST["banka_id"],
 		"hesap"  => $_POST["hesap"],
@@ -37,7 +39,7 @@ if(isset($_POST["cariOdeme"])){
 	$verimizB64 = base64_encode(json_encode($verimiz));
 	$gidesun = "https://noktaelektronik.com.tr/functions/siparis/tahsilat_kuveyt_sip.php?cariveri=" .$verimizB64;
 	$Name=$_POST["cardName"];
-	$CardNumber=$_POST["cardNumber"]; // 16 haneli olarak
+	$CardNumber=$cardNumber1; // 16 haneli olarak
 	$CardExpireDateMonth=$_POST["expMonth"]; // iki hane olarak kartın ay bilgisi
 	$CardExpireDateYear=$_POST["expYear"]; // kartın vade tarihinde yıl alanı, iki hane
 	$CardCVV2=$_POST["cvCode"]; // kartın arka yüzündeki CVV2 kodu
