@@ -135,7 +135,7 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
             posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz,$banka_tanimi);
             $mail_icerik = cariOdeme($firma_unvani,$yantoplam,$taksit_sayisi);
             mailGonder($cariMail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
-            header("Location: /tr/onay?cari_odeme=success");
+            header("Location: /tr/index?cari_odeme=success");
             exit();
         } else {
             // ResponseCode 00 değilse hata mesajı göster veya başka bir işlem yap
@@ -145,7 +145,7 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
             $db->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", [
                 'uye_id' => $uye_id,'pos_id' => $pos_id,'islem' => $sonucStr,'tutar' => $yantoplam1,'basarili' => $basarili]);
 
-            header("Location: /tr/cariodeme?code=".$xml->ResponseCode."&message=".$xml->ResponseMessage);
+            header("Location: /tr/index?code=".$xml->ResponseCode."&message=".$xml->ResponseMessage);
             exit();
         }
         curl_close($ch);
