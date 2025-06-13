@@ -13,11 +13,13 @@ if (!isset($_GET['l']) || empty($_GET['l'])) {
     header('Location: /');
     exit;
 }
+
 $decoded_data = base64_decode($_GET['l']);
 if ($decoded_data === false) {
     header('Location: /');
     exit;
 }
+
 $borc = json_decode($decoded_data, true);
 if (!$borc || !isset($borc['cari_kodu'])) {
     header('Location: /');
@@ -31,12 +33,11 @@ $veri = [
     'borc_bakiye'    => $borc['borc_bakiye'],
     'bilgi_kodu'     => $borc['bilgi_kodu']
 ];
+
 $uye_id = $database->fetch("SELECT id FROM uyeler WHERE muhasebe_kodu = :cari_kodu", ['cari_kodu' => $borc['cari_kodu']]);
 $uye_ids = $uye_id['id'];
 $duzenlifiyat = number_format($veri['geciken_tutar'], 2, ',', '.');
-
-var toplamText = $duzenlifiyat;
-var toplam = parseFloat(toplamText.replace(/\./g, '').replace(',', '.')); // Noktaları kaldır ve virgülü noktaya çevir
+$toplam = str_replace(['.', ','], ['', '.'], $duzenlifiyat); // PHP tarafında sayısal değere çevirme
 ?>
 <body>
     <?php $template->header(); ?>
@@ -48,8 +49,8 @@ var toplam = parseFloat(toplamText.replace(/\./g, '').replace(',', '.')); // Nok
         <ol class="breadcrumb ">
             <li class="breadcrumb-item">
                 <a class="link-body-emphasis" href="index">
-                    <svg class="bi" width="15" height="15"><use xlink:href="#house-door-fill"></use></svg>
-                    <span class="visually-hidden">Anasayfa</span>
+                <svg class="bi" width="15" height="15"><use xlink:href="#house-door-fill"></use></svg>
+                <span class="visually-hidden">Anasayfa</span>
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Vadesi Geçmiş Borç Ödeme</li>
@@ -73,7 +74,7 @@ var toplam = parseFloat(toplamText.replace(/\./g, '').replace(',', '.')); // Nok
                             <input type="hidden" name="cariOdeme" value="cariOdeme">
                             <input type="hidden" name="odemetaksit" value="1">
                             <input type="hidden" name="odemetutar" value="<?php echo $toplam; ?>">
-                            <input type="hidden" name="uye_id" value="$uye_ids">
+                            <input type="hidden" name="uye_id" value="<?php echo $uye_ids; ?>">
                             <input type="hidden" name="toplam" value="<?php echo $toplam; ?>">
                             <input type="hidden" name="banka_id" value="8">
                             <input type="hidden" name="hesap" value="TL">
@@ -152,7 +153,7 @@ document.getElementById('cardNumber').addEventListener('input', function(e) {
 });
 
 // CVV sadece rakam
-document.getElementById('cvv').addEventListener('input', function(e) {
+document.getElementById('cvCode').addEventListener('input', function(e) {
     e.target.value = e.target.value.replace(/\D/g, '');
 });
 </script>
