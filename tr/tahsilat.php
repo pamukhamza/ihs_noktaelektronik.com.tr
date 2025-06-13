@@ -68,7 +68,7 @@ $toplam = str_replace(['.', ','], ['', '.'], $duzenlifiyat); // PHP tarafında s
                             <p class="mb-0">Vadesi Geçmiş Borcunuz: <strong><?php echo $duzenlifiyat; ?> TL</strong></p>
                         </div>
 
-                        <form id="paymentForm" method="POST" action="funcitons/bank/kuveyt/2_OdemeTahsilat.php">
+                        <form id="paymentForm" method="POST" action="../functions/bank/kuveyt/2_OdemeTahsilat.php">
                             <input type="hidden" name="cari_kodu" value="<?php echo htmlspecialchars($veri['cari_kodu']); ?>">
                             <input type="hidden" name="bilgi_kodu" value="<?php echo htmlspecialchars($veri['bilgi_kodu']); ?>">
                             <input type="hidden" name="cariOdeme" value="cariOdeme">
