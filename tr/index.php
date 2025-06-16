@@ -854,8 +854,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     ?>
     <script>
-        console.log("XML Veri:", `<?php echo addslashes($authResponseDecoded); ?>`);
-        console.log("Çözülmüş cariveri:", <?php echo json_encode($cariveriDecoded); ?>);
+        //console.log("XML Veri:", `<?php echo addslashes($authResponseDecoded); ?>`);
+        // console.log("Çözülmüş cariveri:", <?php echo json_encode($cariveriDecoded); ?>);
         <?php if (!empty($dbError)): ?>
         console.error("Veritabanı Hatası: <?php echo addslashes($dbError); ?>");
         <?php endif; ?>
