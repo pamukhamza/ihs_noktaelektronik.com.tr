@@ -34,8 +34,7 @@ $veri = [
     'bilgi_kodu'     => $borc['bilgi_kodu']
 ];
 
-$uye_id = $database->fetch("SELECT id FROM uyeler WHERE muhasebe_kodu = :cari_kodu", ['cari_kodu' => $borc['cari_kodu']]);
-$uye_ids = $uye_id['id'];
+$uye_ids = '0';
 $duzenlifiyat = number_format($veri['geciken_tutar'], 2, ',', '.');
 $toplam = str_replace(['.', ','], ['', '.'], $duzenlifiyat); // PHP tarafında sayısal değere çevirme
 ?>

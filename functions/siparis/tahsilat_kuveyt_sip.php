@@ -131,9 +131,9 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
 
             $inserted_id = $db->lastInsertId();
 
-            dekontOlustur($uye_id, $inserted_id, $firma_unvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
+            dekontOlustur($uye_id, $inserted_id, $ticari_unvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
             posXmlOlustur($BLKODU, '0', $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz,$banka_tanimi);
-            $mail_icerik = cariOdeme($firma_unvani,$yantoplam,$taksit_sayisi);
+            $mail_icerik = cariOdeme($ticari_unvani,$yantoplam,$taksit_sayisi);
             mailGonder($cariMail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
             header("Location: /tr/index?cari_odeme=success");
             exit();
