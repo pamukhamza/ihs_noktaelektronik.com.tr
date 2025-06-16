@@ -830,10 +830,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         Swal.fire({
             icon: 'error',
             title: 'Ödeme Hatası',
-            html: `<?php echo addslashes($responseMessage); ?>`
+            html: `<?php echo addslashes($xml); ?>`
         });
     </script>
     <?php
+        $pos_id = 3;
+        $basarili = 0;
+        $stmt = $database->insert("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)",
+                            array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $responseMessage, ':tutar' => $tutar, ':basarili' => $basarili));
+    
 }
 ?>
 
