@@ -286,7 +286,7 @@ $database = new Database();
                         </div>-->
                         <div class="col-12 mt-3">
                             <video class="rounded shadow-sm" style="width: 100%; height: auto;" controls>
-                                <source src="assets/uploads/videolar/banner_video1.mp4" type="video/mp4">
+                                <source src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/videolar/banner_video1.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
