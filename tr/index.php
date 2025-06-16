@@ -229,7 +229,7 @@ $database = new Database();
                         $d = $database->fetch($q); ?>
                         <div class="col-12 col-md-8 mt-2 position-relative">
                             <video id="myVideo" class="rounded shadow-sm" data-banner-video-id="1" style="width: 100%; height: auto;" controls>
-                                <source src="assets/uploads/videolar/banner_video1.mp4" type="video/mp4">
+                                <source src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/videolar/banner_video1.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                             <div class="play-button position-absolute">
