@@ -47,6 +47,8 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
     $cariOdeme = "cari";
     $tip = $decodedVeri["tip"];
     $lang = $decodedVeri["lang"];
+    $BLKODU = $decodedVeri["BLKODU"];
+    $ticari_unvani = $decodedVeri["ticari_unvani"];
     $cardNo = $decodedVeri["cardNo"];
     $maskedCardNo = substr($cardNo, 0, 4) . str_repeat('*', strlen($cardNo) - 8) . substr($cardNo, -4);
     $cardHolder = $decodedVeri["cardHolder"];
@@ -107,9 +109,7 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
             $banka_adi = $banka_pos["BANKA_ADI"];
             $banka_tanimi = $banka_pos["TANIMI"];
 
-            $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $uye_id]);
-            $uyecarikod = $uye['BLKODU'];
-            $firma_unvani = $uye['firmaUnvani'];
+            $uye = $db->fetch("SELECT * FROM vadesi_gecmis_borc WHERE bilgi_kodu = :bilgi_kodu", ['bilgi_kodu' => $BLKODU]);
             $cariMail = $uye['email'];
             $yonetici_maili = 'h.pamuk@noktaelektronik.net';
 
@@ -132,7 +132,7 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
             $inserted_id = $db->lastInsertId();
 
             dekontOlustur($uye_id, $inserted_id, $firma_unvani, $maskedCardNo, $cardHolder, $taksit_sayisi, $yantoplam, $degistirme_tarihi);
-            posXmlOlustur($uyecarikod, '0', $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz,$banka_tanimi);
+            posXmlOlustur($BLKODU, '0', $degistirme_tarihi,$degistirme_tarihi,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,$taksit_sayisi, $doviz,$banka_tanimi);
             $mail_icerik = cariOdeme($firma_unvani,$yantoplam,$taksit_sayisi);
             mailGonder($cariMail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
             header("Location: /tr/index?cari_odeme=success");

@@ -35,6 +35,8 @@ if(isset($_POST["cariOdeme"])){
 		"uye_id" => $_POST["uye_id"],
 		"tip" => $_POST["tip"],
 		"lang" => $_POST["lang"],
+		"BLKODU" => $_POST["bilgi_kodu"],
+		"ticari_unvani" => $_POST["ticari_unvani"]
 	];
 	$verimizB64 = base64_encode(json_encode($verimiz));
 	$gidesun = "https://noktaelektronik.com.tr/functions/siparis/tahsilat_kuveyt_sip.php?cariveri=" .$verimizB64;

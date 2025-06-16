@@ -76,6 +76,7 @@ $toplam = str_replace(['.', ','], ['', '.'], $duzenlifiyat); // PHP tarafında s
                             <input type="hidden" name="odemetutar" value="<?php echo $toplam; ?>">
                             <input type="hidden" name="uye_id" value="<?php echo $uye_ids; ?>">
                             <input type="hidden" name="toplam" value="<?php echo $toplam; ?>">
+                            <input type="hidden" name="ticari_unvani" value="<?php echo $veri['ticari_unvani']; ?>">
                             <input type="hidden" name="banka_id" value="8">
                             <input type="hidden" name="hesap" value="TL">
                             <input type="hidden" name="tip" value="Sanal Pos">
