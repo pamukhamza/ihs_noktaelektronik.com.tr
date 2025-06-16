@@ -838,7 +838,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ?>
     <script>
         console.log(`<?php echo addslashes($authResponseDecoded); ?>`);
-        console.log(`<?php echo addslashes($cariveriDecoded); ?>`);
+        console.log(<?php echo json_encode($cariveriDecoded); ?>);
+
         Swal.fire({
             icon: 'error',
             title: 'Ödeme Hatası',
