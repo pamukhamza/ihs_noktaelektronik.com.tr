@@ -823,22 +823,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $authResponseDecoded = urldecode($authResponseRaw); // XML decode
     $xml = simplexml_load_string($authResponseDecoded);
 
-    // Hata mesajını çıkar
     $responseMessage = (string)$xml->ResponseMessage;
-    $amountRaw = (string)$xml->VPosMessage->Amount ?? '0'; // örnek: '1000'
-    $tutar = number_format(((float)$amountRaw) / 100, 2, '.', ''); // örnek: '10.00'
-    // cariveri parametresi OkUrl içinden çıkartılır
+    $amountRaw = (string)$xml->VPosMessage->Amount ?? '0';
+    $tutar = number_format(((float)$amountRaw) / 100, 2, '.', '');
+
     $okUrl = (string)$xml->VPosMessage->OkUrl ?? '';
     parse_str(parse_url($okUrl, PHP_URL_QUERY), $okQueryParams);
     $cariveriEncoded = $okQueryParams['cariveri'] ?? '';
     $cariveriDecoded = json_decode(base64_decode($cariveriEncoded), true);
 
-    // cariveriDecoded içinden uye_id çek
     $uye_idgel = $cariveriDecoded['uye_id'] ?? 0;
+
+    // Hazırlık: hata mesajı için boş değişken
+    $dbError = '';
+    try {
+        $pos_id = 3;
+        $basarili = 0;
+
+        $stmt = $database->insert("INSERT INTO b2b_sanal_pos_odemeler 
+            (uye_id, pos_id, islem, tutar, basarili) 
+            VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", [
+            ':uye_id' => $uye_idgel,
+            ':pos_id' => $pos_id,
+            ':islem' => $responseMessage,
+            ':tutar' => $tutar,
+            ':basarili' => $basarili
+        ]);
+    } catch (Exception $e) {
+        $dbError = $e->getMessage();
+    }
     ?>
     <script>
-        console.log(`<?php echo addslashes($authResponseDecoded); ?>`);
-        console.log(<?php echo json_encode($cariveriDecoded); ?>);
+        console.log("XML Veri:", `<?php echo addslashes($authResponseDecoded); ?>`);
+        console.log("Çözülmüş cariveri:", <?php echo json_encode($cariveriDecoded); ?>);
+        <?php if (!empty($dbError)): ?>
+        console.error("Veritabanı Hatası: <?php echo addslashes($dbError); ?>");
+        <?php endif; ?>
 
         Swal.fire({
             icon: 'error',
@@ -847,11 +867,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
     <?php
-        $pos_id = 3;
-        $basarili = 0;
-        $stmt = $database->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)",
-                            array(':uye_id' => $uye_idgel, ':pos_id' => $pos_id, ':islem' => $responseMessage, ':tutar' => $tutar, ':basarili' => $basarili));
-    
 }
 ?>
 
