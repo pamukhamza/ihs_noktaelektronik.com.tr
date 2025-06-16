@@ -843,11 +843,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $database->insert("INSERT INTO b2b_sanal_pos_odemeler 
             (uye_id, pos_id, islem, tutar, basarili) 
             VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)", [
-            ':uye_id' => $uye_idgel,
-            ':pos_id' => $pos_id,
-            ':islem' => $responseMessage,
-            ':tutar' => $tutar,
-            ':basarili' => $basarili
+            'uye_id' => $uye_idgel,
+            'pos_id' => $pos_id,
+            'islem' => $responseMessage,
+            'tutar' => $tutar,
+            'basarili' => $basarili
         ]);
     } catch (Exception $e) {
         $dbError = $e->getMessage();
