@@ -825,6 +825,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Hata mesajını çıkar
     $responseMessage = (string)$xml->ResponseMessage;
+    $amountRaw = (string)$xml->VPosMessage->Amount ?? '0'; // örnek: '1000'
+    $tutar = number_format(((float)$amountRaw) / 100, 2, '.', ''); // örnek: '10.00'
+    // cariveri parametresi OkUrl içinden çıkartılır
+    $okUrl = (string)$xml->VPosMessage->OkUrl ?? '';
+    parse_str(parse_url($okUrl, PHP_URL_QUERY), $okQueryParams);
+    $cariveriEncoded = $okQueryParams['cariveri'] ?? '';
+    $cariveriDecoded = json_decode(base64_decode($cariveriEncoded), true);
+
+    // cariveriDecoded içinden uye_id çek
+    $uye_idgel = $cariveriDecoded['uye_id'] ?? 0;
     ?>
     <script>
         console.log(`<?php echo addslashes($authResponseDecoded); ?>`);
@@ -837,8 +847,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php
         $pos_id = 3;
         $basarili = 0;
-        $stmt = $database->insert("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)",
-                            array(':uye_id' => $uye_id, ':pos_id' => $pos_id, ':islem' => $responseMessage, ':tutar' => $tutar, ':basarili' => $basarili));
+        $stmt = $database->insert("INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)",
+                            array(':uye_id' => $uye_idgel, ':pos_id' => $pos_id, ':islem' => $responseMessage, ':tutar' => $tutar, ':basarili' => $basarili));
     
 }
 ?>
