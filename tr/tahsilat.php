@@ -63,20 +63,20 @@ $toplam = str_replace(['.', ','], ['', '.'], $duzenlifiyat); // PHP tarafında s
                 <div class="card">
                     <div class="card-body">
                         <div class="alert alert-info mb-4">
-                            <h4 class="alert-heading">Sayın <?php echo htmlspecialchars($veri['ticari_unvani']); ?></h4>
-                            <p class="mb-0">Toplam Borcunuz: <strong><?php echo number_format($veri['borc_bakiye'], 2, ',', '.'); ?> TL</strong></p>
+                            <h4 class="alert-heading">Sayın <?php echo htmlspecialchars($borc['ticari_unvani']); ?></h4>
+                            <p class="mb-0">Toplam Borcunuz: <strong><?php echo number_format($borc['borc_bakiye'], 2, ',', '.'); ?> TL</strong></p>
                             <p class="mb-0">Vadesi Geçmiş Borcunuz: <strong><?php echo $duzenlifiyat; ?> TL</strong></p>
                         </div>
 
                         <form id="paymentForm" method="POST" action="../functions/bank/kuveyt/2_OdemeTahsilat.php">
-                            <input type="hidden" name="cari_kodu" value="<?php echo htmlspecialchars($veri['cari_kodu']); ?>">
-                            <input type="hidden" name="bilgi_kodu" value="<?php echo htmlspecialchars($veri['bilgi_kodu']); ?>">
+                            <input type="hidden" name="cari_kodu" value="<?php echo htmlspecialchars($borc['cari_kodu']); ?>">
+                            <input type="hidden" name="bilgi_kodu" value="<?php echo $borc['bilgi_kodu']; ?>">
                             <input type="hidden" name="cariOdeme" value="cariOdeme">
                             <input type="hidden" name="odemetaksit" value="1">
                             <input type="hidden" name="odemetutar" value="<?php echo $toplam; ?>">
                             <input type="hidden" name="uye_id" value="<?php echo $uye_ids; ?>">
                             <input type="hidden" name="toplam" value="<?php echo $toplam; ?>">
-                            <input type="hidden" name="ticari_unvani" value="<?php echo $veri['ticari_unvani']; ?>">
+                            <input type="hidden" name="ticari_unvani" value="<?php echo $borc['ticari_unvani']; ?>">
                             <input type="hidden" name="banka_id" value="8">
                             <input type="hidden" name="hesap" value="TL">
                             <input type="hidden" name="tip" value="Sanal Pos">
