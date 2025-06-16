@@ -827,10 +827,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $responseMessage = (string)$xml->ResponseMessage;
     ?>
     <script>
+        console.log(`<?php echo addslashes($authResponseDecoded); ?>`);
         Swal.fire({
             icon: 'error',
             title: 'Ödeme Hatası',
-            html: `<?php echo addslashes($xml); ?>`
+            html: `<?php echo addslashes($responseMessage); ?>`
         });
     </script>
     <?php
