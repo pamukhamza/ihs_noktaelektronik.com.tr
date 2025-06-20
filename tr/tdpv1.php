@@ -432,18 +432,10 @@ try {
                 contentType: false,
                 success: function(gelen) {
                     Swal.close();
-                    try {
-                        const response = JSON.parse(gelen);
-                        if (response.takip_kodu) {
-                            $('#modalTitle').text("Başvurunuz Alınmıştır!");
-                            $('#modalBody').html('Arıza Takip Kodunuz: ' + response.takip_kodu);
-                            $('#successModal').modal('show');
-                        } else {
-                            alert("Beklenmeyen yanıt: " + gelen);
-                        }
-                    } catch (e) {
-                        alert("Yanıt işlenemedi: " + gelen);
-                    }
+                    const response = JSON.parse(gelen);
+                    $('#modalTitle').text("Başvurunuz Alınmıştır!");
+                    $('#modalBody').html('Arıza Takip Kodunuz: ' + response.takip_kodu);
+                    $('#successModal').modal('show');
                 },
                 error: function(response) {
                     if (response.status === 400) {
@@ -463,7 +455,7 @@ try {
 </script>
 
 <script>
-    $(document).ready(function() { 
+    $(document).ready(function() {
         $("#ara").click(function() {
             var takip_kodu = $("#takip_kodu").val();
             var originalText = $("#ara").text();
