@@ -139,8 +139,8 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
 
                     <?php if (!empty($base64Image)): ?>
                         <div>
-                            <div style="width: 60px; height: 60px; overflow: hidden;">
-                                <img src="<?= $base64Image ?>" alt="Ürün Resmi" width="60" style="width: 60px !important; height: 60px !important; object-fit: cover !important;" />
+                            <div style="width: 50; height: 50px; overflow: hidden;">
+                                <img src="<?= $base64Image ?>" alt="Ürün Resmi" width="50" style="width: 50px !important; height: 50px !important; object-fit: cover !important;" />
 
                             </div>
                         </div>
@@ -245,7 +245,7 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                                 <tbody>
                                 <tr>
                                     <td align="center" valign="top">
-                                        <div style="height: 34px; line-height: 34px; font-size: 14px;">&nbsp;</div>
+                                        <div style="height: 28px; line-height: 28px; font-size: 14px;">&nbsp;</div>
                                         <span style="font-size:12px;"><span style="font-family:tahoma,geneva,sans-serif;"><font color="#f1f1f1" style="font-size: 17px; line-height: 16px;"><span style="line-height: 16px;"><a href="mailto:b2b@noktaelektronik.net" style="text-decoration: none; color: #f1f1f1;">b2b@noktaelektronik.net</a> &nbsp; &nbsp;|&nbsp; <a href="tel:08503330208" style="text-decoration: none; color: #f1f1f1;">0850 333 02 08</a> &nbsp; |&nbsp; &nbsp;<a href="https://noktaelektronik.com.tr/" style="text-decoration: none; color: #f1f1f1;">www.noktaelektronik.com.tr</a></span> </font></span></span>
 
                                         <table border="0" cellpadding="0" cellspacing="0">
