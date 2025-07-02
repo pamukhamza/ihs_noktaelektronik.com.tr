@@ -139,8 +139,9 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
 
                     <?php if (!empty($base64Image)): ?>
                         <div>
-                            <img src="<?= $base64Image ?>" alt="Ürün Resmi" style="width: 60px; height: auto; max-height: 60px;" />
-
+                             <div style="width: 60px; height: 60px;">
+                                <img src="<?= $base64Image ?>" alt="Ürün Resmi" style="width: 60px; height: 60px; object-fit: cover;" />
+                            </div>
                         </div>
                     <?php else: ?>
                         <div>Image not found</div>
