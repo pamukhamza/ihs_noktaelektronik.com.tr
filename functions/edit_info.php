@@ -78,9 +78,15 @@ function uyeAdresEkle() {
     $adres_turu = 'teslimat';
     $database = new Database();
 
-    $query = "INSERT INTO b2b_adresler (uye_id, adres_turu, adres_basligi, ad, soyad, adres, telefon, ulke, il, ilce, posta_kodu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
+    try {
+        $query = "INSERT INTO b2b_adresler (uye_id, adres_turu, adres_basligi, ad, soyad, adres, telefon, ulke, il, ilce, posta_kodu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $database->prepare($query);
+        $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
 }
 function editFavori() {
     $productId = $_POST['product_id'];
