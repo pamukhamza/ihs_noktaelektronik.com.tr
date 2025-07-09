@@ -65,22 +65,47 @@ function sepeteFavoriEkle() {
     }
 }
 function uyeAdresEkle() {
-    $adres_basligi = controlInput($_POST['adres_basligi']);
-    $ad = controlInput($_POST['ad']);
-    $soyad = controlInput($_POST['soyad']);
-    $tel = controlInput($_POST['tel']);
-    $adres = controlInput($_POST['adres']);
-    $ulke = controlInput($_POST['ulke']);
-    $il = controlInput($_POST['il']);
-    $ilce = controlInput($_POST['ilce']);
-    $posta_kodu = controlInput($_POST['posta_kodu']);
-    $uyeId = controlInput($_POST['uyeId']);
-    $adres_turu = 'teslimat';
-    $database = new Database();
+    $adres_basligi   = controlInput($_POST['adres_basligi'] ?? null);
+    $ad              = controlInput($_POST['ad'] ?? null);
+    $soyad           = controlInput($_POST['soyad'] ?? null);
+    $firma_adi       = controlInput($_POST['firma_adi'] ?? null);
+    $tel             = controlInput($_POST['tel'] ?? null);
+    $adres           = controlInput($_POST['adres'] ?? null);
+    $ulke            = controlInput($_POST['ulke'] ?? null);
+    $il              = controlInput($_POST['il'] ?? null);
+    $ilce            = controlInput($_POST['ilce'] ?? null);
+    $tc_no           = controlInput($_POST['tc_no'] ?? null);
+    $vergi_no        = controlInput($_POST['vergi_no'] ?? null);
+    $vergi_dairesi   = controlInput($_POST['vergi_dairesi'] ?? null);
+    $posta_kodu      = controlInput($_POST['posta_kodu'] ?? null);
+    $uyeId           = controlInput($_POST['uyeId'] ?? null);
+    $adres_turu      = 'teslimat';
+    $aktif           = 1; // default active
+    $database        = new Database();
 
     try {
-        $query = "INSERT INTO b2b_adresler (uye_id, adres_turu, adres_basligi, ad, soyad, adres, telefon, ulke, il, ilce, posta_kodu) VALUES (:uye_id, :adres_turu, :adres_basligi, :ad, :soyad, :adres, :telefon, :ulke, :il, :ilce, :posta_kodu)";
-        $database->insert($query, ['uye_id' => $uyeId, 'adres_turu' => $adres_turu, 'adres_basligi' => $adres_basligi, 'ad' => $ad, 'soyad' => $soyad, 'adres' => $adres, 'telefon' => $tel, 'ulke' => $ulke, 'il' => $il, 'ilce' => $ilce, 'posta_kodu' => $posta_kodu]);
+        $query = "INSERT INTO b2b_adresler 
+            (uye_id, adres_turu, adres_basligi, ad, soyad, firma_adi, adres, telefon, ulke, il, ilce, tc_no, vergi_no, vergi_dairesi, posta_kodu, aktif, tarih)
+            VALUES 
+            (:uye_id, :adres_turu, :adres_basligi, :ad, :soyad, :firma_adi, :adres, :telefon, :ulke, :il, :ilce, :tc_no, :vergi_no, :vergi_dairesi, :posta_kodu, :aktif, NOW())";
+        $database->insert($query, [
+            'uye_id'        => $uyeId,
+            'adres_turu'    => $adres_turu,
+            'adres_basligi' => $adres_basligi,
+            'ad'            => $ad,
+            'soyad'         => $soyad,
+            'firma_adi'     => $firma_adi,
+            'adres'         => $adres,
+            'telefon'       => $tel,
+            'ulke'          => $ulke,
+            'il'            => $il,
+            'ilce'          => $ilce,
+            'tc_no'         => $tc_no,
+            'vergi_no'      => $vergi_no,
+            'vergi_dairesi' => $vergi_dairesi,
+            'posta_kodu'    => $posta_kodu,
+            'aktif'         => $aktif
+        ]);
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);

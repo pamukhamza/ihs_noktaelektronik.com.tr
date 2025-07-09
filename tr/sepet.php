@@ -666,47 +666,47 @@ if(isset($_GET['hata']) && $_GET['hata'] == 0) {
                 formData.append('type', 'adresEkle'); // Use modalMode to determine action
                 // Perform AJAX request to update or insert address
                 $.ajax({
-    type: 'POST',
-    url: 'functions/edit_info.php',
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function(response) {
-        try {
-            var data = JSON.parse(response);
-            if (data.success) {
-                $('#basvuruModal').modal('hide');
-                Swal.fire({
-                    title: "Adresiniz Eklenmiştir",
-                    icon: "success",
-                    showConfirmButton: false
-                });
-                setTimeout(function() {
-                    window.location.reload();
-                }, 1500);
-            } else {
-                Swal.fire({
-                    title: "Hata!",
-                    text: data.message || "Bir hata oluştu.",
-                    icon: "error"
-                });
-            }
-        } catch (e) {
-            Swal.fire({
-                title: "Hata!",
-                text: "Sunucudan beklenmeyen bir yanıt alındı.",
-                icon: "error"
+                type: 'POST',
+                url: 'functions/edit_info.php',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    try {
+                        var data = JSON.parse(response);
+                        if (data.success) {
+                            $('#basvuruModal').modal('hide');
+                            Swal.fire({
+                                title: "Adresiniz Eklenmiştir",
+                                icon: "success",
+                                showConfirmButton: false
+                            });
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                title: "Hata!",
+                                text: data.message || "Bir hata oluştu.",
+                                icon: "error"
+                            });
+                        }
+                    } catch (e) {
+                        Swal.fire({
+                            title: "Hata!",
+                            text: "Sunucudan beklenmeyen bir yanıt alındı.",
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        title: "Hata!",
+                        text: "Sunucuya ulaşılamadı.",
+                        icon: "error"
+                    });
+                }
             });
-        }
-    },
-    error: function() {
-        Swal.fire({
-            title: "Hata!",
-            text: "Sunucuya ulaşılamadı.",
-            icon: "error"
-        });
-    }
-});
             } else {
                 // If any required field is empty, show an error message
                 Swal.fire({
