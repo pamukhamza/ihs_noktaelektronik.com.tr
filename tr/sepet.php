@@ -667,7 +667,7 @@ if(isset($_GET['hata']) && $_GET['hata'] == 0) {
                 // Perform AJAX request to update or insert address
                 $.ajax({
                     type: 'POST',
-                    url: 'php/edit_info.php',
+                    url: 'functions/edit_info.php',
                     data: formData,
                     processData: false,
                     contentType: false,
