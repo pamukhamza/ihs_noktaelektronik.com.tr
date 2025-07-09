@@ -79,9 +79,8 @@ function uyeAdresEkle() {
     $database = new Database();
 
     try {
-        $query = "INSERT INTO b2b_adresler (uye_id, adres_turu, adres_basligi, ad, soyad, adres, telefon, ulke, il, ilce, posta_kodu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $database->prepare($query);
-        $stmt->execute([$uyeId, $adres_turu, $adres_basligi, $ad, $soyad, $adres, $tel, $ulke, $il, $ilce, $posta_kodu]);
+        $query = "INSERT INTO b2b_adresler (uye_id, adres_turu, adres_basligi, ad, soyad, adres, telefon, ulke, il, ilce, posta_kodu) VALUES (:uye_id, :adres_turu, :adres_basligi, :ad, :soyad, :adres, :telefon, :ulke, :il, :ilce, :posta_kodu)";
+        $database->insert($query, ['uye_id' => $uyeId, 'adres_turu' => $adres_turu, 'adres_basligi' => $adres_basligi, 'ad' => $ad, 'soyad' => $soyad, 'adres' => $adres, 'telefon' => $tel, 'ulke' => $ulke, 'il' => $il, 'ilce' => $ilce, 'posta_kodu' => $posta_kodu]);
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
