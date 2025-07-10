@@ -153,7 +153,7 @@ $session_id = $_SESSION['id'];
                                                 <td class="p-2 text-center border fs-10"><?= $row["telefon"]; ?></td>
                                                 <td class="p-2 text-center border fs-10" style="background-color: grey;">
                                                     <a class="ps-3 pe-2 adres-btn" data-adres-id="<?= $row['id']; ?>"><i class="fa-solid fa-edit fa-lg" style="color: white;" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Adresi düzenle!"></i></a>
-                                                    <a class="pe-3 ps-2" onclick="dynamicSil('<?= $row['id'] ?>', '', 'uyeAdresSil', 'Adresiniz başarıyla silinmiştir.', 'tr/adresler',)"><i class="fa-solid fa-trash fa-lg" style="color: white;" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Adresi Sil!"></i></a>
+                                                    <a class="pe-3 ps-2" onclick="dynamicSil('<?= $row['id'] ?>', '', 'uyeAdresSil', 'Adresiniz başarıyla silinmiştir.', 'tr/bilgiler',)"><i class="fa-solid fa-trash fa-lg" style="color: white;" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Adresi Sil!"></i></a>
                                                 </td>
                                                 <td class="p-2 text-center border fs-10">
                                                     <input type="checkbox" class="form-check-input adres-aktif-checkbox" data-adres-id="<?= $row['id']; ?>" <?= $row['aktif'] ? 'checked' : ''; ?>>
