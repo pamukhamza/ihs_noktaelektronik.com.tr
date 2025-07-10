@@ -65,25 +65,33 @@ function sepeteFavoriEkle() {
     }
 }
 function uyeAdresEkle() {
-    $adres_basligi   = controlInput($_POST['adres_basligi'] ?? null);
-    $ad              = controlInput($_POST['ad'] ?? null);
-    $soyad           = controlInput($_POST['soyad'] ?? null);
-    $firma_adi       = controlInput($_POST['firma_adi'] ?? null);
-    $tel             = controlInput($_POST['tel'] ?? null);
-    $adres           = controlInput($_POST['adres'] ?? null);
-    $ulke            = controlInput($_POST['ulke'] ?? null);
-    $il              = controlInput($_POST['il'] ?? null);
-    $ilce            = controlInput($_POST['ilce'] ?? null);
-    $tc_no           = controlInput($_POST['tc_no'] ?? null);
-    $vergi_no        = controlInput($_POST['vergi_no'] ?? null);
-    $vergi_dairesi   = controlInput($_POST['vergi_dairesi'] ?? null);
-    $posta_kodu      = controlInput($_POST['posta_kodu'] ?? null);
-    $uyeId           = controlInput($_POST['uyeId'] ?? null);
+    $adres_basligi   = $_POST['adres_basligi'] ?? null;
+    $ad              = $_POST['ad'] ?? null;
+    $soyad           = $_POST['soyad'] ?? null;
+    $firma_adi       = $_POST['firma_adi'] ?? null;
+    $tel             = $_POST['tel'] ?? null;
+    $adres           = $_POST['adres'] ?? null;
+    $ulke            = $_POST['ulke'] ?? null;
+    $il              = $_POST['il'] ?? null;
+    $ilce            = $_POST['ilce'] ?? null;
+    $tc_no           = $_POST['tc_no'] ?? null;
+    $vergi_no        = $_POST['vergi_no'] ?? null;
+    $vergi_dairesi   = $_POST['vergi_dairesi'] ?? null;
+    $posta_kodu      = $_POST['posta_kodu'] ?? null;
+    $uyeId           = $_POST['uyeId'] ?? null;
     $adres_turu      = 'teslimat';
     $aktif           = 1; // default active
     $database        = new Database();
 
     try {
+        // Önce aynı üyenin diğer teslimat adreslerini pasif yap
+        $updateQuery = "UPDATE b2b_adresler SET aktif = 0 WHERE uye_id = :uye_id AND adres_turu = :adres_turu";
+        $database->update($updateQuery, [
+            'uye_id' => $uyeId,
+            'adres_turu' => $adres_turu
+        ]);
+
+        // Sonra yeni adresi ekle ve aktif=1 yap
         $query = "INSERT INTO b2b_adresler 
             (uye_id, adres_turu, adres_basligi, ad, soyad, firma_adi, adres, telefon, ulke, il, ilce, tc_no, vergi_no, vergi_dairesi, posta_kodu, aktif, tarih)
             VALUES 
