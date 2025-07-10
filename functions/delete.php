@@ -38,7 +38,7 @@ if($type == 'favoriKaldır') {
     $db->delete("DELETE FROM nokta_uye_yorumlar WHERE id = :id", ['id' => $gid]);
     exit;
 } elseif($type == 'uyeAdresSil') {
-    $db->delete("DELETE FROM adresler WHERE id = :id", ['id' => $gid]);
+    $db->delete("DELETE FROM b2b_adresler WHERE id = :id", ['id' => $gid]);
     exit;
 }
 ?>
