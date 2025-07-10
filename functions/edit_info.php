@@ -896,33 +896,24 @@ function iade() {
     exit;
 }
 function adresAktif(){
-    global $db;
     $adresId = $_POST['adres_id'];
     $aktif = $_POST['aktif'];
     $uye_id = $_POST['uye_id'];
+    $database = new Database();
 
-    // Güncelleme sorgusu örneği (PDO kullanarak)
-    // $q = $db->prepare("UPDATE b2b_adresler SET aktif = :aktif WHERE id = :id AND uye_id = :uye_id");
-    // $q->execute(array(':aktif' => $aktif, ':id' => $adresId, ':uye_id' => $uye_id));
-    $database->update("UPDATE b2b_adresler SET aktif = :aktif WHERE id = :id AND uye_id = :uye_id", [
-        'aktif' => $aktif,
+    // Önce tüm adresleri pasif yap
+    $database->update("UPDATE b2b_adresler SET aktif = 0 WHERE uye_id = :uye_id", [
+        'uye_id' => $uye_id
+    ]);
+
+    // Sonra seçilen adresi aktif yap
+    $database->update("UPDATE b2b_adresler SET aktif = 1 WHERE id = :id AND uye_id = :uye_id", [
         'id' => $adresId,
         'uye_id' => $uye_id
     ]);
 
-    // $q = $db->prepare("UPDATE b2b_adresler SET aktif = '0' WHERE id != :id AND uye_id = :uye_id");
-    // $q->execute(array(':id' => $adresId, ':uye_id' => $uye_id));
-    $database->update("UPDATE b2b_adresler SET aktif = '0' WHERE id != :id AND uye_id = :uye_id", [
-        'id' => $adresId,
-        'uye_id' => $uye_id
-    ]);
-
-    // Başarı durumunu kontrol edebilirsiniz
-    if ($q->rowCount() > 0) {
-        echo "Adres aktif durumu güncellendi.";
-    } else {
-        echo "Adres güncellenemedi.";
-    }
+    echo json_encode(['success' => true, 'message' => 'Adres aktif durumu güncellendi.']);
+    exit;
 }
 function loglar(){
     global $db;
