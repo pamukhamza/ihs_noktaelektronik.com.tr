@@ -902,10 +902,10 @@ function adresAktif(){
     $uye_id = $_POST['uye_id'];
 
     // Güncelleme sorgusu örneği (PDO kullanarak)
-    $q = $db->prepare("UPDATE adresler SET aktif = :aktif WHERE id = :id AND uye_id = :uye_id");
+    $q = $db->prepare("UPDATE b2b_adresler SET aktif = :aktif WHERE id = :id AND uye_id = :uye_id");
     $q->execute(array(':aktif' => $aktif, ':id' => $adresId, ':uye_id' => $uye_id));
 
-    $q = $db->prepare("UPDATE adresler SET aktif = '0' WHERE id != :id AND uye_id = :uye_id");
+    $q = $db->prepare("UPDATE b2b_adresler SET aktif = '0' WHERE id != :id AND uye_id = :uye_id");
     $q->execute(array(':id' => $adresId, ':uye_id' => $uye_id));
 
     // Başarı durumunu kontrol edebilirsiniz

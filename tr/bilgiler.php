@@ -280,7 +280,7 @@ $session_id = $_SESSION['id'];
             $('.adres-aktif-checkbox').not(this).prop('checked', false);
             $.ajax({
                 type: 'POST',
-                url: 'php/edit_info.php', // Aktif durumu güncelleyecek PHP dosyanızın adını ve yolunu buraya yazın
+                url: 'functions/edit_info.php', // Aktif durumu güncelleyecek PHP dosyanızın adını ve yolunu buraya yazın
                 data: { adres_id: adresId, aktif: isChecked, uye_id: uyeId, type:"adresAktif" },
                 success: function(response) {
                     Swal.fire({
