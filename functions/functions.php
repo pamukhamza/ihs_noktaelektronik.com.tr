@@ -11,6 +11,7 @@ function sessionControl() {
         exit();
     }
 }
+sessionControl();
 // uploadImageToS3 fonksiyonunu dosya yolu ile yükleme için düzenleyin
 function uploadImageToS3($file_path, $upload_path, $s3Client, $bucket) {
     try {
