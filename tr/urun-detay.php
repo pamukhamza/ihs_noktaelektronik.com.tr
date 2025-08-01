@@ -173,7 +173,7 @@ if(isset($_SESSION['id'])) {
                             <span class="text-danger fs-6">Tükenmeden Al! Bu üründen yalnızca <?= $urun["stok"] ?> adet kaldı!</span>
                         <?php } ?>
 
-                        <?php if($urun['proje'] == 0 && $urun['stok'] > 0){ ?>
+                        <?php if(isset($_SESSION['id']) && $urun['proje'] == 0 && $urun['stok'] > 0){ ?>
                             <div class="d-flex align-items-center">
                             <h2 class="fw-bold mb-0 me-2" style="color:#f29720">
                                 <?php
@@ -742,11 +742,11 @@ if(isset($_SESSION['id'])) {
                                                     </a>
                                                     <i class="fa-solid fa-cart-shopping fa-xl sepet-style sepet-hover" onclick="<?php echo isset($_SESSION['id']) ? 'sepeteUrunEkle(' . htmlspecialchars($row['id']) . ', ' . htmlspecialchars($_SESSION['id']) . ');' : 'window.location.href = \"tr/giris\";'; ?>"></i>
                                                 <?php }else{ ?>
-                                                        <a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
-                                                            <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
+                                                        <!--<a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
+                                                            <?php /* !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
                                                             $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
-                                                            echo formatNumber($fiyat1);?> + KDV
-                                                        </a><?php
+                                                            echo formatNumber($fiyat1); */?> + KDV
+                                                        </a> --><?php
                                                     }  ?>
                                             </div>
                                         </div>
