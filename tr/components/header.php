@@ -1,4 +1,8 @@
 <?php
+if (!isset($_SESSION['id'])) {
+    header("Location: ../tr/giris");
+    exit;
+}
     $database = new Database();
     if($_SESSION){
         // Kullanıcı kimliği, sayfa adı ve IP adresini al
