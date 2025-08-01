@@ -820,12 +820,7 @@ function getBreadcrumbs($kategori, $database) {
                                         </button> <?php
                                     }
                                 } else {
-                                    if($row['proje'] == 0){ ?>
-                                        <a style="font-size:14px; color:#f29720;" class="urun-a fw-bold">
-                                            <?= !empty($row["DSF4"]) ? $row["DOVIZ_BIRIMI"] : "₺";
-                                            $fiyat1 = !empty($row["DSF4"]) ? $row["DSF4"]: $row["KSF4"];
-                                            echo formatNumber($fiyat1);?> + KDV
-                                        </a><?php
+                                    if($row['proje'] == 0){ 
                                     }else{?>
                                         <span class="mt-5"></span>
                                         <button class="btn buton-style" onclick="openTemsilciAlert()">
