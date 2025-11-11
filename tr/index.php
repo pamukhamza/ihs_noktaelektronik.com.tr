@@ -73,7 +73,7 @@ $database = new Database();
         cursor: pointer;
         opacity: 0.8;
         transition: opacity 0.3s;
-        z-index: 1; /* Buton video öğesinin üzerinde görünsün */
+        z-index: 1; /* Buton video ğesinin üzerinde görünsün */
     }
     .play-button:hover {opacity: 1;}
     .play-button svg {fill: #fff;}
@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#applicationForm').submit(function (e) {
             e.preventDefault();
 
-            // Butonu seç ve durumu güncelle
+            // Butonu se ve durumu güncelle
             var btn = $('#teklifOnayBtn');
             btn.prop('disabled', true).text('Gönderiliyor...');
 
@@ -796,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Asenkron olarak banner içeriğini yükle
+        // Asenkron olarak banner içeriini yükle
         fetch('components/index/ozel-banner.php')
             .then(response => response.text())
             .then(html => {
@@ -812,7 +812,7 @@ if (isset($_GET['cari_odeme']) && $_GET['cari_odeme'] === 'success') {
         Swal.fire({
             icon: 'success',
             title: 'Ödeme Başarılı',
-            text: 'Ödemeniz başarıyla alınmıştır.',
+            text: 'demeniz başarıyla alınmıştır.',
             confirmButtonText: 'Tamam'
         });
     </script>

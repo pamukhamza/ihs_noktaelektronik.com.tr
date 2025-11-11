@@ -135,10 +135,13 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
                 }
     
                 $doviz_satis_fiyati = ($urun['DOVIZ_BIRIMI'] == '$') ? $satis_dolar : $satis_euro;
-    
+                $doviz_satis_fiyati_db = str_replace(',', '.', $doviz_satis_fiyati);
+                $doviz_satis_fiyati_db = floatval($doviz_satis_fiyati_db);
+                
+                
                 $siparisUrunEkleQuery = "INSERT INTO b2b_siparis_urunler (sip_id, urun_id, BLKODU, adet, birim_fiyat, dolar_satis) VALUES (:siparisId, :urun_id, :urun_blkodu, :miktar, :uyenin_fiyati, :doviz_satis_fiyati)";
                 $db->insert($siparisUrunEkleQuery, [
-                    'siparisId' => $siparisId, 'urun_id' => $urun_id, 'urun_blkodu' => $urun_blkodu, 'miktar' => $miktar, 'uyenin_fiyati' => $uyenin_fiyati, 'doviz_satis_fiyati' => $doviz_satis_fiyati
+                    'siparisId' => $siparisId, 'urun_id' => $urun_id, 'urun_blkodu' => $urun_blkodu, 'miktar' => $miktar, 'uyenin_fiyati' => $uyenin_fiyati, 'doviz_satis_fiyati' => $doviz_satis_fiyati_db
                 ]);
     
                 if (!$db->lastInsertId()) {
@@ -272,7 +275,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
         $fiyati = $tlFiyat * floatval($dovizimiz); // Convert $dovizimiz to float as well
         if (!empty($yanIndirim) && $yanIndirim != 0) {
             $ISK_KDVSZ_TTR = 5 * $yanIndirim / 6; //kdvsiz iskonto tutar
-            $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20; //ürün için satır toplamı iskontoda kullanıcak
+            $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20; //ürün için satır toplamı iskontoda kullancak
 
             if (!empty($yanKargo) && $yanKargo != 0) {
                 $spt_yn_tpl_kdvli = $yanIndirim + $yantoplam - $yanKargo;
@@ -408,7 +411,7 @@ if (isset($_POST["tip"]) && $_POST["tip"] == 'Havale/EFT') {
         if ($uyeIdResult) {
             if (empty($uyeIdResult['uye_id'])) { // uye_id boşsa, direkt $uye_id'yi yaz
                 $newUyeId = $uye_id;
-            } else { // uye_id doluysa, mevcut değere $uye_id'yi virgülle ekle
+            } else { // uye_id doluysa, mevcut deere $uye_id'yi virgülle ekle
                 $newUyeId = $uyeIdResult['uye_id'] . ',' . $uye_id;
             }
             // Promosyonu güncelle
@@ -693,7 +696,7 @@ if (isset($_GET['veri'])) {
 
     if ($siparisEkleStatement) {
         $siparisId = $db->lastInsertId(); // Eklenen siparişin ID'sini al
-        // Üye sepetinden ürünleri al
+        // Üye sepetinden ürnleri al
         $uyeSepetUrunleri = $db->fetchAll("SELECT * FROM uye_sepet WHERE uye_id = :uye_id", ['uye_id' => $uye_id]);
 
         if ($uyeSepetUrunleri) {
@@ -1139,7 +1142,7 @@ if (isset($_GET['sipFinans']) && $_POST["mdStatus"] == "1") {
                             break; // Hata durumunda döngüyü sonlandırabilirsiniz
                         }
                     }
-                    // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adımı dikkatlice kullanın)
+                    // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adım dikkatlice kullanın)
                     $uyeSepetSilStatement = $db->delete("DELETE FROM uye_sepet WHERE uye_id = :uye_id" , ['uye_id' => $uye_id]);
 
                     if (!$uyeSepetSilStatement) {

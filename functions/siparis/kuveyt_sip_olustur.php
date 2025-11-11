@@ -138,7 +138,7 @@ if (isset($_GET['cariveri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMe
             header("Location: ../../tr/onay?cari_odeme=");
             exit();
         } else {
-            // ResponseCode 00 değilse hata mesajı göster veya başka bir işlem yap
+            // ResponseCode 00 değilse hata mesaj göster veya başka bir işlem yap
             $pos_id = 3;
             $basarili = 0;
             $sonucStr = "Ödeme işlemi başarısız: " . $xml->ResponseMessage . ' Kod= ' . $xml->ResponseCode;
@@ -316,8 +316,9 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                         } elseif ($urun['DOVIZ_BIRIMI'] == '€') {
                             $doviz_satis_fiyati = $satis_euro;
                         }
-
-                        // Ürünün cok_satan değerini kontrol et ve arttır
+                        $doviz_satis_fiyati_db = str_replace(',', '.', $doviz_satis_fiyati);
+                        $doviz_satis_fiyati_db = floatval($doviz_satis_fiyati_db);
+                        // Ürünün cok_satan değerini kontrol et ve arttr
                         $cok_satan = $urun['cok_satan'];
                         if ($cok_satan === null || $cok_satan === '') {
                             $cok_satan = 0;
@@ -328,14 +329,14 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
 
                         $querysipur = "INSERT INTO b2b_siparis_urunler (sip_id, urun_id, adet, BLKODU, birim_fiyat, dolar_satis) VALUES (:siparisId, :urun_id, :miktar, :urun_blkodu, :uyenin_fiyati, :doviz_satis_fiyati)";
                         $siparisUrunEkleStatement = $db->insert($querysipur, ['siparisId'=> $siparisId, 'urun_id'=> $urun_id, 'miktar'=> $miktar, 'urun_blkodu'=> $urun_blkodu, 
-                                                                    'uyenin_fiyati'=> $uyenin_fiyati, 'doviz_satis_fiyati'=> $doviz_satis_fiyati]);
+                                                                    'uyenin_fiyati'=> $uyenin_fiyati, 'doviz_satis_fiyati'=> $doviz_satis_fiyati_db]);
 
                         if (!$siparisUrunEkleStatement) {
                             echo "Ürün eklerken hata oluştu: ";
                             break; // Hata durumunda döngüyü sonlandırabilirsiniz
                         }
                     }
-                    // Üye sepetindeki ürünleri sildiğinizden emin olun (bu adımı dikkatlice kullanın)
+                    // Üye sepetindeki ürünleri sildiinizden emin olun (bu adımı dikkatlice kullanın)
                     $uyeSepetSilStatement = $db->delete("DELETE FROM uye_sepet WHERE uye_id = :uye_id" , ['uye_id' => $uye_id]);
 
                     if (!$uyeSepetSilStatement) {
@@ -447,7 +448,7 @@ if (isset($_GET['veri']) && $xxml->ResponseCode == "00" && $xxml->ResponseMessag
                 $formatted_UYGL_ISK_FIYATI = '';
                 if (!empty($yanIndirim) && $yanIndirim != 0) {
                     $ISK_KDVSZ_TTR = 5 * $yanIndirim / 6; //kdvsiz iskonto tutar
-                    $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20; //ürün için satır toplamı iskontoda kullanıcak
+                    $ISK_SKNT_TPL = $fiyati * $urun_adet * 1.20; //ürün için satır toplam iskontoda kullanıcak
     
                     if (!empty($yanKargo) && $yanKargo != 0) {
                         $spt_yn_tpl_kdvli = $yanIndirim + $yantoplamxml - $yanKargo;

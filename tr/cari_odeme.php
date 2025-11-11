@@ -17,6 +17,14 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
 
     $euro = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = 3 ");
     $satis_euro_kuru = $euro['satis'];
+    
+    $yonlendirilecekKullanicilar = [1860, 4694]; 
+    $kullanici_id = $_SESSION['id'] ?? null;
+    
+    if (in_array($kullanici_id, $yonlendirilecekKullanicilar)) {
+        header("Location: cariodeme.php");
+        exit; 
+    }
 ?>
 <body>
 <?php $template->header(); ?>
@@ -113,7 +121,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
                                 </dl>
                             <?php } ?>
                             <dl class="row">
-                                <dt class="col-6 ">Vade Farkı</dt>
+                                <dt class="col-6 ">Vade Fark</dt>
                                 <dd class="col-6 text-end" id="vadesi" >₺0,00</dd>
                             </dl>
                             <dl class="row">
@@ -166,7 +174,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
 <script src="assets/js/app.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Düğmeyi bul
+        // Dğmeyi bul
         var odemeYapButton = document.getElementById('odemeYapButton');
         // Düğmeye tıklama olayını ekle
         if (odemeYapButton) {
@@ -177,12 +185,12 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
     });
     function onayaGec(event) {
         event.target.disabled = true;
-        event.target.innerText = "Ödeme İşleniyor...";
+        event.target.innerText = "Ödeme şleniyor...";
         var myForm = document.getElementById('havaleGonder');
         if (myForm) {
             myForm.submit();
         } else {
-            console.error('Form bulunamadı!');
+            console.error('Form bulunamad!');
         }
     }
 </script>
@@ -243,10 +251,10 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
                         }
 
                         switch (bank) {
-                            case 'TÜRKİYE GARANTİ BANKASI A.Ş.':
+                            case 'TÜRKYE GARANTİ BANKASI A.Ş.':
                                 bank = 'Garanti';
                                 break;
-                            case 'AKBANK T.A.Ş.':
+                            case 'AKBANK T.A..':
                                 bank = 'Akbank';
                                 break;
                             case 'TÜRKİYE İŞ BANKASI A.Ş.':
@@ -328,7 +336,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
                                             } else if(kamp === "Maximum"){
                                                 kampImg = '<img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banka/maximum.png" style="width: ' + imgWidth + ';" />';
                                             } else if(kamp === ""){
-                                                kampImg = 'Diğer Banka Kartları';
+                                                kampImg = 'Dier Banka Kartları';
                                             }  else{
                                                 kampImg = kamp; // Özel bir seçenek değilse, kamp değişkenini doğrudan metin olarak göster
                                             }
@@ -370,7 +378,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
         $('#son_sonuc').html('₺' + formattedSonuc1);
         var ensonsonuc = parseFloat(formattedSonuc1.replace(/\./g, '').replace(',', '.'));
         var toplamText = $('#toplam').text();
-        toplamText = toplamText.replace('₺', ''); // ₺ işaretini kaldır
+        toplamText = toplamText.replace('₺', ''); //  işaretini kaldır
         var toplam = parseFloat(toplamText.replace(/\./g, '').replace(',', '.')); // Noktaları kaldır ve virgülü noktaya çevir
         var vadefarki = parseFloat(ensonsonuc - toplam);
         vadefarki = formatNumber(vadefarki);
@@ -420,7 +428,7 @@ if (isset($_POST['fiyat']) && isset($_POST['hesap'])) {
         const requiredFields = ['pos', 'taksit', 'sonuc', 'card', 'cardName', 'expMonth', 'expYear', 'cvv'];
         if (requiredFields.every(field => values[field]) && values.card.length >= 16) {
             event.target.disabled = true;
-            event.target.innerText = "Ödeme İşleniyor...";
+            event.target.innerText = "Ödeme leniyor...";
 
             const posConfig = {
                 '1': { url: 'functions/bank/param/payment.php' },

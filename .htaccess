@@ -1,0 +1,31 @@
+RewriteEngine On
+RewriteBase /
+
+# ------------------------------------------------------------
+# HTTP → HTTPS yönlendirme
+# ------------------------------------------------------------
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# ------------------------------------------------------------
+# / tr/ anasayfa yönlendirmesi
+# ------------------------------------------------------------
+RewriteRule ^$ /tr/ [R=301,L]
+
+# ------------------------------------------------------------
+# /tr/urunler/ SEO dostu URL → urun-detay.php?id=...
+# ------------------------------------------------------------
+RewriteRule ^tr/urunler/([^/]+)$ tr/urun-detay.php?id=$1 [L,QSA]
+
+# ------------------------------------------------------------
+# /tr/urunler uzantısız erişim → urunler.php
+# ------------------------------------------------------------
+RewriteRule ^tr/urunler$ tr/urunler.php [L,QSA]
+
+# ------------------------------------------------------------
+# Uzantısız PHP yönlendirmesi (.php yoksa ama dosya varsa)
+# ------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]

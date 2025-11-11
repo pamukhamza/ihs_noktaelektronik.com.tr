@@ -20,6 +20,13 @@ if(isset($_POST["devamEt"])) {
     $desi = controlInput($_POST['toplamDesiBirimi1']);
     $deliveryOption = controlInput($_POST['selectedDeliveryOption']);
 }
+
+$krediKartiGormeEngelli = [1860, 4694]; // Görmesini istemediğin kullanıcı id'leri 1860, 1860 gibi eklersin
+
+$kullanici_id = $_SESSION['id'] ?? null;
+$krediKartiGoster = !in_array($kullanici_id, $krediKartiGormeEngelli);
+
+$aktifSekme = $krediKartiGoster ? 'cc' : 'cod';
 ?>
 <body>
 <?php $template->header(); ?>
@@ -73,104 +80,109 @@ if(isset($_POST["devamEt"])) {
                             <div class="col-xl-8 col-xxl-9 mb-3 mb-xl-0">
                                 <div class="col-xxl-12 col-lg-12">
                                     <ul class="nav nav-pills mb-3" id="paymentTabs" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link active btn-outline-dark" id="pills-cc-tab" data-bs-toggle="pill" data-bs-target="#pills-cc" type="button" role="tab" aria-controls="pills-cc" aria-selected="true">Kredi Kartı</button>
-                                        </li>
+                                        <?php if ($krediKartiGoster): ?>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link <?php echo ($aktifSekme === 'cc') ? 'active' : ''; ?> btn-outline-dark" id="pills-cc-tab" data-bs-toggle="pill" data-bs-target="#pills-cc" type="button" role="tab" aria-controls="pills-cc" aria-selected="<?php echo ($aktifSekme === 'cc') ? 'true' : 'false'; ?>">Kredi Kartı</button>
+                                            </li>
+                                        <?php endif; ?>
                                         <?php if(isset($_POST["devamEt"])){ ?>
 
                                         <li class="nav-item ms-2" role="presentation">
-                                            <button class="nav-link btn-outline-dark" id="pills-cod-tab" data-bs-toggle="pill" data-bs-target="#pills-cod" type="button" role="tab" aria-controls="pills-cod" aria-selected="false">EFT / HAVALE</button>
+                                            <button class="nav-link <?php echo ($aktifSekme === 'cod') ? 'active' : ''; ?> btn-outline-dark" id="pills-cod-tab" data-bs-toggle="pill" data-bs-target="#pills-cod" type="button" role="tab" aria-controls="pills-cod" aria-selected="<?php echo ($aktifSekme === 'cod') ? 'true' : 'false'; ?>">EFT / HAVALE</button>
                                         </li>
                                         <?php } ?>
                                     </ul>
                                     <div class="tab-content px-0 border-0" id="paymentTabsContent">
-                                        <!-- Credit card -->
-                                        <div class="tab-pane fade show active" id="pills-cc" role="tabpanel" aria-labelledby="pills-cc-tab">
-                                            <div class="row">
-                                                <div class="col-xl-6 col-xxl-6">
+                                        <?php if ($krediKartiGoster): ?>
+                                            <!-- Credit card -->
+                                            <div class="tab-pane fade <?php echo ($aktifSekme === 'cc') ? 'show active' : ''; ?>" id="pills-cc" role="tabpanel" aria-labelledby="pills-cc-tab">
+                                                <div class="row">
+                                                    <div class="col-xl-6 col-xxl-6">
+                                                        <div class="row g-3">
+                                                            <div class="col-12">
+                                                                <label class="form-label w-100" for="paymentCard">Kart Numarası</label>
+                                                                <div class="input-group input-group-merge">
+                                                                    <input id="paymentCard" name="paymentCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" aria-describedby="paymentCard2" autocomplete="off" required autofocus MAXLENGTH="16" />
+                                                                    <span class="input-group-text cursor-pointer p-1" id="paymentCard2">
+                                                                        <span class="card-type" id="card-img">
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6">
+                                                                <label class="form-label" for="paymentCardName">Kart zerindeki İsim</label>
+                                                                <input type="text" id="paymentCardName" class="form-control" required MAXLENGTH="25" />
+                                                            </div>
+                                                            <div class="col-8 col-md-3">
+                                                                <label class="form-label" for="paymentCardExpiryDate">Son Kullanma Tarihi</label>
+                                                                <div class="d-flex">
+                                                                    <input type="text" id="paymentCardExpiryMonth" class="form-control expiry-date-mask me-2" placeholder="Ay" autocomplete="off" required MAXLENGTH="2" />
+                                                                    <input type="text" id="paymentCardExpiryYear" class="form-control expiry-date-mask" placeholder="Yıl" autocomplete="off" required MAXLENGTH="2" />
+                                                                </div>
+                                                            </div>
+    
+                                                            <div class="col-2 col-md-3">
+                                                                <label class="form-label" for="paymentCardCvv">CVV</label>
+                                                                <div class="input-group input-group-merge">
+                                                                    <input type="text" id="paymentCardCvv" class="form-control cvv-code-mask" placeholder="000" autocomplete="off" required MAXLENGTH="3"/>
+                                                                    <span class="input-group-text cursor-pointer" id="paymentCardCvv2"><i class="bx bx-help-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="Card Verification Value"></i></span>
+                                                                </div>
+                                                            </div>
+    
+                                                        </div>
+                                                    </div>
+                                                    <div class="container flex-grow-1 container-p-y mt-5">
+                                                        <div id="wizard-checkout" class="bs-stepper wizard-icons wizard-icons-example mb-5">
+                                                            <div class="table">
+                                                                <table class="table table-responsive">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Seç.</th>
+                                                                        <th>Kartlar</th>
+                                                                        <th>Taksit</th>
+                                                                        <th>Banka Komisyonu</th>
+                                                                        <th>Karttan Çekilecek Tutar</th>
+                                                                        <th>Hesaba Geçecek Tutar</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody id="taksit_alanlari">
+                                                                    <?php
+                                                                    ?>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td>Tüm Bankalar</td>
+                                                                        <td>Tek Çekim</td>
+                                                                        <td>0%</td>
+                                                                        <td><?php echo formatNumber($toplam); ?></span></td>
+                                                                        <td><?php echo formatNumber($toplam); ?></td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" id="taksit_1" value="">
+                                                    <input type="hidden" id="pos_1" value="">
+                                                    <input type="hidden" id="id_1" value="">
+                                                    <input type="hidden" id="sonuc_1" value="">
+                                                    <input type="hidden" id="vade_1" value="">
                                                     <div class="row g-3">
                                                         <div class="col-12">
-                                                            <label class="form-label w-100" for="paymentCard">Kart Numarası</label>
-                                                            <div class="input-group input-group-merge">
-                                                                <input id="paymentCard" name="paymentCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" aria-describedby="paymentCard2" autocomplete="off" required autofocus MAXLENGTH="16" />
-                                                                <span class="input-group-text cursor-pointer p-1" id="paymentCard2">
-                                                                    <span class="card-type" id="card-img">
-                                                                    </span>
-                                                                </span>
-                                                            </div>
+                                                            <button type="button" id="kartlaOdemeyeGec" class="btn btn-primary btn-next me-sm-3 me-1">Ödeme Yap</button>
                                                         </div>
-                                                        <div class="col-12 col-md-6">
-                                                            <label class="form-label" for="paymentCardName">Kart Üzerindeki İsim</label>
-                                                            <input type="text" id="paymentCardName" class="form-control" required MAXLENGTH="25" />
-                                                        </div>
-                                                        <div class="col-8 col-md-3">
-                                                            <label class="form-label" for="paymentCardExpiryDate">Son Kullanma Tarihi</label>
-                                                            <div class="d-flex">
-                                                                <input type="text" id="paymentCardExpiryMonth" class="form-control expiry-date-mask me-2" placeholder="Ay" autocomplete="off" required MAXLENGTH="2" />
-                                                                <input type="text" id="paymentCardExpiryYear" class="form-control expiry-date-mask" placeholder="Yıl" autocomplete="off" required MAXLENGTH="2" />
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-2 col-md-3">
-                                                            <label class="form-label" for="paymentCardCvv">CVV</label>
-                                                            <div class="input-group input-group-merge">
-                                                                <input type="text" id="paymentCardCvv" class="form-control cvv-code-mask" placeholder="000" autocomplete="off" required MAXLENGTH="3"/>
-                                                                <span class="input-group-text cursor-pointer" id="paymentCardCvv2"><i class="bx bx-help-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="Card Verification Value"></i></span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="container flex-grow-1 container-p-y mt-5">
-                                                    <div id="wizard-checkout" class="bs-stepper wizard-icons wizard-icons-example mb-5">
-                                                        <div class="table">
-                                                            <table class="table table-responsive">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Seç.</th>
-                                                                    <th>Kartlar</th>
-                                                                    <th>Taksit</th>
-                                                                    <th>Banka Komisyonu</th>
-                                                                    <th>Karttan Çekilecek Tutar</th>
-                                                                    <th>Hesaba Geçecek Tutar</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody id="taksit_alanlari">
-                                                                <?php
-                                                                ?>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td>Tüm Bankalar</td>
-                                                                    <td>Tek Çekim</td>
-                                                                    <td>0%</td>
-                                                                    <td>₺<?php echo formatNumber($toplam); ?></span></td>
-                                                                    <td>₺<?php echo formatNumber($toplam); ?></td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" id="taksit_1" value="">
-                                                <input type="hidden" id="pos_1" value="">
-                                                <input type="hidden" id="id_1" value="">
-                                                <input type="hidden" id="sonuc_1" value="">
-                                                <input type="hidden" id="vade_1" value="">
-                                                <div class="row g-3">
-                                                    <div class="col-12">
-                                                        <button type="button" id="kartlaOdemeyeGec" class="btn btn-primary btn-next me-sm-3 me-1">Ödeme Yap</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        <?php endif; ?>
+                                            
                                         <?php if(isset($_POST["devamEt"])){ ?>
                                         <!-- EFT-HAVALE -->
-                                        <div class="tab-pane fade" id="pills-cod" role="tabpanel" aria-labelledby="pills-cod-tab">
+                                        <div class="tab-pane fade <?php echo ($aktifSekme === 'cod') ? 'show active' : ''; ?>" id="pills-cod" role="tabpanel" aria-labelledby="pills-cod-tab">
                                             <div class="table table-responsive">
                                                 <table class="table border">
                                                     <thead>
                                                         <th class="py-3 border text-center">Hesap Sahibi</th>
-                                                        <th class="py-3 border text-center">Banka Adı</th>
+                                                        <th class="py-3 border text-center">Banka Ad</th>
                                                         <th class="py-3 border text-center">Hesap</th>
                                                         <th class="py-3 border text-center">Şube Adı</th>
                                                         <th class="py-3 border text-center">IBAN</th>
@@ -212,7 +224,7 @@ if(isset($_POST["devamEt"])) {
                                                 <dd id="yanSepetToplami" class="col-6 text-end yanSepetToplami">₺<?php echo formatNumber($ara_toplam); ?></dd>
 
                                                 <dt class="col-sm-6 fw-normal">KDV</dt>
-                                                <dd id="yanSepetKdv" class="col-sm-6 text-end yanSepetKdv">₺<?php echo formatNumber($kdv); ?></dd>
+                                                <dd id="yanSepetKdv" class="col-sm-6 text-end yanSepetKdv"><?php echo formatNumber($kdv); ?></dd>
 
                                                 <dt class="col-sm-6 fw-normal">İndirim</dt>
                                                 <dd id="yanIndirim" class="col-sm-6 text-end indirim-alani yanIndirim">₺<?php echo formatNumber($indirim); ?></dd>
@@ -223,7 +235,7 @@ if(isset($_POST["devamEt"])) {
                                             <hr>
                                             <dl class="row">
                                                 <dt class="col-6 ">Toplam</dt>
-                                                <dd class="col-6 text-end" id="toplam">₺<?php echo formatNumber($toplam); ?></dd>
+                                                <dd class="col-6 text-end" id="toplam"><?php echo formatNumber($toplam); ?></dd>
                                             </dl>
                                         <?php }
                                             if(isset($_POST["cariOdemeYap"])){
@@ -253,7 +265,7 @@ if(isset($_POST["devamEt"])) {
         // Düğmeyi bul
         var odemeYapButton = document.getElementById('odemeYapButton');
 
-        // Düğmeye tıklama olayını ekle
+        // Dümeye tıklama olayını ekle
         if (odemeYapButton) {
             odemeYapButton.addEventListener('click', onayaGec);
         } else {
@@ -268,7 +280,7 @@ if(isset($_POST["devamEt"])) {
         if (myForm) {
             myForm.submit();
         } else {
-            console.error('Form bulunamadı!');
+            console.error('Form bulunamad!');
         }
     }
 </script>
@@ -333,7 +345,7 @@ if(isset($_POST["devamEt"])) {
                                 bank = 'Akbank';
                                 break;
                             case 'TÜRKİYE İŞ BANKASI A.Ş.':
-                                bank = 'Türkiye İş Bankası';
+                                bank = 'Trkiye İş Bankası';
                                 break;
                             case 'QNB Finansbank A.Ş.':
                                 bank = 'QNB Finansbank';
@@ -344,13 +356,13 @@ if(isset($_POST["devamEt"])) {
                             case 'T.C. ZİRAAT BANKASI A.Ş.':
                                 bank = 'Ziraat Bankası';
                                 break;
-                            case 'TÜRKİYE FİNANS KATILIM BANKASI A.Ş.':
+                            case 'TÜRKİYE FİNANS KATILIM BANKASI A..':
                                 bank = 'Türkiye Finans';
                                 break;
                             case 'TÜRKİYE HALK BANKASI A.Ş.':
                                 bank = 'Halkbank';
                                 break;
-                            case 'TÜRK EKONOMİ BANKASI A.Ş.':
+                            case 'TRK EKONOMİ BANKASI A.Ş.':
                                 bank = 'Teb';
                                 break;
                             case 'Şekerbank T.A.Ş.':
@@ -371,13 +383,13 @@ if(isset($_POST["devamEt"])) {
                             case 'AL BARAKA TÜRK KATILIM BANKASI A.Ş.':
                                 bank = 'Albaraka';
                                 break;
-                            case 'KUVEYT TÜRK KATILIM BANKASI A.Ş.':
+                            case 'KUVEYT TRK KATILIM BANKASI A.Ş.':
                                 bank = 'KuveytTürk';
                                 break;
                             case 'HSBC BANK A.Ş.':
                                 bank = 'HSBC';
                                 break;
-                            case 'Türkiye Finans Katılım Bankası A.Ş.':
+                            case 'Türkiye Finans Katlım Bankası A.Ş.':
                                 bank = 'Türkiye Finans';
                                 break;
                         }
@@ -413,16 +425,16 @@ if(isset($_POST["devamEt"])) {
                                             } else if(kamp === ""){
                                                 kampImg = 'Diğer Banka Kartları';
                                             }  else{
-                                                kampImg = kamp; // Özel bir seçenek değilse, kamp değişkenini doğrudan metin olarak göster
+                                                kampImg = kamp; // zel bir seçenek değilse, kamp deişkenini doğrudan metin olarak göster
                                             }
                                             var toplamText = $('#toplam').text();
-                                            toplamText = toplamText.replace('₺', ''); // ₺ işaretini kaldır
+                                            toplamText = toplamText.replace('', ''); // ₺ işaretini kaldr
                                             var toplam = parseFloat(toplamText.replace(/\./g, '').replace(',', '.')); // Noktaları kaldır ve virgülü noktaya çevir
                                             var sonuc = (toplam * vade / 100) + toplam;
                                             sonuc1 = formatNumber(sonuc);
                                             var formattedSonuc1 = sonuc1.replace(/\./g, '').replace(',', '.');
                                             var taksitMetni = taksit == 1 ? 'Tek Çekim' : taksit + ' Taksit';
-                                            var checked = i === 0 ? 'checked' : ''; // İlk öğeyi seçili yapmak için kontrol
+                                            var checked = i === 0 ? 'checked' : ''; // lk ğeyi seçili yapmak için kontrol
 
                                             $('#taksit_alanlari').append('<tr>'+
                                                 '<td><div class="form-check">'+
@@ -520,7 +532,7 @@ if(isset($_POST["devamEt"])) {
 
         if (pos && taksit && sonuc && paymentCard && paymentCardName && paymentCardExpiryMonth && paymentCardExpiryYear && paymentCardCvv) {
             event.target.disabled = true;
-            event.target.innerText = "Ödeme İşleniyor...";
+            event.target.innerText = "Ödeme şleniyor...";
             if (pos === '1') {//Param Pos
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
@@ -1046,7 +1058,7 @@ if(isset($_POST["devamEt"])) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Uyarı',
-                text: 'Kart numarası 16 karakter olmalıdır!',
+                text: 'Kart numarası 16 karakter olmaldır!',
             });
         }
     }

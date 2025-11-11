@@ -1,8 +1,8 @@
 <?php
 class Database {
-    private $host = 'noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com';
+    private $host = 'localhost';
     private $db_name = 'noktanetdb';
-    private $username = 'nokta';
+    private $username = 'nokt_admin';
     private $password = 'Dell28736.!';
     private $conn;
 

@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 session_start();
 session_regenerate_id(true);
@@ -39,10 +39,10 @@ if(isset($_POST["cariOdeme"])){
 	$MerchantOrderId = uniqid();// İşyerinin belirlediği sipariş numarası
 	$Amount = $odemetutar_float; //Islem Tutari // Ornegin 1.00 TL için 100 kati yani 100 yazilmali
 	$CustomerId = "93981545";// Bankadaki müsteri numarası
-	$MerchantId = "61899"; //Sanal pos mağaza numarası, başvuru onayıyla işyerine gönderilir.
+	$MerchantId = "61899"; //Sanal pos mağaza numarası, başvuru onayıyla iyerine gönderilir.
 	$OkUrl = $gidesun; //Basarili sonuç alinirsa, yönledirelecek sayfa
 	$FailUrl = "https://noktaelektronik.com.tr/tr/cariodeme";//Basarisiz sonuç alinirsa, yönledirelecek sayfa
-	$UserName="kadirbabur"; // https://kurumsal.kuveytturk.com.tr adresinde Kullanıcı İşlemleri - Kullanıcı Ekle alanında işyeri tarafından olusturulan api rolünde kullanici adı
+	$UserName="kadirbabur"; // https://kurumsal.kuveytturk.com.tr adresinde Kullanıcı İlemleri - Kullanıcı Ekle alanında işyeri tarafından olusturulan api rolünde kullanici ad
 	$Password="Dell28736.!";// api rolünde kullanici adının sifresi
 	$HashedPassword = base64_encode(sha1($Password,"ISO-8859-9")); //md5($Password);
 	$HashData = base64_encode(sha1($MerchantId.$MerchantOrderId.$Amount.$OkUrl.$FailUrl.$UserName.$HashedPassword , "ISO-8859-9"));
@@ -139,7 +139,7 @@ else {
 		$Amount = $odemetutar_float; //Islem Tutari // Ornegin 1.00 TL için 100 kati yani 100 yazilmali
         $CustomerId = "93981545";// Bankadaki müsteri numarası
         $MerchantId = "61899"; //Sanal pos mağaza numarası, başvuru onayıyla işyerine gönderilir. 
-        $OkUrl = $gidesun; //Basarili sonuç alinirsa, yönledirelecek sayfa
+        $OkUrl = $gidesun; //Basarili sonuç alinirsa, ynledirelecek sayfa
 		$FailUrl = "https://noktaelektronik.com.tr/tr/sepet";//Basarisiz sonuç alinirsa, yönledirelecek sayfa
         $UserName="kadirbabur"; // https://kurumsal.kuveytturk.com.tr adresinde Kullanıcı İşlemleri - Kullanıcı Ekle alanında işyeri tarafından olusturulan api rolünde kullanici adı
 		$Password="Dell28736.!";// api rolünde kullanici adının sifresi

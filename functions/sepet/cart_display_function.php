@@ -6,6 +6,8 @@ $db = new Database();
 $session_id = $_POST["session_id"];
 $user_language = $_POST["language"];
 
+
+
 // Get user price level
 $uye = $db->fetch("SELECT * FROM uyeler WHERE id = :session_id", [
     'session_id' => $session_id

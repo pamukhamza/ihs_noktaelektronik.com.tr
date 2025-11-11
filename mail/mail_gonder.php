@@ -110,44 +110,30 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                     $imageUrl = "https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/" . $urun["foto"];
                     $imageData = @file_get_contents($imageUrl);
                     $base64Image = '';
-
+                
                     if ($imageData !== false) {
                         $imageInfo = getimagesizefromstring($imageData);
                         $imageType = $imageInfo['mime'] ?? '';
-
-                        if ($imageType === 'image/jpeg') {
+                
+                        if ($imageType === 'image/jpeg' || $imageType === 'image/png' || $imageType === 'image/webp') {
                             $base64Image = 'data:image/jpeg;base64,' . base64_encode($imageData);
-                        } elseif ($imageType === 'image/webp') {
-                            $image = @imagecreatefromstring($imageData);
-                            if ($image !== false) {
-                                ob_start();
-                                imagejpeg($image, null, 75);
-                                $jpegData = ob_get_contents();
-                                ob_end_clean();
-                                $base64Image = 'data:image/jpeg;base64,' . base64_encode($jpegData);
-                                imagedestroy($image);
-                            } else {
-                                echo 'Resim oluşturulamadı.';
-                            }
-                        } else {
-                            echo 'Desteklenmeyen resim türü.';
                         }
-                    } else {
-                        echo 'Resim verisi alınamadı.';
                     }
                     ?>
-
+                
                     <?php if (!empty($base64Image)): ?>
-                        <div>
-                            <div style="width: 50; height: 50px; overflow: hidden;">
-                                <img src="<?= $base64Image ?>" alt="Ürün Resmi" width="50" style="width: 50px !important; height: 50px !important; object-fit: cover !important;" />
-
-                            </div>
+                        <div style="width: 50px; height: 50px; overflow: hidden; display: inline-block; border-radius: 6px; background-color: #fff;">
+                            <img src="<?= $base64Image ?>" alt="Ürün Resmi"
+                                 style="width: 50px; height: 50px; object-fit: cover; display: block; border: none; outline: none;" />
                         </div>
                     <?php else: ?>
-                        <div>Image not found</div>
+                        <div style="width: 50px; height: 50px; background: #f0f0f0; color: #666; font-size: 10px; line-height: 50px; text-align: center; border-radius: 6px;">
+                            Yok
+                        </div>
                     <?php endif; ?>
                 </td>
+
+                
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["UrunAdiTR"] ?></td>
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["UrunKodu"] ?></td>
                 <td style="border: 1px solid #ccc; text-align: center;"><?= $urun["adet"] ?></td>
@@ -158,13 +144,13 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                     $toplam_birim_fiyat = $urun["birim_fiyat"] * $urun["dolar_satis"] * $urun["adet"];
                     $formatted_birim_fiyat = number_format($birim_fiyat, 2, ',', '.');
                     $formatted_toplam_birim_fiyatDvz = number_format($toplam_birim_fiyat, 2, ',', '.');
-                    echo $formatted_birim_fiyat . "₺ + KDV";
+                    echo $formatted_birim_fiyat . " + KDV";
                     }else{
                     $birim_fiyat = $urun["birim_fiyat"];
                     $toplam_birim_fiyat = $urun["birim_fiyat"] * $urun["adet"];
                     $formatted_birim_fiyat = number_format($birim_fiyat, 2, ',', '.');
                     $formatted_toplam_birim_fiyatTL = number_format($toplam_birim_fiyat, 2, ',', '.');
-                    echo $formatted_birim_fiyat . "₺ + KDV";
+                    echo $formatted_birim_fiyat . " + KDV";
                     }
                     ?>
                 </td>
@@ -397,7 +383,7 @@ function iadeAlindiMail($uye, $siparis_no){
         <tbody>
         <tr>
             <td style="width: 100%; line-height: 30px; max-width: 750px; min-width: 350px; font-size: 16px;">
-                <p>Sayın&nbsp; <strong><?= $uye ?></strong>,<br />
+                <p>Sayn&nbsp; <strong><?= $uye ?></strong>,<br />
                     <strong><?= $siparis_no ?>&nbsp;</strong>sipariş numaralı iade talebiniz alınmıştır. İade takibinizi paneldeki iadelerim sayfasında takip edebilirsiniz.&nbsp;</p>
 
                 <p>&nbsp;</p>
@@ -782,7 +768,7 @@ function arizaKayitMail($uye, $takip){
     <table style="margin-top: 10px; width: 100%; max-width: 750px;">
         <tbody>
         <tr style="margin-top: 20px;">
-            <td style="margin-top: 20px; width: 100%; height: 30px; line-height: 30px; max-width: 750px;  min-width: 350px; font-size: 20px;">Sayın <?= $uye ?>;</td>
+            <td style="margin-top: 20px; width: 100%; height: 30px; line-height: 30px; max-width: 750px;  min-width: 350px; font-size: 20px;">Sayn <?= $uye ?>;</td>
         </tr>
         </tbody>
     </table>

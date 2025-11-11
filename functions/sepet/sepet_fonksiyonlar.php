@@ -36,7 +36,7 @@ if (isset($_POST['promosyonKontrol'])) {
             exit;
         }
         if ($result['aktif'] == 0) {
-            echo json_encode(['response' => '0.00', 'message' => 'Bu kupon artık geçerli değil.']);
+            echo json_encode(['response' => '0.00', 'message' => 'Bu kupon artık geçerli deil.']);
             exit;
         }
 
@@ -83,7 +83,7 @@ if (isset($_POST['promosyonKontrol'])) {
             exit;
         }
         if (!empty($kategoriler) && !checkValuesInArray(explode(',', $gelen_kategoriler), $kategoriler)) {
-            echo json_encode(['response' => '0.00', 'message' => 'Bu kategorilerde indirim geçerli değildir.']);
+            echo json_encode(['response' => '0.00', 'message' => 'Bu kategorilerde indirim geerli değildir.']);
             exit;
         }
         if (!empty($urunler) && !checkValuesInArray(explode(',', $gelen_urunler), $urunler)) {
@@ -151,35 +151,42 @@ if (isset($_POST['promosyonKontrol'])) {
 }
 
 if(isset($_POST['sepetAdetGuncelle'])) {
-    $sepetId = $_POST["sepetId"];
-    $adet = $_POST["adet"];
-    $stok = $_POST["stok"];
+    $sepetId = isset($_POST["sepetId"]) ? $_POST["sepetId"] : 0;
+    $adet = isset($_POST["adet"]) ? $_POST["adet"] : 0;
+    $stok = isset($_POST["stok"]) ? $_POST["stok"] : 0;
+
     $response = ['status' => 1];
 
-    if($adet > $stok) {
-        $success = $db->update("UPDATE uye_sepet SET adet = :stok WHERE id = :sepetId", [
-            'stok' => $stok,
-            'sepetId' => $sepetId
-        ]);
-        header('Content-Type: application/json');
-        echo json_encode($response);
-        exit;
-    } elseif($adet < 1 || $adet == NULL) {
-        if($stok < 1) {
-            $success = $db->delete("DELETE FROM uye_sepet WHERE id = :sepetId", [
+    if($sepetId > 0) {
+        if($adet > $stok) {
+            $db->update("UPDATE uye_sepet SET adet = :stok WHERE id = :sepetId", [
+                'stok' => $stok,
                 'sepetId' => $sepetId
             ]);
             echo json_encode($response);
             exit;
+        } elseif($adet < 1) {
+            if($stok < 1) {
+                $db->delete("DELETE FROM uye_sepet WHERE id = :sepetId", [
+                    'sepetId' => $sepetId
+                ]);
+                echo json_encode($response);
+                exit;
+            }
         }
+
+        $db->update("UPDATE uye_sepet SET adet = :adet WHERE id = :sepetId", [
+            'adet' => $adet,
+            'sepetId' => $sepetId
+        ]);
+
+        echo json_encode(["status" => "success"]);
+        exit;
+    } else {
+        // sepetId yoksa direkt success döndür
+        echo json_encode($response);
+        exit;
     }
-
-    $success = $db->update("UPDATE uye_sepet SET adet = :adet WHERE id = :sepetId", [
-        'adet' => $adet,
-        'sepetId' => $sepetId
-    ]);
-
-    echo json_encode(["status" => "success"]);
-    exit;
 }
+
 ?>

@@ -4,7 +4,7 @@
         // Kullanıcı kimliği, sayfa adı ve IP adresini al
         $userId = $_SESSION['id']; // Örneğin, oturum kimliğinden kullanıcı kimliğini alabilirsiniz
         $pageName = $_SERVER['REQUEST_URI']; // Kullanıcının bulunduğu sayfa adını alabilirsiniz
-        $ipAddress = $_SERVER['REMOTE_ADDR']; // Kullanıcının IP adresini alabilirsiniz
+        $ipAddress = $_SERVER['REMOTE_ADDR']; // Kullancının IP adresini alabilirsiniz
 
         // Sayfa bilgisini ve IP adresini güncelle
         updateUserPage($userId, $pageName, $ipAddress);
@@ -253,7 +253,7 @@
                             <a class="nav-item nav-link a-hvr" href="tr/markalar">Markalar</a>
                             <a class="nav-item nav-link a-hvr" href="tr/kampanyalar">Kampanyalar</a>
                             <a class="nav-item nav-link a-hvr" href="tr/hakkimizda">Hakkımızda</a>
-                            <a class="nav-item nav-link a-hvr" href="tr/iletisim">İletişim</a>
+                            <a class="nav-item nav-link a-hvr" href="tr/iletisim">letişim</a>
                         </nav>
                         <?php
                         if (isset($_SESSION['ad'])) {
@@ -331,8 +331,12 @@ function liveSearch(searchQuery) {
     </script>
     <script>
         function sepetGuncelle(){
-            var session_id = '<?= $_SESSION['id']; ?>';
+            var session_id = '<?= isset($_SESSION['id']) ? $_SESSION['id'] : 0; ?>';
             var language = 'tr';
+            if (session_id == 0) {
+                $('#cart').html('<div class="alert alert-info text-center" role="alert">Sepetiniz boş!</div>');
+                return;
+            }
             $.ajax({
                 type: 'POST',
                 url: 'functions/sepet/cart_display_function.php',
@@ -347,8 +351,12 @@ function liveSearch(searchQuery) {
             });
         }
         function sepetGuncelle1(){
-            var session_id = '<?= $_SESSION['id']; ?>';
+            var session_id = '<?= isset($_SESSION['id']) ? $_SESSION['id'] : 0; ?>';
             var language = 'tr';
+            if (session_id == 0) {
+                $('#cart').html('<div class="alert alert-info text-center" role="alert">Sepetiniz boş!</div>');
+                return;
+            }
             $.ajax({
                 type: 'POST',
                 url: 'functions/sepet/cart_display_function.php',

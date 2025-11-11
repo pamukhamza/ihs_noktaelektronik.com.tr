@@ -1,9 +1,13 @@
 <?php
-header("Access-Control-Allow-Origin: https://www.noktaelektronik.com.tr");
+//header("Access-Control-Allow-Origin: https://www.noktaelektronik.com.tr");
 // Hata raporlamayı aktif et
-error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once "db.php";
+
+
+
 $db = new Database();
 function sessionControl() {
     if (!isset($_SESSION["id"])) {
@@ -25,7 +29,7 @@ function uploadImageToS3($file_path, $upload_path, $s3Client, $bucket) {
             'SourceFile' => $file_path // SourceFile için dosya yolunu geçiyoruz
         ]);
 
-        // Yükleme başarılı ise dosya adını veya URL'yi döndürüyoruz
+        // Yükleme başarlı ise dosya adını veya URL'yi döndürüyoruz
         return basename($file_path); // veya $result['ObjectURL'] dönebilirsiniz, S3 URL'si için
     } catch (AwsException $e) {
         error_log('S3 yükleme hatası: ' . $e->getMessage());
@@ -131,7 +135,7 @@ if (isset($_POST['takip_kodu'])) {
 
             // Create the table
             echo '<table class="table table-stripped">';
-            echo '<thead><tr><th>Ürün Kodu</th><th>Durumu</th><th>Yapılan İşlemler</th></tr></thead>';
+            echo '<thead><tr><th>rün Kodu</th><th>Durumu</th><th>Yapılan İşlemler</th></tr></thead>';
             echo '<tbody>';
 
             $q = $db->fetchAll("SELECT * FROM teknik_destek_urunler WHERE tdp_id = :tdp_id", ['tdp_id' => $tdp_id]);
@@ -275,7 +279,7 @@ function validateAndSaveVideo($file, $upload_path) {
 /////////////////////////////////////
 ////ALTTAKİLER DÜZGÜN//////////
 function formatVirgulluNumber($number){
-    // String'i float'a dönüştür
+    // String'i float'a dönştür
     $number = str_replace(',', '.', $number);
     $number = (float) $number;
     // Virgülü ekleyerek düzenle
@@ -295,7 +299,7 @@ function gelenFiyatDuzenle($sayi) {
     if (empty($sayi)) {
         return null;
     }
-    // Virgül varsa noktaya çevir
+    // Virgl varsa noktaya çevir
     $sayi = str_replace(',', '.', $sayi);
     // Sayının formatını kontrol et
     if (!preg_match('/^\d+(\.\d{1,4})?$/', $sayi)) {
@@ -357,7 +361,7 @@ function logActivity($message, $type = 'INFO') {
 }
 // Response fonksiyonu
 function sendResponse($message) {
-    // Önceki çıktıları temizle
+    // Önceki çıktları temizle
     while (ob_get_level()) ob_end_clean();
     
     // Header'ları ayarla
