@@ -25,12 +25,12 @@ $s3Client = new S3Client([
 
 // Kaydetme işlemi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firma = htmlspecialchars($_POST['firma']);
-    $musteri = htmlspecialchars($_POST['musteri']);
-    $telefon = htmlspecialchars($_POST['telefon']);
-    $email = htmlspecialchars($_POST['email']);
-    $temsilci = htmlspecialchars($_POST['temsilci']);
-    $not = htmlspecialchars($_POST['not']);
+    $firma      = isset($_POST['firma']) ? htmlspecialchars($_POST['firma']) : '';
+    $musteri    = isset($_POST['musteri']) ? htmlspecialchars($_POST['musteri']) : '';
+    $telefon    = isset($_POST['telefon']) ? htmlspecialchars($_POST['telefon']) : '';
+    $email      = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
+    $temsilci   = isset($_POST['temsilci']) ? htmlspecialchars($_POST['temsilci']) : '';
+    $not        = isset($_POST['not']) ? htmlspecialchars($_POST['not']) : '';
 
     $file = 'kartvizitler.txt'; // Kaydedilecek dosya
 
