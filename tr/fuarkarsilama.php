@@ -23,6 +23,17 @@ $s3Client = new S3Client([
     ]
 ]);
 
+// ✅ IP adresini almak için fonksiyon
+function getClientIP() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+    } else {
+        return $_SERVER['REMOTE_ADDR'] ?? 'Bilinmiyor';
+    }
+}
+
 // Kaydetme işlemi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firma      = isset($_POST['firma']) ? htmlspecialchars($_POST['firma']) : '';
@@ -33,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $not        = isset($_POST['not']) ? htmlspecialchars($_POST['not']) : '';
 
     $file = 'kartvizitler.txt'; // Kaydedilecek dosya
+    $ipAdres = getClientIP();   // ✅ IP adresini al
 
     $imgPath = '';
     if (isset($_FILES['gorsel']) && $_FILES['gorsel']['error'] === 0) {
@@ -55,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }
 
+    // ✅ IP adresini son sütun olarak ekle
     $line = [
         date('Y-m-d H:i:s'),
         $firma,
@@ -63,7 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email,
         $temsilci,
         $not,
-        $imgPath
+        $imgPath,
+        $ipAdres
     ];
 
     file_put_contents($file, implode('|', $line) . PHP_EOL, FILE_APPEND);
