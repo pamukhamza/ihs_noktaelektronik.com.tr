@@ -1,7 +1,7 @@
 <?php
 require '../functions/admin_template.php';
 require '../functions/functions.php';
-require '../../vendor/autoload.php'; // AWS SDK
+require '../vendor/autoload.php'; // AWS SDK
 $currentPage = 'kartvizit';
 $template = new Template('Fuar Kartvizit Toplama', $currentPage);
 $template->head();
