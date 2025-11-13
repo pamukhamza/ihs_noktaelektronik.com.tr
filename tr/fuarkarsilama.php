@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Bucket' => $config['s3']['bucket'],
                 'Key'    => $s3Key,
                 'SourceFile' => $localPath,
-                'ACL'    => 'public-read',
                 'ContentType' => $_FILES['gorsel']['type']
             ]);
             $imgPath = $result['ObjectURL'];
