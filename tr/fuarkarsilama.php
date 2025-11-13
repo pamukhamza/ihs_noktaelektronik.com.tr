@@ -79,15 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="firma" class="form-label">Firma Adı</label>
-            <input type="text" class="form-control" name="firma" id="firma" required>
+            <input type="text" class="form-control" name="firma" id="firma" >
         </div>
         <div class="mb-3">
             <label for="musteri" class="form-label">Müşteri Adı</label>
-            <input type="text" class="form-control" name="musteri" id="musteri" required>
+            <input type="text" class="form-control" name="musteri" id="musteri" >
         </div>
         <div class="mb-3">
             <label for="telefon" class="form-label">Telefon</label>
-            <input type="text" class="form-control" name="telefon" id="telefon" required>
+            <input type="text" class="form-control" name="telefon" id="telefon" >
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
