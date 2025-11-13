@@ -1,5 +1,6 @@
 <?php
 require '../functions/admin_template.php'; // kendi template dosyan
+require '../functions/functions.php';
 $currentPage = 'kartvizit';
 $template = new Template('Fuar Kartvizit Toplama', $currentPage);
 
