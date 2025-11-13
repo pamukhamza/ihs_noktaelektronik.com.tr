@@ -9,7 +9,7 @@ $template->head();
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
-$config = require '../../aws-config.php';
+$config = require '../aws-config.php';
 $s3Client = new S3Client([
     'version' => 'latest',
     'region'  => $config['s3']['region'],
