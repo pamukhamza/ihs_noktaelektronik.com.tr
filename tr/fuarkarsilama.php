@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $imgPath = '';
     if (isset($_FILES['gorsel']) && $_FILES['gorsel']['error'] === 0) {
-        $filename = basename($_FILES['gorsel']['name']);
+       $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_.-]/', '_', basename($_FILES['gorsel']['name']));
+
         $localPath = $_FILES['gorsel']['tmp_name'];
         $s3Key = 'noktanet/uploads/fuar/' . $filename;
 
