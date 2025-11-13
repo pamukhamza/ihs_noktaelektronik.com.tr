@@ -54,7 +54,7 @@ sort($temsilciler);
     </div>
 
     <table class="table table-bordered table-striped mt-4" id="kartvizitTablo">
-        <thead class="table-dark">
+        <thead class="table-dark table-responsive">
             <tr>
                 <th>Tarih</th>
                 <th>Firma</th>
