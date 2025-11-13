@@ -53,8 +53,8 @@ sort($temsilciler);
         </select>
     </div>
 
-    <table class="table table-bordered table-striped mt-4" id="kartvizitTablo">
-        <thead class="table-dark table-responsive">
+    <table class="table table-bordered table-striped mt-4 table-responsive" id="kartvizitTablo">
+        <thead class="table-dark ">
             <tr>
                 <th>Tarih</th>
                 <th>Firma</th>
