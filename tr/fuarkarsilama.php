@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require '../functions/admin_template.php';
 require '../functions/functions.php';
 require '../vendor/autoload.php'; // AWS SDK
@@ -41,13 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Bucket' => $config['s3']['bucket'],
                 'Key'    => $s3Key,
                 'SourceFile' => $localPath,
-                'ACL'    => 'public-read', // isteğe bağlı
+                'ACL'    => 'public-read',
                 'ContentType' => $_FILES['gorsel']['type']
             ]);
-            $imgPath = $result['ObjectURL']; // S3'ten dönen URL
+            $imgPath = $result['ObjectURL'];
         } catch (AwsException $e) {
+            echo "S3 Yükleme Hatası: " . $e->getMessage();
             $imgPath = '';
         }
+
     }
 
     $line = [
