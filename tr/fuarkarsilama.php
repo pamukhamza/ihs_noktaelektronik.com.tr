@@ -1,10 +1,23 @@
 <?php
-require '../functions/admin_template.php'; // kendi template dosyan
+require '../functions/admin_template.php';
 require '../functions/functions.php';
+require '../../vendor/autoload.php'; // AWS SDK
 $currentPage = 'kartvizit';
 $template = new Template('Fuar Kartvizit Toplama', $currentPage);
-
 $template->head();
+
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+
+$config = require '../../aws-config.php';
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => $config['s3']['region'],
+    'credentials' => [
+        'key'    => $config['s3']['key'],
+        'secret' => $config['s3']['secret'],
+    ]
+]);
 
 // Kaydetme işlemi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,19 +28,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $temsilci = htmlspecialchars($_POST['temsilci']);
     $not = htmlspecialchars($_POST['not']);
 
-    // Dosya yolu (aynı klasörde data.txt olarak kaydedecek)
-    $file = 'kartvizitler.txt';
+    $file = 'kartvizitler.txt'; // Kaydedilecek dosya
 
-    // Görsel yükleme
     $imgPath = '';
     if (isset($_FILES['gorsel']) && $_FILES['gorsel']['error'] === 0) {
-        $uploadsDir = 'uploads/';
-        if (!file_exists($uploadsDir)) mkdir($uploadsDir, 0777, true);
-        $imgPath = $uploadsDir . basename($_FILES['gorsel']['name']);
-        move_uploaded_file($_FILES['gorsel']['tmp_name'], $imgPath);
+        $filename = basename($_FILES['gorsel']['name']);
+        $localPath = $_FILES['gorsel']['tmp_name'];
+        $s3Key = 'noktanet/uploads/fuar/' . $filename;
+
+        try {
+            $result = $s3Client->putObject([
+                'Bucket' => $config['s3']['bucket'],
+                'Key'    => $s3Key,
+                'SourceFile' => $localPath,
+                'ACL'    => 'public-read', // isteğe bağlı
+                'ContentType' => $_FILES['gorsel']['type']
+            ]);
+            $imgPath = $result['ObjectURL']; // S3'ten dönen URL
+        } catch (AwsException $e) {
+            $imgPath = '';
+        }
     }
 
-    // Kaydedilecek format: CSV gibi
     $line = [
         date('Y-m-d H:i:s'),
         $firma,
@@ -40,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     file_put_contents($file, implode('|', $line) . PHP_EOL, FILE_APPEND);
-
     $success = "Kartvizit başarıyla kaydedildi!";
 }
 ?>
