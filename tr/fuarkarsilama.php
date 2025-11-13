@@ -102,10 +102,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="temsilci" class="form-label">Satış Temsilcisi</label>
             <select name="temsilci" id="temsilci" class="form-select" required>
                 <option value="">Seçiniz</option>
-                <option value="Ahmet">Ahmet</option>
-                <option value="Mehmet">Mehmet</option>
-                <option value="Ayşe">Ayşe</option>
-                <option value="Fatma">Fatma</option>
+                <option value="Harun Yazar">Harun Yazar</option>
+                <option value="Mehmet Tığlı">Mehmet Tığlı</option>
+                <option value="Nefise Tugay">Nefise Tugay</option>
+                <option value="Şule Örnek">Şule Örnek</option>
+                <option value="Dilek İkinci">Dilek İkinci</option>
+                <option value="Murat Kılıç">Murat Kılıç</option>
+                <option value="Berk Özdemir">Berk Özdemir</option>
+                <option value="Necati Demirtaş">Necati Demirtaş</option>
+                <option value="Ömer Sülün">Ömer Sülün</option>
+                <option value="Cihan Ekinci">Cihan Ekinci</option>
+                <option value="Esra Akkoyun">Esra Akkoyun</option>
+                <option value="Ali İstif">Ali İstif</option>
+                <option value="Doğukan Babur">Doğukan Babur</option>
+                <option value="İlker Karaca">İlker Karaca</option>
+                <option value="Ahmet Özdemir">Ahmet Özdemir</option>
+                <option value="Levent Cihangeri">Levent Cihangeri</option>
+                <option value="Fuat Tuç">Fuat Tuç</option>
+                <option value="Hamza Pamuk">Hamza Pamuk</option>
             </select>
         </div>
         <div class="mb-3">
